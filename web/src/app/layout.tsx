@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DondeInvierto | Radar Diario de Acciones, ETFs y Bonos de EE.UU.",
-  description: "Descubre diariamente las mejores 10 oportunidades de inversión en Wall Street seleccionadas mediante análisis cuantitativo, momentum y consenso institucional.",
-  keywords: ["inversiones", "acciones usa", "etfs", "bonos del tesoro", "donde invertir", "wall street"],
+  title: "Donde Invierto | Terminal Quant & Radar Diario de Inversión",
+  description: "Monitoreo cuantitativo diario de CEDEARs, ETFs globales, Obligaciones Negociables (ONs en dólares) y acciones del S&P Merval con paridad CCL.",
+  keywords: ["inversiones", "cedears", "obligaciones negociables", "merval", "wall street", "donde invierto", "dolar ccl"],
 };
 
 export default function RootLayout({
@@ -13,9 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="scroll-smooth">
+    <html lang="es" className="dark scroll-smooth">
       <body
-        className="font-sans antialiased bg-slate-950 text-slate-100 min-h-screen selection:bg-emerald-500 selection:text-slate-950"
+        className="font-sans antialiased bg-[#051424] text-[#d4e4fa] min-h-screen selection:bg-[#4edea3] selection:text-[#002113]"
       >
         {children}
       </body>
