@@ -33,31 +33,55 @@ export default function HomePage() {
 
   const { market, stocks, etfs, ons, argentina, last_updated, ccl_dollar } = marketData;
 
-  // Filtrado de Acciones
-  const filteredStocks = stocks.filter((s) => {
-    const matchesSearch =
-      s.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.sector.toLowerCase().includes(searchQuery.toLowerCase());
-    if (!matchesSearch) return false;
-    if (stockDivFilter === "dividend") return s.pays_dividend;
-    if (stockDivFilter === "growth") return !s.pays_dividend;
-    return true;
-  });
+  // Filtrado y Ordenamiento de Acciones
+  const filteredStocks = stocks
+    .filter((s) => {
+      const matchesSearch =
+        s.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.sector.toLowerCase().includes(searchQuery.toLowerCase());
+      if (!matchesSearch) return false;
+      if (stockDivFilter === "dividend") return s.pays_dividend;
+      if (stockDivFilter === "growth") return !s.pays_dividend;
+      return true;
+    })
+    .sort((a, b) => {
+      // Si se filtra por sin dividendos (crecimiento), ordenar por los más rentables (mayor potencial upside proyectado)
+      if (stockDivFilter === "growth") {
+        return (b.upside || 0) - (a.upside || 0);
+      }
+      // Si se filtra por dividendos, ordenar por mayor dividendo yield
+      if (stockDivFilter === "dividend") {
+        return (b.dividend_yield || 0) - (a.dividend_yield || 0);
+      }
+      return (b.score || 0) - (a.score || 0);
+    });
 
-  // Filtrado de ETFs por búsqueda, dividendos y gestora (BlackRock, Vanguard, etc.)
-  const filteredEtfs = etfs.filter((e) => {
-    const matchesSearch =
-      e.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (e.manager && e.manager.toLowerCase().includes(searchQuery.toLowerCase()));
-    if (!matchesSearch) return false;
-    if (etfDivFilter === "dividend") return e.pays_dividend;
-    if (etfDivFilter === "growth") return !e.pays_dividend;
-    if (etfManagerFilter !== "all" && e.manager !== etfManagerFilter) return false;
-    return true;
-  });
+  // Filtrado y Ordenamiento de ETFs
+  const filteredEtfs = etfs
+    .filter((e) => {
+      const matchesSearch =
+        e.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        e.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (e.manager && e.manager.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (!matchesSearch) return false;
+      if (etfDivFilter === "dividend") return e.pays_dividend;
+      if (etfDivFilter === "growth") return !e.pays_dividend;
+      if (etfManagerFilter !== "all" && e.manager !== etfManagerFilter) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      // Si se filtra por sin dividendos / acumulación, ordenar por los más rentables (mayor retorno a 1 año)
+      if (etfDivFilter === "growth") {
+        return (b.return_1y || 0) - (a.return_1y || 0);
+      }
+      // Si se filtra por dividendos, ordenar por mayor dividendo yield
+      if (etfDivFilter === "dividend") {
+        return (b.dividend_yield || 0) - (a.dividend_yield || 0);
+      }
+      return (b.score || 0) - (a.score || 0);
+    });
 
   // Filtrado de ONs
   const filteredOns = ons.filter(
@@ -394,7 +418,7 @@ export default function HomePage() {
                         : "text-[#64748B] hover:text-[#d4e4fa]"
                     }`}
                   >
-                    Top 10 Acciones ({filteredStocks.length})
+                    Acciones CEDEAR ({filteredStocks.length})
                   </button>
                   <button
                     onClick={() => setCedearSubTab("etfs")}
@@ -451,7 +475,7 @@ export default function HomePage() {
                         : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
                     }`}
                   >
-                    Todos ({stocks.length})
+                    Todas ({stocks.length})
                   </button>
                   <button
                     onClick={() => setStockDivFilter("dividend")}
@@ -462,7 +486,7 @@ export default function HomePage() {
                     }`}
                   >
                     <CircleDollarSign className="w-3.5 h-3.5" />
-                    <span>💵 Paga Dividendos en USD ({stocks.filter((s) => s.pays_dividend).length})</span>
+                    <span>💵 Con Dividendos en USD ({stocks.filter((s) => s.pays_dividend).length})</span>
                   </button>
                   <button
                     onClick={() => setStockDivFilter("growth")}
@@ -472,7 +496,7 @@ export default function HomePage() {
                         : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
                     }`}
                   >
-                    🚀 Sin Dividendos / Crecimiento ({stocks.filter((s) => !s.pays_dividend).length})
+                    🚀 Sin Dividendos - Top 10 más rentables ({stocks.filter((s) => !s.pays_dividend).length})
                   </button>
                 </div>
 
@@ -614,7 +638,7 @@ export default function HomePage() {
                       }`}
                     >
                       <CircleDollarSign className="w-3.5 h-3.5" />
-                      <span>💵 Distribución (Pagan efectivo)</span>
+                      <span>💵 Con Dividendos ({etfs.filter((e) => e.pays_dividend).length})</span>
                     </button>
                     <button
                       onClick={() => setEtfDivFilter("growth")}
@@ -624,7 +648,7 @@ export default function HomePage() {
                           : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
                       }`}
                     >
-                      📦 Acumulación (Reinvierte / 0% retención)
+                      🚀 Sin Dividendos - Top 10 más rentables ({etfs.filter((e) => !e.pays_dividend).length})
                     </button>
                   </div>
 
@@ -642,6 +666,8 @@ export default function HomePage() {
                       <option value="Invesco">Invesco</option>
                       <option value="Charles Schwab">Charles Schwab</option>
                       <option value="VanEck">VanEck</option>
+                      <option value="ARK Invest (Cathie Wood)">ARK Invest</option>
+                      <option value="Global X / Mirae Asset">Global X</option>
                     </select>
                   </div>
                 </div>
@@ -753,7 +779,7 @@ export default function HomePage() {
                       className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 shadow-sm hover:bg-[#1E293B]/60 transition-all flex flex-col gap-3"
                     >
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <div className="md:col-span-4 flex items-center gap-3">
+                        <div className="md:col-span-3 flex items-center gap-3">
                           <span className="text-lg font-mono text-[#64748B] font-bold min-w-8">
                             #{idx + 1}
                           </span>
@@ -775,7 +801,28 @@ export default function HomePage() {
                                 📅 Vence: <strong className="text-[#4edea3]">{on.maturity_date}</strong>
                               </span>
                             </div>
-                            <span className="text-xs text-[#64748B] mt-1">{on.name} — {on.issuer}</span>
+                            <span className="text-xs text-[#64748B] mt-1 truncate">{on.name} — {on.issuer}</span>
+                          </div>
+                        </div>
+
+                        {/* Cotización Actual y Paridad */}
+                        <div className="md:col-span-2 flex flex-col">
+                          <span className="text-[11px] font-mono text-[#64748B] uppercase">COTIZACIÓN & PARIDAD</span>
+                          <span className="text-base font-bold font-mono text-[#F8FAFC]">
+                            ${on.price_usd ? on.price_usd.toFixed(2) : "100.00"} USD
+                          </span>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span
+                              className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${
+                                on.parity > 100
+                                  ? "bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/20"
+                                  : on.parity < 100
+                                  ? "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
+                                  : "bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20"
+                              }`}
+                            >
+                              {on.parity_status || (on.parity > 100 ? "Sobre la par" : "Bajo la par")} ({on.parity}%)
+                            </span>
                           </div>
                         </div>
 
@@ -795,10 +842,10 @@ export default function HomePage() {
                           <span className="text-[11px] font-mono text-[#64748B]">{on.frequency}</span>
                         </div>
 
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">CALIFICACIÓN</span>
-                          <span className="text-xs font-bold text-[#F8FAFC]">{on.rating}</span>
-                          <span className="text-[11px] font-mono text-[#64748B]">Mínimo: {on.min_investment}</span>
+                        <div className="md:col-span-1 flex flex-col">
+                          <span className="text-[11px] font-mono text-[#64748B] uppercase">RATING</span>
+                          <span className="text-xs font-bold text-[#F8FAFC] truncate">{on.rating}</span>
+                          <span className="text-[11px] font-mono text-[#64748B]">Mín: {on.min_investment}</span>
                         </div>
 
                         <div className="md:col-span-2 flex items-center justify-end gap-3">
@@ -927,11 +974,21 @@ export default function HomePage() {
                           </div>
 
                           <div className="md:col-span-3 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">COTIZACIÓN (USD)</span>
+                            <span className="text-[11px] font-mono text-[#64748B] uppercase">COTIZACIÓN & PARIDAD</span>
                             <span className="text-base font-bold font-mono text-[#F8FAFC]">
                               ${b.price_usd} USD
                             </span>
-                            <span className="text-[11px] font-mono text-[#64748B]">Paridad: {b.parity}%</span>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span
+                                className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${
+                                  b.parity >= 100
+                                    ? "bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/20"
+                                    : "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
+                                }`}
+                              >
+                                {b.parity_status || (b.parity >= 100 ? "Sobre la par" : "Bajo la par")} ({b.parity}%)
+                              </span>
+                            </div>
                           </div>
 
                           <div className="md:col-span-2 flex flex-col">
