@@ -22,26 +22,40 @@ export default function HomePage() {
   const [cedearSubTab, setCedearSubTab] = useState<"stocks" | "etfs">("stocks");
   const [argSubTab, setArgSubTab] = useState<"merval" | "bonds">("merval");
   const [searchQuery, setSearchQuery] = useState("");
+  const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
+  const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
+  const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
   const [investmentAmount, setInvestmentAmount] = useState<number>(1000000); // 1 millón de pesos o USD
   const [currency, setCurrency] = useState<"ARS" | "USD">("ARS");
   const [riskProfile, setRiskProfile] = useState<"conservative" | "balanced" | "aggressive">("balanced");
 
   const { market, stocks, etfs, ons, argentina, date, last_updated, ccl_dollar } = marketData;
 
-  // Filtrado
-  const filteredStocks = stocks.filter(
-    (s) =>
+  // Filtrado de Acciones
+  const filteredStocks = stocks.filter((s) => {
+    const matchesSearch =
       s.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
       s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.sector.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      s.sector.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!matchesSearch) return false;
+    if (stockDivFilter === "dividend") return s.pays_dividend;
+    if (stockDivFilter === "growth") return !s.pays_dividend;
+    return true;
+  });
 
-  const filteredEtfs = etfs.filter(
-    (e) =>
+  // Filtrado de ETFs por búsqueda, dividendos y gestora (BlackRock, Vanguard, etc.)
+  const filteredEtfs = etfs.filter((e) => {
+    const matchesSearch =
       e.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
       e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      e.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (e.manager && e.manager.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (!matchesSearch) return false;
+    if (etfDivFilter === "dividend") return e.pays_dividend;
+    if (etfDivFilter === "growth") return !e.pays_dividend;
+    if (etfManagerFilter !== "all" && e.manager !== etfManagerFilter) return false;
+    return true;
+  });
 
   const filteredOns = ons.filter(
     (o) =>
@@ -298,7 +312,44 @@ export default function HomePage() {
             </div>
 
             {cedearSubTab === "stocks" && (
-              <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-4">
+                {/* Filtro de Dividendos para Acciones */}
+                <div className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+                  <span className="text-xs text-slate-400 font-semibold mr-1">Filtrar Dividendos:</span>
+                  <button
+                    onClick={() => setStockDivFilter("all")}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      stockDivFilter === "all"
+                        ? "bg-emerald-500 text-slate-950"
+                        : "bg-slate-800 text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    Todos ({stocks.length})
+                  </button>
+                  <button
+                    onClick={() => setStockDivFilter("dividend")}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      stockDivFilter === "dividend"
+                        ? "bg-emerald-500 text-slate-950"
+                        : "bg-slate-800 text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    <CircleDollarSign className="w-3.5 h-3.5" />
+                    <span>💵 Paga Dividendos en USD ({stocks.filter((s) => s.pays_dividend).length})</span>
+                  </button>
+                  <button
+                    onClick={() => setStockDivFilter("growth")}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      stockDivFilter === "growth"
+                        ? "bg-emerald-500 text-slate-950"
+                        : "bg-slate-800 text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    🚀 Sin Dividendos / Crecimiento ({stocks.filter((s) => !s.pays_dividend).length})
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
                 {filteredStocks.map((stock, idx) => {
                   const isPositive = stock.day_change >= 0;
                   return (
@@ -384,68 +435,156 @@ export default function HomePage() {
                     </div>
                   );
                 })}
+                {filteredStocks.length === 0 && (
+                  <div className="p-8 text-center text-slate-500 bg-slate-900/30 rounded-2xl border border-slate-800">
+                    No se encontraron acciones que coincidan con los filtros seleccionados.
+                  </div>
+                )}
+                </div>
               </div>
             )}
 
             {cedearSubTab === "etfs" && (
-              <div className="grid grid-cols-1 gap-4">
-                {filteredEtfs.map((etf, idx) => (
-                  <div
-                    key={etf.ticker}
-                    className="group relative rounded-2xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 p-5 sm:p-6 transition-all duration-200 shadow-sm"
-                  >
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center font-extrabold text-base text-slate-300 shrink-0">
-                          #{idx + 1}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3">
-                            <h3 className="text-xl font-bold text-white tracking-tight">{etf.ticker}</h3>
-                            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                              {etf.category}
-                            </span>
-                          </div>
-                          <p className="text-sm text-slate-400 mt-0.5">{etf.name}</p>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 border-t lg:border-t-0 pt-4 lg:pt-0 border-slate-800">
-                        <div>
-                          <span className="text-xs text-slate-500 block uppercase font-medium">Precio USA</span>
-                          <span className="text-lg font-bold text-white">${etf.price.toFixed(2)} USD</span>
-                        </div>
-
-                        <div className="p-2 rounded-xl bg-cyan-950/20 border border-cyan-500/20">
-                          <span className="text-[11px] text-cyan-400 block uppercase font-bold">CEDEAR en Pesos</span>
-                          <span className="text-base sm:text-lg font-extrabold text-white">
-                            ${etf.cedear_price_ars.toLocaleString("es-AR")} ARS
-                          </span>
-                          <span className="text-[11px] text-slate-400 block">Ratio {etf.cedear_ratio}</span>
-                        </div>
-
-                        <div>
-                          <span className="text-xs text-slate-500 block uppercase font-medium">Retorno 1 Año</span>
-                          <span className="text-base font-bold text-emerald-400">+{etf.return_1y}%</span>
-                          <span className="text-xs text-slate-500 block">Costo anual: {etf.expense_ratio}%</span>
-                        </div>
-
-                        <div>
-                          <span className="text-xs text-slate-500 block uppercase font-medium">Score Total</span>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-xl font-extrabold text-emerald-400">{etf.score}</span>
-                            <span className="text-xs text-slate-500">/100</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 pt-4 border-t border-slate-800/60 flex items-start gap-2 text-xs text-slate-400">
-                      <span className="font-semibold text-cyan-400 uppercase tracking-wider shrink-0">Tesis:</span>
-                      <span>{etf.thesis}</span>
-                    </div>
+              <div className="space-y-4">
+                {/* Filtro doble para ETFs: Dividendos y Gestoras (BlackRock, Vanguard, etc.) */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-xs text-slate-400 font-semibold mr-1">Dividendos:</span>
+                    <button
+                      onClick={() => setEtfDivFilter("all")}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                        etfDivFilter === "all"
+                          ? "bg-cyan-500 text-slate-950"
+                          : "bg-slate-800 text-slate-300 hover:text-white"
+                      }`}
+                    >
+                      Todos ({etfs.length})
+                    </button>
+                    <button
+                      onClick={() => setEtfDivFilter("dividend")}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        etfDivFilter === "dividend"
+                          ? "bg-cyan-500 text-slate-950"
+                          : "bg-slate-800 text-slate-300 hover:text-white"
+                      }`}
+                    >
+                      <CircleDollarSign className="w-3.5 h-3.5" />
+                      <span>💵 Con Dividendos en USD ({etfs.filter((e) => e.pays_dividend).length})</span>
+                    </button>
+                    <button
+                      onClick={() => setEtfDivFilter("growth")}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                        etfDivFilter === "growth"
+                          ? "bg-cyan-500 text-slate-950"
+                          : "bg-slate-800 text-slate-300 hover:text-white"
+                      }`}
+                    >
+                      📦 Acumulación / Sin Dividendo ({etfs.filter((e) => !e.pays_dividend).length})
+                    </button>
                   </div>
-                ))}
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-400 font-semibold whitespace-nowrap">Gestora:</span>
+                    <select
+                      value={etfManagerFilter}
+                      onChange={(e) => setEtfManagerFilter(e.target.value)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 border border-slate-700 text-slate-200 focus:outline-none focus:border-cyan-500"
+                    >
+                      <option value="all">Todas las Gestoras</option>
+                      <option value="BlackRock (iShares)">BlackRock (iShares)</option>
+                      <option value="Vanguard">Vanguard</option>
+                      <option value="State Street (SPDR)">State Street (SPDR)</option>
+                      <option value="Invesco">Invesco</option>
+                      <option value="Charles Schwab">Charles Schwab</option>
+                      <option value="VanEck">VanEck</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {filteredEtfs.map((etf, idx) => (
+                    <div
+                      key={etf.ticker}
+                      className="group relative rounded-2xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800/90 hover:border-slate-700 p-5 sm:p-6 transition-all duration-200 shadow-sm"
+                    >
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center font-extrabold text-base text-slate-300 shrink-0">
+                            #{idx + 1}
+                          </div>
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="text-xl font-bold text-white tracking-tight">{etf.ticker}</h3>
+
+                              {/* BADGE DE GESTORA (BlackRock, Vanguard, etc.) */}
+                              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/25">
+                                {etf.manager}
+                              </span>
+
+                              <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-300">
+                                {etf.category}
+                              </span>
+
+                              {/* BADGE DE POLITICA DE DIVIDENDOS */}
+                              {etf.pays_dividend ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                  <CircleDollarSign className="w-3.5 h-3.5" />
+                                  <span>{etf.dividend_yield}% anual en USD</span>
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700/50">
+                                  <span>Acumulación (0% dividendo)</span>
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-slate-400 mt-1">{etf.name}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 border-t lg:border-t-0 pt-4 lg:pt-0 border-slate-800">
+                          <div>
+                            <span className="text-[11px] text-slate-500 block uppercase font-medium">Precio USA</span>
+                            <span className="text-lg font-bold text-white">${etf.price.toFixed(2)} USD</span>
+                            <span className="text-xs text-slate-400 block">{etf.dividend_frequency}</span>
+                          </div>
+
+                          <div className="p-2 rounded-xl bg-cyan-950/20 border border-cyan-500/20">
+                            <span className="text-[11px] text-cyan-400 block uppercase font-bold">CEDEAR en Pesos</span>
+                            <span className="text-base sm:text-lg font-extrabold text-white">
+                              ${etf.cedear_price_ars.toLocaleString("es-AR")} ARS
+                            </span>
+                            <span className="text-[11px] text-slate-400 block">Ratio {etf.cedear_ratio}</span>
+                          </div>
+
+                          <div>
+                            <span className="text-[11px] text-slate-500 block uppercase font-medium">Retorno 1 Año</span>
+                            <span className="text-base font-bold text-emerald-400">+{etf.return_1y}%</span>
+                            <span className="text-xs text-slate-500 block">Costo anual: {etf.expense_ratio}%</span>
+                          </div>
+
+                          <div>
+                            <span className="text-[11px] text-slate-500 block uppercase font-medium">Score Total</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-xl font-extrabold text-emerald-400">{etf.score}</span>
+                              <span className="text-xs text-slate-500">/100</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 pt-4 border-t border-slate-800/60 flex items-start gap-2 text-xs text-slate-400">
+                        <span className="font-semibold text-cyan-400 uppercase tracking-wider shrink-0">Tesis:</span>
+                        <span>{etf.thesis}</span>
+                      </div>
+                    </div>
+                  ))}
+
+                  {filteredEtfs.length === 0 && (
+                    <div className="p-8 text-center text-slate-500 bg-slate-900/30 rounded-2xl border border-slate-800">
+                      No se encontraron ETFs que coincidan con la gestora o política de dividendos seleccionada.
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
