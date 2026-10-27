@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DondeInvierto Web App
+
+Plataforma comercial moderna desarrollada en Next.js 15 y Tailwind CSS.
+Última actualización de despliegue: 2026-10-27.
+
 
 ## Getting Started
 
