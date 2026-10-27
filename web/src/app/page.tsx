@@ -771,8 +771,8 @@ export default function HomePage() {
                               >
                                 {on.law}
                               </span>
-                              <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#64748B]">
-                                Vence {on.maturity}
+                              <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#d4e4fa] border border-[#1F2937]">
+                                📅 Vence: <strong className="text-[#4edea3]">{on.maturity_date}</strong>
                               </span>
                             </div>
                             <span className="text-xs text-[#64748B] mt-1">{on.name} — {on.issuer}</span>
@@ -911,12 +911,15 @@ export default function HomePage() {
                               #{idx + 1}
                             </span>
                             <div className="flex flex-col min-w-0">
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-wrap">
                                 <span className="font-mono text-base font-bold text-[#F8FAFC]">
                                   {b.ticker}
                                 </span>
                                 <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#38BDF8]/10 text-[#38BDF8] border border-[#38BDF8]/20">
                                   {b.law}
+                                </span>
+                                <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#d4e4fa] border border-[#1F2937]">
+                                  📅 Vence: <strong className="text-[#4edea3]">{b.maturity_date}</strong>
                                 </span>
                               </div>
                               <span className="text-xs text-[#64748B] mt-1">{b.name}</span>

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "last_updated": "2026-10-27 18:05:00",
+  "last_updated": "2026-10-27 18:05 hs (Hora Buenos Aires, UTC-3)",
   "ccl_dollar": 1215.0,
   "market": {
     "^GSPC": {
@@ -427,11 +427,12 @@
       "tir_usd": 8.45,
       "coupon": 8.5,
       "maturity": "2029",
+      "maturity_date": "30/06/2029",
       "frequency": "Semestral en Dólares",
       "min_investment": "100 USD (o en Pesos a MEP)",
       "rating": "Excelente (Líder Vaca Muerta)",
       "score": 93.0,
-      "thesis": "La ON de mayor liquidez en Argentina. Respaldo directo en el récord de producción y exportación de Vaca Muerta."
+      "thesis": "La ON de mayor liquidez en Argentina. Respaldo directo en el récord de producción y exportación de Vaca Muerta. Vencimiento final el 30 de Junio de 2029 con amortizaciones semestrales."
     },
     {
       "ticker": "MGC3O",
@@ -441,11 +442,12 @@
       "tir_usd": 7.6,
       "coupon": 7.95,
       "maturity": "2031",
+      "maturity_date": "15/12/2031",
       "frequency": "Semestral en Dólares",
       "min_investment": "100 USD",
       "rating": "AAA Local (Máxima solidez)",
       "score": 91.5,
-      "thesis": "Empresa con caja neta positiva, generación eléctrica diversificada y cero historial de default en su deuda corporativa."
+      "thesis": "Empresa con caja neta positiva, generación eléctrica diversificada y cero historial de default en su deuda corporativa. Vence el 15 de Diciembre de 2031."
     },
     {
       "ticker": "VSCPO",
@@ -455,11 +457,12 @@
       "tir_usd": 7.85,
       "coupon": 8.0,
       "maturity": "2029",
+      "maturity_date": "10/03/2029",
       "frequency": "Semestral en Dólares",
       "min_investment": "100 USD",
       "rating": "Muy Alta Calidad",
       "score": 90.0,
-      "thesis": "Operador no convencional de petróleo más eficiente del país. Crecimiento de flujo libre en dólares de dos dígitos."
+      "thesis": "Operador no convencional de petróleo más eficiente del país. Crecimiento de flujo libre en dólares de dos dígitos. Vence el 10 de Marzo de 2029."
     },
     {
       "ticker": "TLC1O",
@@ -469,11 +472,12 @@
       "tir_usd": 8.95,
       "coupon": 8.5,
       "maturity": "2031",
+      "maturity_date": "18/07/2031",
       "frequency": "Semestral en Dólares",
       "min_investment": "100 USD",
       "rating": "Alta Calidad",
       "score": 87.5,
-      "thesis": "Flujo de ingresos sumamente predecible en telecomunicaciones. Ofrece una tasa TIR superior al 8.9% anual en USD."
+      "thesis": "Flujo de ingresos sumamente predecible en telecomunicaciones. Ofrece una tasa TIR superior al 8.9% anual en USD. Vencimiento: 18 de Julio de 2031."
     },
     {
       "ticker": "PNDCO",
@@ -483,11 +487,12 @@
       "tir_usd": 6.95,
       "coupon": 7.125,
       "maturity": "2027",
+      "maturity_date": "30/04/2027",
       "frequency": "Semestral en Dólares",
       "min_investment": "100 USD",
       "rating": "Calidad Cuasi-Soberana",
       "score": 89.0,
-      "thesis": "Perfil hiperconservador respaldado por British Petroleum. Menor tasa de mercado por su bajo riesgo percibido."
+      "thesis": "Perfil hiperconservador respaldado por British Petroleum. Menor tasa de mercado por su bajo riesgo percibido. Vencimiento próximo: 30 de Abril de 2027."
     },
     {
       "ticker": "CAC2O",
@@ -497,11 +502,12 @@
       "tir_usd": 9.4,
       "coupon": 9.5,
       "maturity": "2026",
+      "maturity_date": "15/11/2026",
       "frequency": "Trimestral en Dólares",
       "min_investment": "100 USD",
       "rating": "Rendimiento Elevado",
       "score": 84.5,
-      "thesis": "Paga tasa superior al 9.4% anual bajo Ley Local con pagos trimestrales. Atractiva para flujo de caja continuo."
+      "thesis": "Paga tasa superior al 9.4% anual bajo Ley Local con pagos trimestrales. Atractiva para flujo de caja continuo. Vence el 15 de Noviembre de 2026."
     }
   ],
   "argentina": {
@@ -556,8 +562,9 @@
         "day_change": 0.85,
         "tir_usd": 12.8,
         "parity": 68.4,
+        "maturity_date": "09/07/2030",
         "score": 88.0,
-        "thesis": "El bono soberano de referencia con mayor liquidez internacional y protección de jurisdicción extranjera."
+        "thesis": "El bono soberano de referencia con mayor liquidez internacional y protección de jurisdicción extranjera. Vencimiento final: 9 de Julio de 2030 (pago semestral Ene/Jul)."
       },
       {
         "ticker": "AL30",
@@ -567,8 +574,9 @@
         "day_change": 0.95,
         "tir_usd": 14.1,
         "parity": 64.2,
+        "maturity_date": "09/07/2030",
         "score": 86.5,
-        "thesis": "El instrumento más transado para operar Dólar MEP. Rinde más del 14% anual con amortizaciones de capital a partir de este año."
+        "thesis": "El instrumento más transado para operar Dólar MEP. Rinde más del 14% anual. Vence el 9 de Julio de 2030 con amortización en 12 cuotas semestrales."
       },
       {
         "ticker": "GD35",
@@ -578,8 +586,9 @@
         "day_change": 0.6,
         "tir_usd": 13.5,
         "parity": 58.1,
+        "maturity_date": "09/07/2035",
         "score": 84.0,
-        "thesis": "Mayor plazo y potencial de subida (*convexidad*) si el riesgo país continúa descendiendo hacia los 500 puntos."
+        "thesis": "Mayor plazo y potencial de subida (*convexidad*) si el riesgo país continúa descendiendo. Vence el 9 de Julio de 2035."
       }
     ]
   }
