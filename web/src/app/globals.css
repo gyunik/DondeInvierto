@@ -19,3 +19,31 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom Stitch Enhancements */
+.radial-glow {
+  background: radial-gradient(circle at 50% 25%, rgba(0, 245, 160, 0.08) 0%, rgba(5, 9, 17, 0) 70%);
+}
+.card-glass {
+  background: linear-gradient(180deg, rgba(14, 25, 44, 0.75) 0%, rgba(8, 15, 27, 0.9) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.card-glass:hover {
+  border-color: rgba(0, 245, 160, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 245, 160, 0.15);
+}
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.15); }
+}
+.pulse-dot {
+  animation: subtle-pulse 2s infinite ease-in-out;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

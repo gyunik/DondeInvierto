@@ -8,8 +8,6 @@ import {
   Building2,
   Search,
   Check,
-  ArrowUpRight,
-  ArrowDownRight,
   SlidersHorizontal,
   CircleDollarSign,
   Zap,
@@ -143,190 +141,224 @@ export default function HomePage() {
   const currPrefix = currency === "ARS" ? "$" : "u$s ";
 
   return (
-    <div className="min-h-screen bg-[#051424] text-[#d4e4fa] font-sans antialiased selection:bg-[#4edea3] selection:text-[#002113]">
+    <div className="min-h-screen bg-[#050911] text-slate-100 font-sans antialiased selection:bg-[#00F5A0] selection:text-black overflow-x-hidden">
       {/* ========================================================
-          1. HEADER FIJO CON TICKER TAPE (ESTILO GOOGLE STITCH)
+          1. HEADER FIJO CON TICKER TAPE (DISEÑO STITCH OPTIMIZADO)
       ======================================================== */}
-      <header className="fixed top-0 w-full z-50 bg-[#010f1f]/90 backdrop-blur-xl border-b border-[#1F2937] shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
-        <div className="flex flex-col">
-          {/* Fila Superior: Logo, Menú, CTA */}
-          <div className="h-16 max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <a href="#" className="flex items-center gap-3 group">
-                <div className="w-9 h-9 rounded-lg bg-[#122131] flex items-center justify-center text-[#4edea3] group-hover:bg-[#1E293B] transition-colors border border-[#1F2937]">
-                  <Activity className="w-5 h-5 stroke-[2.5]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-base font-bold text-[#F8FAFC] tracking-tight leading-none group-hover:text-[#4edea3] transition-colors">
-                    DONDE INVIERTO
-                  </span>
-                  <span className="text-xs text-[#64748B] mt-0.5 leading-none font-medium">
-                    Terminal Quant
-                  </span>
-                </div>
-              </a>
-              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[rgba(16,185,129,0.12)] border border-[rgba(16,185,129,0.25)]">
-                <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
-                <span className="text-[11px] font-bold text-[#4edea3] uppercase tracking-wider">
-                  RADAR EN VIVO
+      <header className="w-full border-b border-[#162338]/80 bg-[#060B14]/90 backdrop-blur-md sticky top-0 z-50">
+        {/* Top Navigation Bar */}
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <a className="flex items-center gap-3 group" href="#" title="DONDE INVIERTO - Inicio">
+              {/* Upward Trend FinTech Logo */}
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-900/40 border border-emerald-500/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.25)] group-hover:border-[#00F5A0] transition-colors">
+                <svg className="w-6 h-6 text-[#00F5A0]" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                  <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-base font-extrabold tracking-wider text-white group-hover:text-[#00F5A0] transition-colors">
+                  DONDE INVIERTO
+                </span>
+                <span className="text-[11px] font-mono font-medium tracking-widest uppercase text-slate-400">
+                  Terminal Quant
                 </span>
               </div>
-            </div>
-
-            <nav className="hidden lg:flex items-center gap-1">
-              <a
-                href="#radar-oportunidades"
-                className="px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-[#1c2b3c] text-[#4edea3] transition-all"
-              >
-                Top Oportunidades
-              </a>
-              <a
-                href="#simulador-cartera"
-                className="px-3.5 py-1.5 text-sm font-medium rounded-lg text-[#bbcabf] hover:bg-[#1E293B] hover:text-[#d4e4fa] transition-all"
-              >
-                Simulador
-              </a>
-              <a
-                href="#planes-precios"
-                className="px-3.5 py-1.5 text-sm font-medium rounded-lg text-[#bbcabf] hover:bg-[#1E293B] hover:text-[#d4e4fa] transition-all"
-              >
-                Planes
-              </a>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <a
-                href="#planes-precios"
-                className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-[#4edea3] text-[#003824] font-bold text-sm hover:shadow-[0_0_16px_rgba(16,185,129,0.4)] transition-all active:scale-95"
-              >
-                Suscribirse Pro
-              </a>
-              <div className="w-8 h-8 rounded-full bg-[#4edea3] flex items-center justify-center text-[#003824] shadow-inner font-bold text-xs">
-                <User className="w-4 h-4 stroke-[2.5]" />
-              </div>
+            </a>
+            {/* Live Pulse Radar Badge */}
+            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#0E202B] border border-emerald-500/30 text-[11px] font-semibold text-[#00F5A0] tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-[#00F5A0] pulse-dot"></span>
+              <span>RADAR EN VIVO</span>
             </div>
           </div>
 
-          {/* Fila Inferior: Ticker Tape de Mercado */}
-          <div className="h-11 w-full bg-[#0d1c2d]/95 border-t border-[#1F2937]/60 overflow-x-auto overflow-y-hidden">
-            <div className="max-w-[1280px] h-full mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-6 whitespace-nowrap min-w-max text-xs font-mono text-[#64748B]">
-              <div className="flex items-center gap-2">
-                <span className="uppercase text-[#64748B] font-sans font-medium">S&P 500</span>
-                <span className="text-[#F8FAFC] font-semibold">{market["^GSPC"].price.toLocaleString("en-US")}</span>
-                <span className="text-[#10B981] flex items-center gap-0.5 font-bold">
-                  <ArrowUpRight className="w-3.5 h-3.5" />+{market["^GSPC"].change}%
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="uppercase text-[#64748B] font-sans font-medium">NASDAQ 100</span>
-                <span className="text-[#F8FAFC] font-semibold">{market["^IXIC"].price.toLocaleString("en-US")}</span>
-                <span className="text-[#10B981] flex items-center gap-0.5 font-bold">
-                  <ArrowUpRight className="w-3.5 h-3.5" />+{market["^IXIC"].change}%
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="uppercase text-[#64748B] font-sans font-medium">S&P MERVAL</span>
-                <span className="text-[#F8FAFC] font-semibold">{market["^MERVAL"].price.toLocaleString("es-AR")}</span>
-                <span className="text-[#10B981] flex items-center gap-0.5 font-bold">
-                  <ArrowUpRight className="w-3.5 h-3.5" />+{market["^MERVAL"].change}%
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="uppercase text-[#64748B] font-sans font-medium">DÓLAR CCL</span>
-                <span className="text-[#F8FAFC] font-semibold">${market["CCL"].price.toFixed(2)}</span>
-                <span className="text-[#10B981] flex items-center gap-0.5 font-bold">
-                  <ArrowUpRight className="w-3.5 h-3.5" />+{market["CCL"].change}%
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="uppercase text-[#64748B] font-sans font-medium">UST 10Y</span>
-                <span className="text-[#F8FAFC] font-semibold">{market["^TNX"].price}%</span>
-                <span className="text-[#64748B] flex items-center gap-0.5">0.00 bps</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="uppercase text-[#64748B] font-sans font-medium">VIX</span>
-                <span className="text-[#F8FAFC] font-semibold">{market["^VIX"].price}</span>
-                <span className="text-[#EF4444] flex items-center gap-0.5 font-bold">
-                  <ArrowDownRight className="w-3.5 h-3.5" />{market["^VIX"].change}%
-                </span>
-              </div>
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
+            <a className="px-4 py-2 rounded-lg text-sm font-medium text-[#00F5A0] bg-emerald-500/10 border border-emerald-500/20 transition-all" href="#radar-oportunidades">
+              Top Oportunidades
+            </a>
+            <a className="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all" href="#simulador-cartera">
+              Simulador
+            </a>
+            <a className="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all" href="#planes-precios">
+              Planes
+            </a>
+          </nav>
+
+          {/* Right Action & Profile Button */}
+          <div className="flex items-center space-x-3">
+            <a
+              className="px-4 py-2 text-xs md:text-sm font-bold bg-[#00F5A0] hover:bg-[#00d68b] text-[#050911] rounded-lg shadow-[0_0_20px_rgba(0,245,160,0.3)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              href="#planes-precios"
+            >
+              Suscribirse Pro
+            </a>
+            <button
+              aria-label="Perfil de usuario"
+              className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 hover:border-slate-500 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+              type="button"
+            >
+              <User className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Ticker Stream Bar */}
+        <div className="w-full border-t border-[#131E30] bg-[#03060C]/90 px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto no-scrollbar">
+          <div className="flex items-center justify-between min-w-[880px] gap-6 text-[12px] font-mono">
+            <div className="flex items-center gap-2 border-b-2 border-[#00F5A0] pb-0.5">
+              <span className="text-slate-100 font-bold tracking-wide">S&P 500</span>
+              <span className="text-white font-bold">{market["^GSPC"].price.toLocaleString("en-US")}</span>
+              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["^GSPC"].change}%</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-200 font-semibold tracking-wide">NASDAQ 100</span>
+              <span className="text-white font-bold">{market["^IXIC"].price.toLocaleString("en-US")}</span>
+              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["^IXIC"].change}%</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-200 font-semibold tracking-wide">S&P MERVAL</span>
+              <span className="text-white font-bold">{market["^MERVAL"].price.toLocaleString("es-AR")}</span>
+              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["^MERVAL"].change}%</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-200 font-semibold tracking-wide">DÓLAR CCL</span>
+              <span className="text-white font-bold">${market["CCL"].price.toFixed(2)}</span>
+              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["CCL"].change}%</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-200 font-semibold tracking-wide">UST 10Y</span>
+              <span className="text-white font-bold">{market["^TNX"].price}%</span>
+              <span className="text-slate-400 font-semibold">0.00 bps</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-200 font-semibold tracking-wide">VIX</span>
+              <span className="text-white font-bold">{market["^VIX"].price}</span>
+              <span className="text-rose-400 font-semibold flex items-center">↘ {market["^VIX"].change}%</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* ========================================================
-          2. HERO SECTION CON INTRO & LIVE METRICS
+          2. HERO SECTION CON INTRO & LIVE METRICS (STITCH REDESIGN)
       ======================================================== */}
-      <main className="w-full pt-28">
-        <section className="relative w-full overflow-hidden bg-[#010f1f] py-16 sm:py-20 border-b border-[#1F2937]">
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[720px] h-[340px] bg-[#4edea3]/10 rounded-full blur-[110px] pointer-events-none"></div>
-
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center relative z-10">
-            {/* Badge Overline */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1c2b3c] border border-[#273647] shadow-sm mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#4edea3] animate-ping"></span>
-              <Globe className="w-3.5 h-3.5 text-[#4edea3]" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#d4e4fa]">
-                Wall Street, CEDEARs, Obligaciones Negociables y Merval
-              </span>
+      <main className="w-full">
+        <section className="w-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 py-12 lg:py-16 radial-glow relative border-b border-[#162338]/80">
+          <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center my-auto">
+            {/* Market Scope Capsule Pill */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0D182A]/90 border border-slate-700/60 shadow-lg text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-slate-300 mb-6">
+              <Globe className="w-3.5 h-3.5 text-[#00F5A0]" />
+              <span>WALL STREET, CEDEARS, OBLIGACIONES NEGOCIABLES Y MERVAL</span>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#F8FAFC] tracking-tight max-w-4xl mx-auto leading-tight mb-4">
-              ¿En qué conviene invertir hoy? <br className="hidden sm:inline" />
-              <span className="text-[#4edea3]">Decisiones con datos reales.</span>
+            {/* Hero Heading */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.12]">
+              ¿En qué conviene invertir hoy? <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5A0] via-emerald-300 to-teal-400 drop-shadow-[0_4px_25px_rgba(0,245,160,0.25)]">
+                Decisiones con datos reales.
+              </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-[#64748B] max-w-2xl mx-auto mb-8 leading-relaxed">
-              Monitoreamos diariamente los mejores{" "}
-              <strong className="text-[#d4e4fa] font-semibold">CEDEARs de Wall Street</strong> (con precio en pesos y
-              dividendos), las{" "}
-              <strong className="text-[#d4e4fa] font-semibold">Obligaciones Negociables (ONs en dólares)</strong> más
-              rentables y las oportunidades del{" "}
-              <strong className="text-[#d4e4fa] font-semibold">Merval y Bonos soberanos</strong>.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="#radar-oportunidades"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4edea3] text-[#003824] font-bold text-sm shadow-md hover:scale-[1.02] transition-transform active:scale-95"
-              >
-                <TrendingUp className="w-4 h-4 stroke-[2.5]" />
-                Ver Rankings de Hoy
-              </a>
-              <a
-                href="#simulador-cartera"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#122131] border border-[#1F2937] text-[#F8FAFC] font-semibold text-sm hover:bg-[#1E293B] shadow-sm transition-colors"
-              >
-                <SlidersHorizontal className="w-4 h-4 text-[#4edea3]" />
-                Simular mi Cartera
-              </a>
+            {/* Detailed Description Box */}
+            <div className="mt-7 max-w-3xl px-2">
+              <p className="text-base sm:text-lg md:text-xl text-slate-100 font-normal leading-relaxed tracking-wide">
+                Monitoreamos diariamente los mejores{" "}
+                <strong className="text-white font-bold underline decoration-[#00F5A0]/50 underline-offset-4">
+                  CEDEARs de Wall Street
+                </strong>{" "}
+                (con precio en pesos y dividendos), las{" "}
+                <strong className="text-white font-bold underline decoration-[#00F5A0]/50 underline-offset-4">
+                  Obligaciones Negociables (ONs en dólares)
+                </strong>{" "}
+                más rentables y las oportunidades del{" "}
+                <strong className="text-white font-bold underline decoration-[#00F5A0]/50 underline-offset-4">
+                  Merval y Bonos soberanos
+                </strong>.
+              </p>
             </div>
 
-            {/* Live Metric Chips */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-3xl mt-12 pt-6 border-t border-[#1F2937]/60">
-              <div className="bg-[#111827] border border-[#1F2937] p-3.5 rounded-xl flex flex-col items-center shadow-sm">
-                <span className="text-[11px] font-mono text-[#64748B] uppercase">Dólar CCL Hoy</span>
-                <span className="text-base font-bold font-mono text-[#F8FAFC] mt-1">${ccl_dollar.toFixed(2)} ARS</span>
-                <span className="text-xs font-mono text-[#10B981] mt-0.5">+{market["CCL"].change}%</span>
+            {/* Action Buttons */}
+            <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+              <a
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm sm:text-base font-bold text-[#050911] bg-[#00F5A0] hover:bg-[#02e093] rounded-xl shadow-[0_0_25px_rgba(0,245,160,0.4)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                href="#radar-oportunidades"
+              >
+                <TrendingUp className="w-4 h-4 stroke-[2.5]" />
+                <span>Ver Rankings de Hoy</span>
+              </a>
+              <a
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm sm:text-base font-semibold text-slate-200 bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 hover:border-slate-500 rounded-xl backdrop-blur-md transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                href="#simulador-cartera"
+              >
+                <SlidersHorizontal className="w-4 h-4 text-[#00F5A0]" />
+                <span>Simular mi Cartera</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Live Market Metric Grid */}
+          <div className="w-full max-w-7xl mx-auto mt-12 mb-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+              {/* Card 1: Dólar CCL */}
+              <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
+                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
+                  <span>DÓLAR CCL HOY</span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                    ${ccl_dollar.toFixed(2)} <span className="text-xs text-slate-400 font-normal">ARS</span>
+                  </span>
+                  <span className="text-xs font-mono font-semibold text-[#00F5A0]">▲ +{market["CCL"].change}%</span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-2 font-mono">Brecha cambiaria: 18.2%</div>
               </div>
-              <div className="bg-[#111827] border border-[#1F2937] p-3.5 rounded-xl flex flex-col items-center shadow-sm">
-                <span className="text-[11px] font-mono text-[#64748B] uppercase">S&P Merval</span>
-                <span className="text-base font-bold font-mono text-[#F8FAFC] mt-1">{market["^MERVAL"].price.toLocaleString("es-AR")}</span>
-                <span className="text-xs font-mono text-[#10B981] mt-0.5">+{market["^MERVAL"].change}%</span>
+
+              {/* Card 2: S&P Merval */}
+              <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
+                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
+                  <span>S&P MERVAL</span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                    {market["^MERVAL"].price.toLocaleString("es-AR")}
+                  </span>
+                  <span className="text-xs font-mono font-semibold text-[#00F5A0]">▲ +{market["^MERVAL"].change}%</span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-2 font-mono">Volumen: $48.2B ARS</div>
               </div>
-              <div className="bg-[#111827] border border-[#1F2937] p-3.5 rounded-xl flex flex-col items-center shadow-sm">
-                <span className="text-[11px] font-mono text-[#64748B] uppercase">Bono USA 10Y</span>
-                <span className="text-base font-bold font-mono text-[#F8FAFC] mt-1">{market["^TNX"].price}% Yield</span>
-                <span className="text-xs font-mono text-[#64748B] mt-0.5">0.00 bps</span>
+
+              {/* Card 3: Bono USA 10Y */}
+              <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
+                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
+                  <span>BONO USA 10Y</span>
+                  <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                    {market["^TNX"].price}% <span className="text-xs text-slate-400 font-normal">Yield</span>
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">0.00 bps</span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-2 font-mono">Tasa de Referencia FED</div>
               </div>
-              <div className="bg-[#111827] border border-[#1F2937] p-3.5 rounded-xl flex flex-col items-center shadow-sm">
-                <span className="text-[11px] font-mono text-[#64748B] uppercase">VIX Volatilidad</span>
-                <span className="text-base font-bold font-mono text-[#F8FAFC] mt-1">{market["^VIX"].price} pts</span>
-                <span className="text-xs font-mono text-[#EF4444] mt-0.5">{market["^VIX"].change}%</span>
+
+              {/* Card 4: VIX Volatilidad */}
+              <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
+                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
+                  <span>VIX VOLATILIDAD</span>
+                  <span className="w-2 h-2 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.6)]"></span>
+                </div>
+                <div className="flex items-baseline justify-between mt-1">
+                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                    {market["^VIX"].price} <span className="text-xs text-slate-400 font-normal">pts</span>
+                  </span>
+                  <span className="text-xs font-mono font-semibold text-rose-400">▼ {market["^VIX"].change}%</span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-2 font-mono">Régimen: Baja Aversión</div>
               </div>
             </div>
           </div>

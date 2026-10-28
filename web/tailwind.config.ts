@@ -11,6 +11,14 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        brand: {
+          emerald: '#00F5A0',
+          neon: '#10B981',
+          dark: '#050911',
+          card: '#0A121F',
+          border: '#162338',
+          muted: '#94A3B8'
+        }
       },
     },
   },
