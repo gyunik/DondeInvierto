@@ -33,6 +33,15 @@ body {
   border-color: rgba(0, 245, 160, 0.35);
   box-shadow: 0 10px 30px -10px rgba(0, 245, 160, 0.15);
 }
+.instrument-card {
+  background: linear-gradient(180deg, #0d1726 0%, #08101d 100%);
+  border: 1px solid #1e314b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.instrument-card:hover {
+  border-color: #00F5A0;
+  box-shadow: 0 6px 25px rgba(0, 245, 160, 0.15);
+}
 @keyframes subtle-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(1.15); }

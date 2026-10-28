@@ -365,99 +365,111 @@ export default function HomePage() {
         </section>
 
         {/* ========================================================
-            3. RADAR DIARIO DE OPORTUNIDADES (TABS, FILTROS, CARDS)
+            3. RADAR DIARIO DE OPORTUNIDADES (ESTILO STITCH IMAGEN 2)
         ======================================================== */}
-        <section className="w-full py-16 bg-[#051424]" id="radar-oportunidades">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-6">
-            {/* Header del Radar con Buscador */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5 text-[#4edea3] text-xs font-bold uppercase tracking-wider mb-1">
-                  <Activity className="w-3.5 h-3.5" />
-                  Selección Cuantitativa Diaria
+        <section className="w-full max-w-7xl mx-auto mb-16 scroll-mt-24 px-4 sm:px-6 lg:px-8" id="radar-section">
+          {/* Header del Radar y Controles */}
+          <div className="bg-[#09111e]/90 border border-slate-700/80 rounded-3xl p-5 sm:p-7 shadow-2xl backdrop-blur-xl">
+            {/* Fila Superior: Subtítulo + Título + Buscador */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-6 border-b border-slate-800">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-brand-emerald tracking-wider uppercase mb-2">
+                  <Activity className="w-4 h-4 text-brand-emerald" />
+                  <span>SELECCIÓN CUANTITATIVA DIARIA</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#F8FAFC] tracking-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
                   Radar Diario de Oportunidades
                 </h2>
-                <p className="text-xs font-mono text-[#64748B] mt-1">
-                  Dólar CCL de referencia:{" "}
-                  <span className="text-[#F8FAFC] font-bold">${ccl_dollar} ARS</span> | Actualizado: {last_updated}
-                </p>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs sm:text-sm font-mono">
+                  <span className="text-slate-300 font-medium">
+                    Dólar CCL de referencia:{" "}
+                    <strong className="text-white font-bold bg-[#142338] px-2 py-0.5 rounded border border-slate-600/60">
+                      ${ccl_dollar} ARS
+                    </strong>
+                  </span>
+                  <span className="text-slate-500 hidden sm:inline">|</span>
+                  <span className="text-slate-300">
+                    Actualizado: <span className="text-white font-semibold">{last_updated}</span>{" "}
+                    <span className="text-slate-400">(Hora Buenos Aires, UTC-3)</span>
+                  </span>
+                </div>
               </div>
 
-              {/* Buscador */}
-              <div className="w-full lg:w-80 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#64748B]">
-                  <Search className="w-4 h-4" />
+              {/* Buscador de Alta Visibilidad */}
+              <div className="w-full lg:w-96">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <Search className="h-4 w-4 text-emerald-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Buscar ticker, empresa, ON..."
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#0e1b2f] border border-slate-600 focus:border-brand-emerald focus:ring-1 focus:ring-brand-emerald rounded-xl text-white text-sm placeholder-slate-400 transition-all font-sans font-medium"
+                  />
                 </div>
-                <input
-                  type="text"
-                  placeholder="Buscar ticker, empresa, ON..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-[#122131] border border-[#1F2937] rounded-xl text-[#d4e4fa] text-sm placeholder:text-[#64748B] focus:outline-none focus:border-[#4edea3]/60 focus:bg-[#1E293B] shadow-sm transition-all"
-                />
               </div>
             </div>
 
-            {/* Pestañas Principales & Sub-pestañas */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#0d1c2d] p-2 rounded-xl border border-[#1F2937]">
-              <div className="flex flex-wrap items-center gap-1.5">
+            {/* Selector de Categorías Principales y Sub-vistas */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setActiveTab("cedears")}
-                  className={`px-3.5 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5 transition-all ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     activeTab === "cedears"
-                      ? "bg-[#4edea3] text-[#003824] shadow-sm"
-                      : "text-[#bbcabf] hover:bg-[#1E293B] hover:text-[#d4e4fa]"
+                      ? "bg-brand-emerald text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
+                      : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500 font-semibold"
                   }`}
                 >
                   <Globe className="w-4 h-4" />
-                  Wall Street & CEDEARs
+                  <span>Wall Street &amp; CEDEARs</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("ons")}
-                  className={`px-3.5 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5 transition-all ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     activeTab === "ons"
-                      ? "bg-[#4edea3] text-[#003824] shadow-sm"
-                      : "text-[#bbcabf] hover:bg-[#1E293B] hover:text-[#d4e4fa]"
+                      ? "bg-brand-emerald text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
+                      : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500 font-semibold"
                   }`}
                 >
                   <Building2 className="w-4 h-4" />
-                  ONs en Dólares ({filteredOns.length})
+                  <span>ONs en Dólares ({filteredOns.length})</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("argentina")}
-                  className={`px-3.5 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1.5 transition-all ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     activeTab === "argentina"
-                      ? "bg-[#4edea3] text-[#003824] shadow-sm"
-                      : "text-[#bbcabf] hover:bg-[#1E293B] hover:text-[#d4e4fa]"
+                      ? "bg-brand-emerald text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
+                      : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500 font-semibold"
                   }`}
                 >
                   <Shield className="w-4 h-4" />
-                  Mercado Local (Merval & Bonos)
+                  <span>Mercado Local (Merval &amp; Bonos)</span>
                 </button>
               </div>
 
-              {/* Sub-selector de CEDEARs */}
+              {/* Sub-selector de vista */}
               {activeTab === "cedears" && (
-                <div className="flex items-center gap-1 px-2 py-1 bg-[#122131] rounded-lg self-start sm:self-center border border-[#1F2937]">
-                  <span className="text-xs font-mono text-[#64748B] mr-1">Ver:</span>
+                <div className="flex items-center gap-1.5 bg-[#0e1b2f] p-1 rounded-xl border border-slate-700 self-start sm:self-auto text-xs font-medium">
+                  <span className="text-slate-400 px-2 font-mono">Ver:</span>
                   <button
                     onClick={() => setCedearSubTab("stocks")}
-                    className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
                       cedearSubTab === "stocks"
-                        ? "bg-[#2c3a4c] text-[#F8FAFC]"
-                        : "text-[#64748B] hover:text-[#d4e4fa]"
+                        ? "bg-emerald-500/20 text-brand-emerald font-bold border border-emerald-500/30"
+                        : "text-slate-300 hover:text-white"
                     }`}
                   >
                     Acciones CEDEAR ({filteredStocks.length})
                   </button>
                   <button
                     onClick={() => setCedearSubTab("etfs")}
-                    className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
                       cedearSubTab === "etfs"
-                        ? "bg-[#2c3a4c] text-[#F8FAFC]"
-                        : "text-[#64748B] hover:text-[#d4e4fa]"
+                        ? "bg-emerald-500/20 text-brand-emerald font-bold border border-emerald-500/30"
+                        : "text-slate-300 hover:text-white"
                     }`}
                   >
                     Top ETFs ({filteredEtfs.length})
@@ -465,26 +477,25 @@ export default function HomePage() {
                 </div>
               )}
 
-              {/* Sub-selector de Mercado Local */}
               {activeTab === "argentina" && (
-                <div className="flex items-center gap-1 px-2 py-1 bg-[#122131] rounded-lg self-start sm:self-center border border-[#1F2937]">
-                  <span className="text-xs font-mono text-[#64748B] mr-1">Ver:</span>
+                <div className="flex items-center gap-1.5 bg-[#0e1b2f] p-1 rounded-xl border border-slate-700 self-start sm:self-auto text-xs font-medium">
+                  <span className="text-slate-400 px-2 font-mono">Ver:</span>
                   <button
                     onClick={() => setArgSubTab("merval")}
-                    className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
                       argSubTab === "merval"
-                        ? "bg-[#2c3a4c] text-[#F8FAFC]"
-                        : "text-[#64748B] hover:text-[#d4e4fa]"
+                        ? "bg-emerald-500/20 text-brand-emerald font-bold border border-emerald-500/30"
+                        : "text-slate-300 hover:text-white"
                     }`}
                   >
                     Acciones Merval ({filteredMerval.length})
                   </button>
                   <button
                     onClick={() => setArgSubTab("bonds")}
-                    className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
                       argSubTab === "bonds"
-                        ? "bg-[#2c3a4c] text-[#F8FAFC]"
-                        : "text-[#64748B] hover:text-[#d4e4fa]"
+                        ? "bg-emerald-500/20 text-brand-emerald font-bold border border-emerald-500/30"
+                        : "text-slate-300 hover:text-white"
                     }`}
                   >
                     Bonos Soberanos ({filteredSovereign.length})
@@ -493,97 +504,152 @@ export default function HomePage() {
               )}
             </div>
 
-            {/* ---------------- PESTAÑA: ACCIONES USA & CEDEARS ---------------- */}
+            {/* Fila de Filtros de Dividendos para CEDEARs */}
             {activeTab === "cedears" && cedearSubTab === "stocks" && (
-              <div className="flex flex-col gap-4">
-                {/* Filtro de Dividendos para Acciones */}
-                <div className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl bg-[#0d1c2d] border border-[#1F2937]">
-                  <span className="text-xs text-[#64748B] font-semibold mr-1">Filtrar Dividendos:</span>
+              <div className="flex flex-wrap items-center gap-2.5 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
+                <span className="text-slate-300 font-semibold mr-1">Filtrar Dividendos:</span>
+                <button
+                  onClick={() => setStockDivFilter("all")}
+                  className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                    stockDivFilter === "all"
+                      ? "bg-emerald-500/20 text-brand-emerald border border-brand-emerald font-bold shadow-sm"
+                      : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
+                  }`}
+                >
+                  Todas ({stocks.length})
+                </button>
+                <button
+                  onClick={() => setStockDivFilter("dividend")}
+                  className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    stockDivFilter === "dividend"
+                      ? "bg-emerald-500/20 text-brand-emerald border border-brand-emerald font-bold shadow-sm"
+                      : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
+                  }`}
+                >
+                  <CircleDollarSign className="w-3.5 h-3.5" />
+                  <span>Con Dividendos en USD ({stocks.filter((s) => s.pays_dividend).length})</span>
+                </button>
+                <button
+                  onClick={() => setStockDivFilter("growth")}
+                  className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                    stockDivFilter === "growth"
+                      ? "bg-emerald-500/20 text-brand-emerald border border-brand-emerald font-bold shadow-sm"
+                      : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
+                  }`}
+                >
+                  🚀 Sin Dividendos - Top 10 más rentables ({stocks.filter((s) => !s.pays_dividend).length})
+                </button>
+              </div>
+            )}
+
+            {/* Fila de Filtros para ETFs */}
+            {activeTab === "cedears" && cedearSubTab === "etfs" && (
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-slate-300 font-semibold mr-1">Dividendos:</span>
                   <button
-                    onClick={() => setStockDivFilter("all")}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                      stockDivFilter === "all"
-                        ? "bg-[#4edea3] text-[#003824]"
-                        : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
+                    onClick={() => setEtfDivFilter("all")}
+                    className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                      etfDivFilter === "all"
+                        ? "bg-emerald-500/20 text-brand-emerald border border-brand-emerald font-bold shadow-sm"
+                        : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
                     }`}
                   >
-                    Todas ({stocks.length})
+                    Todos ({etfs.length})
                   </button>
                   <button
-                    onClick={() => setStockDivFilter("dividend")}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                      stockDivFilter === "dividend"
-                        ? "bg-[#4edea3] text-[#003824]"
-                        : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
+                    onClick={() => setEtfDivFilter("dividend")}
+                    className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                      etfDivFilter === "dividend"
+                        ? "bg-emerald-500/20 text-brand-emerald border border-brand-emerald font-bold shadow-sm"
+                        : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
                     }`}
                   >
                     <CircleDollarSign className="w-3.5 h-3.5" />
-                    <span>💵 Con Dividendos en USD ({stocks.filter((s) => s.pays_dividend).length})</span>
+                    <span>Con Dividendos ({etfs.filter((e) => e.pays_dividend).length})</span>
                   </button>
                   <button
-                    onClick={() => setStockDivFilter("growth")}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                      stockDivFilter === "growth"
-                        ? "bg-[#4edea3] text-[#003824]"
-                        : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
+                    onClick={() => setEtfDivFilter("growth")}
+                    className={`px-3.5 py-1.5 rounded-lg transition-all ${
+                      etfDivFilter === "growth"
+                        ? "bg-emerald-500/20 text-brand-emerald border border-brand-emerald font-bold shadow-sm"
+                        : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
                     }`}
                   >
-                    🚀 Sin Dividendos - Top 10 más rentables ({stocks.filter((s) => !s.pays_dividend).length})
+                    🚀 Crecimiento ({etfs.filter((e) => !e.pays_dividend).length})
                   </button>
                 </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400 font-mono text-xs">Gestora:</span>
+                  <select
+                    value={etfManagerFilter}
+                    onChange={(e) => setEtfManagerFilter(e.target.value)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0e1b2f] border border-slate-700 text-white focus:outline-none focus:border-brand-emerald"
+                  >
+                    <option value="all">Todas las Gestoras</option>
+                    <option value="BlackRock (iShares)">BlackRock (iShares)</option>
+                    <option value="Vanguard">Vanguard</option>
+                    <option value="State Street (SPDR)">State Street (SPDR)</option>
+                    <option value="Invesco">Invesco</option>
+                    <option value="Charles Schwab">Charles Schwab</option>
+                    <option value="VanEck">VanEck</option>
+                    <option value="ARK Invest (Cathie Wood)">ARK Invest</option>
+                    <option value="Global X / Mirae Asset">Global X</option>
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
 
-                {/* Lista de Tarjetas de Acciones (12 Columnas Desktop) */}
-                <div className="flex flex-col gap-3">
-                  {filteredStocks.map((stock, idx) => {
-                    const isPositive = stock.day_change >= 0;
-                    return (
-                      <article
-                        key={stock.ticker}
-                        className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 shadow-sm hover:bg-[#1E293B]/60 transition-all flex flex-col gap-3"
-                      >
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                          {/* Col 1-4: Identidad y Dividendos */}
-                          <div className="md:col-span-4 flex items-center gap-3">
-                            <span className="text-lg font-mono text-[#64748B] font-bold min-w-8">
-                              #{idx + 1}
-                            </span>
-                            <div className="flex flex-col min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-mono text-base font-bold text-[#F8FAFC]">
-                                  {stock.ticker}
-                                </span>
-                                <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#64748B]">
-                                  {stock.sector}
-                                </span>
-                                <span className="px-2 py-0.5 rounded bg-[rgba(16,185,129,0.12)] text-[#10B981] text-[11px] font-bold uppercase">
-                                  {stock.recommendation}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-2 mt-1">
-                                <span className="text-xs text-[#64748B] truncate">{stock.name}</span>
-                                {stock.pays_dividend ? (
-                                  <span className="inline-flex items-center gap-1 text-[#4edea3] text-xs font-mono font-medium">
-                                    <CircleDollarSign className="w-3.5 h-3.5" /> Div. {stock.dividend_yield}% anual
-                                  </span>
-                                ) : (
-                                  <span className="text-xs font-mono text-[#64748B]">
-                                    Sin dividendo (Reinvierte)
-                                  </span>
-                                )}
-                              </div>
+          {/* LISTA DE TARJETAS (MAXIMUM LEGIBILITY & CONTRAST - STITCH IMAGEN 2) */}
+          <div className="mt-6 space-y-4">
+            {/* 1. ACCIONES CEDEAR */}
+            {activeTab === "cedears" && cedearSubTab === "stocks" && (
+              <>
+                {filteredStocks.map((stock, idx) => {
+                  const isPositive = stock.day_change >= 0;
+                  return (
+                    <div key={stock.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        {/* Izquierda: Rank + Ticker + Empresa + Subtítulo */}
+                        <div className="flex items-start gap-4">
+                          <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono tracking-tight pt-0.5">
+                            #{idx + 1}
+                          </span>
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                              <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                                {stock.ticker}
+                              </span>
+                              <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                                {stock.sector}
+                              </span>
+                              <span className="px-2.5 py-1 rounded-md bg-emerald-500/20 border border-emerald-400 text-brand-emerald text-xs font-black tracking-wider uppercase shadow-[0_0_10px_rgba(0,245,160,0.25)]">
+                                {stock.recommendation}
+                              </span>
+                            </div>
+                            <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                              {stock.name}{" "}
+                              <span className="text-white font-medium">
+                                • {stock.pays_dividend ? `Div. ${stock.dividend_yield}% anual` : "Sin dividendo (Reinvierte)"}
+                              </span>
                             </div>
                           </div>
+                        </div>
 
-                          {/* Col 5-6: Precio USA */}
-                          <div className="md:col-span-2 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">PRECIO USA (USD)</span>
-                            <div className="flex items-baseline gap-1.5">
-                              <span className="text-base font-bold font-mono text-[#F8FAFC]">
+                        {/* Derecha: Grid de 4 Métricas Clave */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                          <div className="flex flex-col">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                              PRECIO USA (USD)
+                            </span>
+                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                              <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
                                 ${stock.price.toFixed(2)}
                               </span>
                               <span
-                                className={`text-xs font-mono font-bold ${
-                                  isPositive ? "text-[#10B981]" : "text-[#EF4444]"
+                                className={`text-xs sm:text-sm font-bold font-mono ${
+                                  isPositive ? "text-brand-emerald" : "text-rose-400"
                                 }`}
                               >
                                 {isPositive ? `+${stock.day_change}%` : `${stock.day_change}%`}
@@ -591,470 +657,484 @@ export default function HomePage() {
                             </div>
                           </div>
 
-                          {/* Col 7-8: CEDEAR en Pesos */}
-                          <div className="md:col-span-2 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">CEDEAR EN PESOS</span>
-                            <div className="flex items-baseline gap-1">
-                              <span className="text-base font-bold font-mono text-[#F8FAFC]">
-                                ${stock.cedear_price_ars.toLocaleString("es-AR")} ARS
+                          <div className="flex flex-col">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                              CEDEAR EN PESOS
+                            </span>
+                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                              <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                ${stock.cedear_price_ars.toLocaleString("es-AR")}
                               </span>
+                              <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
                             </div>
-                            <span className="text-[11px] font-mono text-[#64748B]">
+                            <span className="text-[11px] font-mono font-medium text-slate-300">
                               Ratio {stock.cedear_ratio}
                             </span>
                           </div>
 
-                          {/* Col 9-10: Potencial Analistas */}
-                          <div className="md:col-span-2 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">POTENCIAL ANALISTAS</span>
-                            <span className="text-sm font-mono text-[#F8FAFC]">
-                              {stock.target_price ? `$${stock.target_price.toFixed(2)}` : "N/D"}
+                          <div className="flex flex-col">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                              POTENCIAL ANALISTAS
                             </span>
-                            <span className="text-xs font-mono text-[#10B981] font-semibold">
+                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                              <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                {stock.target_price ? `$${stock.target_price.toFixed(2)}` : "N/D"}
+                              </span>
+                            </div>
+                            <span className="text-xs font-bold font-mono text-emerald-400">
                               +{stock.upside}% estimado
                             </span>
                           </div>
 
-                          {/* Col 11-12: Score Total */}
-                          <div className="md:col-span-2 flex items-center justify-end gap-3">
-                            <div className="flex flex-col items-end">
-                              <span className="text-[11px] font-mono text-[#64748B] uppercase">Score Total</span>
-                              <span className="text-lg font-mono text-[#4edea3] font-bold">
-                                {stock.score}{" "}
-                                <span className="text-[#64748B] text-xs font-normal">/100</span>
+                          <div className="flex flex-col sm:items-end justify-center">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                              SCORE TOTAL
+                            </span>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                                {stock.score}
                               </span>
-                            </div>
-                            <div className="w-9 h-9 rounded-full bg-[#122131] flex items-center justify-center text-[#4edea3] border border-[#1F2937]">
-                              <Zap className="w-4 h-4 stroke-[2.5]" />
+                              <span className="text-xs font-bold font-mono text-slate-300">/100</span>
+                              <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-brand-emerald">
+                                <Zap className="w-4 h-4 fill-current" />
+                              </div>
                             </div>
                           </div>
                         </div>
+                      </div>
 
-                        {/* Tesis Strip */}
-                        <div className="pt-2 bg-[#0d1c2d]/70 -mx-4 -mb-4 px-4 py-2 rounded-b-xl flex items-center gap-2 text-[#64748B] text-xs">
-                          <span className="text-[#4edea3] font-semibold uppercase text-[11px] font-mono shrink-0">
-                            Tesis:
-                          </span>
-                          <span className="truncate sm:whitespace-normal">{stock.thesis}</span>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              </div>
+                      {/* Tesis de Inversión */}
+                      <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
+                        <span className="text-xs sm:text-sm font-extrabold font-mono text-brand-emerald tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                          TESIS:
+                        </span>
+                        <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                          {stock.thesis}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
             )}
 
-            {/* ---------------- PESTAÑA: ETFS CON FILTRO DE GESTORA Y DIVIDENDOS ---------------- */}
+            {/* 2. TOP ETFS */}
             {activeTab === "cedears" && cedearSubTab === "etfs" && (
-              <div className="flex flex-col gap-4">
-                {/* Filtro doble para ETFs: Dividendos y Gestoras */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-2.5 rounded-xl bg-[#0d1c2d] border border-[#1F2937]">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-xs text-[#64748B] font-semibold mr-1">Dividendos:</span>
-                    <button
-                      onClick={() => setEtfDivFilter("all")}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                        etfDivFilter === "all"
-                          ? "bg-[#4edea3] text-[#003824]"
-                          : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
-                      }`}
-                    >
-                      Todos ({etfs.length})
-                    </button>
-                    <button
-                      onClick={() => setEtfDivFilter("dividend")}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                        etfDivFilter === "dividend"
-                          ? "bg-[#4edea3] text-[#003824]"
-                          : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
-                      }`}
-                    >
-                      <CircleDollarSign className="w-3.5 h-3.5" />
-                      <span>💵 Con Dividendos ({etfs.filter((e) => e.pays_dividend).length})</span>
-                    </button>
-                    <button
-                      onClick={() => setEtfDivFilter("growth")}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                        etfDivFilter === "growth"
-                          ? "bg-[#4edea3] text-[#003824]"
-                          : "bg-[#122131] text-[#bbcabf] hover:text-[#F8FAFC]"
-                      }`}
-                    >
-                      🚀 Sin Dividendos - Top 10 más rentables ({etfs.filter((e) => !e.pays_dividend).length})
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-[#64748B] font-semibold whitespace-nowrap">Gestora:</span>
-                    <select
-                      value={etfManagerFilter}
-                      onChange={(e) => setEtfManagerFilter(e.target.value)}
-                      className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#122131] border border-[#1F2937] text-[#d4e4fa] focus:outline-none focus:border-[#4edea3]"
-                    >
-                      <option value="all">Todas las Gestoras</option>
-                      <option value="BlackRock (iShares)">BlackRock (iShares)</option>
-                      <option value="Vanguard">Vanguard</option>
-                      <option value="State Street (SPDR)">State Street (SPDR)</option>
-                      <option value="Invesco">Invesco</option>
-                      <option value="Charles Schwab">Charles Schwab</option>
-                      <option value="VanEck">VanEck</option>
-                      <option value="ARK Invest (Cathie Wood)">ARK Invest</option>
-                      <option value="Global X / Mirae Asset">Global X</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Lista de Tarjetas de ETFs */}
-                <div className="flex flex-col gap-3">
-                  {filteredEtfs.map((etf, idx) => (
-                    <article
-                      key={etf.ticker}
-                      className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 shadow-sm hover:bg-[#1E293B]/60 transition-all flex flex-col gap-3"
-                    >
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <div className="md:col-span-4 flex items-center gap-3">
-                          <span className="text-lg font-mono text-[#64748B] font-bold min-w-8">
-                            #{idx + 1}
-                          </span>
-                          <div className="flex flex-col min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-base font-bold text-[#F8FAFC]">
-                                {etf.ticker}
-                              </span>
-                              <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#38BDF8] border border-[#38BDF8]/20">
-                                {etf.manager}
-                              </span>
-                              <span className="px-2 py-0.5 rounded bg-[#1c2b3c] text-[11px] font-mono text-[#64748B]">
-                                {etf.category}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-[#64748B] truncate">{etf.name}</span>
-                              {etf.pays_dividend ? (
-                                <span className="inline-flex items-center gap-1 text-[#4edea3] text-xs font-mono font-medium">
-                                  <CircleDollarSign className="w-3.5 h-3.5" /> Div. {etf.dividend_yield}% anual
-                                </span>
-                              ) : (
-                                <span className="text-xs font-mono text-[#64748B]">
-                                  Acumulación (0% dividendo)
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">PRECIO USA (USD)</span>
-                          <span className="text-base font-bold font-mono text-[#F8FAFC]">
-                            ${etf.price.toFixed(2)}
-                          </span>
-                          <span className="text-[11px] font-mono text-[#10B981] font-bold">
-                            +{etf.day_change}%
-                          </span>
-                        </div>
-
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">CEDEAR EN PESOS</span>
-                          <span className="text-base font-bold font-mono text-[#F8FAFC]">
-                            ${etf.cedear_price_ars.toLocaleString("es-AR")} ARS
-                          </span>
-                          <span className="text-[11px] font-mono text-[#64748B]">Ratio {etf.cedear_ratio}</span>
-                        </div>
-
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">RETORNO 1 AÑO</span>
-                          <span className="text-base font-bold font-mono text-[#10B981]">
-                            +{etf.return_1y}%
-                          </span>
-                          <span className="text-[11px] font-mono text-[#64748B]">Costo: {etf.expense_ratio}%</span>
-                        </div>
-
-                        <div className="md:col-span-2 flex items-center justify-end gap-3">
-                          <div className="flex flex-col items-end">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">Score Total</span>
-                            <span className="text-lg font-mono text-[#4edea3] font-bold">
-                              {etf.score}{" "}
-                              <span className="text-[#64748B] text-xs font-normal">/100</span>
+              <>
+                {filteredEtfs.map((etf, idx) => (
+                  <div key={etf.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                      <div className="flex items-start gap-4">
+                        <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono tracking-tight pt-0.5">
+                          #{idx + 1}
+                        </span>
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                              {etf.ticker}
+                            </span>
+                            <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                              {etf.manager}
+                            </span>
+                            <span className="px-2.5 py-1 rounded-md bg-[#162742] border border-slate-600 text-slate-300 text-xs font-semibold">
+                              {etf.category}
                             </span>
                           </div>
-                          <div className="w-9 h-9 rounded-full bg-[#122131] flex items-center justify-center text-[#4edea3] border border-[#1F2937]">
-                            <Zap className="w-4 h-4 stroke-[2.5]" />
+                          <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                            {etf.name}{" "}
+                            <span className="text-white font-medium">
+                              • {etf.pays_dividend ? `Div. ${etf.dividend_yield}% anual` : "Acumulación (0% dividendo)"}
+                            </span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="pt-2 bg-[#0d1c2d]/70 -mx-4 -mb-4 px-4 py-2 rounded-b-xl flex items-center gap-2 text-[#64748B] text-xs">
-                        <span className="text-[#4edea3] font-semibold uppercase text-[11px] font-mono shrink-0">
-                          Tesis:
-                        </span>
-                        <span className="truncate sm:whitespace-normal">{etf.thesis}</span>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                        <div className="flex flex-col">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            PRECIO USA (USD)
+                          </span>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                              ${etf.price.toFixed(2)}
+                            </span>
+                            <span className="text-xs sm:text-sm font-bold font-mono text-brand-emerald">
+                              +{etf.day_change}%
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            CEDEAR EN PESOS
+                          </span>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                              ${etf.cedear_price_ars.toLocaleString("es-AR")}
+                            </span>
+                            <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
+                          </div>
+                          <span className="text-[11px] font-mono font-medium text-slate-300">
+                            Ratio {etf.cedear_ratio}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            RETORNO 1 AÑO
+                          </span>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                              +{etf.return_1y}%
+                            </span>
+                          </div>
+                          <span className="text-xs font-bold font-mono text-slate-300">
+                            Costo: {etf.expense_ratio}%
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col sm:items-end justify-center">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            SCORE TOTAL
+                          </span>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                              {etf.score}
+                            </span>
+                            <span className="text-xs font-bold font-mono text-slate-300">/100</span>
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-brand-emerald">
+                              <Zap className="w-4 h-4 fill-current" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
+                    </div>
+
+                    <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
+                      <span className="text-xs sm:text-sm font-extrabold font-mono text-brand-emerald tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                        TESIS:
+                      </span>
+                      <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                        {etf.thesis}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
 
-            {/* ---------------- PESTAÑA: OBLIGACIONES NEGOCIABLES EN DÓLARES ---------------- */}
+            {/* 3. ONS EN DÓLARES */}
             {activeTab === "ons" && (
-              <div className="flex flex-col gap-4">
-                <div className="p-3.5 rounded-xl bg-[#0d1c2d] border border-[#1F2937] text-xs text-[#d4e4fa] flex items-center justify-between">
+              <>
+                <div className="p-4 rounded-2xl bg-[#0a1424] border border-cyan-500/30 text-xs sm:text-sm text-slate-200 flex items-center justify-between">
                   <span>
-                    💡 <b>Obligaciones Negociables (ONs):</b> Instrumentos corporativos de deuda en dólares emitidos por empresas de primera línea de Argentina. Pagan cupones en <b>dólares billete</b> y se operan tanto en pesos como en dólares MEP.
+                    💡 <strong className="text-white">Obligaciones Negociables (ONs):</strong> Deuda corporativa privada emitida por empresas líderes (YPF, Pampa, Pan American Energy, etc.). Pagan cupones periódicos en <strong className="text-brand-emerald">dólares billete (Dólar MEP/Cable)</strong> y se negocian tanto en Pesos como en Dólares.
                   </span>
                 </div>
 
-                <div className="flex flex-col gap-3">
-                  {filteredOns.map((on, idx) => (
-                    <article
-                      key={on.ticker}
-                      className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 shadow-sm hover:bg-[#1E293B]/60 transition-all flex flex-col gap-3"
-                    >
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <div className="md:col-span-3 flex items-center gap-3">
-                          <span className="text-lg font-mono text-[#64748B] font-bold min-w-8">
-                            #{idx + 1}
-                          </span>
-                          <div className="flex flex-col min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-base font-bold text-[#F8FAFC]">
-                                {on.ticker}
-                              </span>
-                              <span
-                                className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold border ${
-                                  on.law.includes("Nueva York")
-                                    ? "bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/20"
-                                    : "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
-                                }`}
-                              >
-                                {on.law}
-                              </span>
-                              <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#d4e4fa] border border-[#1F2937]">
-                                📅 Vence: <strong className="text-[#4edea3]">{on.maturity_date}</strong>
-                              </span>
-                            </div>
-                            <span className="text-xs text-[#64748B] mt-1 truncate">{on.name} — {on.issuer}</span>
-                          </div>
-                        </div>
-
-                        {/* Cotización Actual y Paridad */}
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">COTIZACIÓN & PARIDAD</span>
-                          <span className="text-base font-bold font-mono text-[#F8FAFC]">
-                            ${on.price_usd ? on.price_usd.toFixed(2) : "100.00"} USD
-                          </span>
-                          <div className="flex items-center gap-1.5 mt-0.5">
+                {filteredOns.map((on, idx) => (
+                  <div key={on.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                      <div className="flex items-start gap-4">
+                        <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono tracking-tight pt-0.5">
+                          #{idx + 1}
+                        </span>
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                              {on.ticker}
+                            </span>
                             <span
-                              className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${
-                                on.parity > 100
-                                  ? "bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/20"
-                                  : on.parity < 100
-                                  ? "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
-                                  : "bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20"
+                              className={`px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border ${
+                                on.law.includes("Nueva York")
+                                  ? "bg-[#132840] border-cyan-500/40 text-cyan-200"
+                                  : "bg-[#291e10] border-amber-500/40 text-amber-300"
                               }`}
                             >
-                              {on.parity_status || (on.parity > 100 ? "Sobre la par" : "Bajo la par")} ({on.parity}%)
+                              {on.law}
+                            </span>
+                            <span className="px-2.5 py-1 rounded-md bg-[#142338] border border-slate-700 text-slate-200 text-xs font-mono">
+                              Vence: <strong className="text-brand-emerald">{on.maturity_date}</strong>
                             </span>
                           </div>
-                        </div>
-
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">RENDIMIENTO (TIR)</span>
-                          <span className="text-lg font-bold font-mono text-[#4edea3]">
-                            {on.tir_usd}% anual
-                          </span>
-                          <span className="text-[11px] font-mono text-[#64748B]">Tasa neta en USD</span>
-                        </div>
-
-                        <div className="md:col-span-2 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">CUPÓN & FRECUENCIA</span>
-                          <span className="text-sm font-bold font-mono text-[#F8FAFC]">
-                            {on.coupon}% anual
-                          </span>
-                          <span className="text-[11px] font-mono text-[#64748B]">{on.frequency}</span>
-                        </div>
-
-                        <div className="md:col-span-1 flex flex-col">
-                          <span className="text-[11px] font-mono text-[#64748B] uppercase">RATING</span>
-                          <span className="text-xs font-bold text-[#F8FAFC] truncate">{on.rating}</span>
-                          <span className="text-[11px] font-mono text-[#64748B]">Mín: {on.min_investment}</span>
-                        </div>
-
-                        <div className="md:col-span-2 flex items-center justify-end gap-3">
-                          <div className="flex flex-col items-end">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">Solidez</span>
-                            <span className="text-lg font-mono text-[#4edea3] font-bold">
-                              {on.score} <span className="text-[#64748B] text-xs font-normal">/100</span>
-                            </span>
-                          </div>
-                          <div className="w-9 h-9 rounded-full bg-[#122131] flex items-center justify-center text-[#4edea3] border border-[#1F2937]">
-                            <Building2 className="w-4 h-4" />
+                          <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                            {on.name} <span className="text-slate-400 font-normal">• Emisor: {on.issuer}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="pt-2 bg-[#0d1c2d]/70 -mx-4 -mb-4 px-4 py-2 rounded-b-xl flex items-center gap-2 text-[#64748B] text-xs">
-                        <span className="text-[#4edea3] font-semibold uppercase text-[11px] font-mono shrink-0">
-                          Tesis:
-                        </span>
-                        <span className="truncate sm:whitespace-normal">{on.thesis}</span>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                        <div className="flex flex-col">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            PRECIO &amp; PARIDAD
+                          </span>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                              ${on.price_usd ? on.price_usd.toFixed(2) : "100.00"}
+                            </span>
+                            <span className="text-xs font-bold font-mono text-slate-300">USD</span>
+                          </div>
+                          <span
+                            className={`text-xs font-mono font-bold ${
+                              on.parity > 100 ? "text-cyan-300" : on.parity < 100 ? "text-amber-300" : "text-brand-emerald"
+                            }`}
+                          >
+                            {on.parity_status || (on.parity > 100 ? "Sobre par" : "Bajo par")} ({on.parity}%)
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            RENDIMIENTO (TIR)
+                          </span>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-lg sm:text-xl font-extrabold text-brand-emerald font-mono">
+                              {on.tir_usd}%
+                            </span>
+                          </div>
+                          <span className="text-xs font-bold font-mono text-slate-300">Tasa neta anual USD</span>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            CUPÓN &amp; FRECUENCIA
+                          </span>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                              {on.coupon}%
+                            </span>
+                          </div>
+                          <span className="text-xs font-medium font-mono text-slate-300">{on.frequency}</span>
+                        </div>
+
+                        <div className="flex flex-col sm:items-end justify-center">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            SOLIDEZ
+                          </span>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                              {on.score}
+                            </span>
+                            <span className="text-xs font-bold font-mono text-slate-300">/100</span>
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-brand-emerald">
+                              <Building2 className="w-4 h-4" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
+                    </div>
+
+                    <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
+                      <span className="text-xs sm:text-sm font-extrabold font-mono text-brand-emerald tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                        TESIS:
+                      </span>
+                      <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                        {on.thesis}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
 
-            {/* ---------------- PESTAÑA: MERCADO LOCAL ARGENTINO (MERVAL & BONOS) ---------------- */}
+            {/* 4. MERVAL & BONOS SOBERANOS */}
             {activeTab === "argentina" && (
-              <div className="flex flex-col gap-4">
+              <>
                 {argSubTab === "merval" && (
-                  <div className="flex flex-col gap-3">
+                  <>
                     {filteredMerval.map((m, idx) => (
-                      <article
-                        key={m.ticker}
-                        className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 shadow-sm hover:bg-[#1E293B]/60 transition-all flex flex-col gap-3"
-                      >
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                          <div className="md:col-span-5 flex items-center gap-3">
-                            <span className="text-lg font-mono text-[#64748B] font-bold min-w-8">
+                      <div key={m.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                          <div className="flex items-start gap-4">
+                            <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono tracking-tight pt-0.5">
                               #{idx + 1}
                             </span>
-                            <div className="flex flex-col min-w-0">
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono text-base font-bold text-[#F8FAFC]">
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
                                   {m.ticker}
                                 </span>
-                                <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#64748B]">
+                                <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                                   {m.sector}
                                 </span>
                               </div>
-                              <span className="text-xs text-[#64748B] mt-1">{m.name}</span>
+                              <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                                {m.name}
+                              </div>
                             </div>
                           </div>
 
-                          <div className="md:col-span-3 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">PRECIO EN PESOS</span>
-                            <div className="flex items-baseline gap-1.5">
-                              <span className="text-base font-bold font-mono text-[#F8FAFC]">
-                                ${m.price_ars.toLocaleString("es-AR")} ARS
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                            <div className="flex flex-col">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                PRECIO EN PESOS
                               </span>
-                              <span className="text-xs font-mono text-[#10B981] font-bold">
-                                +{m.day_change}%
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="md:col-span-2 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">VALUACIÓN (P/E)</span>
-                            <span className="text-sm font-bold font-mono text-[#F8FAFC]">
-                              {m.pe_ratio}x ganancias
-                            </span>
-                            <span className="text-[11px] font-mono text-[#64748B]">Múltiplo comprimido</span>
-                          </div>
-
-                          <div className="md:col-span-2 flex items-center justify-end gap-3">
-                            <div className="flex flex-col items-end">
-                              <span className="text-[11px] font-mono text-[#64748B] uppercase">Score</span>
-                              <span className="text-lg font-mono text-[#4edea3] font-bold">
-                                {m.score} <span className="text-[#64748B] text-xs font-normal">/100</span>
+                              <div className="flex items-baseline gap-1.5 mt-0.5">
+                                <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                  ${m.price_ars.toLocaleString("es-AR")}
+                                </span>
+                                <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
+                              </div>
+                              <span className="text-xs font-mono font-bold text-brand-emerald">
+                                +{m.day_change}% hoy
                               </span>
                             </div>
-                            <div className="w-9 h-9 rounded-full bg-[#122131] flex items-center justify-center text-[#4edea3] border border-[#1F2937]">
-                              <Zap className="w-4 h-4 stroke-[2.5]" />
+
+                            <div className="flex flex-col">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                VALUACIÓN (P/E)
+                              </span>
+                              <div className="flex items-baseline gap-1.5 mt-0.5">
+                                <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                  {m.pe_ratio}x
+                                </span>
+                              </div>
+                              <span className="text-xs font-medium font-mono text-slate-300">Ganancias anuales</span>
+                            </div>
+
+                            <div className="flex flex-col">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                MERCADO
+                              </span>
+                              <div className="flex items-baseline gap-1.5 mt-0.5">
+                                <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                  BYMA
+                                </span>
+                              </div>
+                              <span className="text-xs font-medium font-mono text-emerald-400">Panel Líder</span>
+                            </div>
+
+                            <div className="flex flex-col sm:items-end justify-center">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                SCORE
+                              </span>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                                  {m.score}
+                                </span>
+                                <span className="text-xs font-bold font-mono text-slate-300">/100</span>
+                                <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-brand-emerald">
+                                  <Zap className="w-4 h-4 fill-current" />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        <div className="pt-2 bg-[#0d1c2d]/70 -mx-4 -mb-4 px-4 py-2 rounded-b-xl flex items-center gap-2 text-[#64748B] text-xs">
-                          <span className="text-[#4edea3] font-semibold uppercase text-[11px] font-mono shrink-0">
-                            Tesis Local:
+                        <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
+                          <span className="text-xs sm:text-sm font-extrabold font-mono text-brand-emerald tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                            TESIS LOCAL:
                           </span>
-                          <span className="truncate sm:whitespace-normal">{m.thesis}</span>
+                          <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                            {m.thesis}
+                          </p>
                         </div>
-                      </article>
+                      </div>
                     ))}
-                  </div>
+                  </>
                 )}
 
                 {argSubTab === "bonds" && (
-                  <div className="flex flex-col gap-3">
+                  <>
                     {filteredSovereign.map((b, idx) => (
-                      <article
-                        key={b.ticker}
-                        className="bg-[#111827] border border-[#1F2937] rounded-xl p-4 shadow-sm hover:bg-[#1E293B]/60 transition-all flex flex-col gap-3"
-                      >
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                          <div className="md:col-span-5 flex items-center gap-3">
-                            <span className="text-lg font-mono text-[#64748B] font-bold min-w-8">
+                      <div key={b.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                          <div className="flex items-start gap-4">
+                            <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono tracking-tight pt-0.5">
                               #{idx + 1}
                             </span>
-                            <div className="flex flex-col min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-mono text-base font-bold text-[#F8FAFC]">
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
                                   {b.ticker}
                                 </span>
-                                <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#38BDF8]/10 text-[#38BDF8] border border-[#38BDF8]/20">
+                                <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                                   {b.law}
                                 </span>
-                                <span className="px-2 py-0.5 rounded bg-[#122131] text-[11px] font-mono text-[#d4e4fa] border border-[#1F2937]">
-                                  📅 Vence: <strong className="text-[#4edea3]">{b.maturity_date}</strong>
+                                <span className="px-2.5 py-1 rounded-md bg-[#142338] border border-slate-700 text-slate-200 text-xs font-mono">
+                                  Vence: <strong className="text-brand-emerald">{b.maturity_date}</strong>
                                 </span>
                               </div>
-                              <span className="text-xs text-[#64748B] mt-1">{b.name}</span>
+                              <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                                {b.name}
+                              </div>
                             </div>
                           </div>
 
-                          <div className="md:col-span-3 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">COTIZACIÓN & PARIDAD</span>
-                            <span className="text-base font-bold font-mono text-[#F8FAFC]">
-                              ${b.price_usd} USD
-                            </span>
-                            <div className="flex items-center gap-1.5 mt-0.5">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                            <div className="flex flex-col">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                COTIZACIÓN &amp; PARIDAD
+                              </span>
+                              <div className="flex items-baseline gap-1.5 mt-0.5">
+                                <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                  ${b.price_usd}
+                                </span>
+                                <span className="text-xs font-bold font-mono text-slate-300">USD</span>
+                              </div>
                               <span
-                                className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${
-                                  b.parity >= 100
-                                    ? "bg-[#38BDF8]/10 text-[#38BDF8] border-[#38BDF8]/20"
-                                    : "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
+                                className={`text-xs font-mono font-bold ${
+                                  b.parity >= 100 ? "text-cyan-300" : "text-amber-300"
                                 }`}
                               >
-                                {b.parity_status || (b.parity >= 100 ? "Sobre la par" : "Bajo la par")} ({b.parity}%)
+                                {b.parity_status || (b.parity >= 100 ? "Sobre par" : "Bajo par")} ({b.parity}%)
                               </span>
                             </div>
-                          </div>
 
-                          <div className="md:col-span-2 flex flex-col">
-                            <span className="text-[11px] font-mono text-[#64748B] uppercase">RENDIMIENTO (TIR)</span>
-                            <span className="text-base font-bold font-mono text-[#4edea3]">
-                              {b.tir_usd}% anual
-                            </span>
-                            <span className="text-[11px] font-mono text-[#64748B]">Renta en USD</span>
-                          </div>
-
-                          <div className="md:col-span-2 flex items-center justify-end gap-3">
-                            <div className="flex flex-col items-end">
-                              <span className="text-[11px] font-mono text-[#64748B] uppercase">Score</span>
-                              <span className="text-lg font-mono text-[#4edea3] font-bold">
-                                {b.score} <span className="text-[#64748B] text-xs font-normal">/100</span>
+                            <div className="flex flex-col">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                RENDIMIENTO (TIR)
                               </span>
+                              <div className="flex items-baseline gap-1.5 mt-0.5">
+                                <span className="text-lg sm:text-xl font-extrabold text-brand-emerald font-mono">
+                                  {b.tir_usd}%
+                                </span>
+                              </div>
+                              <span className="text-xs font-bold font-mono text-slate-300">Renta neta en USD</span>
                             </div>
-                            <div className="w-9 h-9 rounded-full bg-[#122131] flex items-center justify-center text-[#4edea3] border border-[#1F2937]">
-                              <Shield className="w-4 h-4" />
+
+                            <div className="flex flex-col">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                TIPO DE ACTIVO
+                              </span>
+                              <div className="flex items-baseline gap-1.5 mt-0.5">
+                                <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                  Soberano
+                                </span>
+                              </div>
+                              <span className="text-xs font-medium font-mono text-slate-300">Bonares / Globales</span>
+                            </div>
+
+                            <div className="flex flex-col sm:items-end justify-center">
+                              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                                SCORE
+                              </span>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-xl sm:text-2xl font-black text-brand-emerald font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                                  {b.score}
+                                </span>
+                                <span className="text-xs font-bold font-mono text-slate-300">/100</span>
+                                <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-brand-emerald">
+                                  <Shield className="w-4 h-4" />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        <div className="pt-2 bg-[#0d1c2d]/70 -mx-4 -mb-4 px-4 py-2 rounded-b-xl flex items-center gap-2 text-[#64748B] text-xs">
-                          <span className="text-[#38BDF8] font-semibold uppercase text-[11px] font-mono shrink-0">
-                            Tesis Soberana:
+                        <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
+                          <span className="text-xs sm:text-sm font-extrabold font-mono text-brand-emerald tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                            TESIS SOBERANA:
                           </span>
-                          <span className="truncate sm:whitespace-normal">{b.thesis}</span>
+                          <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                            {b.thesis}
+                          </p>
                         </div>
-                      </article>
+                      </div>
                     ))}
-                  </div>
+                  </>
                 )}
-              </div>
+              </>
             )}
           </div>
         </section>
@@ -1333,68 +1413,26 @@ export default function HomePage() {
         </section>
 
         {/* ========================================================
-            6. FOOTER COMPLETO & DISCLAIMER LEGAL CNV
+            6. MINIMAL FOOTER (ESTILO STITCH)
         ======================================================== */}
-        <footer className="w-full bg-[#010f1f] text-[#64748B] border-t border-[#1F2937]">
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-              <div className="md:col-span-2 flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#122131] flex items-center justify-center text-[#4edea3] border border-[#1F2937]">
-                    <Activity className="w-4 h-4" />
-                  </div>
-                  <span className="text-base font-bold text-[#F8FAFC] tracking-tight">DONDE INVIERTO</span>
-                </div>
-                <p className="text-xs text-[#64748B] max-w-md leading-relaxed">
-                  Plataforma cuantitativa y radar diario de activos financieros. Analítica algorítmica para CEDEARs,
-                  Obligaciones Negociables, Renta Fija y Acciones del S&P Merval con paridad CCL.
-                </p>
+        <footer className="w-full border-t border-[#131E30] bg-[#03060C] py-6 px-6 text-xs text-slate-400 font-mono">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-brand-emerald font-black">
+                <Activity className="w-4 h-4 text-brand-emerald" />
               </div>
-
-              <div className="flex flex-col gap-2">
-                <span className="text-xs uppercase font-bold tracking-wider text-[#F8FAFC]">Explorar</span>
-                <nav className="flex flex-col gap-1 text-xs">
-                  <a href="#radar-oportunidades" className="text-[#bbcabf] hover:text-[#4edea3] transition-colors">
-                    Top Oportunidades
-                  </a>
-                  <a href="#simulador-cartera" className="text-[#bbcabf] hover:text-[#4edea3] transition-colors">
-                    Simulador de Portafolio
-                  </a>
-                  <a href="#planes-precios" className="text-[#bbcabf] hover:text-[#4edea3] transition-colors">
-                    Planes & Suscripciones
-                  </a>
-                </nav>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <span className="text-xs uppercase font-bold tracking-wider text-[#F8FAFC]">Cumplimiento & Legal</span>
-                <nav className="flex flex-col gap-1 text-xs">
-                  <span className="text-[#bbcabf]">Aviso Legal & CNV</span>
-                  <span className="text-[#bbcabf]">Política de Privacidad</span>
-                  <span className="text-[#bbcabf]">Términos de Servicio</span>
-                </nav>
-              </div>
+              <span className="text-slate-300">
+                <strong className="text-white font-extrabold tracking-wider">DONDE INVIERTO</strong> Terminal Quant © {new Date().getFullYear()} • Datos en tiempo real de mercados financieros internacionales y locales.
+              </span>
             </div>
-
-            <div className="pt-6 border-t border-[#1F2937]/60 flex flex-col gap-3 text-xs text-[#64748B]">
-              <p className="leading-relaxed">
-                <strong>Aviso de Riesgo y Descargo Financiero:</strong> La información provista por &apos;Donde Invierto - Radar
-                Diario de Inversión&apos; tiene fines estrictamente informativos, analíticos y educativos. No constituye
-                asesoramiento financiero ni una invitación a comprar o vender títulos valores. Las estimaciones
-                cuantitativas, ratios y precios de CEDEARs/CCL provienen de fuentes públicas y pueden experimentar
-                demoras. El inversor es el único responsable de sus decisiones patrimoniales.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-between pt-2 gap-2">
-                <span className="font-mono text-[11px]">
-                  © {new Date().getFullYear()} Donde Invierto. Todos los derechos reservados.
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
-                  <span className="font-mono text-[11px] text-[#F8FAFC]">
-                    Terminal v3.4.1 — BYMA & NYSE Data Feeds
-                  </span>
-                </div>
-              </div>
+            <div className="flex items-center gap-4 text-slate-400">
+              <a className="hover:text-brand-emerald transition-colors" href="#radar-section">Radar</a>
+              <span>•</span>
+              <a className="hover:text-brand-emerald transition-colors" href="#simulador-cartera">Simulador</a>
+              <span>•</span>
+              <a className="hover:text-brand-emerald transition-colors" href="#">Términos</a>
+              <span>•</span>
+              <a className="hover:text-brand-emerald transition-colors" href="#">Aviso CNV</a>
             </div>
           </div>
         </footer>
