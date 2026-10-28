@@ -1,0 +1,15 @@
+{
+  "terminal": {
+    "autoApprove": [
+      "Get-ChildItem *",
+      "Select-String *",
+      "Get-Content *",
+      "git *",
+      "npm *",
+      "node *",
+      "powershell *",
+      "Test-Path *",
+      "Start-Sleep *"
+    ]
+  }
+}

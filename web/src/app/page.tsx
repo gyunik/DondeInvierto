@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import marketData from "@/data/marketData.json";
 import {
   Activity,
@@ -143,6 +144,19 @@ export default function HomePage() {
 
   const currPrefix = currency === "ARS" ? "$" : "u$s ";
 
+  const renderTickerBadge = (name: string, priceStr: string, change: number, isPercent: boolean = true) => {
+    const isPos = change >= 0;
+    return (
+      <div className="flex items-center gap-2 sm:gap-2.5">
+        <span className="text-slate-200 font-bold tracking-wider text-xs sm:text-sm">{name}</span>
+        <span className="text-white font-black text-sm sm:text-base font-mono">{priceStr}</span>
+        <span className={`text-xs sm:text-sm font-bold font-mono flex items-center gap-0.5 ${isPos ? "text-[#00F5A0]" : "text-rose-400"}`}>
+          {isPos ? "↗ +" : "↘ "}{change}{isPercent ? "%" : ""}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#050911] text-slate-100 font-sans antialiased selection:bg-[#00F5A0] selection:text-black overflow-x-hidden">
       {/* ========================================================
@@ -153,12 +167,9 @@ export default function HomePage() {
         <div className="w-full px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <a className="flex items-center gap-3 group" href="#" title="DONDE INVIERTO - Inicio">
-              {/* Upward Trend FinTech Logo */}
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-900/40 border border-emerald-500/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.25)] group-hover:border-[#00F5A0] transition-colors">
-                <svg className="w-6 h-6 text-[#00F5A0]" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                  <polyline points="17 6 23 6 23 12"></polyline>
-                </svg>
+              {/* Isologo Oficial (Imagen 1) */}
+              <div className="w-10 h-10 rounded-xl bg-[#0b1626] border border-emerald-500/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.25)] group-hover:border-[#00F5A0] transition-colors p-1.5 overflow-hidden">
+                <Image src="/isologo.png" alt="Donde Invierto Logo" width={36} height={36} className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="text-base font-extrabold tracking-wider text-white group-hover:text-[#00F5A0] transition-colors">
@@ -208,38 +219,18 @@ export default function HomePage() {
         </div>
 
         {/* Ticker Stream Bar */}
-        <div className="w-full border-t border-[#131E30] bg-[#03060C]/90 px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto no-scrollbar">
-          <div className="flex items-center justify-between min-w-[880px] gap-6 text-[12px] font-mono">
-            <div className="flex items-center gap-2 border-b-2 border-[#00F5A0] pb-0.5">
-              <span className="text-slate-100 font-bold tracking-wide">S&P 500</span>
-              <span className="text-white font-bold">{market["^GSPC"].price.toLocaleString("en-US")}</span>
-              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["^GSPC"].change}%</span>
+        <div className="w-full border-t border-[#131E30] bg-[#03060C]/90 px-4 sm:px-6 lg:px-8 py-2.5 overflow-x-auto no-scrollbar">
+          <div className="flex items-center justify-between min-w-[960px] gap-8 text-sm font-mono">
+            {renderTickerBadge("S&P 500", market["^GSPC"].price.toLocaleString("en-US"), market["^GSPC"].change)}
+            {renderTickerBadge("NASDAQ 100", market["^IXIC"].price.toLocaleString("en-US"), market["^IXIC"].change)}
+            {renderTickerBadge("S&P MERVAL", market["^MERVAL"].price.toLocaleString("es-AR"), market["^MERVAL"].change)}
+            {renderTickerBadge("DÓLAR CCL", `$${market["CCL"].price.toFixed(2)}`, market["CCL"].change)}
+            <div className="flex items-center gap-2.5">
+              <span className="text-slate-200 font-bold tracking-wider text-xs sm:text-sm">UST 10Y</span>
+              <span className="text-white font-black text-sm sm:text-base font-mono">{market["^TNX"].price}%</span>
+              <span className="text-slate-400 font-semibold text-xs sm:text-sm font-mono">0.00 bps</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-slate-200 font-semibold tracking-wide">NASDAQ 100</span>
-              <span className="text-white font-bold">{market["^IXIC"].price.toLocaleString("en-US")}</span>
-              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["^IXIC"].change}%</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-slate-200 font-semibold tracking-wide">S&P MERVAL</span>
-              <span className="text-white font-bold">{market["^MERVAL"].price.toLocaleString("es-AR")}</span>
-              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["^MERVAL"].change}%</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-slate-200 font-semibold tracking-wide">DÓLAR CCL</span>
-              <span className="text-white font-bold">${market["CCL"].price.toFixed(2)}</span>
-              <span className="text-[#00F5A0] font-semibold flex items-center">↗ +{market["CCL"].change}%</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-slate-200 font-semibold tracking-wide">UST 10Y</span>
-              <span className="text-white font-bold">{market["^TNX"].price}%</span>
-              <span className="text-slate-400 font-semibold">0.00 bps</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-slate-200 font-semibold tracking-wide">VIX</span>
-              <span className="text-white font-bold">{market["^VIX"].price}</span>
-              <span className="text-rose-400 font-semibold flex items-center">↘ {market["^VIX"].change}%</span>
-            </div>
+            {renderTickerBadge("VIX", market["^VIX"].price.toString(), market["^VIX"].change)}
           </div>
         </div>
       </header>
@@ -308,60 +299,99 @@ export default function HomePage() {
               <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
                 <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
                   <span>DÓLAR CCL HOY</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-                    ${ccl_dollar.toFixed(2)} <span className="text-xs text-slate-400 font-normal">ARS</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight font-mono">
+                      ${ccl_dollar.toFixed(2)}
+                    </span>
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-100 bg-[#162742] px-2 py-0.5 rounded border border-slate-600 font-mono">
+                      ARS
+                    </span>
+                  </div>
+                  <span className="text-sm sm:text-base font-mono font-bold text-[#00F5A0]">
+                    ▲ +{market["CCL"].change}%
                   </span>
-                  <span className="text-xs font-mono font-semibold text-[#00F5A0]">▲ +{market["CCL"].change}%</span>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 font-mono">Brecha cambiaria: 18.2%</div>
+                <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">
+                  <span className="text-xs sm:text-sm text-slate-200 font-mono font-semibold">
+                    Brecha cambiaria: <strong className="text-white font-bold">18.2%</strong>
+                  </span>
+                </div>
               </div>
 
               {/* Card 2: S&P Merval */}
               <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
                 <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
                   <span>S&P MERVAL</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                  <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight font-mono">
                     {market["^MERVAL"].price.toLocaleString("es-AR")}
                   </span>
-                  <span className="text-xs font-mono font-semibold text-[#00F5A0]">▲ +{market["^MERVAL"].change}%</span>
+                  <span className="text-sm sm:text-base font-mono font-bold text-[#00F5A0]">
+                    ▲ +{market["^MERVAL"].change}%
+                  </span>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 font-mono">Volumen: $48.2B ARS</div>
+                <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">
+                  <span className="text-xs sm:text-sm text-slate-200 font-mono font-semibold">
+                    Volumen: <strong className="text-white font-bold">$48.2B ARS</strong>
+                  </span>
+                </div>
               </div>
 
               {/* Card 3: Bono USA 10Y */}
               <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
                 <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
                   <span>BONO USA 10Y</span>
-                  <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-                    {market["^TNX"].price}% <span className="text-xs text-slate-400 font-normal">Yield</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight font-mono">
+                      {market["^TNX"].price}%
+                    </span>
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-300 bg-[#162742] px-2 py-0.5 rounded border border-slate-600 font-mono">
+                      Yield
+                    </span>
+                  </div>
+                  <span className="text-sm sm:text-base font-mono font-bold text-slate-300">
+                    0.00 bps
                   </span>
-                  <span className="text-xs font-mono text-slate-400">0.00 bps</span>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 font-mono">Tasa de Referencia FED</div>
+                <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">
+                  <span className="text-xs sm:text-sm text-slate-200 font-mono font-semibold">
+                    Tasa de Referencia FED
+                  </span>
+                </div>
               </div>
 
               {/* Card 4: VIX Volatilidad */}
               <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
                 <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
                   <span>VIX VOLATILIDAD</span>
-                  <span className="w-2 h-2 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.6)]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.6)]"></span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-                    {market["^VIX"].price} <span className="text-xs text-slate-400 font-normal">pts</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight font-mono">
+                      {market["^VIX"].price}
+                    </span>
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-300 bg-[#162742] px-2 py-0.5 rounded border border-slate-600 font-mono">
+                      pts
+                    </span>
+                  </div>
+                  <span className="text-sm sm:text-base font-mono font-bold text-rose-400">
+                    ▼ {market["^VIX"].change}%
                   </span>
-                  <span className="text-xs font-mono font-semibold text-rose-400">▼ {market["^VIX"].change}%</span>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-2 font-mono">Régimen: Baja Aversión</div>
+                <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">
+                  <span className="text-xs sm:text-sm text-slate-200 font-mono font-semibold">
+                    Régimen: <strong className="text-emerald-400">Baja Aversión</strong>
+                  </span>
+                </div>
               </div>
             </div>
           </div>

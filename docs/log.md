@@ -4,6 +4,14 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-28] fix & ui | Saneamiento de datos, nuevo isologo oficial, corrección de signos y tipografía
+* Corrección metodológica en `scripts/update_market.js`: consulta `range=1d` contra el cierre de la víspera en lugar de 5 días acumulados, saneando la variación porcentual de todas las acciones, ETFs y Merval (ej. MELI corregido a -0.44%).
+* Actualización de Target Prices desfasados de Wall Street para AMD ($620), JNJ ($295), TXN ($340), GOOGL ($355), JPM ($370), LLY ($1380) y KO ($98).
+* Integración del nuevo isologo oficial (gráfico de barras ascendente con signo de pregunta) en el header de navegación.
+* Eliminación del subrayado artificial en S&P 500 y corrección del bug de signos duplicados (`+-0.17%`) con flechas direccionales dinámicas (↗ verde para alzas, ↘ roja para bajas).
+* Aumento de tamaño y visibilidad en la barra de índices superiores y en las tarjetas de métricas del hero (Dólar CCL, badge ARS destacado, porcentaje y brecha cambiaria).
+* Configuración de reglas de auto-aprobación de terminal en `.antigravity/rules.json`.
+
 ## [2026-10-28] feature | Modal interactivo de Desglose de Consenso de Analistas, PER y Market Cap
 * Se hizo interactivo el bloque de "Potencial Analistas" en cada tarjeta de CEDEARs con botón "Desglose ↗".
 * Creación del Modal Cuantitativo con desglose detallado de los bancos de inversión (Morgan Stanley, Goldman Sachs, BofA, Cantor Fitzgerald y Caso Bull), aclarando la diferencia entre el consenso medio ($2.420 USD) y el escenario alcista máximo ($2.808 USD).

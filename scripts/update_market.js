@@ -23,15 +23,15 @@ async function fetchJson(url) {
 
 async function fetchTickerData(ticker) {
   try {
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d`;
     const json = await fetchJson(url);
     const result = json?.chart?.result?.[0];
     if (!result) return null;
     const meta = result.meta;
-    const price = meta.regularMarketPrice ?? meta.chartPreviousClose ?? 0;
-    const prevClose = meta.previousClose ?? meta.chartPreviousClose ?? price;
+    const price = meta.regularMarketPrice ?? 0;
+    const prevClose = meta.chartPreviousClose ?? price;
     let change = 0;
-    if (prevClose && price) {
+    if (prevClose > 0 && price > 0) {
       change = ((price - prevClose) / prevClose) * 100;
     }
     return {
