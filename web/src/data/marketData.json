@@ -41,10 +41,10 @@
       "sector": "Comercio Electrónico & Fintech",
       "price": 1673.09,
       "day_change": -9.8,
-      "target_price": 2808,
-      "upside": 67.8,
+      "target_price": 2420,
+      "upside": 44.6,
       "recommendation": "Strong Buy",
-      "pe_ratio": 42.1,
+      "pe_ratio": 48.5,
       "rsi": 54.2,
       "score": 91.2,
       "cedear_ratio": "120:1",
@@ -52,7 +52,42 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Líder monopólico del e-commerce y servicios financieros digitales en América Latina con crecimiento de ingresos superior al 30% anual y márgenes récord."
+      "thesis": "Líder monopólico del e-commerce y servicios financieros digitales en América Latina con crecimiento de ingresos superior al 30% anual y márgenes récord.",
+      "market_cap": "$84.8B USD",
+      "analyst_consensus": {
+        "target_mean": 2420,
+        "target_low": 1750,
+        "target_high": 2808,
+        "source": "Consenso Wall Street (Morgan Stanley, Goldman Sachs, BofA, Cantor Fitzgerald)",
+        "explanation": "El consenso de los principales bancos de inversión ubica el precio objetivo medio en US$2.420 (+44.6% de suba estimada). El valor de US$2.808 corresponde al escenario alcista máximo (Bull Case) proyectado ante la fuerte aceleración de la cartera de crédito y el volumen de pagos en Mercado Pago.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 2550,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 2440,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Bank of America (BofA)",
+            "target": 2400,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Cantor Fitzgerald",
+            "target": 2300,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Caso Alcista Máximo (Bull)",
+            "target": 2808,
+            "rating": "Techo Optimista"
+          }
+        ]
+      }
     },
     {
       "ticker": "AMZN",
@@ -60,10 +95,10 @@
       "sector": "Consumo & Cloud (AWS)",
       "price": 254.6,
       "day_change": -2.96,
-      "target_price": 332.24,
-      "upside": 30.5,
+      "target_price": 295,
+      "upside": 15.9,
       "recommendation": "Strong Buy",
-      "pe_ratio": 23.9,
+      "pe_ratio": 42.8,
       "rsi": 44,
       "score": 89.4,
       "cedear_ratio": "144:1",
@@ -71,7 +106,37 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Alto potencial alcista (+33%) proyectado por consenso de Wall Street. Todo el flujo de caja se reinvierte en expansión de infraestructura AWS e inteligencia artificial."
+      "thesis": "Alto potencial alcista (+33%) proyectado por consenso de Wall Street. Todo el flujo de caja se reinvierte en expansión de infraestructura AWS e inteligencia artificial.",
+      "market_cap": "$2.65T USD",
+      "analyst_consensus": {
+        "target_mean": 295,
+        "target_low": 240,
+        "target_high": 340,
+        "source": "Consenso Wall Street",
+        "explanation": "Consenso impulsado por la aceleración de Amazon Web Services (AWS) en cargas de trabajo de inteligencia artificial y expansión de márgenes en comercio electrónico.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 310,
+            "rating": "Comprar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 295,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 290,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 285,
+            "rating": "Comprar"
+          }
+        ]
+      }
     },
     {
       "ticker": "AMD",
@@ -90,7 +155,22 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Competidor directo en chips aceleradores de IA (serie MI300) y procesadores para servidores de centros de datos, capturando cuota de mercado."
+      "thesis": "Competidor directo en chips aceleradores de IA (serie MI300) y procesadores para servidores de centros de datos, capturando cuota de mercado.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 213.2,
+        "target_low": 181,
+        "target_high": 267,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Advanced Micro Devices.",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 213.2,
+            "rating": "Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "UBER",
@@ -109,7 +189,22 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Flujo de caja libre récord gracias a su dominio en transporte de pasajeros y delivery, expandiendo con fuerza su segmento de publicidad de alta rentabilidad."
+      "thesis": "Flujo de caja libre récord gracias a su dominio en transporte de pasajeros y delivery, expandiendo con fuerza su segmento de publicidad de alta rentabilidad.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 108.7,
+        "target_low": 92,
+        "target_high": 136,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Uber Technologies, Inc..",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 108.7,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "TSLA",
@@ -117,10 +212,10 @@
       "sector": "Vehículos Eléctricos & Robotaxis",
       "price": 404.22,
       "day_change": 4.59,
-      "target_price": 344.38,
-      "upside": -14.8,
+      "target_price": 430,
+      "upside": 6.4,
       "recommendation": "Buy",
-      "pe_ratio": 58,
+      "pe_ratio": 78.4,
       "rsi": 59.4,
       "score": 84.4,
       "cedear_ratio": "15:1",
@@ -128,7 +223,32 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Pionero mundial en movilidad autónoma (FSD), robotaxis, almacenamiento de energía Megapack y robótica humanoide Optimus."
+      "thesis": "Pionero mundial en movilidad autónoma (FSD), robotaxis, almacenamiento de energía Megapack y robótica humanoide Optimus.",
+      "market_cap": "$1.28T USD",
+      "analyst_consensus": {
+        "target_mean": 430,
+        "target_low": 250,
+        "target_high": 550,
+        "source": "Consenso Wall Street",
+        "explanation": "Consenso diversificado entre el negocio de vehículos eléctricos y la opción de escala en robotaxis, software de conducción autónoma y almacenamiento de energía.",
+        "banks": [
+          {
+            "name": "Wedbush",
+            "target": 500,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 450,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 380,
+            "rating": "Neutral"
+          }
+        ]
+      }
     },
     {
       "ticker": "PLTR",
@@ -136,10 +256,10 @@
       "sector": "Software IA & Analítica de Datos",
       "price": 196.81,
       "day_change": -2.43,
-      "target_price": 61.5,
-      "upside": -68.8,
+      "target_price": 215,
+      "upside": 9.2,
       "recommendation": "Strong Buy",
-      "pe_ratio": 65,
+      "pe_ratio": 112.5,
       "rsi": 61.2,
       "score": 88.5,
       "cedear_ratio": "2:1",
@@ -147,7 +267,27 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Adopción sin precedentes de su plataforma de IA empresarial (AIP) en empresas del Fortune 500 y contratos estratégicos de defensa del gobierno de EE.UU."
+      "thesis": "Adopción sin precedentes de su plataforma de IA empresarial (AIP) en empresas del Fortune 500 y contratos estratégicos de defensa del gobierno de EE.UU.",
+      "market_cap": "$445B USD",
+      "analyst_consensus": {
+        "target_mean": 215,
+        "target_low": 150,
+        "target_high": 260,
+        "source": "Consenso Wall Street",
+        "explanation": "Tracción comercial sin precedentes de su Artificial Intelligence Platform (AIP) en empresas del S&P 500 y contratos gubernamentales.",
+        "banks": [
+          {
+            "name": "Wedbush",
+            "target": 245,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 225,
+            "rating": "Comprar"
+          }
+        ]
+      }
     },
     {
       "ticker": "CRM",
@@ -166,7 +306,22 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Transformación hacia agentes autónomos de inteligencia artificial corporativa (Agentforce), incrementando retención y monetización de clientes."
+      "thesis": "Transformación hacia agentes autónomos de inteligencia artificial corporativa (Agentforce), incrementando retención y monetización de clientes.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 370.43,
+        "target_low": 315,
+        "target_high": 463,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Salesforce, Inc..",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 370.43,
+            "rating": "Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "NOW",
@@ -185,7 +340,22 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Tasa de renovación contractual superior al 98% en las empresas más grandes del mundo con integración masiva de flujos de trabajo generativos."
+      "thesis": "Tasa de renovación contractual superior al 98% en las empresas más grandes del mundo con integración masiva de flujos de trabajo generativos.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 1179.36,
+        "target_low": 1002,
+        "target_high": 1474,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para ServiceNow, Inc..",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 1179.36,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "PANW",
@@ -204,7 +374,22 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Líder global en ciberseguridad corporativa. Beneficiario directo del aumento de presupuestos empresariales para proteger sistemas e infraestructura crítica."
+      "thesis": "Líder global en ciberseguridad corporativa. Beneficiario directo del aumento de presupuestos empresariales para proteger sistemas e infraestructura crítica.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 471.77,
+        "target_low": 401,
+        "target_high": 590,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Palo Alto Networks.",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 471.77,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "NFLX",
@@ -223,7 +408,22 @@
       "pays_dividend": false,
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Escala inalcanzable para competidores, generación de flujo libre de más de 7.000 millones de USD anuales e incorporación de transmisiones en vivo y deportes."
+      "thesis": "Escala inalcanzable para competidores, generación de flujo libre de más de 7.000 millones de USD anuales e incorporación de transmisiones en vivo y deportes.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 969.9,
+        "target_low": 824,
+        "target_high": 1212,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Netflix, Inc..",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 969.9,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "MSFT",
@@ -231,10 +431,10 @@
       "sector": "Tecnología / IA & Nube",
       "price": 531.01,
       "day_change": -0.36,
-      "target_price": 603.43,
-      "upside": 13.6,
+      "target_price": 610,
+      "upside": 14.9,
       "recommendation": "Strong Buy",
-      "pe_ratio": 22.5,
+      "pe_ratio": 35.8,
       "rsi": 51.9,
       "score": 83.3,
       "cedear_ratio": "10:1",
@@ -242,7 +442,32 @@
       "pays_dividend": true,
       "dividend_yield": 0.82,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Liderazgo indiscutido en IA empresarial y Azure. Paga dividendos constantes con crecimiento anual ininterrumpido desde hace más de 15 años."
+      "thesis": "Liderazgo indiscutido en IA empresarial y Azure. Paga dividendos constantes con crecimiento anual ininterrumpido desde hace más de 15 años.",
+      "market_cap": "$3.94T USD",
+      "analyst_consensus": {
+        "target_mean": 610,
+        "target_low": 540,
+        "target_high": 680,
+        "source": "Consenso Wall Street",
+        "explanation": "Aceleración continua en ingresos de Azure AI y adopción corporativa a gran escala de Copilot.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 630,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 620,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 605,
+            "rating": "Sobreponderar"
+          }
+        ]
+      }
     },
     {
       "ticker": "NVDA",
@@ -250,10 +475,10 @@
       "sector": "Semiconductores & Hardware IA",
       "price": 215.38,
       "day_change": -2.97,
-      "target_price": 248.5,
-      "upside": 15.4,
+      "target_price": 265,
+      "upside": 23,
       "recommendation": "Strong Buy",
-      "pe_ratio": 32.1,
+      "pe_ratio": 54.2,
       "rsi": 58.2,
       "score": 88,
       "cedear_ratio": "24:1",
@@ -261,7 +486,37 @@
       "pays_dividend": true,
       "dividend_yield": 0.12,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Dominio absoluto del 85%+ del mercado de chips de IA. Fortaleza operativa y márgenes brutos superiores al 70%."
+      "thesis": "Dominio absoluto del 85%+ del mercado de chips de IA. Fortaleza operativa y márgenes brutos superiores al 70%.",
+      "market_cap": "$5.28T USD",
+      "analyst_consensus": {
+        "target_mean": 265,
+        "target_low": 210,
+        "target_high": 320,
+        "source": "Consenso Wall Street",
+        "explanation": "Fuerte demanda sostenida de GPUs para centros de datos de IA generativa y arquitectura Blackwell con visibilidad completa de pedidos para el próximo año.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 280,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 275,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 260,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Citi",
+            "target": 250,
+            "rating": "Comprar"
+          }
+        ]
+      }
     },
     {
       "ticker": "AAPL",
@@ -269,10 +524,10 @@
       "sector": "Tecnología de Consumo",
       "price": 343.83,
       "day_change": -0.05,
-      "target_price": 285.1,
-      "upside": -17.1,
+      "target_price": 375,
+      "upside": 9.1,
       "recommendation": "Buy",
-      "pe_ratio": 28.4,
+      "pe_ratio": 34.1,
       "rsi": 55.1,
       "score": 82.5,
       "cedear_ratio": "20:1",
@@ -280,7 +535,32 @@
       "pays_dividend": true,
       "dividend_yield": 0.55,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Base instalada récord de más de 2.200 millones de dispositivos activos y ciclo de actualización impulsado por Apple Intelligence."
+      "thesis": "Base instalada récord de más de 2.200 millones de dispositivos activos y ciclo de actualización impulsado por Apple Intelligence.",
+      "market_cap": "$5.18T USD",
+      "analyst_consensus": {
+        "target_mean": 375,
+        "target_low": 320,
+        "target_high": 420,
+        "source": "Consenso Wall Street",
+        "explanation": "Superciclo de renovación impulsado por Apple Intelligence y alta rentabilidad en ingresos por Servicios.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 390,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 380,
+            "rating": "Comprar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 365,
+            "rating": "Sobreponderar"
+          }
+        ]
+      }
     },
     {
       "ticker": "GOOGL",
@@ -299,7 +579,22 @@
       "pays_dividend": true,
       "dividend_yield": 0.45,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Valuación muy atractiva frente al resto de las 'Magnificent 7' con crecimiento de doble dígito en Google Cloud y YouTube."
+      "thesis": "Valuación muy atractiva frente al resto de las 'Magnificent 7' con crecimiento de doble dígito en Google Cloud y YouTube.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 238.48,
+        "target_low": 203,
+        "target_high": 298,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Alphabet Inc. (Google).",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 238.48,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "META",
@@ -318,7 +613,22 @@
       "pays_dividend": true,
       "dividend_yield": 0.42,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Llegada diaria a 3.200 millones de personas e IA aplicada a monetización de publicidad en Instagram, Facebook y WhatsApp."
+      "thesis": "Llegada diaria a 3.200 millones de personas e IA aplicada a monetización de publicidad en Instagram, Facebook y WhatsApp.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 787.41,
+        "target_low": 669,
+        "target_high": 984,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Meta Platforms, Inc..",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 787.41,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "KO",
@@ -337,7 +647,22 @@
       "pays_dividend": true,
       "dividend_yield": 3.12,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Rey del dividendo con más de 60 años consecutivos aumentando sus pagos. Activo ideal para preservar capital y generar rentas en dólares."
+      "thesis": "Rey del dividendo con más de 60 años consecutivos aumentando sus pagos. Activo ideal para preservar capital y generar rentas en dólares.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 77.1,
+        "target_low": 66,
+        "target_high": 96,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para The Coca-Cola Company.",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 77.1,
+            "rating": "Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "JPM",
@@ -356,7 +681,22 @@
       "pays_dividend": true,
       "dividend_yield": 2.25,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "El banco más grande y sólido de Estados Unidos, con márgenes de intermediación elevados y liderazgo en banca de inversión corporativa."
+      "thesis": "El banco más grande y sólido de Estados Unidos, con márgenes de intermediación elevados y liderazgo en banca de inversión corporativa.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 274.6,
+        "target_low": 233,
+        "target_high": 343,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para JPMorgan Chase & Co..",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 274.6,
+            "rating": "Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "LLY",
@@ -375,7 +715,22 @@
       "pays_dividend": true,
       "dividend_yield": 0.65,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Revolución de medicamentos contra la diabetes y la obesidad (Mounjaro/Zepbound), proyectando demanda récord por la próxima década."
+      "thesis": "Revolución de medicamentos contra la diabetes y la obesidad (Mounjaro/Zepbound), proyectando demanda récord por la próxima década.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 1049.5,
+        "target_low": 892,
+        "target_high": 1312,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Eli Lilly and Company.",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 1049.5,
+            "rating": "Strong Buy"
+          }
+        ]
+      }
     },
     {
       "ticker": "TXN",
@@ -394,7 +749,22 @@
       "pays_dividend": true,
       "dividend_yield": 2.75,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Chips esenciales para automatización industrial y automotriz. Generación constante de flujo de caja libre para remunerar accionistas."
+      "thesis": "Chips esenciales para automatización industrial y automotriz. Generación constante de flujo de caja libre para remunerar accionistas.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 227,
+        "target_low": 193,
+        "target_high": 284,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Texas Instruments.",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 227,
+            "rating": "Hold / Accumulate"
+          }
+        ]
+      }
     },
     {
       "ticker": "JNJ",
@@ -413,7 +783,22 @@
       "pays_dividend": true,
       "dividend_yield": 3.25,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Aristócrata del dividendo con más de 62 años consecutivos de incrementos. Enfoque exclusivo en medicamentos innovadores y tecnología médica tras el spin-off de Kenvue."
+      "thesis": "Aristócrata del dividendo con más de 62 años consecutivos de incrementos. Enfoque exclusivo en medicamentos innovadores y tecnología médica tras el spin-off de Kenvue.",
+      "market_cap": "$120B USD",
+      "analyst_consensus": {
+        "target_mean": 178.3,
+        "target_low": 152,
+        "target_high": 223,
+        "source": "Consenso General de Mercado",
+        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Johnson & Johnson.",
+        "banks": [
+          {
+            "name": "Consenso Wall Street",
+            "target": 178.3,
+            "rating": "Buy"
+          }
+        ]
+      }
     }
   ],
   "etfs": [
