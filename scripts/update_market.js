@@ -75,7 +75,7 @@ function getBuenosAiresTimestamp() {
   const hh = String(baTime.getHours()).padStart(2, '0');
   const min = String(baTime.getMinutes()).padStart(2, '0');
 
-  return `${yyyy}-${mm}-${dd} ${hh}:${min} hs (Hora Buenos Aires, UTC-3)`;
+  return `${yyyy}-${mm}-${dd} ${hh}:${min} hs`;
 }
 
 async function main() {

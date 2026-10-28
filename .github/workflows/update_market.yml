@@ -34,6 +34,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Sin variaciones de precio para commitear."
           else
-            git commit -m "chore(data): auto-update market quotes [skip ci]"
+            git commit -m "chore(data): auto-update market quotes"
             git push
           fi

@@ -30,6 +30,7 @@ export default function HomePage() {
   const [riskProfile, setRiskProfile] = useState<"conservador" | "balanceado" | "agresivo">("balanceado");
 
   const { market, stocks, etfs, ons, argentina, last_updated, ccl_dollar } = marketData;
+  const formattedLastUpdated = last_updated.replace(/\s*\(Hora Buenos Aires,?\s*UTC-3\)/i, "");
 
   // Filtrado y Ordenamiento de Acciones
   const filteredStocks = stocks
@@ -389,7 +390,7 @@ export default function HomePage() {
                   </span>
                   <span className="text-slate-500 hidden sm:inline">|</span>
                   <span className="text-slate-300">
-                    Actualizado: <span className="text-white font-semibold">{last_updated}</span>{" "}
+                    Actualizado: <span className="text-white font-semibold">{formattedLastUpdated}</span>{" "}
                     <span className="text-slate-400">(Hora Buenos Aires, UTC-3)</span>
                   </span>
                 </div>
