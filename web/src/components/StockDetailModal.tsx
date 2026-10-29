@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { X } from "lucide-react";
+import { X, Layers } from "lucide-react";
 import marketData from "@/data/marketData.json";
 
 export type StockItem = (typeof marketData.stocks)[0];
@@ -18,6 +18,16 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
 
   const isEtf = "expense_ratio" in stock;
   const tagLabel = "sector" in stock ? stock.sector : (stock as EtfItem).category;
+
+  const targetAlgoritmo = "precio_objetivo_algoritmo" in stock && stock.precio_objetivo_algoritmo
+    ? stock.precio_objetivo_algoritmo
+    : stock.target_price;
+
+  const retornoEstimado = "retorno_estimado_pct" in stock && stock.retorno_estimado_pct !== undefined
+    ? stock.retorno_estimado_pct
+    : stock.upside;
+
+  const qb = "quant_breakdown" in stock ? stock.quant_breakdown : null;
 
   return (
     <div
@@ -70,8 +80,56 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           </div>
         </div>
 
-        {/* 1. Métricas Fundamentales Clave (PER y Market Cap / AUM) */}
-        <div className="mt-5 pt-4 border-t border-slate-800">
+        {/* 1. Métrica Principal: Precio Objetivo Cuantitativo a 1 Año (3 Capas) */}
+        {!isEtf && targetAlgoritmo && (
+          <div className="mt-5 p-4 rounded-2xl bg-[#0a182b] border border-emerald-500/30 relative overflow-hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-[#00F5A0]" />
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-300">
+                  Precio Objetivo Cuantitativo (Algoritmo 3 Capas)
+                </span>
+              </div>
+              <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-[#00F5A0] font-mono font-bold text-xs border border-emerald-500/40">
+                12 Meses
+              </span>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mt-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-white font-mono">
+                  ${targetAlgoritmo.toFixed(2)} USD
+                </span>
+                <span className="text-lg font-black font-mono text-[#00F5A0]">
+                  {retornoEstimado && retornoEstimado >= 0 ? `+${retornoEstimado}%` : `${retornoEstimado}%`}
+                </span>
+              </div>
+              <div className="text-xs font-mono text-slate-300">
+                Consenso Wall Street: <strong className="text-white">${stock.target_price?.toFixed(2)} USD</strong>
+              </div>
+            </div>
+
+            {/* Micro Breakdown de las 3 Capas */}
+            {qb && (
+              <div className="mt-3 pt-3 border-t border-slate-700/60 grid grid-cols-3 gap-2 text-center font-mono">
+                <div className="bg-[#081220] p-2 rounded-lg border border-slate-800">
+                  <span className="text-[10px] text-slate-400 block">Capa A (PER Base)</span>
+                  <span className="text-xs font-bold text-white">{qb.per_base}x</span>
+                </div>
+                <div className="bg-[#081220] p-2 rounded-lg border border-slate-800">
+                  <span className="text-[10px] text-slate-400 block">Capa B (Ajuste Macro)</span>
+                  <span className="text-xs font-bold text-emerald-400">+{Math.round((qb.factor_macro - 1) * 1000) / 10}%</span>
+                </div>
+                <div className="bg-[#081220] p-2 rounded-lg border border-slate-800">
+                  <span className="text-[10px] text-slate-400 block">Capa C (PER Ajustado)</span>
+                  <span className="text-xs font-bold text-[#00F5A0]">{qb.per_ajustado}x</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 2. Métricas Fundamentales Clave (PER y Market Cap / AUM) */}
+        <div className="mt-4 pt-3 border-t border-slate-800">
           <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
             {isEtf ? "Métricas Clave del Fondo / ETF" : "Métricas Fundamentales de Mercado"}
           </span>
@@ -116,60 +174,18 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           </div>
         </div>
 
-        {/* 2. Proyección de Bancos de Inversión (Precio Objetivo) */}
-        <div className="mt-5 pt-4 border-t border-slate-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                Proyección a 12 Meses (Promedio Consolidado)
-              </span>
-              <div className="flex items-baseline gap-2 mt-0.5">
-                <span className="text-2xl font-black text-white font-mono">
-                  ${stock.target_price ? stock.target_price.toFixed(2) : "N/D"} USD
-                </span>
-                <span className="text-sm font-bold font-mono text-[#00F5A0]">
-                  {stock.upside && stock.upside >= 0 ? `+${stock.upside}%` : `${stock.upside}%`} potencial medio
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Rango Visual Mín / Medio / Máx */}
-          {stock.analyst_consensus && (
-            <div className="mt-3 bg-[#0a1424] p-3 rounded-xl border border-slate-800 text-xs font-mono">
-              <div className="flex justify-between text-slate-400 text-[11px] mb-1">
-                <span>
-                  Mínimo: <strong className="text-slate-200">${stock.analyst_consensus.target_low}</strong>
-                </span>
-                <span>
-                  Promedio Consenso: <strong className="text-[#00F5A0]">${stock.analyst_consensus.target_mean}</strong>
-                </span>
-                <span>
-                  Máximo: <strong className="text-slate-200">${stock.analyst_consensus.target_high}</strong>
-                </span>
-              </div>
-              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden relative">
-                <div
-                  className="h-full bg-gradient-to-r from-emerald-500 to-teal-300 rounded-full"
-                  style={{ width: "70%" }}
-                ></div>
-              </div>
-            </div>
-          )}
-        </div>
-
         {/* 3. Desglose por Banco de Inversión con Fecha de Publicación */}
         {stock.analyst_consensus?.banks && (
-          <div className="mt-5 pt-4 border-t border-slate-800">
+          <div className="mt-4 pt-3 border-t border-slate-800">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                {isEtf ? "Visión de Estrategas y Bancos de Inversión (12 Meses)" : "Visión de los Principales Bancos de Inversión (12 Meses)"}
+                {isEtf ? "Consenso de Estrategas y Bancos de Inversión (12 Meses)" : "Consenso Individual de Bancos de Inversión (12 Meses)"}
               </span>
               <span className="text-[10px] font-mono text-slate-400 hidden sm:inline">
                 Fecha del informe
               </span>
             </div>
-            <div className="mt-1 divide-y divide-slate-800/80 border border-slate-800 rounded-xl overflow-hidden bg-[#0a1424]/90">
+            <div className="mt-1 divide-y divide-slate-800/80 border border-slate-800 rounded-xl overflow-hidden bg-[#0a1424]/90 max-h-48 overflow-y-auto">
               {stock.analyst_consensus.banks.map((bank, bIdx) => {
                 const upsideBank = Math.round(((bank.target - stock.price) / stock.price) * 1000) / 10;
                 const isTopTarget = bank.target === stock.analyst_consensus.target_high;
@@ -207,12 +223,18 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
         )}
 
         {/* 4. Nota Explicativa Metodológica */}
-        {stock.analyst_consensus?.explanation && (
-          <div className="mt-4 p-3 rounded-xl bg-[#0c1a2f] border border-cyan-500/20 text-xs text-slate-300 leading-relaxed">
-            <span className="text-[#00F5A0] font-bold font-mono mr-1">💡 ¿Cómo se calcula?</span>
-            {stock.analyst_consensus.explanation}
-          </div>
-        )}
+        <div className="mt-4 p-3 rounded-xl bg-[#0c1a2f] border border-cyan-500/20 text-xs text-slate-300 leading-relaxed font-mono">
+          <span className="text-[#00F5A0] font-bold mr-1">💡 Metodología Cuantitativa:</span>
+          {!isEtf ? (
+            <span>
+              El Precio Objetivo Teórico se calcula en 3 capas: fusiona el 65% de la mediana histórica del PER (5 años) con el 35% del PER implícito de bancos, aplica un factor macroeconómico de expansión de múltiplos ante el ciclo de baja de tasas de la Reserva Federal (FED), y lo multiplica por el EPS Forward proyectado.
+            </span>
+          ) : (
+            <span>
+              {stock.analyst_consensus?.explanation || "Consenso de los principales bancos de inversión y estrategas macro de Wall Street."}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

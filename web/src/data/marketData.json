@@ -36,6 +36,152 @@
   },
   "stocks": [
     {
+      "ticker": "NOW",
+      "name": "ServiceNow, Inc.",
+      "sector": "Automatización & Cloud Empresarial",
+      "price": 109.67,
+      "day_change": -26.95,
+      "target_price": 185,
+      "upside": 68.7,
+      "recommendation": "Strong Buy",
+      "pe_ratio": 44.1,
+      "rsi": 53,
+      "score": 92.6,
+      "cedear_ratio": "20:1",
+      "cedear_price_ars": 9049,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Tasa de renovación contractual superior al 98% en las empresas más grandes del mundo con integración masiva de flujos de trabajo generativos.",
+      "market_cap": "$154B USD",
+      "analyst_consensus": {
+        "target_mean": 185,
+        "target_low": 180,
+        "target_high": 190,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Bank of America)",
+        "explanation": "Plataforma indispensable de digitalización de flujos de trabajo corporativos con retención neta superior al 98% y adopción veloz de Now Assist.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 190,
+            "rating": "Sobreponderar",
+            "date": "24 Oct 2026"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 185,
+            "rating": "Comprar",
+            "date": "23 Oct 2026"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 185,
+            "rating": "Sobreponderar",
+            "date": "16 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 180,
+            "rating": "Comprar",
+            "date": "12 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 115.13,
+      "eps_fwd": 3.85,
+      "per_mediana_5a": 48,
+      "precio_objetivo_algoritmo": 189.49,
+      "precioObjetivoAlgoritmo": 189.49,
+      "retorno_estimado_pct": 72.8,
+      "retornoEstimadoPct": 72.8,
+      "score_total": 92.6,
+      "scoreTotal": 92.6,
+      "quant_breakdown": {
+        "score_retorno": 60,
+        "score_margen": 17.6,
+        "score_tecnico": 15,
+        "per_bancos": 48.05,
+        "per_base": 48.02,
+        "per_ajustado": 49.22,
+        "factor_macro": 1.025,
+        "desvio_tecnico": -4.7,
+        "sma_200": 115.13
+      }
+    },
+    {
+      "ticker": "UBER",
+      "name": "Uber Technologies, Inc.",
+      "sector": "Movilidad & Logística Urbana",
+      "price": 65.74,
+      "day_change": 0.72,
+      "target_price": 91.25,
+      "upside": 38.8,
+      "recommendation": "Strong Buy",
+      "pe_ratio": 32.4,
+      "rsi": 48.9,
+      "score": 91.9,
+      "cedear_ratio": "5:1",
+      "cedear_price_ars": 21698,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Flujo de caja libre récord gracias a su dominio en transporte de pasajeros y delivery, expandiendo con fuerza su segmento de publicidad de alta rentabilidad.",
+      "market_cap": "$138B USD",
+      "analyst_consensus": {
+        "target_mean": 91.25,
+        "target_low": 88,
+        "target_high": 95,
+        "source": "Consenso Bancos Tier-1 (JPMorgan, Morgan Stanley, Goldman Sachs, Bank of America)",
+        "explanation": "Monetización récord de publicidad en app, alta retención del programa de membresías Uber One y sólido flujo libre de caja.",
+        "banks": [
+          {
+            "name": "JPMorgan",
+            "target": 95,
+            "rating": "Sobreponderar",
+            "date": "14 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 92,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2026"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 90,
+            "rating": "Comprar",
+            "date": "21 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 88,
+            "rating": "Comprar",
+            "date": "09 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 73.43,
+      "eps_fwd": 2.65,
+      "per_mediana_5a": 34,
+      "precio_objetivo_algoritmo": 92.77,
+      "precioObjetivoAlgoritmo": 92.77,
+      "retorno_estimado_pct": 41.1,
+      "retornoEstimadoPct": 41.1,
+      "score_total": 91.9,
+      "scoreTotal": 91.9,
+      "quant_breakdown": {
+        "score_retorno": 60,
+        "score_margen": 16.9,
+        "score_tecnico": 15,
+        "per_bancos": 34.43,
+        "per_base": 34.15,
+        "per_ajustado": 35.01,
+        "factor_macro": 1.025,
+        "desvio_tecnico": -10.5,
+        "sma_200": 73.43
+      }
+    },
+    {
       "ticker": "MELI",
       "name": "MercadoLibre, Inc.",
       "sector": "Comercio Electrónico & Fintech",
@@ -46,7 +192,7 @@
       "recommendation": "Strong Buy",
       "pe_ratio": 48.5,
       "rsi": 54.2,
-      "score": 91.2,
+      "score": 91.7,
       "cedear_ratio": "120:1",
       "cedear_price_ars": 22831,
       "pays_dividend": false,
@@ -104,271 +250,26 @@
             "date": "12 Ago 2026"
           }
         ]
-      }
-    },
-    {
-      "ticker": "AMZN",
-      "name": "Amazon.com, Inc.",
-      "sector": "Consumo & Cloud (AWS)",
-      "price": 243.79,
-      "day_change": -4.25,
-      "target_price": 295,
-      "upside": 21,
-      "recommendation": "Strong Buy",
-      "pe_ratio": 42.8,
-      "rsi": 44,
-      "score": 89.4,
-      "cedear_ratio": "144:1",
-      "cedear_price_ars": 2794,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Alto potencial alcista (+33%) proyectado por consenso de Wall Street. Todo el flujo de caja se reinvierte en expansión de infraestructura AWS e inteligencia artificial.",
-      "market_cap": "$2.65T USD",
-      "analyst_consensus": {
-        "target_mean": 295,
-        "target_low": 285,
-        "target_high": 310,
-        "source": "Consenso Bancos Tier-1 (Goldman Sachs, JPMorgan, Morgan Stanley, Bank of America)",
-        "explanation": "Consenso impulsado por la aceleración de Amazon Web Services (AWS) en cargas de trabajo de IA y expansión de márgenes operativos en e-commerce.",
-        "banks": [
-          {
-            "name": "Goldman Sachs",
-            "target": 310,
-            "rating": "Comprar",
-            "date": "24 Oct 2026"
-          },
-          {
-            "name": "JPMorgan",
-            "target": 295,
-            "rating": "Sobreponderar",
-            "date": "17 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 290,
-            "rating": "Sobreponderar",
-            "date": "21 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 285,
-            "rating": "Comprar",
-            "date": "15 Oct 2026"
-          }
-        ]
-      }
-    },
-    {
-      "ticker": "AMD",
-      "name": "Advanced Micro Devices",
-      "sector": "Semiconductores & GPUs",
-      "price": 566.42,
-      "day_change": -2.08,
-      "target_price": 625,
-      "upside": 10.3,
-      "recommendation": "Buy",
-      "pe_ratio": 45.2,
-      "rsi": 52.8,
-      "score": 86.6,
-      "cedear_ratio": "10:1",
-      "cedear_price_ars": 93476,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Competidor directo en chips aceleradores de IA (serie MI300) y procesadores para servidores de centros de datos, capturando cuota de mercado.",
-      "market_cap": "$935B USD",
-      "analyst_consensus": {
-        "target_mean": 625,
-        "target_low": 600,
-        "target_high": 650,
-        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, Bank of America, Citigroup)",
-        "explanation": "Creciente penetración de procesadores EPYC en centros de datos corporativos y expansión de la línea de aceleradores de IA Instinct.",
-        "banks": [
-          {
-            "name": "Goldman Sachs",
-            "target": 650,
-            "rating": "Comprar",
-            "date": "16 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 630,
-            "rating": "Sobreponderar",
-            "date": "22 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 620,
-            "rating": "Comprar",
-            "date": "11 Oct 2026"
-          },
-          {
-            "name": "Citigroup",
-            "target": 600,
-            "rating": "Comprar",
-            "date": "08 Oct 2026"
-          }
-        ]
-      }
-    },
-    {
-      "ticker": "UBER",
-      "name": "Uber Technologies, Inc.",
-      "sector": "Movilidad & Logística Urbana",
-      "price": 65.74,
-      "day_change": 0.72,
-      "target_price": 91.25,
-      "upside": 38.8,
-      "recommendation": "Strong Buy",
-      "pe_ratio": 32.4,
-      "rsi": 48.9,
-      "score": 85.8,
-      "cedear_ratio": "5:1",
-      "cedear_price_ars": 21698,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Flujo de caja libre récord gracias a su dominio en transporte de pasajeros y delivery, expandiendo con fuerza su segmento de publicidad de alta rentabilidad.",
-      "market_cap": "$138B USD",
-      "analyst_consensus": {
-        "target_mean": 91.25,
-        "target_low": 88,
-        "target_high": 95,
-        "source": "Consenso Bancos Tier-1 (JPMorgan, Morgan Stanley, Goldman Sachs, Bank of America)",
-        "explanation": "Monetización récord de publicidad en app, alta retención del programa de membresías Uber One y sólido flujo libre de caja.",
-        "banks": [
-          {
-            "name": "JPMorgan",
-            "target": 95,
-            "rating": "Sobreponderar",
-            "date": "14 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 92,
-            "rating": "Sobreponderar",
-            "date": "18 Oct 2026"
-          },
-          {
-            "name": "Goldman Sachs",
-            "target": 90,
-            "rating": "Comprar",
-            "date": "21 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 88,
-            "rating": "Comprar",
-            "date": "09 Oct 2026"
-          }
-        ]
-      }
-    },
-    {
-      "ticker": "TSLA",
-      "name": "Tesla, Inc.",
-      "sector": "Vehículos Eléctricos & Robotaxis",
-      "price": 403.3,
-      "day_change": -0.23,
-      "target_price": 430,
-      "upside": 6.6,
-      "recommendation": "Buy",
-      "pe_ratio": 78.4,
-      "rsi": 59.4,
-      "score": 84.4,
-      "cedear_ratio": "15:1",
-      "cedear_price_ars": 44371,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Pionero mundial en movilidad autónoma (FSD), robotaxis, almacenamiento de energía Megapack y robótica humanoide Optimus.",
-      "market_cap": "$1.28T USD",
-      "analyst_consensus": {
-        "target_mean": 430,
-        "target_low": 410,
-        "target_high": 450,
-        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Barclays, Bank of America, Goldman Sachs)",
-        "explanation": "Valuación impulsada por avances en conducción autónoma supervisada (FSD), almacenamiento de energía Megapack y el despliegue del ecosistema de robotaxis.",
-        "banks": [
-          {
-            "name": "Morgan Stanley",
-            "target": 450,
-            "rating": "Sobreponderar",
-            "date": "24 Oct 2026"
-          },
-          {
-            "name": "Barclays",
-            "target": 440,
-            "rating": "Sobreponderar",
-            "date": "23 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 420,
-            "rating": "Neutral",
-            "date": "15 Oct 2026"
-          },
-          {
-            "name": "Goldman Sachs",
-            "target": 410,
-            "rating": "Neutral",
-            "date": "21 Oct 2026"
-          }
-        ]
-      }
-    },
-    {
-      "ticker": "PLTR",
-      "name": "Palantir Technologies",
-      "sector": "Software IA & Analítica de Datos",
-      "price": 196.42,
-      "day_change": -0.2,
-      "target_price": 215,
-      "upside": 9.5,
-      "recommendation": "Strong Buy",
-      "pe_ratio": 112.5,
-      "rsi": 61.2,
-      "score": 88.5,
-      "cedear_ratio": "2:1",
-      "cedear_price_ars": 162076,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Adopción sin precedentes de su plataforma de IA empresarial (AIP) en empresas del Fortune 500 y contratos estratégicos de defensa del gobierno de EE.UU.",
-      "market_cap": "$445B USD",
-      "analyst_consensus": {
-        "target_mean": 215,
-        "target_low": 195,
-        "target_high": 230,
-        "source": "Consenso Bancos Tier-1 (Bank of America, Citigroup, Goldman Sachs, Morgan Stanley)",
-        "explanation": "Tracción comercial masiva de Artificial Intelligence Platform (AIP) en empresas del S&P 500 y renovación de contratos gubernamentales estratégicos.",
-        "banks": [
-          {
-            "name": "Bank of America",
-            "target": 230,
-            "rating": "Comprar",
-            "date": "18 Oct 2026"
-          },
-          {
-            "name": "Citigroup",
-            "target": 220,
-            "rating": "Comprar",
-            "date": "10 Oct 2026"
-          },
-          {
-            "name": "Goldman Sachs",
-            "target": 215,
-            "rating": "Neutral",
-            "date": "04 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 195,
-            "rating": "Neutral",
-            "date": "25 Sep 2026"
-          }
-        ]
+      },
+      "sma_200": 1815.71,
+      "eps_fwd": 48.5,
+      "per_mediana_5a": 52,
+      "precio_objetivo_algoritmo": 2522.32,
+      "precioObjetivoAlgoritmo": 2522.32,
+      "retorno_estimado_pct": 51.9,
+      "retornoEstimadoPct": 51.9,
+      "score_total": 91.7,
+      "scoreTotal": 91.7,
+      "quant_breakdown": {
+        "score_retorno": 60,
+        "score_margen": 16.7,
+        "score_tecnico": 15,
+        "per_bancos": 48.39,
+        "per_base": 50.74,
+        "per_ajustado": 52.01,
+        "factor_macro": 1.025,
+        "desvio_tecnico": -8.6,
+        "sma_200": 1815.71
       }
     },
     {
@@ -382,7 +283,7 @@
       "recommendation": "Buy",
       "pe_ratio": 38.6,
       "rsi": 50.1,
-      "score": 83.9,
+      "score": 84.6,
       "cedear_ratio": "6:1",
       "cedear_price_ars": 63509,
       "pays_dividend": false,
@@ -422,112 +323,26 @@
             "date": "07 Oct 2026"
           }
         ]
-      }
-    },
-    {
-      "ticker": "NOW",
-      "name": "ServiceNow, Inc.",
-      "sector": "Automatización & Cloud Empresarial",
-      "price": 109.67,
-      "day_change": -26.95,
-      "target_price": 185,
-      "upside": 68.7,
-      "recommendation": "Strong Buy",
-      "pe_ratio": 44.1,
-      "rsi": 53,
-      "score": 86,
-      "cedear_ratio": "20:1",
-      "cedear_price_ars": 9049,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Tasa de renovación contractual superior al 98% en las empresas más grandes del mundo con integración masiva de flujos de trabajo generativos.",
-      "market_cap": "$154B USD",
-      "analyst_consensus": {
-        "target_mean": 185,
-        "target_low": 180,
-        "target_high": 190,
-        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Bank of America)",
-        "explanation": "Plataforma indispensable de digitalización de flujos de trabajo corporativos con retención neta superior al 98% y adopción veloz de Now Assist.",
-        "banks": [
-          {
-            "name": "Morgan Stanley",
-            "target": 190,
-            "rating": "Sobreponderar",
-            "date": "24 Oct 2026"
-          },
-          {
-            "name": "Goldman Sachs",
-            "target": 185,
-            "rating": "Comprar",
-            "date": "23 Oct 2026"
-          },
-          {
-            "name": "JPMorgan",
-            "target": 185,
-            "rating": "Sobreponderar",
-            "date": "16 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 180,
-            "rating": "Comprar",
-            "date": "12 Oct 2026"
-          }
-        ]
-      }
-    },
-    {
-      "ticker": "PANW",
-      "name": "Palo Alto Networks",
-      "sector": "Ciberseguridad en la Nube",
-      "price": 380.57,
-      "day_change": -3.53,
-      "target_price": 448.75,
-      "upside": 17.9,
-      "recommendation": "Strong Buy",
-      "pe_ratio": 51.3,
-      "rsi": 51.5,
-      "score": 85.1,
-      "cedear_ratio": "8:1",
-      "cedear_price_ars": 78507,
-      "pays_dividend": false,
-      "dividend_yield": 0,
-      "dividend_frequency": "No paga (Reinversión 100%)",
-      "thesis": "Líder global en ciberseguridad corporativa. Beneficiario directo del aumento de presupuestos empresariales para proteger sistemas e infraestructura crítica.",
-      "market_cap": "$132B USD",
-      "analyst_consensus": {
-        "target_mean": 448.75,
-        "target_low": 440,
-        "target_high": 460,
-        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, JPMorgan, Barclays)",
-        "explanation": "Liderazgo consolidado en ciberseguridad corporativa bajo estrategia de plataformización integral (Prisma Cloud, Cortex y Strata).",
-        "banks": [
-          {
-            "name": "Goldman Sachs",
-            "target": 460,
-            "rating": "Comprar",
-            "date": "15 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 450,
-            "rating": "Sobreponderar",
-            "date": "21 Oct 2026"
-          },
-          {
-            "name": "JPMorgan",
-            "target": 445,
-            "rating": "Sobreponderar",
-            "date": "10 Oct 2026"
-          },
-          {
-            "name": "Barclays",
-            "target": 440,
-            "rating": "Sobreponderar",
-            "date": "04 Oct 2026"
-          }
-        ]
+      },
+      "sma_200": 198.36,
+      "eps_fwd": 8.5,
+      "per_mediana_5a": 38,
+      "precio_objetivo_algoritmo": 334.48,
+      "precioObjetivoAlgoritmo": 334.48,
+      "retorno_estimado_pct": 44.9,
+      "retornoEstimadoPct": 44.9,
+      "score_total": 84.6,
+      "scoreTotal": 84.6,
+      "quant_breakdown": {
+        "score_retorno": 60,
+        "score_margen": 15.5,
+        "score_tecnico": 9.1,
+        "per_bancos": 39.12,
+        "per_base": 38.39,
+        "per_ajustado": 39.35,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 16.4,
+        "sma_200": 198.36
       }
     },
     {
@@ -541,7 +356,7 @@
       "recommendation": "Strong Buy",
       "pe_ratio": 31.8,
       "rsi": 56.4,
-      "score": 87.8,
+      "score": 80.9,
       "cedear_ratio": "16:1",
       "cedear_price_ars": 6400,
       "pays_dividend": false,
@@ -581,59 +396,99 @@
             "date": "17 Oct 2026"
           }
         ]
+      },
+      "sma_200": 81.73,
+      "eps_fwd": 2.45,
+      "per_mediana_5a": 32,
+      "precio_objetivo_algoritmo": 82.55,
+      "precioObjetivoAlgoritmo": 82.55,
+      "retorno_estimado_pct": 33,
+      "retornoEstimadoPct": 33,
+      "score_total": 80.9,
+      "scoreTotal": 80.9,
+      "quant_breakdown": {
+        "score_retorno": 49.5,
+        "score_margen": 16.4,
+        "score_tecnico": 15,
+        "per_bancos": 34.49,
+        "per_base": 32.87,
+        "per_ajustado": 33.69,
+        "factor_macro": 1.025,
+        "desvio_tecnico": -24.1,
+        "sma_200": 81.73
       }
     },
     {
-      "ticker": "MSFT",
-      "name": "Microsoft Corporation",
-      "sector": "Tecnología / IA & Nube",
-      "price": 530.14,
-      "day_change": -0.16,
-      "target_price": 610,
-      "upside": 15.1,
+      "ticker": "AMZN",
+      "name": "Amazon.com, Inc.",
+      "sector": "Consumo & Cloud (AWS)",
+      "price": 243.79,
+      "day_change": -4.25,
+      "target_price": 295,
+      "upside": 21,
       "recommendation": "Strong Buy",
-      "pe_ratio": 35.8,
-      "rsi": 51.9,
-      "score": 83.3,
-      "cedear_ratio": "10:1",
-      "cedear_price_ars": 87489,
-      "pays_dividend": true,
-      "dividend_yield": 0.82,
-      "dividend_frequency": "Trimestral en USD",
-      "thesis": "Liderazgo indiscutido en IA empresarial y Azure. Paga dividendos constantes con crecimiento anual ininterrumpido desde hace más de 15 años.",
-      "market_cap": "$3.94T USD",
+      "pe_ratio": 42.8,
+      "rsi": 44,
+      "score": 62.6,
+      "cedear_ratio": "144:1",
+      "cedear_price_ars": 2794,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Alto potencial alcista (+33%) proyectado por consenso de Wall Street. Todo el flujo de caja se reinvierte en expansión de infraestructura AWS e inteligencia artificial.",
+      "market_cap": "$2.65T USD",
       "analyst_consensus": {
-        "target_mean": 610,
-        "target_low": 585,
-        "target_high": 630,
-        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, JPMorgan, Bank of America)",
-        "explanation": "Crecimiento acelerado en infraestructura Azure AI y monetización a gran escala de copilotos de productividad empresarial en Microsoft 365.",
+        "target_mean": 295,
+        "target_low": 285,
+        "target_high": 310,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, JPMorgan, Morgan Stanley, Bank of America)",
+        "explanation": "Consenso impulsado por la aceleración de Amazon Web Services (AWS) en cargas de trabajo de IA y expansión de márgenes operativos en e-commerce.",
         "banks": [
           {
             "name": "Goldman Sachs",
-            "target": 630,
+            "target": 310,
             "rating": "Comprar",
-            "date": "22 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 620,
-            "rating": "Sobreponderar",
-            "date": "18 Oct 2026"
+            "date": "24 Oct 2026"
           },
           {
             "name": "JPMorgan",
-            "target": 605,
+            "target": 295,
             "rating": "Sobreponderar",
-            "date": "15 Oct 2026"
+            "date": "17 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 290,
+            "rating": "Sobreponderar",
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America",
-            "target": 585,
+            "target": 285,
             "rating": "Comprar",
-            "date": "10 Oct 2026"
+            "date": "15 Oct 2026"
           }
         ]
+      },
+      "sma_200": 243.38,
+      "eps_fwd": 6.25,
+      "per_mediana_5a": 45,
+      "precio_objetivo_algoritmo": 293.21,
+      "precioObjetivoAlgoritmo": 293.21,
+      "retorno_estimado_pct": 20.3,
+      "retornoEstimadoPct": 20.3,
+      "score_total": 62.6,
+      "scoreTotal": 62.6,
+      "quant_breakdown": {
+        "score_retorno": 30.5,
+        "score_margen": 17.2,
+        "score_tecnico": 14.9,
+        "per_bancos": 47.2,
+        "per_base": 45.77,
+        "per_ajustado": 46.91,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 0.2,
+        "sma_200": 243.38
       }
     },
     {
@@ -647,7 +502,7 @@
       "recommendation": "Strong Buy",
       "pe_ratio": 54.2,
       "rsi": 58.2,
-      "score": 88,
+      "score": 58,
       "cedear_ratio": "24:1",
       "cedear_price_ars": 14692,
       "pays_dividend": true,
@@ -687,59 +542,26 @@
             "date": "09 Oct 2026"
           }
         ]
-      }
-    },
-    {
-      "ticker": "AAPL",
-      "name": "Apple Inc.",
-      "sector": "Tecnología de Consumo",
-      "price": 348.91,
-      "day_change": 1.48,
-      "target_price": 375,
-      "upside": 7.5,
-      "recommendation": "Buy",
-      "pe_ratio": 34.1,
-      "rsi": 55.1,
-      "score": 82.5,
-      "cedear_ratio": "20:1",
-      "cedear_price_ars": 28790,
-      "pays_dividend": true,
-      "dividend_yield": 0.55,
-      "dividend_frequency": "Trimestral en USD",
-      "thesis": "Base instalada récord de más de 2.200 millones de dispositivos activos y ciclo de actualización impulsado por Apple Intelligence.",
-      "market_cap": "$5.18T USD",
-      "analyst_consensus": {
-        "target_mean": 375,
-        "target_low": 360,
-        "target_high": 390,
-        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, JPMorgan, Barclays)",
-        "explanation": "Superciclo de renovación de hardware respaldado por Apple Intelligence y márgenes brutos récord en la división de Servicios.",
-        "banks": [
-          {
-            "name": "Morgan Stanley",
-            "target": 390,
-            "rating": "Sobreponderar",
-            "date": "23 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 380,
-            "rating": "Comprar",
-            "date": "17 Oct 2026"
-          },
-          {
-            "name": "JPMorgan",
-            "target": 370,
-            "rating": "Sobreponderar",
-            "date": "14 Oct 2026"
-          },
-          {
-            "name": "Barclays",
-            "target": 360,
-            "rating": "Neutral",
-            "date": "08 Oct 2026"
-          }
-        ]
+      },
+      "sma_200": 204.28,
+      "eps_fwd": 4.85,
+      "per_mediana_5a": 50,
+      "precio_objetivo_algoritmo": 256.63,
+      "precioObjetivoAlgoritmo": 256.63,
+      "retorno_estimado_pct": 20.1,
+      "retornoEstimadoPct": 20.1,
+      "score_total": 58,
+      "scoreTotal": 58,
+      "quant_breakdown": {
+        "score_retorno": 30.2,
+        "score_margen": 14.3,
+        "score_tecnico": 13.5,
+        "per_bancos": 54.64,
+        "per_base": 51.62,
+        "per_ajustado": 52.91,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 4.6,
+        "sma_200": 204.28
       }
     },
     {
@@ -753,7 +575,7 @@
       "recommendation": "Strong Buy",
       "pe_ratio": 25.4,
       "rsi": 49.3,
-      "score": 85.1,
+      "score": 51.9,
       "cedear_ratio": "29:1",
       "cedear_price_ars": 16151,
       "pays_dividend": true,
@@ -793,6 +615,26 @@
             "date": "11 Oct 2026"
           }
         ]
+      },
+      "sma_200": 340.94,
+      "eps_fwd": 12.2,
+      "per_mediana_5a": 24,
+      "precio_objetivo_algoritmo": 323.33,
+      "precioObjetivoAlgoritmo": 323.33,
+      "retorno_estimado_pct": 13.9,
+      "retornoEstimadoPct": 13.9,
+      "score_total": 51.9,
+      "scoreTotal": 51.9,
+      "quant_breakdown": {
+        "score_retorno": 20.9,
+        "score_margen": 16,
+        "score_tecnico": 15,
+        "per_bancos": 29.3,
+        "per_base": 25.86,
+        "per_ajustado": 26.5,
+        "factor_macro": 1.025,
+        "desvio_tecnico": -16.8,
+        "sma_200": 340.94
       }
     },
     {
@@ -806,7 +648,7 @@
       "recommendation": "Strong Buy",
       "pe_ratio": 26.2,
       "rsi": 54.8,
-      "score": 86.4,
+      "score": 49.8,
       "cedear_ratio": "24:1",
       "cedear_price_ars": 42944,
       "pays_dividend": true,
@@ -846,6 +688,99 @@
             "date": "10 Oct 2026"
           }
         ]
+      },
+      "sma_200": 632.11,
+      "eps_fwd": 26.5,
+      "per_mediana_5a": 25,
+      "precio_objetivo_algoritmo": 705.07,
+      "precioObjetivoAlgoritmo": 705.07,
+      "retorno_estimado_pct": 12.9,
+      "retornoEstimadoPct": 12.9,
+      "score_total": 49.8,
+      "scoreTotal": 49.8,
+      "quant_breakdown": {
+        "score_retorno": 19.4,
+        "score_margen": 15.4,
+        "score_tecnico": 15,
+        "per_bancos": 27.74,
+        "per_base": 25.96,
+        "per_ajustado": 26.61,
+        "factor_macro": 1.025,
+        "desvio_tecnico": -1.2,
+        "sma_200": 632.11
+      }
+    },
+    {
+      "ticker": "PANW",
+      "name": "Palo Alto Networks",
+      "sector": "Ciberseguridad en la Nube",
+      "price": 380.57,
+      "day_change": -3.53,
+      "target_price": 448.75,
+      "upside": 17.9,
+      "recommendation": "Strong Buy",
+      "pe_ratio": 51.3,
+      "rsi": 51.5,
+      "score": 41.9,
+      "cedear_ratio": "8:1",
+      "cedear_price_ars": 78507,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Líder global en ciberseguridad corporativa. Beneficiario directo del aumento de presupuestos empresariales para proteger sistemas e infraestructura crítica.",
+      "market_cap": "$132B USD",
+      "analyst_consensus": {
+        "target_mean": 448.75,
+        "target_low": 440,
+        "target_high": 460,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, JPMorgan, Barclays)",
+        "explanation": "Liderazgo consolidado en ciberseguridad corporativa bajo estrategia de plataformización integral (Prisma Cloud, Cortex y Strata).",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 460,
+            "rating": "Comprar",
+            "date": "15 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 450,
+            "rating": "Sobreponderar",
+            "date": "21 Oct 2026"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 445,
+            "rating": "Sobreponderar",
+            "date": "10 Oct 2026"
+          },
+          {
+            "name": "Barclays",
+            "target": 440,
+            "rating": "Sobreponderar",
+            "date": "04 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 268.94,
+      "eps_fwd": 8.2,
+      "per_mediana_5a": 52,
+      "precio_objetivo_algoritmo": 445.08,
+      "precioObjetivoAlgoritmo": 445.08,
+      "retorno_estimado_pct": 17,
+      "retornoEstimadoPct": 17,
+      "score_total": 41.9,
+      "scoreTotal": 41.9,
+      "quant_breakdown": {
+        "score_retorno": 25.5,
+        "score_margen": 16.4,
+        "score_tecnico": 0,
+        "per_bancos": 54.73,
+        "per_base": 52.95,
+        "per_ajustado": 54.28,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 41.5,
+        "sma_200": 268.94
       }
     },
     {
@@ -859,7 +794,7 @@
       "recommendation": "Buy",
       "pe_ratio": 24.8,
       "rsi": 47.6,
-      "score": 80.2,
+      "score": 40.1,
       "cedear_ratio": "5:1",
       "cedear_price_ars": 30636,
       "pays_dividend": true,
@@ -899,59 +834,26 @@
             "date": "09 Oct 2026"
           }
         ]
-      }
-    },
-    {
-      "ticker": "JPM",
-      "name": "JPMorgan Chase & Co.",
-      "sector": "Banca Global & Finanzas",
-      "price": 343.58,
-      "day_change": 1.26,
-      "target_price": 372.5,
-      "upside": 8.4,
-      "recommendation": "Buy",
-      "pe_ratio": 13.5,
-      "rsi": 52.3,
-      "score": 81,
-      "cedear_ratio": "10:1",
-      "cedear_price_ars": 56701,
-      "pays_dividend": true,
-      "dividend_yield": 2.25,
-      "dividend_frequency": "Trimestral en USD",
-      "thesis": "El banco más grande y sólido de Estados Unidos, con márgenes de intermediación elevados y liderazgo en banca de inversión corporativa.",
-      "market_cap": "$960B USD",
-      "analyst_consensus": {
-        "target_mean": 372.5,
-        "target_low": 365,
-        "target_high": 380,
-        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, Bank of America, UBS)",
-        "explanation": "Fortaleza patrimonial de primer nivel, liderazgo en banca corporativa e ingresos récord por intermediación financiera.",
-        "banks": [
-          {
-            "name": "Morgan Stanley",
-            "target": 380,
-            "rating": "Sobreponderar",
-            "date": "15 Oct 2026"
-          },
-          {
-            "name": "Goldman Sachs",
-            "target": 375,
-            "rating": "Comprar",
-            "date": "14 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 370,
-            "rating": "Comprar",
-            "date": "12 Oct 2026"
-          },
-          {
-            "name": "UBS",
-            "target": 365,
-            "rating": "Neutral",
-            "date": "08 Oct 2026"
-          }
-        ]
+      },
+      "sma_200": 82.02,
+      "eps_fwd": 3.95,
+      "per_mediana_5a": 25,
+      "precio_objetivo_algoritmo": 101.31,
+      "precioObjetivoAlgoritmo": 101.31,
+      "retorno_estimado_pct": 9.1,
+      "retornoEstimadoPct": 9.1,
+      "score_total": 40.1,
+      "scoreTotal": 40.1,
+      "quant_breakdown": {
+        "score_retorno": 13.7,
+        "score_margen": 15.8,
+        "score_tecnico": 10.6,
+        "per_bancos": 25.06,
+        "per_base": 25.02,
+        "per_ajustado": 25.65,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 13.2,
+        "sma_200": 82.02
       }
     },
     {
@@ -965,7 +867,7 @@
       "recommendation": "Strong Buy",
       "pe_ratio": 46.8,
       "rsi": 53.6,
-      "score": 82,
+      "score": 39.5,
       "cedear_ratio": "16:1",
       "cedear_price_ars": 141689,
       "pays_dividend": true,
@@ -1005,59 +907,172 @@
             "date": "07 Oct 2026"
           }
         ]
+      },
+      "sma_200": 1089.52,
+      "eps_fwd": 28.5,
+      "per_mediana_5a": 55,
+      "precio_objetivo_algoritmo": 1543.01,
+      "precioObjetivoAlgoritmo": 1543.01,
+      "retorno_estimado_pct": 12.3,
+      "retornoEstimadoPct": 12.3,
+      "score_total": 39.5,
+      "scoreTotal": 39.5,
+      "quant_breakdown": {
+        "score_retorno": 18.5,
+        "score_margen": 18.4,
+        "score_tecnico": 2.6,
+        "per_bancos": 48.77,
+        "per_base": 52.82,
+        "per_ajustado": 54.14,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 26.1,
+        "sma_200": 1089.52
       }
     },
     {
-      "ticker": "TXN",
-      "name": "Texas Instruments",
-      "sector": "Semiconductores Analógicos",
-      "price": 312.94,
-      "day_change": 1,
-      "target_price": 342.5,
-      "upside": 9.4,
-      "recommendation": "Hold / Accumulate",
-      "pe_ratio": 32.1,
-      "rsi": 48,
-      "score": 75.8,
-      "cedear_ratio": "5:1",
-      "cedear_price_ars": 103289,
+      "ticker": "JPM",
+      "name": "JPMorgan Chase & Co.",
+      "sector": "Banca Global & Finanzas",
+      "price": 343.58,
+      "day_change": 1.26,
+      "target_price": 372.5,
+      "upside": 8.4,
+      "recommendation": "Buy",
+      "pe_ratio": 13.5,
+      "rsi": 52.3,
+      "score": 37.6,
+      "cedear_ratio": "10:1",
+      "cedear_price_ars": 56701,
       "pays_dividend": true,
-      "dividend_yield": 2.75,
+      "dividend_yield": 2.25,
       "dividend_frequency": "Trimestral en USD",
-      "thesis": "Chips esenciales para automatización industrial y automotriz. Generación constante de flujo de caja libre para remunerar accionistas.",
-      "market_cap": "$281B USD",
+      "thesis": "El banco más grande y sólido de Estados Unidos, con márgenes de intermediación elevados y liderazgo en banca de inversión corporativa.",
+      "market_cap": "$960B USD",
       "analyst_consensus": {
-        "target_mean": 342.5,
-        "target_low": 335,
-        "target_high": 350,
-        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, Goldman Sachs, UBS)",
-        "explanation": "Liderazgo en semiconductores analógicos e incrustados para automatización industrial y automotriz con ventajas de escala en fabricación.",
+        "target_mean": 372.5,
+        "target_low": 365,
+        "target_high": 380,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, Bank of America, UBS)",
+        "explanation": "Fortaleza patrimonial de primer nivel, liderazgo en banca corporativa e ingresos récord por intermediación financiera.",
         "banks": [
           {
             "name": "Morgan Stanley",
-            "target": 350,
+            "target": 380,
             "rating": "Sobreponderar",
-            "date": "23 Oct 2026"
-          },
-          {
-            "name": "Bank of America",
-            "target": 345,
-            "rating": "Comprar",
-            "date": "16 Oct 2026"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
-            "target": 340,
-            "rating": "Neutral",
-            "date": "11 Oct 2026"
+            "target": 375,
+            "rating": "Comprar",
+            "date": "14 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 370,
+            "rating": "Comprar",
+            "date": "12 Oct 2026"
           },
           {
             "name": "UBS",
-            "target": 335,
+            "target": 365,
             "rating": "Neutral",
-            "date": "04 Oct 2026"
+            "date": "08 Oct 2026"
           }
         ]
+      },
+      "sma_200": 322.8,
+      "eps_fwd": 25.5,
+      "per_mediana_5a": 13.5,
+      "precio_objetivo_algoritmo": 362.99,
+      "precioObjetivoAlgoritmo": 362.99,
+      "retorno_estimado_pct": 5.6,
+      "retornoEstimadoPct": 5.6,
+      "score_total": 37.6,
+      "scoreTotal": 37.6,
+      "quant_breakdown": {
+        "score_retorno": 8.4,
+        "score_margen": 16.3,
+        "score_tecnico": 12.9,
+        "per_bancos": 14.61,
+        "per_base": 13.89,
+        "per_ajustado": 14.23,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 6.4,
+        "sma_200": 322.8
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft Corporation",
+      "sector": "Tecnología / IA & Nube",
+      "price": 530.14,
+      "day_change": -0.16,
+      "target_price": 610,
+      "upside": 15.1,
+      "recommendation": "Strong Buy",
+      "pe_ratio": 35.8,
+      "rsi": 51.9,
+      "score": 34.6,
+      "cedear_ratio": "10:1",
+      "cedear_price_ars": 87489,
+      "pays_dividend": true,
+      "dividend_yield": 0.82,
+      "dividend_frequency": "Trimestral en USD",
+      "thesis": "Liderazgo indiscutido en IA empresarial y Azure. Paga dividendos constantes con crecimiento anual ininterrumpido desde hace más de 15 años.",
+      "market_cap": "$3.94T USD",
+      "analyst_consensus": {
+        "target_mean": 610,
+        "target_low": 585,
+        "target_high": 630,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, JPMorgan, Bank of America)",
+        "explanation": "Crecimiento acelerado en infraestructura Azure AI y monetización a gran escala de copilotos de productividad empresarial en Microsoft 365.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 630,
+            "rating": "Comprar",
+            "date": "22 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 620,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2026"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 605,
+            "rating": "Sobreponderar",
+            "date": "15 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 585,
+            "rating": "Comprar",
+            "date": "10 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 437.61,
+      "eps_fwd": 15.8,
+      "per_mediana_5a": 34,
+      "precio_objetivo_algoritmo": 576.75,
+      "precioObjetivoAlgoritmo": 576.75,
+      "retorno_estimado_pct": 8.8,
+      "retornoEstimadoPct": 8.8,
+      "score_total": 34.6,
+      "scoreTotal": 34.6,
+      "quant_breakdown": {
+        "score_retorno": 13.2,
+        "score_margen": 15.5,
+        "score_tecnico": 5.9,
+        "per_bancos": 38.61,
+        "per_base": 35.61,
+        "per_ajustado": 36.5,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 21.1,
+        "sma_200": 437.61
       }
     },
     {
@@ -1071,7 +1086,7 @@
       "recommendation": "Buy",
       "pe_ratio": 22.3,
       "rsi": 46.2,
-      "score": 78.5,
+      "score": 32.1,
       "cedear_ratio": "5:1",
       "cedear_price_ars": 90833,
       "pays_dividend": true,
@@ -1111,6 +1126,391 @@
             "date": "08 Oct 2026"
           }
         ]
+      },
+      "sma_200": 246.71,
+      "eps_fwd": 12.8,
+      "per_mediana_5a": 21,
+      "precio_objetivo_algoritmo": 285.82,
+      "precioObjetivoAlgoritmo": 285.82,
+      "retorno_estimado_pct": 3.9,
+      "retornoEstimadoPct": 3.9,
+      "score_total": 32.1,
+      "scoreTotal": 32.1,
+      "quant_breakdown": {
+        "score_retorno": 5.9,
+        "score_margen": 15,
+        "score_tecnico": 11.2,
+        "per_bancos": 23.24,
+        "per_base": 21.78,
+        "per_ajustado": 22.33,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 11.5,
+        "sma_200": 246.71
+      }
+    },
+    {
+      "ticker": "TSLA",
+      "name": "Tesla, Inc.",
+      "sector": "Vehículos Eléctricos & Robotaxis",
+      "price": 403.3,
+      "day_change": -0.23,
+      "target_price": 430,
+      "upside": 6.6,
+      "recommendation": "Buy",
+      "pe_ratio": 78.4,
+      "rsi": 59.4,
+      "score": 29.6,
+      "cedear_ratio": "15:1",
+      "cedear_price_ars": 44371,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Pionero mundial en movilidad autónoma (FSD), robotaxis, almacenamiento de energía Megapack y robótica humanoide Optimus.",
+      "market_cap": "$1.28T USD",
+      "analyst_consensus": {
+        "target_mean": 430,
+        "target_low": 410,
+        "target_high": 450,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Barclays, Bank of America, Goldman Sachs)",
+        "explanation": "Valuación impulsada por avances en conducción autónoma supervisada (FSD), almacenamiento de energía Megapack y el despliegue del ecosistema de robotaxis.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 450,
+            "rating": "Sobreponderar",
+            "date": "24 Oct 2026"
+          },
+          {
+            "name": "Barclays",
+            "target": 440,
+            "rating": "Sobreponderar",
+            "date": "23 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 420,
+            "rating": "Neutral",
+            "date": "15 Oct 2026"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 410,
+            "rating": "Neutral",
+            "date": "21 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 385.5,
+      "eps_fwd": 4.8,
+      "per_mediana_5a": 75,
+      "precio_objetivo_algoritmo": 394.11,
+      "precioObjetivoAlgoritmo": 394.11,
+      "retorno_estimado_pct": -2.3,
+      "retornoEstimadoPct": -2.3,
+      "score_total": 29.6,
+      "scoreTotal": 29.6,
+      "quant_breakdown": {
+        "score_retorno": 0,
+        "score_margen": 16.1,
+        "score_tecnico": 13.5,
+        "per_bancos": 89.58,
+        "per_base": 80.1,
+        "per_ajustado": 82.11,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 4.6,
+        "sma_200": 385.5
+      }
+    },
+    {
+      "ticker": "TXN",
+      "name": "Texas Instruments",
+      "sector": "Semiconductores Analógicos",
+      "price": 312.94,
+      "day_change": 1,
+      "target_price": 342.5,
+      "upside": 9.4,
+      "recommendation": "Hold / Accumulate",
+      "pe_ratio": 32.1,
+      "rsi": 48,
+      "score": 24.4,
+      "cedear_ratio": "5:1",
+      "cedear_price_ars": 103289,
+      "pays_dividend": true,
+      "dividend_yield": 2.75,
+      "dividend_frequency": "Trimestral en USD",
+      "thesis": "Chips esenciales para automatización industrial y automotriz. Generación constante de flujo de caja libre para remunerar accionistas.",
+      "market_cap": "$281B USD",
+      "analyst_consensus": {
+        "target_mean": 342.5,
+        "target_low": 335,
+        "target_high": 350,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, Goldman Sachs, UBS)",
+        "explanation": "Liderazgo en semiconductores analógicos e incrustados para automatización industrial y automotriz con ventajas de escala en fabricación.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 350,
+            "rating": "Sobreponderar",
+            "date": "23 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 345,
+            "rating": "Comprar",
+            "date": "16 Oct 2026"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 340,
+            "rating": "Neutral",
+            "date": "11 Oct 2026"
+          },
+          {
+            "name": "UBS",
+            "target": 335,
+            "rating": "Neutral",
+            "date": "04 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 259.12,
+      "eps_fwd": 9.8,
+      "per_mediana_5a": 30,
+      "precio_objetivo_algoritmo": 318.75,
+      "precioObjetivoAlgoritmo": 318.75,
+      "retorno_estimado_pct": 1.9,
+      "retornoEstimadoPct": 1.9,
+      "score_total": 24.4,
+      "scoreTotal": 24.4,
+      "quant_breakdown": {
+        "score_retorno": 2.9,
+        "score_margen": 15.3,
+        "score_tecnico": 6.2,
+        "per_bancos": 34.95,
+        "per_base": 31.73,
+        "per_ajustado": 32.53,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 20.8,
+        "sma_200": 259.12
+      }
+    },
+    {
+      "ticker": "AMD",
+      "name": "Advanced Micro Devices",
+      "sector": "Semiconductores & GPUs",
+      "price": 566.42,
+      "day_change": -2.08,
+      "target_price": 625,
+      "upside": 10.3,
+      "recommendation": "Buy",
+      "pe_ratio": 45.2,
+      "rsi": 52.8,
+      "score": 24.1,
+      "cedear_ratio": "10:1",
+      "cedear_price_ars": 93476,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Competidor directo en chips aceleradores de IA (serie MI300) y procesadores para servidores de centros de datos, capturando cuota de mercado.",
+      "market_cap": "$935B USD",
+      "analyst_consensus": {
+        "target_mean": 625,
+        "target_low": 600,
+        "target_high": 650,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, Bank of America, Citigroup)",
+        "explanation": "Creciente penetración de procesadores EPYC en centros de datos corporativos y expansión de la línea de aceleradores de IA Instinct.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 650,
+            "rating": "Comprar",
+            "date": "16 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 630,
+            "rating": "Sobreponderar",
+            "date": "22 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 620,
+            "rating": "Comprar",
+            "date": "11 Oct 2026"
+          },
+          {
+            "name": "Citigroup",
+            "target": 600,
+            "rating": "Comprar",
+            "date": "08 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 409.08,
+      "eps_fwd": 13.5,
+      "per_mediana_5a": 42,
+      "precio_objetivo_algoritmo": 601.98,
+      "precioObjetivoAlgoritmo": 601.98,
+      "retorno_estimado_pct": 6.3,
+      "retornoEstimadoPct": 6.3,
+      "score_total": 24.1,
+      "scoreTotal": 24.1,
+      "quant_breakdown": {
+        "score_retorno": 9.5,
+        "score_margen": 14.6,
+        "score_tecnico": 0,
+        "per_bancos": 46.3,
+        "per_base": 43.5,
+        "per_ajustado": 44.59,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 38.5,
+        "sma_200": 409.08
+      }
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple Inc.",
+      "sector": "Tecnología de Consumo",
+      "price": 348.91,
+      "day_change": 1.48,
+      "target_price": 375,
+      "upside": 7.5,
+      "recommendation": "Buy",
+      "pe_ratio": 34.1,
+      "rsi": 55.1,
+      "score": 22.2,
+      "cedear_ratio": "20:1",
+      "cedear_price_ars": 28790,
+      "pays_dividend": true,
+      "dividend_yield": 0.55,
+      "dividend_frequency": "Trimestral en USD",
+      "thesis": "Base instalada récord de más de 2.200 millones de dispositivos activos y ciclo de actualización impulsado por Apple Intelligence.",
+      "market_cap": "$5.18T USD",
+      "analyst_consensus": {
+        "target_mean": 375,
+        "target_low": 360,
+        "target_high": 390,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, JPMorgan, Barclays)",
+        "explanation": "Superciclo de renovación de hardware respaldado por Apple Intelligence y márgenes brutos récord en la división de Servicios.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 390,
+            "rating": "Sobreponderar",
+            "date": "23 Oct 2026"
+          },
+          {
+            "name": "Bank of America",
+            "target": 380,
+            "rating": "Comprar",
+            "date": "17 Oct 2026"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 370,
+            "rating": "Sobreponderar",
+            "date": "14 Oct 2026"
+          },
+          {
+            "name": "Barclays",
+            "target": 360,
+            "rating": "Neutral",
+            "date": "08 Oct 2026"
+          }
+        ]
+      },
+      "sma_200": 296.13,
+      "eps_fwd": 10.8,
+      "per_mediana_5a": 30,
+      "precio_objetivo_algoritmo": 350.4,
+      "precioObjetivoAlgoritmo": 350.4,
+      "retorno_estimado_pct": 0.4,
+      "retornoEstimadoPct": 0.4,
+      "score_total": 22.2,
+      "scoreTotal": 22.2,
+      "quant_breakdown": {
+        "score_retorno": 0.6,
+        "score_margen": 13.5,
+        "score_tecnico": 8.1,
+        "per_bancos": 34.72,
+        "per_base": 31.65,
+        "per_ajustado": 32.44,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 17.8,
+        "sma_200": 296.13
+      }
+    },
+    {
+      "ticker": "PLTR",
+      "name": "Palantir Technologies",
+      "sector": "Software IA & Analítica de Datos",
+      "price": 196.42,
+      "day_change": -0.2,
+      "target_price": 215,
+      "upside": 9.5,
+      "recommendation": "Strong Buy",
+      "pe_ratio": 112.5,
+      "rsi": 61.2,
+      "score": 11.3,
+      "cedear_ratio": "2:1",
+      "cedear_price_ars": 162076,
+      "pays_dividend": false,
+      "dividend_yield": 0,
+      "dividend_frequency": "No paga (Reinversión 100%)",
+      "thesis": "Adopción sin precedentes de su plataforma de IA empresarial (AIP) en empresas del Fortune 500 y contratos estratégicos de defensa del gobierno de EE.UU.",
+      "market_cap": "$445B USD",
+      "analyst_consensus": {
+        "target_mean": 215,
+        "target_low": 195,
+        "target_high": 230,
+        "source": "Consenso Bancos Tier-1 (Bank of America, Citigroup, Goldman Sachs, Morgan Stanley)",
+        "explanation": "Tracción comercial masiva de Artificial Intelligence Platform (AIP) en empresas del S&P 500 y renovación de contratos gubernamentales estratégicos.",
+        "banks": [
+          {
+            "name": "Bank of America",
+            "target": 230,
+            "rating": "Comprar",
+            "date": "18 Oct 2026"
+          },
+          {
+            "name": "Citigroup",
+            "target": 220,
+            "rating": "Comprar",
+            "date": "10 Oct 2026"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 215,
+            "rating": "Neutral",
+            "date": "04 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 195,
+            "rating": "Neutral",
+            "date": "25 Sep 2026"
+          }
+        ]
+      },
+      "sma_200": 153.54,
+      "eps_fwd": 1.95,
+      "per_mediana_5a": 85,
+      "precio_objetivo_algoritmo": 187.56,
+      "precioObjetivoAlgoritmo": 187.56,
+      "retorno_estimado_pct": -4.5,
+      "retornoEstimadoPct": -4.5,
+      "score_total": 11.3,
+      "scoreTotal": 11.3,
+      "quant_breakdown": {
+        "score_retorno": 0,
+        "score_margen": 9.9,
+        "score_tecnico": 1.4,
+        "per_bancos": 110.26,
+        "per_base": 93.84,
+        "per_ajustado": 96.19,
+        "factor_macro": 1.025,
+        "desvio_tecnico": 27.9,
+        "sma_200": 153.54
       }
     }
   ],

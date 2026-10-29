@@ -8,6 +8,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const fs = require('fs');
 const path = require('path');
+const { calculateStockQuant } = require('./quant_algorithm');
 
 const MARKET_DATA_PATH = path.join(__dirname, '..', 'web', 'src', 'data', 'marketData.json');
 
@@ -143,9 +144,24 @@ async function main() {
       if (s.target_price && s.target_price > 0) {
         s.upside = Math.round(((s.target_price - q.price) / q.price) * 1000) / 10;
       }
-      console.log(`  ✓ ${s.ticker}: $${q.price} USD | ${q.change >= 0 ? '+' : ''}${q.change}% | CEDEAR: $${s.cedear_price_ars.toLocaleString('es-AR')} ARS`);
+
+      // Algoritmo Cuantitativo Dinámico de 3 Capas & Score Total
+      const quant = calculateStockQuant(s);
+      s.precio_objetivo_algoritmo = quant.precio_objetivo_estimado;
+      s.precioObjetivoAlgoritmo = quant.precio_objetivo_estimado;
+      s.retorno_estimado_pct = quant.retorno_estimado_pct;
+      s.retornoEstimadoPct = quant.retorno_estimado_pct;
+      s.score = quant.score_total;
+      s.score_total = quant.score_total;
+      s.scoreTotal = quant.score_total;
+      s.quant_breakdown = quant.score_breakdown;
+
+      console.log(`  ✓ ${s.ticker}: $${q.price} USD | ${q.change >= 0 ? '+' : ''}${q.change}% | Target Algoritmo: $${quant.precio_objetivo_estimado} (+${quant.retorno_estimado_pct}%) | SCORE: ${quant.score_total}`);
     }
   }
+
+  // Ordenar acciones por Score Total cuantitativo unificado
+  data.stocks.sort((a, b) => (b.score || 0) - (a.score || 0));
 
   // 4. ETFs
   console.log(`\n🌐 Actualizando ${data.etfs.length} ETFs...`);

@@ -4,6 +4,23 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] quant & feature | Algoritmo cuantitativo dinámico de 3 capas y reestructuración del Score Total
+* Implementación del Algoritmo Cuantitativo Dinámico de 3 Capas para cálculo automatizado de Precio Objetivo a 1 Año (`precio_objetivo_estimado`):
+  - Capa A (Consenso Fundamental): `per_bancos = target_analistas_promedio / eps_fwd`, `per_base = (0.65 * per_mediana_5a) + (0.35 * per_bancos)`.
+  - Capa B (Ajuste Macroeconómico): `cambio_tasas = tasa_proyectada_fed_1a - tasa_actual_fed`, `factor_macro = 1 - (0.025 * cambio_tasas)`, `per_ajustado = per_base * factor_macro`.
+  - Capa C (Precio Objetivo Teórico): `precio_objetivo_estimado = eps_fwd * per_ajustado`.
+* Reestructuración matemática del SCORE TOTAL (0 a 100):
+  - 60% Retorno Potencial Proyectado: mapeo lineal de `retorno_estimado_pct` (0% o negativo = 0 pts; >= 40% = 60 pts máximos).
+  - 25% Margen de Seguridad Fundamental: ponderación de `per_actual` vs `per_ajustado`.
+  - 15% Filtro de Timing Técnico: desvío técnico respecto a SMA200 (`desvio_tecnico = (precio - sma_200) / sma_200`; descuento < 0 = 15 pts; sobrecompra > 15% penaliza hasta 10 pts).
+* Integración técnica completa:
+  - Creación del módulo cuantitativo `scripts/quant_algorithm.js` con matriz de fallbacks sectoriales de PER y parámetros macroeconómicos.
+  - Script de aplicación auditado `scripts/apply_quant_algorithm.js` y recálculo dinámico en cada barrido de mercado en `scripts/update_market.js`.
+  - Captura real de SMA 200 ruedas históricas desde Yahoo Finance para cada acción.
+  - Creación de interfaces TypeScript en `web/src/types/market.ts` con tipado de `precioObjetivoAlgoritmo`, `retornoEstimadoPct`, `scoreTotal` y `quant_breakdown`.
+  - Actualización de `ScreenerSection.tsx` para ordenamiento descendente estricto por este Score Total unificado y visualización del "POTENCIAL ESTIMADO (1A)".
+  - Actualización de `StockDetailModal.tsx` con desglose explícito de las 3 capas cuantitativas y `ScoreDetailModal.tsx` con los 3 pilares reestructurados (60/25/15).
+
 ## [2026-10-29] feature & ui | Inversión de jerarquía en Potencial (+41.4% destacado) y modal de desglose del Score Total
 * Reestructuración visual de la tarjeta de Potencial Analistas: el porcentaje proyectado a 12 meses (+41.4%) pasa a ser el dato principal y protagónico en tamaño grande y resaltado esmeralda, con el precio objetivo ($2347.14 USD) como referencia secundaria inferior.
 * Creación del componente ScoreDetailModal.tsx: al presionar "Desglose ↗" en el Score Total (ej. 91.2/100), se despliega un modal institucional con el desglose exacto de los 4 pilares multifactoriales ponderados (Potencial de Valoración 35%, Calidad Fundamental 25%, Tendencia Técnica 20%, y Respaldo Institucional 20%) con barras de progreso y fundamentación analítica.

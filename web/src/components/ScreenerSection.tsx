@@ -53,13 +53,10 @@ export default function ScreenerSection({
       return true;
     })
     .sort((a, b) => {
-      if (stockDivFilter === "growth") {
-        return (b.upside || 0) - (a.upside || 0);
-      }
-      if (stockDivFilter === "dividend") {
-        return (b.dividend_yield || 0) - (a.dividend_yield || 0);
-      }
-      return (b.score || 0) - (a.score || 0);
+      // Ordenamiento descendente basándose estrictamente en el nuevo Score Total unificado
+      const scoreB = b.score_total ?? (b as { scoreTotal?: number }).scoreTotal ?? b.score ?? 0;
+      const scoreA = a.score_total ?? (a as { scoreTotal?: number }).scoreTotal ?? a.score ?? 0;
+      return scoreB - scoreA;
     });
 
   // Filtrado y Ordenamiento de ETFs
@@ -433,7 +430,7 @@ export default function ScreenerSection({
                       >
                         <div className="flex items-center justify-between gap-1">
                           <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                            POTENCIAL ANALISTAS
+                            POTENCIAL ESTIMADO (1A)
                           </span>
                           <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                             Desglose ↗
@@ -441,11 +438,15 @@ export default function ScreenerSection({
                         </div>
                         <div className="flex items-baseline gap-1.5 mt-0.5">
                           <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
-                            {stock.upside && stock.upside >= 0 ? `+${stock.upside}%` : `${stock.upside}%`}
+                            {(() => {
+                              const ret = stock.retorno_estimado_pct ?? (stock as { retornoEstimadoPct?: number }).retornoEstimadoPct ?? stock.upside;
+                              if (ret === undefined) return "N/D";
+                              return ret >= 0 ? `+${ret}%` : `${ret}%`;
+                            })()}
                           </span>
                         </div>
                         <span className="text-xs font-mono font-medium text-slate-300">
-                          Target: <strong className="text-white">${stock.target_price ? stock.target_price.toFixed(2) : "N/D"}</strong> USD
+                          Target Algoritmo: <strong className="text-white">${(stock.precio_objetivo_algoritmo ?? (stock as { precioObjetivoAlgoritmo?: number }).precioObjetivoAlgoritmo ?? stock.target_price ?? 0).toFixed(2)}</strong> USD
                         </span>
                       </div>
 
@@ -464,7 +465,7 @@ export default function ScreenerSection({
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
-                            {stock.score}
+                            {stock.score_total ?? (stock as { scoreTotal?: number }).scoreTotal ?? stock.score}
                           </span>
                           <span className="text-xs font-bold font-mono text-slate-300">/100</span>
                           <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">

@@ -4,12 +4,13 @@ import React from "react";
 import { X, Zap, ShieldCheck, TrendingUp, BarChart3, Award, Info } from "lucide-react";
 import marketData from "@/data/marketData.json";
 
-export type ScoreItem =
-  | (typeof marketData.stocks)[0]
-  | (typeof marketData.etfs)[0]
-  | (typeof marketData.ons)[0]
-  | (typeof marketData.argentina.merval)[0]
-  | (typeof marketData.argentina.sovereign_bonds)[0];
+export type StockItem = (typeof marketData.stocks)[0];
+export type EtfItem = (typeof marketData.etfs)[0];
+export type OnItem = (typeof marketData.ons)[0];
+export type MervalItem = (typeof marketData.argentina.merval)[0];
+export type BondItem = (typeof marketData.argentina.sovereign_bonds)[0];
+
+export type ScoreItem = StockItem | EtfItem | OnItem | MervalItem | BondItem;
 
 interface ScoreDetailModalProps {
   item: ScoreItem | null;
@@ -22,7 +23,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
   const score = item.score;
   const isEtf = "expense_ratio" in item && item.expense_ratio !== undefined;
   const isOn = "tir_usd" in item && item.tir_usd !== undefined;
-  const isStock = !isEtf && !isOn;
+  const isStock = !isEtf && !isOn && "ticker" in item && ("sector" in item || "quant_breakdown" in item);
 
   // Subtítulo de categoría
   let categoryLabel: string = "";
@@ -37,15 +38,18 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
   if (score >= 90) {
     scoreLabel = "Excelente • Compra Fuerte (Top Tier)";
     scoreBadgeColor = "bg-emerald-500/20 text-[#00F5A0] border-emerald-500/50 shadow-[0_0_12px_rgba(0,245,160,0.3)]";
-  } else if (score >= 85) {
+  } else if (score >= 80) {
     scoreLabel = "Muy Favorable • Alta Convicción";
     scoreBadgeColor = "bg-teal-500/20 text-teal-300 border-teal-500/40";
-  } else if (score >= 80) {
-    scoreLabel = "Sólido • Ponderación Favorable";
+  } else if (score >= 60) {
+    scoreLabel = "Sólido • Ponderación Positiva";
     scoreBadgeColor = "bg-cyan-500/20 text-cyan-300 border-cyan-500/40";
-  } else {
+  } else if (score >= 40) {
     scoreLabel = "Moderado • En Seguimiento";
     scoreBadgeColor = "bg-slate-500/20 text-slate-300 border-slate-500/40";
+  } else {
+    scoreLabel = "Precaución • Valuación Exigente";
+    scoreBadgeColor = "bg-rose-500/20 text-rose-300 border-rose-500/40";
   }
 
   // Definición de pilares según tipo de activo
@@ -60,64 +64,58 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
   }
 
   let pillars: Pillar[] = [];
+  const stockItem = isStock ? (item as StockItem) : null;
 
-  if (isStock) {
-    const p1 = Math.round(score * 0.35 * 10) / 10;
-    const p2 = Math.round(score * 0.25 * 10) / 10;
-    const p3 = Math.round(score * 0.20 * 10) / 10;
-    const p4 = Math.round((score - p1 - p2 - p3) * 10) / 10;
+  if (isStock && stockItem) {
+    const qb = stockItem.quant_breakdown;
+    const retorno = stockItem.retorno_estimado_pct !== undefined ? stockItem.retorno_estimado_pct : (stockItem.upside || 0);
+    const targetAlgoritmo = stockItem.precio_objetivo_algoritmo || stockItem.target_price;
+    const perActual = stockItem.pe_ratio || 25;
+    const perAjustado = qb?.per_ajustado || perActual;
+    const sma200 = qb?.sma_200 || stockItem.sma_200 || Math.round((stockItem.price * 0.95) * 100) / 100;
+    const desvioTecnico = qb?.desvio_tecnico !== undefined
+      ? qb.desvio_tecnico
+      : Math.round(((stockItem.price - sma200) / sma200) * 1000) / 10;
 
-    const upside = "upside" in item ? item.upside : undefined;
-    const targetPrice = "target_price" in item ? item.target_price : undefined;
-    const peRatio = "pe_ratio" in item ? item.pe_ratio : undefined;
-    const rec = "recommendation" in item ? item.recommendation : undefined;
+    const p1 = qb ? qb.score_retorno : Math.min(60, Math.max(0, Math.round((retorno / 40) * 60 * 10) / 10));
+    const p2 = qb ? qb.score_margen : 15;
+    const p3 = qb ? qb.score_tecnico : 10;
 
     pillars = [
       {
-        title: "Potencial de Valoración Wall Street",
-        weight: 35,
+        title: "Retorno Potencial Proyectado (3 Capas)",
+        weight: 60,
         points: p1,
-        maxPoints: 35,
+        maxPoints: 60,
         icon: <TrendingUp className="w-4 h-4 text-[#00F5A0]" />,
-        desc: "Pondera el margen de suba proyectado por el consenso de bancos de inversión Tier-1 a 12 meses vista.",
-        metricDetail: upside !== undefined ? `Upside estimado: +${upside}% (Target: $${targetPrice} USD)` : "Consenso oficial de bancos"
+        desc: "Mapeo lineal del retorno cuantitativo estimado a 12 meses (0% o menor = 0 pts; ≥40% = 60 pts máximos).",
+        metricDetail: `Retorno Teórico: ${retorno >= 0 ? '+' : ''}${retorno}% (Target: $${targetAlgoritmo} USD)`
       },
       {
-        title: "Calidad Fundamental y Crecimiento",
+        title: "Margen de Seguridad Fundamental (PER)",
         weight: 25,
         points: p2,
         maxPoints: 25,
         icon: <BarChart3 className="w-4 h-4 text-cyan-400" />,
-        desc: "Evalúa expansión de ingresos (ventas), generación de caja libre (Free Cash Flow) y múltiplos de valuación P/E razonables.",
-        metricDetail: peRatio ? `PER: ${peRatio}x • Crecimiento sostenido de márgenes` : "Márgenes operativos sólidos"
+        desc: "Relación entre el PER Actual y el PER Ajustado macroeconómico. Otorga mayor puntaje cuanto menor sea el PER respecto a su valor justo.",
+        metricDetail: `PER Actual: ${perActual}x vs. PER Ajustado: ${perAjustado}x`
       },
       {
-        title: "Tendencia Técnica y Momentum",
-        weight: 20,
+        title: "Filtro de Timing Técnico (Desvío SMA 200)",
+        weight: 15,
         points: p3,
-        maxPoints: 20,
+        maxPoints: 15,
         icon: <Zap className="w-4 h-4 text-amber-400" />,
-        desc: "Analiza si el precio cotiza con soporte institucional sobre su media móvil estratégica (SMA 200) y fuera de sobrecompra extrema.",
-        metricDetail: "Tendencia estructural sana • Fuerza relativa favorable"
-      },
-      {
-        title: "Respaldo Institucional y Solvencia",
-        weight: 20,
-        points: p4,
-        maxPoints: 20,
-        icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />,
-        desc: "Unanimidad de recomendaciones de cobertura de bancos globales, foso defensivo (moat) y bajo riesgo de balance.",
-        metricDetail: rec ? `Postura de Wall Street: ${rec}` : "Bancos Tier-1 unánimes"
+        desc: "Otorga los 15 pts si cotiza en zona de descuento (<0% de desvío sobre la SMA 200); penaliza hasta 10 pts si supera el 15% (sobrecompra).",
+        metricDetail: `Desvío Técnico: ${desvioTecnico >= 0 ? '+' : ''}${desvioTecnico}% (SMA 200: $${sma200})`
       }
     ];
   } else if (isEtf) {
+    const etfItem = item as EtfItem;
     const p1 = Math.round(score * 0.30 * 10) / 10;
     const p2 = Math.round(score * 0.25 * 10) / 10;
     const p3 = Math.round(score * 0.25 * 10) / 10;
     const p4 = Math.round((score - p1 - p2 - p3) * 10) / 10;
-
-    const upside = "upside" in item ? item.upside : undefined;
-    const expense = "expense_ratio" in item ? item.expense_ratio : undefined;
 
     pillars = [
       {
@@ -127,7 +125,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         maxPoints: 30,
         icon: <TrendingUp className="w-4 h-4 text-[#00F5A0]" />,
         desc: "Proyección a 12 meses de los Chief Equity Strategists de Wall Street y modelos bottom-up para los componentes del índice.",
-        metricDetail: upside !== undefined ? `Upside esperado: +${upside}% a 12 meses` : "Proyección institucional"
+        metricDetail: etfItem.upside !== undefined ? `Upside esperado: +${etfItem.upside}% a 12 meses` : "Proyección institucional"
       },
       {
         title: "Eficiencia de Costos (Expense Ratio)",
@@ -136,7 +134,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         maxPoints: 25,
         icon: <Award className="w-4 h-4 text-cyan-400" />,
         desc: "Premia a los fondos con menor comisión de administración anual, optimizando el retorno neto del inversor a largo plazo.",
-        metricDetail: `Costo Anual: ${expense}% (Categoría eficiente)`
+        metricDetail: `Costo Anual: ${etfItem.expense_ratio}% (Categoría eficiente)`
       },
       {
         title: "Liquidez y Respaldo Institucional (AUM)",
@@ -159,13 +157,11 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
     ];
   } else {
     // Renta Fija / ONs / Bonos
+    const onItem = item as OnItem;
     const p1 = Math.round(score * 0.35 * 10) / 10;
     const p2 = Math.round(score * 0.30 * 10) / 10;
     const p3 = Math.round(score * 0.20 * 10) / 10;
     const p4 = Math.round((score - p1 - p2 - p3) * 10) / 10;
-
-    const tir = "tir_usd" in item ? item.tir_usd : undefined;
-    const law = "law" in item ? item.law : undefined;
 
     pillars = [
       {
@@ -175,7 +171,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         maxPoints: 35,
         icon: <TrendingUp className="w-4 h-4 text-[#00F5A0]" />,
         desc: "Tasa interna de retorno neta en dólares billete comparada contra la curva de tasas de bonos grado de inversión global.",
-        metricDetail: tir ? `TIR: ${tir}% anual en dólares` : "Rendimiento en USD"
+        metricDetail: "tir_usd" in onItem ? `TIR: ${onItem.tir_usd}% anual en dólares` : "Rendimiento en USD"
       },
       {
         title: "Seguridad Jurídica y Calificación Crediticia",
@@ -184,7 +180,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         maxPoints: 30,
         icon: <ShieldCheck className="w-4 h-4 text-cyan-400" />,
         desc: "Protección bajo legislación de Nueva York y máxima nota de solvencia crediticia otorgada por calificadoras de riesgo.",
-        metricDetail: law ? `Jurisdicción: ${law}` : "Grado de inversión seguro"
+        metricDetail: "law" in onItem ? `Jurisdicción: ${onItem.law}` : "Grado de inversión seguro"
       },
       {
         title: "Solvencia Operativa del Emisor",
@@ -242,7 +238,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
               )}
             </div>
             <p className="text-xs sm:text-sm text-slate-300 font-mono mt-1">
-              Desglose Metodológico del Algoritmo Cuantitativo
+              {isStock ? "Desglose Cuantitativo de 3 Capas • Score Total" : "Desglose Metodológico del Algoritmo Cuantitativo"}
             </p>
           </div>
         </div>
@@ -265,19 +261,27 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
           </div>
         </div>
 
-        {/* Explicación Introductoria */}
-        <div className="mt-4 flex items-start gap-2.5 p-3 rounded-xl bg-[#0a1628] border border-cyan-500/20 text-xs text-slate-300 leading-relaxed">
+        {/* Explicación de la Lógica del Score */}
+        <div className="mt-4 flex items-start gap-2.5 p-3 rounded-xl bg-[#0a1628] border border-cyan-500/20 text-xs text-slate-300 leading-relaxed font-mono">
           <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
           <p>
-            El <strong>Score Total (0 a 100)</strong> es una calificación algorítmica objetiva que pondera <strong>4 dimensiones cuantitativas</strong> para comparar instrumentos financieros sin sesgos emocionales. La suma de los puntos de cada pilar conforma la calificación final.
+            {isStock ? (
+              <span>
+                El <strong>Score Total</strong> integra 3 capas fundamentales: el <strong>60%</strong> depende del Retorno Estimado Teórico (0 a 40%+), el <strong>25%</strong> del Margen de Seguridad entre el PER Actual y el PER Ajustado, y el <strong>15%</strong> de la posición técnica respecto a la Media Móvil de 200 días (SMA 200).
+              </span>
+            ) : (
+              <span>
+                El <strong>Score Total (0 a 100)</strong> pondera objetivamente factores de rendimiento, solvencia y riesgo técnico para ordenar los mejores activos de la terminal.
+              </span>
+            )}
           </p>
         </div>
 
-        {/* Desglose de los 4 Pilares */}
-        <div className="mt-5 space-y-3">
+        {/* Desglose de los Pilares */}
+        <div className="mt-4 space-y-2.5">
           <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-slate-400 px-1">
             <span>Dimensiones Analizadas</span>
-            <span>Aporte al Score</span>
+            <span>Puntos Obtenidos</span>
           </div>
 
           {pillars.map((pillar, idx) => {
