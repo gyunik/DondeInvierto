@@ -4,6 +4,13 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] feature & ui | Inversión de jerarquía en Potencial (+41.4% destacado) y modal de desglose del Score Total
+* Reestructuración visual de la tarjeta de Potencial Analistas: el porcentaje proyectado a 12 meses (+41.4%) pasa a ser el dato principal y protagónico en tamaño grande y resaltado esmeralda, con el precio objetivo ($2347.14 USD) como referencia secundaria inferior.
+* Creación del componente ScoreDetailModal.tsx: al presionar "Desglose ↗" en el Score Total (ej. 91.2/100), se despliega un modal institucional con el desglose exacto de los 4 pilares multifactoriales ponderados (Potencial de Valoración 35%, Calidad Fundamental 25%, Tendencia Técnica 20%, y Respaldo Institucional 20%) con barras de progreso y fundamentación analítica.
+* Integración en todas las pestañas de la plataforma (CEDEARs, ETFs, ONs, Merval y Bonos soberanos).
+
+
+
 ## [2026-10-29] fix & audit | Saneamiento de métricas estáticas en Hero, cálculo dinámico de Brecha y reemplazo de ON
 * Detección y saneamiento de brecha cambiaria fija (18.2%): ahora se calcula dinámicamente en scripts/update_market.js contra DolarAPI Oficial (.560) y CCL (.650,3) resultando en 5.8% real.
 * Reemplazo de ON CAC2O (con vencimiento inminente en nov 2026) por TTC1O (Tecpetrol Ley NY, vencimiento 2028, TIR 8.65% en USD, Rating AAA).

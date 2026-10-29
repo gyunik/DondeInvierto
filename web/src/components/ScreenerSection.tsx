@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import marketData from "@/data/marketData.json";
 import StockDetailModal, { ModalItem } from "./StockDetailModal";
+import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
 
 interface ScreenerSectionProps {
   initialTab?: "cedears" | "ons" | "argentina";
@@ -34,6 +35,7 @@ export default function ScreenerSection({
   const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
+  const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
   const { stocks, etfs, ons, argentina, last_updated, ccl_dollar } = marketData;
   const formattedLastUpdated = last_updated.replace(/\s*\(Hora Buenos Aires,?\s*UTC-3\)/i, "");
@@ -438,25 +440,34 @@ export default function ScreenerSection({
                           </span>
                         </div>
                         <div className="flex items-baseline gap-1.5 mt-0.5">
-                          <span className="text-lg sm:text-xl font-extrabold text-white font-mono group-hover/modal:text-[#00F5A0] transition-colors">
-                            {stock.target_price ? `$${stock.target_price.toFixed(2)}` : "N/D"}
+                          <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
+                            {stock.upside && stock.upside >= 0 ? `+${stock.upside}%` : `${stock.upside}%`}
                           </span>
                         </div>
-                        <span className="text-xs font-bold font-mono text-emerald-400">
-                          {stock.upside && stock.upside >= 0 ? `+${stock.upside}%` : `${stock.upside}%`} estimado
+                        <span className="text-xs font-mono font-medium text-slate-300">
+                          Target: <strong className="text-white">${stock.target_price ? stock.target_price.toFixed(2) : "N/D"}</strong> USD
                         </span>
                       </div>
 
-                      <div className="flex flex-col sm:items-end justify-center">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                          SCORE TOTAL
-                        </span>
+                      <div
+                        onClick={() => setSelectedScoreItem(stock)}
+                        className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                        title="Ver desglose detallado de cómo se compone este Score"
+                      >
+                        <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            SCORE TOTAL
+                          </span>
+                          <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                            Desglose ↗
+                          </span>
+                        </div>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                             {stock.score}
                           </span>
                           <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                          <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0]">
+                          <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                             <Zap className="w-4 h-4 fill-current" />
                           </div>
                         </div>
@@ -554,25 +565,34 @@ export default function ScreenerSection({
                         </span>
                       </div>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono group-hover/modal:text-[#00F5A0] transition-colors">
-                          {etf.target_price ? `$${etf.target_price.toFixed(2)}` : "N/D"}
+                        <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
+                          {etf.upside && etf.upside >= 0 ? `+${etf.upside}%` : `${etf.upside}%`}
                         </span>
                       </div>
-                      <span className="text-xs font-bold font-mono text-emerald-400">
-                        {etf.upside && etf.upside >= 0 ? `+${etf.upside}%` : `${etf.upside}%`} estimado
+                      <span className="text-xs font-mono font-medium text-slate-300">
+                        Target: <strong className="text-white">${etf.target_price ? etf.target_price.toFixed(2) : "N/D"}</strong> USD
                       </span>
                     </div>
 
-                    <div className="flex flex-col sm:items-end justify-center">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                        SCORE TOTAL
-                      </span>
+                    <div
+                      onClick={() => setSelectedScoreItem(etf)}
+                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                      title="Ver desglose detallado de cómo se compone este Score"
+                    >
+                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          SCORE TOTAL
+                        </span>
+                        <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                          Desglose ↗
+                        </span>
+                      </div>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                           {etf.score}
                         </span>
                         <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0]">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                           <Zap className="w-4 h-4 fill-current" />
                         </div>
                       </div>
@@ -677,16 +697,25 @@ export default function ScreenerSection({
                       <span className="text-xs font-medium font-mono text-slate-300">{on.frequency}</span>
                     </div>
 
-                    <div className="flex flex-col sm:items-end justify-center">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                        SOLIDEZ
-                      </span>
+                    <div
+                      onClick={() => setSelectedScoreItem(on)}
+                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                      title="Ver desglose detallado de cómo se compone esta calificación de Solvencia"
+                    >
+                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          SOLIDEZ
+                        </span>
+                        <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                          Desglose ↗
+                        </span>
+                      </div>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                           {on.score}
                         </span>
                         <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0]">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                           <Building2 className="w-4 h-4" />
                         </div>
                       </div>
@@ -774,16 +803,25 @@ export default function ScreenerSection({
                           <span className="text-xs font-medium font-mono text-emerald-400">Panel Líder</span>
                         </div>
 
-                        <div className="flex flex-col sm:items-end justify-center">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                            SCORE
-                          </span>
+                        <div
+                          onClick={() => setSelectedScoreItem(m)}
+                          className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                          title="Ver desglose detallado de cómo se compone este Score"
+                        >
+                          <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                              SCORE
+                            </span>
+                            <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                              Desglose ↗
+                            </span>
+                          </div>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                               {m.score}
                             </span>
                             <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0]">
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                               <Zap className="w-4 h-4 fill-current" />
                             </div>
                           </div>
@@ -875,16 +913,25 @@ export default function ScreenerSection({
                           <span className="text-xs font-medium font-mono text-slate-300">Bonares / Globales</span>
                         </div>
 
-                        <div className="flex flex-col sm:items-end justify-center">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                            SCORE
-                          </span>
+                        <div
+                          onClick={() => setSelectedScoreItem(b)}
+                          className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                          title="Ver desglose detallado de cómo se compone este Score"
+                        >
+                          <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                              SCORE
+                            </span>
+                            <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                              Desglose ↗
+                            </span>
+                          </div>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                               {b.score}
                             </span>
                             <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0]">
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                               <Shield className="w-4 h-4" />
                             </div>
                           </div>
@@ -908,10 +955,16 @@ export default function ScreenerSection({
         )}
       </div>
 
-      {/* Modal de Detalle */}
+      {/* Modal de Detalle Consenso de Bancos */}
       <StockDetailModal
         stock={selectedStockForModal}
         onClose={() => setSelectedStockForModal(null)}
+      />
+
+      {/* Modal de Desglose del Score Cuantitativo */}
+      <ScoreDetailModal
+        item={selectedScoreItem}
+        onClose={() => setSelectedScoreItem(null)}
       />
     </section>
   );
