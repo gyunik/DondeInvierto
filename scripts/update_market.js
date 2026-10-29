@@ -9,6 +9,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const fs = require('fs');
 const path = require('path');
 const { calculateStockQuant } = require('./quant_algorithm');
+const { fetchMacroRates } = require('./macro_service');
 
 const MARKET_DATA_PATH = path.join(__dirname, '..', 'web', 'src', 'data', 'marketData.json');
 
@@ -130,6 +131,13 @@ async function main() {
     }
   }
 
+  // 2.5 Tasas Macroeconómicas Oficiales (FED) con Bloque Try/Catch, Fallback y Alertas
+  console.log(`\n🏛️ Consultando tasas macroeconómicas oficiales (FED)...`);
+  const macroRates = await fetchMacroRates();
+  console.log(`  ✓ Tasa FED Actual: ${macroRates.tasa_actual_fed}% | Proyectada 1A: ${macroRates.tasa_proyectada_fed_1a}% | Fallback: ${macroRates.is_fallback ? 'SÍ' : 'NO'}`);
+  console.log(`  ℹ️ Fuente: ${macroRates.source}`);
+  data.macro = macroRates;
+
   // 3. Acciones (Stocks)
   console.log(`\n📊 Actualizando ${data.stocks.length} Acciones / CEDEARs...`);
   for (const s of data.stocks) {
@@ -145,8 +153,8 @@ async function main() {
         s.upside = Math.round(((s.target_price - q.price) / q.price) * 1000) / 10;
       }
 
-      // Algoritmo Cuantitativo Dinámico de 3 Capas & Score Total
-      const quant = calculateStockQuant(s);
+      // Algoritmo Cuantitativo Dinámico de 3 Capas & Score Total (integrado con tasas macro)
+      const quant = calculateStockQuant(s, macroRates);
       s.precio_objetivo_algoritmo = quant.precio_objetivo_estimado;
       s.precioObjetivoAlgoritmo = quant.precio_objetivo_estimado;
       s.retorno_estimado_pct = quant.retorno_estimado_pct;

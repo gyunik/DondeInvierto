@@ -38,6 +38,7 @@ export default function ScreenerSection({
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
   const { stocks, etfs, ons, argentina, last_updated, ccl_dollar } = marketData;
+  const macro = (marketData as { macro?: import("@/types/market").MacroData }).macro;
   const formattedLastUpdated = last_updated.replace(/\s*\(Hora Buenos Aires,?\s*UTC-3\)/i, "");
 
   // Filtrado y Ordenamiento de Acciones
@@ -131,12 +132,33 @@ export default function ScreenerSection({
                 </h2>
               </>
             )}
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs sm:text-sm font-mono">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2 text-xs sm:text-sm font-mono">
               <span className="text-slate-300 font-medium">
-                Dólar CCL de referencia:{" "}
+                Dólar CCL:{" "}
                 <strong className="text-white font-bold bg-[#142338] px-2 py-0.5 rounded border border-slate-600/60">
                   ${ccl_dollar} ARS
                 </strong>
+              </span>
+              <span className="text-slate-500 hidden sm:inline">|</span>
+              <span
+                className="text-slate-300 font-medium flex items-center gap-1.5 cursor-help"
+                title={macro?.source || "Tasa oficial de referencia de la Reserva Federal (EFFR)"}
+              >
+                <span>Tasa FED:</span>
+                <strong className="text-[#00F5A0] font-bold bg-[#0a1e1b] px-2 py-0.5 rounded border border-emerald-500/40">
+                  {macro?.tasa_actual_fed ?? 3.88}%
+                </strong>
+                <span className="text-slate-400 text-xs hidden md:inline">
+                  (Proy. 1A: <span className="text-white font-semibold">{macro?.tasa_proyectada_fed_1a ?? 3.16}%</span>)
+                </span>
+                {macro?.is_fallback && (
+                  <span
+                    className="text-[10px] bg-amber-950/80 text-amber-300 border border-amber-600/50 px-1.5 py-0.5 rounded font-mono font-bold"
+                    title="Se están utilizando valores de fallback de contingencia debido a un fallo temporal de la API"
+                  >
+                    FALLBACK
+                  </span>
+                )}
               </span>
               <span className="text-slate-500 hidden sm:inline">|</span>
               <span className="text-slate-300">

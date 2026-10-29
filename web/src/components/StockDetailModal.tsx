@@ -16,6 +16,7 @@ interface StockDetailModalProps {
 export default function StockDetailModal({ stock, onClose }: StockDetailModalProps) {
   if (!stock) return null;
 
+  const macro = (marketData as { macro?: import("@/types/market").MacroData }).macro;
   const isEtf = "expense_ratio" in stock;
   const tagLabel = "sector" in stock ? stock.sector : (stock as EtfItem).category;
 
@@ -115,7 +116,10 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                   <span className="text-[10px] text-slate-400 block">Capa A (PER Base)</span>
                   <span className="text-xs font-bold text-white">{qb.per_base}x</span>
                 </div>
-                <div className="bg-[#081220] p-2 rounded-lg border border-slate-800">
+                <div
+                  className="bg-[#081220] p-2 rounded-lg border border-slate-800"
+                  title={`FED Actual: ${qb.tasa_actual_fed ?? macro?.tasa_actual_fed ?? 3.88}% | Proyectada 1A: ${qb.tasa_proyectada_fed_1a ?? macro?.tasa_proyectada_fed_1a ?? 3.16}%`}
+                >
                   <span className="text-[10px] text-slate-400 block">Capa B (Ajuste Macro)</span>
                   <span className="text-xs font-bold text-emerald-400">+{Math.round((qb.factor_macro - 1) * 1000) / 10}%</span>
                 </div>
@@ -227,7 +231,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           <span className="text-[#00F5A0] font-bold mr-1">💡 Metodología Cuantitativa:</span>
           {!isEtf ? (
             <span>
-              El Precio Objetivo Teórico se calcula en 3 capas: fusiona el 65% de la mediana histórica del PER (5 años) con el 35% del PER implícito de bancos, aplica un factor macroeconómico de expansión de múltiplos ante el ciclo de baja de tasas de la Reserva Federal (FED), y lo multiplica por el EPS Forward proyectado.
+              El Precio Objetivo Teórico se calcula en 3 capas: fusiona el 65% de la mediana histórica del PER (5 años) con el 35% del PER implícito de bancos, aplica un factor macroeconómico de ajuste por ciclo de tasas de la Reserva Federal (FED actual: {macro?.tasa_actual_fed ?? 3.88}% → Proy: {macro?.tasa_proyectada_fed_1a ?? 3.16}%), y lo multiplica por el EPS Forward proyectado.
             </span>
           ) : (
             <span>

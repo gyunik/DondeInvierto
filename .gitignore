@@ -8,3 +8,7 @@ __pycache__/
 
 # Obsidian
 **/.obsidian/workspace*.json
+
+# Logs
+logs/
+*.log

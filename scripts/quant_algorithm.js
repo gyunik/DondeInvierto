@@ -28,15 +28,17 @@ const SECTOR_PER_FALLBACK = {
   'Default': 25.0
 };
 
-// Parámetros macroeconómicos (Tasa de la Reserva Federal)
+// Parámetros macroeconómicos por defecto / fallback (Tasa de la Reserva Federal)
 const MACRO_DEFAULTS = {
-  tasa_actual_fed: 4.75,       // Tasa efectiva actual FED
-  tasa_proyectada_fed_1a: 3.75 // Tasa proyectada a 1 año (Dot Plot / Futures)
+  tasa_actual_fed: 5.0,        // Tasa actual fallback especificada
+  tasa_proyectada_fed_1a: 4.25 // Tasa proyectada 1A fallback especificada
 };
 
 /**
  * Calcula el Precio Objetivo Cuantitativo a 1 Año (3 capas)
  * y el Score Total reestructurado para una acción.
+ * @param {Object} stock - Datos de la acción
+ * @param {Object} macro - Tasas macroeconómicas (obtenidas dinámicamente vía macro_service o fallback)
  */
 function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   const precio_actual = stock.price || 100;
@@ -61,8 +63,10 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   const per_bancos = target_analistas_promedio / eps_fwd;
   const per_base = (0.65 * per_mediana_5a) + (0.35 * per_bancos);
 
-  // 2. Capa B (Ajuste Macroeconómico)
-  const cambio_tasas = macro.tasa_proyectada_fed_1a - macro.tasa_actual_fed;
+  // 2. Capa B (Ajuste Macroeconómico - Conectado con fetch dinámico)
+  const tasaActual = typeof macro?.tasa_actual_fed === 'number' ? macro.tasa_actual_fed : MACRO_DEFAULTS.tasa_actual_fed;
+  const tasaProy = typeof macro?.tasa_proyectada_fed_1a === 'number' ? macro.tasa_proyectada_fed_1a : MACRO_DEFAULTS.tasa_proyectada_fed_1a;
+  const cambio_tasas = tasaProy - tasaActual;
   const factor_macro = 1 - (0.025 * cambio_tasas);
   const per_ajustado = per_base * factor_macro;
 
@@ -122,6 +126,9 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
       per_base: Math.round(per_base * 100) / 100,
       per_ajustado: Math.round(per_ajustado * 100) / 100,
       factor_macro: Math.round(factor_macro * 1000) / 1000,
+      tasa_actual_fed: tasaActual,
+      tasa_proyectada_fed_1a: tasaProy,
+      cambio_tasas: Math.round(cambio_tasas * 100) / 100,
       desvio_tecnico: Math.round(desvio_tecnico * 1000) / 10,
       sma_200
     }

@@ -12,6 +12,9 @@ export interface QuantBreakdown {
   factor_macro: number;
   desvio_tecnico: number;
   sma_200: number;
+  tasa_actual_fed?: number;
+  tasa_proyectada_fed_1a?: number;
+  cambio_tasas?: number;
 }
 
 export interface BankConsensusItem {
@@ -123,6 +126,16 @@ export interface BondItem {
   law: string;
   score: number;
   thesis: string;
+}
+
+export interface MacroData {
+  tasa_actual_fed: number;
+  tasa_proyectada_fed_1a: number;
+  is_fallback: boolean;
+  source: string;
+  effective_date?: string;
+  last_fetched?: string;
+  error_message?: string;
 }
 
 export type ScoreItem = StockItem | EtfItem | OnItem | MervalItem | BondItem;

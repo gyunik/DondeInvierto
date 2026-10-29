@@ -97,7 +97,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         points: p2,
         maxPoints: 25,
         icon: <BarChart3 className="w-4 h-4 text-cyan-400" />,
-        desc: "Relación entre el PER Actual y el PER Ajustado macroeconómico. Otorga mayor puntaje cuanto menor sea el PER respecto a su valor justo.",
+        desc: "Relación entre el PER Actual y el PER Ajustado por el ciclo macroeconómico de tasas de la FED. Otorga mayor puntaje cuanto menor sea el PER respecto a su valor justo.",
         metricDetail: `PER Actual: ${perActual}x vs. PER Ajustado: ${perAjustado}x`
       },
       {

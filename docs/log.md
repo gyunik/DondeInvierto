@@ -4,6 +4,16 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] automation & macro | Fetch automatizado de tasas FED, sistema de fallback tolerante y alertas críticas
+* Creación de `scripts/macro_service.js`:
+  - **Bloque Try (Fetch Automático Oficial)**: Conexión dinámica contra la API oficial del Federal Reserve Bank of New York (`markets.newyorkfed.org/api/rates/all/latest.json`) extrayendo la tasa efectiva de la FED (`EFFR`) y la pendiente de la curva de futuros/SOFR a 12 meses (`tasa_actual_fed = 3.88%`, `tasa_proyectada_fed_1a = 3.16%`), con respaldo secundario en Yahoo Finance (`^IRX` - T-Bill 13 semanas).
+  - **Bloque Catch (Tolerancia a fallos silenciosa & Fallback)**: En caso de caída, timeout o cambio de esquema de la API, captura el error de forma silenciosa para el usuario asignando los valores de contingencia especificados (`tasa_actual = 5.0%`, `tasa_proyectada_1a = 4.25%`, `is_fallback: true`).
+  - **Función de Alerta Crítica (`notificarFalloMacro(error)`)**: Registra el stack trace en consola con formato de máxima severidad, escribe persistentemente en `logs/macro_alerts.log` y despacha notificación inmediata a webhook externo (`MACRO_ALERT_WEBHOOK_URL`) cuando está configurado.
+* Integración cuantitativa completa:
+  - Parámetros macroeconómicos consumidos directamente por `calculateStockQuant` en `scripts/quant_algorithm.js`, impactando en Capa B (`cambio_tasas = tasa_proyectada - tasa_actual`) y recalculando el Score Total de todas las acciones.
+  - Integración en el barrido periódico de `scripts/update_market.js`.
+  - Exposición en el frontend (`web/src/components/ScreenerSection.tsx`): indicador en vivo en la barra de métricas (`Tasa FED: 3.88% (Proy. 1A: 3.16%)` con badge de contingencia si se activa el fallback) y en `StockDetailModal.tsx`.
+
 ## [2026-10-29] quant & feature | Algoritmo cuantitativo dinámico de 3 capas y reestructuración del Score Total
 * Implementación del Algoritmo Cuantitativo Dinámico de 3 Capas para cálculo automatizado de Precio Objetivo a 1 Año (`precio_objetivo_estimado`):
   - Capa A (Consenso Fundamental): `per_bancos = target_analistas_promedio / eps_fwd`, `per_base = (0.65 * per_mediana_5a) + (0.35 * per_bancos)`.
