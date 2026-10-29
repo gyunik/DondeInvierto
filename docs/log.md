@@ -4,6 +4,11 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] data & ui | Incorporación de fechas con día exacto y auditoría de research para MELI y acciones
+* Corrección y homologación de MELI con los precios objetivos auditados reales de Wall Street: Bradesco BBI (.700 - 18 Sep), Jefferies (.600 - 05 Sep), Morgan Stanley (.450 - 18 Oct), BTG Pactual (.450 - 12 Ago), Goldman Sachs (.100 - 22 Oct), Citigroup (.100 - 03 Oct) y JPMorgan (.900 - 05 Ago).
+* Promedio consensuado para MELI recalculado en .328,57 USD (+40,3% upside).
+* Actualización de StockDetailModal.tsx para mostrar la fecha de publicación con día exacto al lado de cada entidad financiera.
+
 ## [2026-10-29] automation | Optimización de cron a minutos :15 y :45 (frecuencia cada 30m) para evitar demoras de GitHub
 * Diagnóstico: GitHub Actions presenta demoras de hasta 50 minutos cuando los crons están programados en el minuto :00 debido a picos globales de saturación.
 * Solución: Reconfiguración del workflow a minutos no congestionados (:15 y :45), aumentando la frecuencia a cada 30 minutos durante rueda bursátil (10:00 a 18:00 hs ART), con barrido a las 06:15 hs (Pre-Market) y 19:15 hs (Post-Market).

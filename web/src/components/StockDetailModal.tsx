@@ -134,13 +134,18 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           )}
         </div>
 
-        {/* 3. Desglose por Banco de Inversión */}
+        {/* 3. Desglose por Banco de Inversión con Fecha de Publicación */}
         {stock.analyst_consensus?.banks && (
           <div className="mt-5 pt-4 border-t border-slate-800">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-              Visión de los Principales Bancos de Inversión
-            </span>
-            <div className="mt-2 divide-y divide-slate-800/80 border border-slate-800 rounded-xl overflow-hidden bg-[#0a1424]/90">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                Visión de los Principales Bancos de Inversión (12 Meses)
+              </span>
+              <span className="text-[10px] font-mono text-slate-400 hidden sm:inline">
+                Fecha del informe
+              </span>
+            </div>
+            <div className="mt-1 divide-y divide-slate-800/80 border border-slate-800 rounded-xl overflow-hidden bg-[#0a1424]/90">
               {stock.analyst_consensus.banks.map((bank, bIdx) => {
                 const upsideBank = Math.round(((bank.target - stock.price) / stock.price) * 1000) / 10;
                 const isTopTarget = bank.target === stock.analyst_consensus.target_high;
@@ -151,12 +156,17 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                       isTopTarget ? "bg-emerald-500/10" : ""
                     }`}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2">
                       <span className={`font-semibold ${isTopTarget ? "text-[#00F5A0] font-bold" : "text-white"}`}>
                         {bank.name}
                       </span>
+                      {"date" in bank && bank.date && (
+                        <span className="text-[10px] sm:text-[11px] text-slate-400 font-mono">
+                          • {bank.date}
+                        </span>
+                      )}
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
                       <span className="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700 hidden sm:inline">
                         {bank.rating}
                       </span>
