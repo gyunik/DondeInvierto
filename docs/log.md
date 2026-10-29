@@ -4,6 +4,11 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] automation | Optimización de cron a minutos :15 y :45 (frecuencia cada 30m) para evitar demoras de GitHub
+* Diagnóstico: GitHub Actions presenta demoras de hasta 50 minutos cuando los crons están programados en el minuto :00 debido a picos globales de saturación.
+* Solución: Reconfiguración del workflow a minutos no congestionados (:15 y :45), aumentando la frecuencia a cada 30 minutos durante rueda bursátil (10:00 a 18:00 hs ART), con barrido a las 06:15 hs (Pre-Market) y 19:15 hs (Post-Market).
+* Actualización inmediata manual de cotizaciones de cierre a las 17:28 hs.
+
 ## [2026-10-29] automation & ui | Barrido pre-market 6am y post-mercado, y ajuste de proporciones estilo ListeningLab
 * Configuración de GitHub Actions Cron ampliado: barrido matutino Pre-Market a las 6:00 AM de Buenos Aires (09:00 UTC), barrido horario durante rueda (10:00 a 18:00 hs ART) y barrido post-cierre a las 19:00 hs ART (22:00 UTC).
 * Soporte en scripts/update_market.js para captura de preMarketPrice (con flag includePrePost=true).
