@@ -2,9 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { User } from "lucide-react";
+import Logo from "@/components/Logo";
 import marketData from "@/data/marketData.json";
 
 export default function Navbar() {
@@ -41,17 +41,14 @@ export default function Navbar() {
     <header className="w-full border-b border-[#162338]/80 bg-[#060B14]/90 backdrop-blur-md sticky top-0 z-50">
       {/* Top Navigation Bar */}
       <div className="w-full px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           <Link className="flex items-center gap-3 group" href="/" title="DONDE INVIERTO - Inicio">
-            {/* Isologo Oficial */}
-            <div className="w-10 h-10 rounded-xl bg-[#0b1626] border border-emerald-500/40 flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.25)] group-hover:border-[#00F5A0] transition-colors p-1.5 overflow-hidden">
-              <Image src="/isologo.png" alt="Donde Invierto Logo" width={36} height={36} className="w-full h-full object-contain" />
+            {/* Logo Oficial Donde Invierto */}
+            <div className="h-9 sm:h-10 flex items-center transition-transform group-hover:scale-[1.02]">
+              <Logo className="h-9 sm:h-10 w-auto" idPrefix="nav" />
             </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-base font-extrabold tracking-wider text-white group-hover:text-[#00F5A0] transition-colors">
-                DONDE INVIERTO
-              </span>
-              <span className="text-[11px] font-mono font-medium tracking-widest uppercase text-slate-400">
+            <div className="hidden sm:flex flex-col justify-center border-l border-slate-700/60 pl-3 leading-tight">
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
                 Terminal Quant
               </span>
             </div>
