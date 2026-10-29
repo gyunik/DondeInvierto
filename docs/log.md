@@ -4,6 +4,13 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] fix & audit | Saneamiento de métricas estáticas en Hero, cálculo dinámico de Brecha y reemplazo de ON
+* Detección y saneamiento de brecha cambiaria fija (18.2%): ahora se calcula dinámicamente en scripts/update_market.js contra DolarAPI Oficial (.560) y CCL (.650,3) resultando en 5.8% real.
+* Reemplazo de ON CAC2O (con vencimiento inminente en nov 2026) por TTC1O (Tecpetrol Ley NY, vencimiento 2028, TIR 8.65% en USD, Rating AAA).
+* Corrección de variación de rendimiento en Bono USA 10Y (^TNX) en Home para mostrar la oscilación real porcentual en lugar de 0.00 bps fijo.
+
+
+
 ## [2026-10-29] data & fix | Actualización de reportes a reiteraciones vigentes del ciclo 2026
 * Corrección de la fecha de los reportes en el modal de consenso: se sustituyeron las fechas históricas de emisión inicial (2024) por las reiteraciones y notas formales más recientes del ciclo actual (2026) en todas las acciones y ETFs.
 * Para MELI: incorporación de las revisiones de Morgan Stanley (Andrew Ruben - 18 Oct 2026, .450), Goldman Sachs (Irma Sgarz - 28 Sep 2026, .230) y Citigroup (Joao Pedro Soares - 22 Oct 2026, upgrade a Compra .050), con promedio consensuado de .347,14 USD (+41,4% upside).

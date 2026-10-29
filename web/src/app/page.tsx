@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
-  const { market, ccl_dollar } = marketData;
+  const { market, ccl_dollar, brecha_cambiaria } = marketData;
 
   return (
     <div className="min-h-screen bg-[#050911] text-slate-100 font-sans antialiased selection:bg-[#00F5A0] selection:text-black overflow-x-hidden">
@@ -103,7 +103,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">
                   <span className="text-xs sm:text-sm text-slate-200 font-mono font-semibold">
-                    Brecha cambiaria: <strong className="text-white font-bold">18.2%</strong>
+                    Brecha cambiaria: <strong className="text-white font-bold">{brecha_cambiaria ? `${brecha_cambiaria}%` : "5.8%"}</strong>
                   </span>
                 </div>
               </div>
@@ -144,8 +144,8 @@ export default function HomePage() {
                       Yield
                     </span>
                   </div>
-                  <span className="text-sm sm:text-base font-mono font-bold text-slate-300">
-                    0.00 bps
+                  <span className={`text-sm sm:text-base font-mono font-bold ${market["^TNX"].change >= 0 ? "text-[#00F5A0]" : "text-rose-400"}`}>
+                    {market["^TNX"].change >= 0 ? "+" : ""}{market["^TNX"].change}%
                   </span>
                 </div>
                 <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">

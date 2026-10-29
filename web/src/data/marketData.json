@@ -2370,22 +2370,22 @@
       "thesis": "Cotiza a la par (100.20 USD). Segundo mayor productor de hidrocarburos del país con respaldo del grupo BP. Riesgo crediticio mínimo para horizonte corto. Vence el 30/04/2027."
     },
     {
-      "ticker": "CAC2O",
-      "name": "CGC Clase 28",
-      "issuer": "CGC S.A. (Eurnekian)",
-      "law": "Ley Argentina",
-      "price_usd": 98.6,
-      "parity": 98.6,
-      "parity_status": "Bajo la par",
-      "tir_usd": 9.4,
-      "coupon": 9.5,
-      "maturity": "2026",
-      "maturity_date": "15/11/2026",
-      "frequency": "Trimestral en Dólares",
-      "min_investment": "100 USD",
-      "rating": "Rendimiento Elevado",
-      "score": 84.5,
-      "thesis": "Cotiza bajo la par a 98.60 USD (descuento del 1.4%). Paga tasa superior al 9.4% anual bajo Ley Local con pagos trimestrales. Atractiva para flujo de caja continuo. Vence el 15/11/2026."
+      "ticker": "TTC1O",
+      "name": "Tecpetrol Clase 1",
+      "issuer": "Tecpetrol S.A. (Grupo Techint)",
+      "law": "Ley Nueva York",
+      "price_usd": 100.4,
+      "parity": 100.4,
+      "parity_status": "A la par",
+      "tir_usd": 8.65,
+      "coupon": 8.75,
+      "maturity": "2028",
+      "maturity_date": "15/09/2028",
+      "frequency": "Semestral en Dólares",
+      "min_investment": "100 USD (o en Pesos a MEP)",
+      "rating": "AAA Calidad Corporativa",
+      "score": 89.5,
+      "thesis": "Cotiza a la par (100.40 USD) con rendimiento neto del 8.65% anual en dólares billete bajo Ley Nueva York. Máxima solvencia del Grupo Techint y liderazgo absoluto en producción gasífera en Fortín de Piedra (Vaca Muerta). Vence el 15/09/2028."
     }
   ],
   "argentina": {
@@ -2472,5 +2472,7 @@
         "thesis": "Cotiza bajo la par a 58.10 USD (gran descuento del 41.9%). Mayor plazo y potencial de compresión y subida de capital (*convexidad*) si el riesgo país continúa descendiendo. Vence el 09/07/2035."
       }
     ]
-  }
+  },
+  "dolar_oficial": 1560,
+  "brecha_cambiaria": 5.8
 }

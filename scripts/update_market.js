@@ -49,10 +49,20 @@ async function fetchTickerData(ticker) {
 async function fetchDolarCcl() {
   try {
     const data = await fetchJson('https://dolarapi.com/v1/dolares/contadoconliqui');
-    const price = data.venta || data.promedio || 1215;
+    const price = data.venta || data.promedio || 1650.3;
     return { price: Math.round(price * 100) / 100 };
   } catch (err) {
     console.warn(`⚠️ Error al consultar Dólar CCL: ${err.message}. Usando valor previo.`);
+    return null;
+  }
+}
+
+async function fetchDolarOficial() {
+  try {
+    const data = await fetchJson('https://dolarapi.com/v1/dolares/oficial');
+    const price = data.venta || data.promedio || 1560;
+    return { price: Math.round(price * 100) / 100 };
+  } catch (err) {
     return null;
   }
 }
@@ -89,7 +99,7 @@ async function main() {
   const rawData = fs.readFileSync(MARKET_DATA_PATH, 'utf8');
   const data = JSON.parse(rawData);
 
-  // 1. Dólar CCL
+  // 1. Dólar CCL y Oficial (Brecha Cambiaria)
   const cclInfo = await fetchDolarCcl();
   if (cclInfo?.price) {
     data.ccl_dollar = cclInfo.price;
@@ -98,7 +108,15 @@ async function main() {
     }
     console.log(`💵 Dólar CCL actualizado: $${cclInfo.price} ARS`);
   }
-  const ccl = data.ccl_dollar || 1215;
+  const oficialInfo = await fetchDolarOficial();
+  if (oficialInfo?.price) {
+    data.dolar_oficial = oficialInfo.price;
+  }
+  if (data.ccl_dollar && data.dolar_oficial) {
+    data.brecha_cambiaria = Math.round(((data.ccl_dollar - data.dolar_oficial) / data.dolar_oficial) * 1000) / 10;
+    console.log(`💵 Dólar Oficial: $${data.dolar_oficial} ARS | Brecha: ${data.brecha_cambiaria}%`);
+  }
+  const ccl = data.ccl_dollar || 1650.3;
 
   // 2. Índices principales
   const indexTickers = ['^GSPC', '^IXIC', '^TNX', '^VIX'];
