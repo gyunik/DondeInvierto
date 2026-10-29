@@ -141,6 +141,10 @@ async function main() {
 
       const ratio = parseRatio(e.cedear_ratio);
       e.cedear_price_ars = Math.round((q.price * ccl) / ratio);
+
+      if (e.target_price && e.target_price > 0) {
+        e.upside = Math.round(((e.target_price - q.price) / q.price) * 1000) / 10;
+      }
       console.log(`  ✓ ${e.ticker}: $${q.price} USD | ${e.day_change}% | CEDEAR: $${e.cedear_price_ars.toLocaleString('es-AR')} ARS`);
     }
   }

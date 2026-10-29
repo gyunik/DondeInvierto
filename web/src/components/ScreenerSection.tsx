@@ -11,7 +11,7 @@ import {
   Shield,
 } from "lucide-react";
 import marketData from "@/data/marketData.json";
-import StockDetailModal, { StockItem } from "./StockDetailModal";
+import StockDetailModal, { ModalItem } from "./StockDetailModal";
 
 interface ScreenerSectionProps {
   initialTab?: "cedears" | "ons" | "argentina";
@@ -33,7 +33,7 @@ export default function ScreenerSection({
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
-  const [selectedStockForModal, setSelectedStockForModal] = useState<StockItem | null>(null);
+  const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
 
   const { stocks, etfs, ons, argentina, last_updated, ccl_dollar } = marketData;
   const formattedLastUpdated = last_updated.replace(/\s*\(Hora Buenos Aires,?\s*UTC-3\)/i, "");
@@ -76,7 +76,7 @@ export default function ScreenerSection({
     })
     .sort((a, b) => {
       if (etfDivFilter === "growth") {
-        return (b.return_1y || 0) - (a.return_1y || 0);
+        return (b.upside || 0) - (a.upside || 0);
       }
       if (etfDivFilter === "dividend") {
         return (b.dividend_yield || 0) - (a.dividend_yield || 0);
@@ -504,7 +504,7 @@ export default function ScreenerSection({
                       <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
                         {etf.name}{" "}
                         <span className="text-white font-medium">
-                          • {etf.pays_dividend ? `Div. ${etf.dividend_yield}% anual` : "Acumulación (0% dividendo)"}
+                          • {etf.pays_dividend ? `Div. ${etf.dividend_yield}% anual` : "Acumulación (0% dividendo)"} • Costo: {etf.expense_ratio}%
                         </span>
                       </div>
                     </div>
@@ -540,17 +540,26 @@ export default function ScreenerSection({
                       </span>
                     </div>
 
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                        RETORNO 1 AÑO
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
-                          +{etf.return_1y}%
+                    <div
+                      onClick={() => setSelectedStockForModal(etf)}
+                      className="flex flex-col cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                      title="Ver desglose de consenso de bancos y estrategas de Wall Street"
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          POTENCIAL ANALISTAS
+                        </span>
+                        <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                          Desglose ↗
                         </span>
                       </div>
-                      <span className="text-xs font-bold font-mono text-slate-300">
-                        Costo: {etf.expense_ratio}%
+                      <div className="flex items-baseline gap-1.5 mt-0.5">
+                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono group-hover/modal:text-[#00F5A0] transition-colors">
+                          {etf.target_price ? `$${etf.target_price.toFixed(2)}` : "N/D"}
+                        </span>
+                      </div>
+                      <span className="text-xs font-bold font-mono text-emerald-400">
+                        {etf.upside && etf.upside >= 0 ? `+${etf.upside}%` : `${etf.upside}%`} estimado
                       </span>
                     </div>
 

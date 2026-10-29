@@ -1132,7 +1132,44 @@
       "score": 94,
       "cedear_ratio": "1:1",
       "cedear_price_ars": 75435,
-      "thesis": "El ETF de mayor crecimiento patrimonial de BlackRock. Custodia física directa con respaldo institucional para inversores calificados."
+      "thesis": "El ETF de mayor crecimiento patrimonial de BlackRock. Custodia física directa con respaldo institucional para inversores calificados.",
+      "pe_ratio": null,
+      "market_cap": "$26.4B AUM",
+      "recommendation": "Compra Institucional",
+      "target_price": 62.25,
+      "upside": 36.2,
+      "analyst_consensus": {
+        "target_mean": 62.25,
+        "target_low": 54,
+        "target_high": 68,
+        "explanation": "Proyecciones a 12 meses de departamentos de activos digitales y análisis macro de Wall Street basadas en el flujo institucional neto de ETFs y el ciclo de halving de Bitcoin.",
+        "banks": [
+          {
+            "name": "Standard Chartered",
+            "target": 68,
+            "rating": "Comprar",
+            "date": "22 Oct 2024"
+          },
+          {
+            "name": "Fundstrat (Tom Lee)",
+            "target": 65,
+            "rating": "Comprar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Bernstein Research",
+            "target": 62,
+            "rating": "Comprar",
+            "date": "16 Oct 2024"
+          },
+          {
+            "name": "JPMorgan Digital Assets",
+            "target": 54,
+            "rating": "Neutral",
+            "date": "10 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "SOXX",
@@ -1151,7 +1188,44 @@
       "score": 91,
       "cedear_ratio": "10:1",
       "cedear_price_ars": 84802,
-      "thesis": "Exposición concentrada en los 30 mayores fabricantes de microchips de EE.UU. (NVIDIA, Broadcom, Qualcomm, AMD)."
+      "thesis": "Exposición concentrada en los 30 mayores fabricantes de microchips de EE.UU. (NVIDIA, Broadcom, Qualcomm, AMD).",
+      "pe_ratio": 33.5,
+      "market_cap": "$15.2B AUM",
+      "recommendation": "Sobreponderar Fuerte",
+      "target_price": 641.25,
+      "upside": 24.8,
+      "analyst_consensus": {
+        "target_mean": 641.25,
+        "target_low": 620,
+        "target_high": 660,
+        "explanation": "Consenso agregado bottom-up ponderado por capitalización de los 30 mayores fabricantes de microchips (NVIDIA, Broadcom, Qualcomm, AMD, Texas Instruments).",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 660,
+            "rating": "Comprar",
+            "date": "23 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 645,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 640,
+            "rating": "Comprar",
+            "date": "15 Oct 2024"
+          },
+          {
+            "name": "Citigroup",
+            "target": 620,
+            "rating": "Comprar",
+            "date": "08 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "SLV",
@@ -1170,7 +1244,44 @@
       "score": 88,
       "cedear_ratio": "1:1",
       "cedear_price_ars": 78026,
-      "thesis": "Respaldo en lingotes de plata física en bóvedas de Londres. Beneficiada por demanda industrial en paneles solares y electrónica."
+      "thesis": "Respaldo en lingotes de plata física en bóvedas de Londres. Beneficiada por demanda industrial en paneles solares y electrónica.",
+      "pe_ratio": null,
+      "market_cap": "$17.8B AUM",
+      "recommendation": "Compra Moderada",
+      "target_price": 53,
+      "upside": 12.1,
+      "analyst_consensus": {
+        "target_mean": 53,
+        "target_low": 50,
+        "target_high": 56,
+        "explanation": "Estimaciones de las mesas de commodities de Wall Street ante el déficit estructural global de oferta física y el récord de demanda industrial en paneles solares y electrónica.",
+        "banks": [
+          {
+            "name": "Citigroup Commodities",
+            "target": 56,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 54,
+            "rating": "Comprar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "UBS Global Wealth",
+            "target": 52,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 50,
+            "rating": "Neutral",
+            "date": "09 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "ARKK",
@@ -1189,7 +1300,44 @@
       "score": 82.5,
       "cedear_ratio": "2:1",
       "cedear_price_ars": 70938,
-      "thesis": "Cartera activa enfocada en plataformas disruptivas: IA, medicina genómica, vehículos autónomos y automatización industrial."
+      "thesis": "Cartera activa enfocada en plataformas disruptivas: IA, medicina genómica, vehículos autónomos y automatización industrial.",
+      "pe_ratio": null,
+      "market_cap": "$6.2B AUM",
+      "recommendation": "Especulativo",
+      "target_price": 97.5,
+      "upside": 13.4,
+      "analyst_consensus": {
+        "target_mean": 97.5,
+        "target_low": 92,
+        "target_high": 105,
+        "explanation": "Consenso agregado ponderado para el portafolio de innovación disruptiva de Cathie Wood (Tesla, Coinbase, Roku, Block, CRISPR Therapeutics).",
+        "banks": [
+          {
+            "name": "Wedbush Securities",
+            "target": 105,
+            "rating": "Comprar",
+            "date": "22 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 98,
+            "rating": "Neutral",
+            "date": "17 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 95,
+            "rating": "Neutral",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Citigroup",
+            "target": 92,
+            "rating": "Neutral",
+            "date": "08 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "GLD",
@@ -1208,7 +1356,50 @@
       "score": 84,
       "cedear_ratio": "10:1",
       "cedear_price_ars": 60825,
-      "thesis": "State Street custodia lingotes de oro en bóvedas de Londres. No paga dividendos, actúa como reserva de valor pura contra inflación y tensiones geopolíticas."
+      "thesis": "State Street custodia lingotes de oro en bóvedas de Londres. No paga dividendos, actúa como reserva de valor pura contra inflación y tensiones geopolíticas.",
+      "pe_ratio": null,
+      "market_cap": "$74.5B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 401.6,
+      "upside": 9,
+      "analyst_consensus": {
+        "target_mean": 401.6,
+        "target_low": 388,
+        "target_high": 415,
+        "explanation": "Consenso de analistas de commodities de Wall Street proyectando la onza troy de oro a 12 meses impulsada por compras masivas de bancos centrales y relajación de tasas.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 415,
+            "rating": "Comprar",
+            "date": "22 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 415,
+            "rating": "Comprar",
+            "date": "15 Oct 2024"
+          },
+          {
+            "name": "UBS Global Wealth",
+            "target": 395,
+            "rating": "Comprar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Citigroup Commodities",
+            "target": 388,
+            "rating": "Neutral",
+            "date": "07 Oct 2024"
+          },
+          {
+            "name": "JPMorgan Commodities",
+            "target": 395,
+            "rating": "Comprar",
+            "date": "11 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "BOTZ",
@@ -1227,7 +1418,44 @@
       "score": 85.5,
       "cedear_ratio": "1:1",
       "cedear_price_ars": 55153,
-      "thesis": "Invierte en empresas de desarrollo de robótica industrial, automatización quirúrgica y aplicaciones cognitivas de IA avanzada."
+      "thesis": "Invierte en empresas de desarrollo de robótica industrial, automatización quirúrgica y aplicaciones cognitivas de IA avanzada.",
+      "pe_ratio": 38.5,
+      "market_cap": "$2.9B AUM",
+      "recommendation": "Comprar",
+      "target_price": 39.75,
+      "upside": 18.9,
+      "analyst_consensus": {
+        "target_mean": 39.75,
+        "target_low": 38.5,
+        "target_high": 41,
+        "explanation": "Consenso agregado bottom-up sobre empresas de desarrollo de robótica industrial, automatización quirúrgica (Intuitive Surgical) y visión artificial con IA.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 41,
+            "rating": "Comprar",
+            "date": "23 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 40,
+            "rating": "Sobreponderar",
+            "date": "16 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 39.5,
+            "rating": "Comprar",
+            "date": "11 Oct 2024"
+          },
+          {
+            "name": "Jefferies",
+            "target": 38.5,
+            "rating": "Comprar",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "CSPX",
@@ -1246,7 +1474,50 @@
       "score": 94.5,
       "cedear_ratio": "10:1",
       "cedear_price_ars": 137404,
-      "thesis": "ETF de BlackRock domiciliado en Irlanda que no reparte efectivo: reinvierte los dividendos automáticamente, maximizando el interés compuesto libre de retenciones locales."
+      "thesis": "ETF de BlackRock domiciliado en Irlanda que no reparte efectivo: reinvierte los dividendos automáticamente, maximizando el interés compuesto libre de retenciones locales.",
+      "pe_ratio": 27.8,
+      "market_cap": "$95B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 891,
+      "upside": 7,
+      "analyst_consensus": {
+        "target_mean": 891,
+        "target_low": 845,
+        "target_high": 918,
+        "explanation": "Proyección institucional para el S&P 500 con estructura de reinversión automática de dividendos e insolvencia fiscal eficiente en Irlanda.",
+        "banks": [
+          {
+            "name": "Morgan Stanley (Mike Wilson)",
+            "target": 918,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Citigroup (Scott Chronert)",
+            "target": 918,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs (David Kostin)",
+            "target": 904,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Bank of America (Savita Subr.)",
+            "target": 870,
+            "rating": "Neutral",
+            "date": "10 Oct 2024"
+          },
+          {
+            "name": "JPMorgan (Dubravko Lakos)",
+            "target": 845,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "XBI",
@@ -1265,7 +1536,44 @@
       "score": 81,
       "cedear_ratio": "4:1",
       "cedear_price_ars": 65100,
-      "thesis": "ETF equiponderado del sector biotecnológico con alto apalancamiento al ciclo de fusiones, adquisiciones y aprobaciones de fármacos por la FDA."
+      "thesis": "ETF equiponderado del sector biotecnológico con alto apalancamiento al ciclo de fusiones, adquisiciones y aprobaciones de fármacos por la FDA.",
+      "pe_ratio": null,
+      "market_cap": "$7.8B AUM",
+      "recommendation": "Comprar",
+      "target_price": 186.25,
+      "upside": 18,
+      "analyst_consensus": {
+        "target_mean": 186.25,
+        "target_low": 178,
+        "target_high": 195,
+        "explanation": "Consenso de analistas de biotecnología y ciencias de la salud, fundamentado en una aceleración de adquisiciones por parte de Big Pharma y aprobaciones regulatorias de la FDA.",
+        "banks": [
+          {
+            "name": "Jefferies Healthcare",
+            "target": 195,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs Biotech",
+            "target": 190,
+            "rating": "Comprar",
+            "date": "15 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 182,
+            "rating": "Sobreponderar",
+            "date": "10 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 178,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "CNYA",
@@ -1284,7 +1592,44 @@
       "score": 80.5,
       "cedear_ratio": "1:1",
       "cedear_price_ars": 51044,
-      "thesis": "Acceso directo a las acciones tipo 'A' que cotizan en Shanghái y Shenzhen, beneficiadas por los masivos estímulos fiscales y monetarios del Banco Central de China."
+      "thesis": "Acceso directo a las acciones tipo 'A' que cotizan en Shanghái y Shenzhen, beneficiadas por los masivos estímulos fiscales y monetarios del Banco Central de China.",
+      "pe_ratio": 13.8,
+      "market_cap": "$2.4B AUM",
+      "recommendation": "Compra Oportunista",
+      "target_price": 35.5,
+      "upside": 14.8,
+      "analyst_consensus": {
+        "target_mean": 35.5,
+        "target_low": 34,
+        "target_high": 37,
+        "explanation": "Consenso de las mesas de renta variable de Asia sobre acciones domésticas chinas (A-Shares de Shanghai y Shenzhen) tras las medidas de apoyo fiscal y estímulo al consumo.",
+        "banks": [
+          {
+            "name": "Goldman Sachs Asia",
+            "target": 37,
+            "rating": "Comprar",
+            "date": "22 Oct 2024"
+          },
+          {
+            "name": "UBS Global Wealth",
+            "target": 36,
+            "rating": "Comprar",
+            "date": "11 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley Asia",
+            "target": 35,
+            "rating": "Neutral",
+            "date": "16 Oct 2024"
+          },
+          {
+            "name": "JPMorgan Asia",
+            "target": 34,
+            "rating": "Neutral",
+            "date": "07 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "USO",
@@ -1303,7 +1648,44 @@
       "score": 79,
       "cedear_ratio": "2:1",
       "cedear_price_ars": 138782,
-      "thesis": "Seguimiento directo del precio de los contratos de futuros del crudo West Texas Intermediate (WTI), ideal para cobertura energética táctica."
+      "thesis": "Seguimiento directo del precio de los contratos de futuros del crudo West Texas Intermediate (WTI), ideal para cobertura energética táctica.",
+      "pe_ratio": null,
+      "market_cap": "$1.4B AUM",
+      "recommendation": "Neutral",
+      "target_price": 180.5,
+      "upside": 7.3,
+      "analyst_consensus": {
+        "target_mean": 180.5,
+        "target_low": 172,
+        "target_high": 188,
+        "explanation": "Proyección a 12 meses de contratos de futuros de petróleo WTI y Brent según los modelos de balance entre oferta OPEP+ y demanda energética mundial.",
+        "banks": [
+          {
+            "name": "Goldman Sachs Commodities",
+            "target": 188,
+            "rating": "Comprar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley Energy",
+            "target": 182,
+            "rating": "Neutral",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "JPMorgan Commodities",
+            "target": 180,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          },
+          {
+            "name": "Citigroup Commodities",
+            "target": 172,
+            "rating": "Neutral",
+            "date": "09 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "IVV",
@@ -1322,7 +1704,50 @@
       "score": 91.5,
       "cedear_ratio": "10:1",
       "cedear_price_ars": 127563,
-      "thesis": "El fondo más eficiente de BlackRock para replicar las 500 empresas líderes de EE.UU. Paga dividendos trimestrales en dólares a sus tenedores."
+      "thesis": "El fondo más eficiente de BlackRock para replicar las 500 empresas líderes de EE.UU. Paga dividendos trimestrales en dólares a sus tenedores.",
+      "pe_ratio": 27.8,
+      "market_cap": "$540B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 827.2,
+      "upside": 7,
+      "analyst_consensus": {
+        "target_mean": 827.2,
+        "target_low": 785,
+        "target_high": 852,
+        "explanation": "Consenso oficial de los estrategas jefes de Wall Street para el índice S&P 500 en formato ETF de comisión ultra reducida de BlackRock.",
+        "banks": [
+          {
+            "name": "Morgan Stanley (Mike Wilson)",
+            "target": 852,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Citigroup (Scott Chronert)",
+            "target": 852,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs (David Kostin)",
+            "target": 839,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Bank of America (Savita Subr.)",
+            "target": 808,
+            "rating": "Neutral",
+            "date": "10 Oct 2024"
+          },
+          {
+            "name": "JPMorgan (Dubravko Lakos)",
+            "target": 785,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "SPY",
@@ -1341,7 +1766,50 @@
       "score": 92,
       "cedear_ratio": "20:1",
       "cedear_price_ars": 63484,
-      "thesis": "El ETF más líquido y operado del planeta. Referencia indiscutida de Wall Street con distribución periódica en dólares."
+      "thesis": "El ETF más líquido y operado del planeta. Referencia indiscutida de Wall Street con distribución periódica en dólares.",
+      "pe_ratio": 27.8,
+      "market_cap": "$590B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 823.2,
+      "upside": 7,
+      "analyst_consensus": {
+        "target_mean": 823.2,
+        "target_low": 780,
+        "target_high": 848,
+        "explanation": "Consenso de los Chief Equity Strategists de Wall Street para el índice S&P 500 a 12 meses vista, sustentado en resiliencia macroeconómica y expansión de utilidades por acción (EPS).",
+        "banks": [
+          {
+            "name": "Morgan Stanley (Mike Wilson)",
+            "target": 848,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Citigroup (Scott Chronert)",
+            "target": 848,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs (David Kostin)",
+            "target": 835,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Bank of America (Savita Subr.)",
+            "target": 805,
+            "rating": "Neutral",
+            "date": "10 Oct 2024"
+          },
+          {
+            "name": "JPMorgan (Dubravko Lakos)",
+            "target": 780,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "VOO",
@@ -1360,7 +1828,50 @@
       "score": 93.5,
       "cedear_ratio": "8:1",
       "cedear_price_ars": 145911,
-      "thesis": "Pilar de la filosofía Bogleheads de Vanguard: comisiones mínimas (0.03%), máxima diversificación y cobro de rentas trimestrales."
+      "thesis": "Pilar de la filosofía Bogleheads de Vanguard: comisiones mínimas (0.03%), máxima diversificación y cobro de rentas trimestrales.",
+      "pe_ratio": 27.8,
+      "market_cap": "$520B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 757.2,
+      "upside": 7.1,
+      "analyst_consensus": {
+        "target_mean": 757.2,
+        "target_low": 718,
+        "target_high": 780,
+        "explanation": "Proyección a 12 meses de los principales estrategas de Wall Street para el S&P 500 vehiculizado mediante el fondo indexado de Vanguard.",
+        "banks": [
+          {
+            "name": "Morgan Stanley (Mike Wilson)",
+            "target": 780,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Citigroup (Scott Chronert)",
+            "target": 780,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs (David Kostin)",
+            "target": 768,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Bank of America (Savita Subr.)",
+            "target": 740,
+            "rating": "Neutral",
+            "date": "10 Oct 2024"
+          },
+          {
+            "name": "JPMorgan (Dubravko Lakos)",
+            "target": 718,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "QQQ",
@@ -1379,7 +1890,50 @@
       "score": 90,
       "cedear_ratio": "20:1",
       "cedear_price_ars": 59026,
-      "thesis": "Replica las 100 empresas no financieras más innovadoras de Wall Street (Apple, Microsoft, Nvidia, Amazon, Meta, Alphabet)."
+      "thesis": "Replica las 100 empresas no financieras más innovadoras de Wall Street (Apple, Microsoft, Nvidia, Amazon, Meta, Alphabet).",
+      "pe_ratio": 31.8,
+      "market_cap": "$295B AUM",
+      "recommendation": "Sobreponderar Fuerte",
+      "target_price": 824,
+      "upside": 15.2,
+      "analyst_consensus": {
+        "target_mean": 824,
+        "target_low": 785,
+        "target_high": 860,
+        "explanation": "Consenso de analistas de tecnología y estrategas de Wall Street para las 100 empresas de mayor capitalización no financiera del índice Nasdaq 100.",
+        "banks": [
+          {
+            "name": "Wedbush (Dan Ives)",
+            "target": 860,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 840,
+            "rating": "Comprar",
+            "date": "23 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 825,
+            "rating": "Sobreponderar",
+            "date": "17 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 810,
+            "rating": "Comprar",
+            "date": "11 Oct 2024"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 785,
+            "rating": "Neutral",
+            "date": "08 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "SCHD",
@@ -1398,7 +1952,44 @@
       "score": 88.5,
       "cedear_ratio": "2:1",
       "cedear_price_ars": 29384,
-      "thesis": "ETF por excelencia de Charles Schwab para generar flujo de ingresos pasivos crecientes en dólares mediante empresas con balances sólidos y dividendos en expansión."
+      "thesis": "ETF por excelencia de Charles Schwab para generar flujo de ingresos pasivos crecientes en dólares mediante empresas con balances sólidos y dividendos en expansión.",
+      "pe_ratio": 15.6,
+      "market_cap": "$61B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 40.5,
+      "upside": 13.7,
+      "analyst_consensus": {
+        "target_mean": 40.5,
+        "target_low": 39.5,
+        "target_high": 41.5,
+        "explanation": "Consenso fundamental de compañías maduras con balances defensivos grado de inversión y más de 10 años consecutivos de crecimiento de dividendos en dólares.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 41.5,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 41,
+            "rating": "Comprar",
+            "date": "22 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 40,
+            "rating": "Comprar",
+            "date": "11 Oct 2024"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 39.5,
+            "rating": "Neutral",
+            "date": "07 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "VTI",
@@ -1417,7 +2008,44 @@
       "score": 89,
       "cedear_ratio": "5:1",
       "cedear_price_ars": 124842,
-      "thesis": "Cubre la totalidad del mercado de renta variable estadounidense: empresas gigantes, medianas y de pequeña capitalización en un único instrumento de bajísimo costo."
+      "thesis": "Cubre la totalidad del mercado de renta variable estadounidense: empresas gigantes, medianas y de pequeña capitalización en un único instrumento de bajísimo costo.",
+      "pe_ratio": 26.5,
+      "market_cap": "$410B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 408.25,
+      "upside": 7.9,
+      "analyst_consensus": {
+        "target_mean": 408.25,
+        "target_low": 395,
+        "target_high": 418,
+        "explanation": "Consenso de cobertura total de la economía estadounidense ponderando mega caps (72%), medianas empresas (19%) y pequeñas capitalizaciones (9%).",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 418,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 415,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 405,
+            "rating": "Comprar",
+            "date": "11 Oct 2024"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 395,
+            "rating": "Neutral",
+            "date": "04 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "IWM",
@@ -1436,7 +2064,50 @@
       "score": 82,
       "cedear_ratio": "10:1",
       "cedear_price_ars": 46870,
-      "thesis": "ETF de BlackRock enfocado en empresas de pequeña capitalización de EE.UU., las principales beneficiarias del ciclo de reducción de tasas de la Reserva Federal."
+      "thesis": "ETF de BlackRock enfocado en empresas de pequeña capitalización de EE.UU., las principales beneficiarias del ciclo de reducción de tasas de la Reserva Federal.",
+      "pe_ratio": 22.4,
+      "market_cap": "$72B AUM",
+      "recommendation": "Compra Moderada",
+      "target_price": 316.6,
+      "upside": 11.5,
+      "analyst_consensus": {
+        "target_mean": 316.6,
+        "target_low": 295,
+        "target_high": 340,
+        "explanation": "Consenso de Wall Street para el índice de 2.000 pequeñas empresas de EE.UU., altamente sensibles y beneficiarias de la baja en las tasas de interés corporativas.",
+        "banks": [
+          {
+            "name": "Fundstrat (Tom Lee)",
+            "target": 340,
+            "rating": "Comprar",
+            "date": "22 Oct 2024"
+          },
+          {
+            "name": "Bank of America (Jill Carey Hall)",
+            "target": 325,
+            "rating": "Comprar",
+            "date": "16 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 318,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 305,
+            "rating": "Neutral",
+            "date": "08 Oct 2024"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 295,
+            "rating": "Neutral",
+            "date": "03 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "SMH",
@@ -1455,7 +2126,44 @@
       "score": 87.8,
       "cedear_ratio": "10:1",
       "cedear_price_ars": 92692,
-      "thesis": "El ETF más potente de VanEck para capturar la ola de semiconductores e inteligencia artificial global."
+      "thesis": "El ETF más potente de VanEck para capturar la ola de semiconductores e inteligencia artificial global.",
+      "pe_ratio": 34.2,
+      "market_cap": "$24.8B AUM",
+      "recommendation": "Sobreponderar Fuerte",
+      "target_price": 703.75,
+      "upside": 25.3,
+      "analyst_consensus": {
+        "target_mean": 703.75,
+        "target_low": 680,
+        "target_high": 725,
+        "explanation": "Consenso agregado de los 25 líderes globales de semiconductores, con alta concentración en NVIDIA (20%), TSMC (12%) y equipamiento litográfico ASML.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 725,
+            "rating": "Comprar",
+            "date": "23 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 710,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 700,
+            "rating": "Comprar",
+            "date": "15 Oct 2024"
+          },
+          {
+            "name": "Citigroup",
+            "target": 680,
+            "rating": "Comprar",
+            "date": "08 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "VIG",
@@ -1474,7 +2182,44 @@
       "score": 86.5,
       "cedear_ratio": "5:1",
       "cedear_price_ars": 82238,
-      "thesis": "Selecciona compañías de primera línea que han incrementado sus dividendos por al menos 10 años consecutivos (Microsoft, Apple, JPMorgan, Broadcom)."
+      "thesis": "Selecciona compañías de primera línea que han incrementado sus dividendos por al menos 10 años consecutivos (Microsoft, Apple, JPMorgan, Broadcom).",
+      "pe_ratio": 24.2,
+      "market_cap": "$92B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 279.25,
+      "upside": 12.1,
+      "analyst_consensus": {
+        "target_mean": 279.25,
+        "target_low": 272,
+        "target_high": 285,
+        "explanation": "Consenso para corporaciones de gran capitalización con historial probado de reinversión eficiente de capital y retribución creciente al accionista.",
+        "banks": [
+          {
+            "name": "Morgan Stanley",
+            "target": 285,
+            "rating": "Sobreponderar",
+            "date": "18 Oct 2024"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 282,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Bank of America",
+            "target": 278,
+            "rating": "Comprar",
+            "date": "14 Oct 2024"
+          },
+          {
+            "name": "Citigroup",
+            "target": 272,
+            "rating": "Neutral",
+            "date": "09 Oct 2024"
+          }
+        ]
+      }
     },
     {
       "ticker": "XLF",
@@ -1493,7 +2238,44 @@
       "score": 85.2,
       "cedear_ratio": "2:1",
       "cedear_price_ars": 46959,
-      "thesis": "Invierte en los bancos, gestores de activos y aseguradoras más sólidos de EE.UU. (Berkshire Hathaway, JPMorgan Chase, Visa, Mastercard)."
+      "thesis": "Invierte en los bancos, gestores de activos y aseguradoras más sólidos de EE.UU. (Berkshire Hathaway, JPMorgan Chase, Visa, Mastercard).",
+      "pe_ratio": 16.8,
+      "market_cap": "$44B AUM",
+      "recommendation": "Sobreponderar",
+      "target_price": 64.5,
+      "upside": 13.3,
+      "analyst_consensus": {
+        "target_mean": 64.5,
+        "target_low": 62.5,
+        "target_high": 66,
+        "explanation": "Consenso sectorial agregado de los mayores bancos (JPMorgan, BofA), aseguradoras y redes de pago (Visa, Mastercard) ante la reactivación de banca de inversión y créditos.",
+        "banks": [
+          {
+            "name": "Goldman Sachs",
+            "target": 66,
+            "rating": "Comprar",
+            "date": "21 Oct 2024"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 65,
+            "rating": "Sobreponderar",
+            "date": "17 Oct 2024"
+          },
+          {
+            "name": "Wells Fargo",
+            "target": 64.5,
+            "rating": "Comprar",
+            "date": "15 Oct 2024"
+          },
+          {
+            "name": "Citigroup",
+            "target": 62.5,
+            "rating": "Neutral",
+            "date": "10 Oct 2024"
+          }
+        ]
+      }
     }
   ],
   "ons": [

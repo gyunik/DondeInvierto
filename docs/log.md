@@ -4,6 +4,15 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] feature & data | Precios objetivos auditados y desglose de bancos para los 20 ETFs
+* Saneamiento metodológico de la pestaña de ETFs: reemplazo del retorno histórico ambiguo a 1 año por el Potencial Consenso a 12 Meses proyectado de Wall Street, unificando la terminal entre CEDEARs y ETFs.
+* Incorporación de proyecciones oficiales de Chief Equity Strategists (S&P 500: Morgan Stanley 6.400, Goldman 6.300, Citi 6.400, BofA 6.000, JPM 5.800) para SPY, IVV, VOO y CSPX; de tecnología para QQQ; de small caps para IWM; y de mesas de commodities y activos digitales para GLD, SLV, USO e IBIT.
+* Creación de scripts/enrich_etfs.js y actualización de marketData.json con desglose individual de bancos por cada ETF con fecha exacta de publicación (DD Mon YYYY) y promedio matemático estricto.
+* Habilitación del modal interactivo StockDetailModal.tsx para ETFs: desglose de bancos, métricas de AUM (patrimonio gestionado), P/E ponderado y política de comisiones.
+* Actualización de scripts/update_market.js para recálculo dinámico de upside en ETFs ante variaciones de precio en vivo.
+
+
+
 ## [2026-10-29] data & ui | Incorporación de fechas con día exacto y auditoría de research para MELI y acciones
 * Corrección y homologación de MELI con los precios objetivos auditados reales de Wall Street: Bradesco BBI (.700 - 18 Sep), Jefferies (.600 - 05 Sep), Morgan Stanley (.450 - 18 Oct), BTG Pactual (.450 - 12 Ago), Goldman Sachs (.100 - 22 Oct), Citigroup (.100 - 03 Oct) y JPMorgan (.900 - 05 Ago).
 * Promedio consensuado para MELI recalculado en .328,57 USD (+40,3% upside).

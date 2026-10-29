@@ -5,14 +5,19 @@ import { X } from "lucide-react";
 import marketData from "@/data/marketData.json";
 
 export type StockItem = (typeof marketData.stocks)[0];
+export type EtfItem = (typeof marketData.etfs)[0];
+export type ModalItem = StockItem | EtfItem;
 
 interface StockDetailModalProps {
-  stock: StockItem | null;
+  stock: ModalItem | null;
   onClose: () => void;
 }
 
 export default function StockDetailModal({ stock, onClose }: StockDetailModalProps) {
   if (!stock) return null;
+
+  const isEtf = "expense_ratio" in stock;
+  const tagLabel = "sector" in stock ? stock.sector : (stock as EtfItem).category;
 
   return (
     <div
@@ -43,8 +48,13 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                 {stock.name}
               </h3>
               <span className="px-2 py-0.5 rounded bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs font-semibold">
-                {stock.sector}
+                {tagLabel}
               </span>
+              {isEtf && (
+                <span className="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
+                  {(stock as EtfItem).manager}
+                </span>
+              )}
             </div>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs sm:text-sm font-mono text-slate-300">
               <span>
@@ -60,34 +70,48 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           </div>
         </div>
 
-        {/* 1. Métricas Fundamentales Clave (PER y Market Cap) */}
+        {/* 1. Métricas Fundamentales Clave (PER y Market Cap / AUM) */}
         <div className="mt-5 pt-4 border-t border-slate-800">
           <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-            Métricas Fundamentales de Mercado
+            {isEtf ? "Métricas Clave del Fondo / ETF" : "Métricas Fundamentales de Mercado"}
           </span>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
             <div className="bg-[#0e1b2f] p-3 rounded-xl border border-slate-700/80">
-              <span className="text-[11px] font-mono text-slate-400 uppercase">P/E Ratio (PER)</span>
+              <span className="text-[11px] font-mono text-slate-400 uppercase">
+                {isEtf ? (stock.pe_ratio ? "P/E Ponderado (PER)" : "Costo Anual (Expense)") : "P/E Ratio (PER)"}
+              </span>
               <div className="text-lg font-black text-white font-mono mt-0.5">
-                {stock.pe_ratio ? `${stock.pe_ratio}x` : "N/D"}
+                {isEtf
+                  ? stock.pe_ratio
+                    ? `${stock.pe_ratio}x`
+                    : `${(stock as EtfItem).expense_ratio}%`
+                  : stock.pe_ratio ? `${stock.pe_ratio}x` : "N/D"}
               </div>
-              <span className="text-[10px] text-slate-400 font-mono">Múltiplo precio/ganancia</span>
+              <span className="text-[10px] text-slate-400 font-mono">
+                {isEtf ? (stock.pe_ratio ? "Valuación de cartera" : "Comisión de administración") : "Múltiplo precio/ganancia"}
+              </span>
             </div>
 
             <div className="bg-[#0e1b2f] p-3 rounded-xl border border-slate-700/80">
-              <span className="text-[11px] font-mono text-slate-400 uppercase">Capitalización (Market Cap)</span>
+              <span className="text-[11px] font-mono text-slate-400 uppercase">
+                {isEtf ? "Patrimonio (AUM)" : "Capitalización (Market Cap)"}
+              </span>
               <div className="text-lg font-black text-[#00F5A0] font-mono mt-0.5">
                 {stock.market_cap || "N/D"}
               </div>
-              <span className="text-[10px] text-slate-400 font-mono">Valuación bursátil</span>
+              <span className="text-[10px] text-slate-400 font-mono">
+                {isEtf ? "Activos bajo gestión" : "Valuación bursátil"}
+              </span>
             </div>
 
             <div className="col-span-2 sm:col-span-1 bg-[#0e1b2f] p-3 rounded-xl border border-slate-700/80">
               <span className="text-[11px] font-mono text-slate-400 uppercase">Recomendación General</span>
               <div className="text-lg font-black text-white font-mono mt-0.5">
-                {stock.recommendation}
+                {stock.recommendation || "Sobreponderar"}
               </div>
-              <span className="text-[10px] text-emerald-400 font-mono">Bancos de Inversión Tier-1</span>
+              <span className="text-[10px] text-emerald-400 font-mono">
+                {isEtf ? "Estrategas & Consenso" : "Bancos de Inversión Tier-1"}
+              </span>
             </div>
           </div>
         </div>
@@ -97,7 +121,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           <div className="flex items-center justify-between">
             <div>
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                Proyección a 12 Meses (Promedio Bancos Tier-1)
+                Proyección a 12 Meses (Promedio Consolidado)
               </span>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span className="text-2xl font-black text-white font-mono">
@@ -118,7 +142,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                   Mínimo: <strong className="text-slate-200">${stock.analyst_consensus.target_low}</strong>
                 </span>
                 <span>
-                  Promedio Tier-1: <strong className="text-[#00F5A0]">${stock.analyst_consensus.target_mean}</strong>
+                  Promedio Consenso: <strong className="text-[#00F5A0]">${stock.analyst_consensus.target_mean}</strong>
                 </span>
                 <span>
                   Máximo: <strong className="text-slate-200">${stock.analyst_consensus.target_high}</strong>
@@ -139,7 +163,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           <div className="mt-5 pt-4 border-t border-slate-800">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                Visión de los Principales Bancos de Inversión (12 Meses)
+                {isEtf ? "Visión de Estrategas y Bancos de Inversión (12 Meses)" : "Visión de los Principales Bancos de Inversión (12 Meses)"}
               </span>
               <span className="text-[10px] font-mono text-slate-400 hidden sm:inline">
                 Fecha del informe
