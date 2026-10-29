@@ -2,9 +2,10 @@ name: Actualizacion Automatica de Mercado (Donde Invierto)
 
 on:
   schedule:
-    # Cada 1 hora durante rueda de mercado (Lunes a Viernes de 10:00 a 18:00 hs de Buenos Aires / 13:00 a 21:00 UTC)
-    # Cubre el horario de verano actual (apertura 10:30 hs) y el cambio de horario de invierno (apertura 11:30 hs y cierre 18:00 hs)
-    - cron: '0 13-21 * * 1-5'
+    # 1. Barrido Pre-Market a las 6:00 AM (09:00 UTC)
+    # 2. Barrido cada 1 hora durante rueda de mercado: 10:00 a 18:00 hs de Buenos Aires (13:00 a 21:00 UTC)
+    # 3. Barrido Post-Market 1 hora después del cierre: 19:00 hs de Buenos Aires (22:00 UTC)
+    - cron: '0 9,13-22 * * 1-5'
   workflow_dispatch: # Permite ejecutar la actualización manualmente desde la pestaña Actions en GitHub
 
 permissions:

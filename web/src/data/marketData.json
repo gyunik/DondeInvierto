@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "last_updated": "2026-10-28 20:54 hs",
+  "last_updated": "2026-10-29 09:17 hs",
   "ccl_dollar": 1665.4,
   "market": {
     "^GSPC": {
@@ -30,8 +30,8 @@
     },
     "^VIX": {
       "name": "VIX (Volatilidad)",
-      "price": 16.91,
-      "change": -3.48
+      "price": 17.25,
+      "change": 2.01
     }
   },
   "stocks": [
@@ -1143,8 +1143,8 @@
       "manager": "BlackRock (iShares)",
       "pays_dividend": false,
       "dividend_policy": "Acumulación (Reinvierte)",
-      "price": 835.29,
-      "day_change": 0.19,
+      "price": 832.85,
+      "day_change": -0.29,
       "return_1y": 28.9,
       "return_3m": 6.8,
       "expense_ratio": 0.07,
@@ -1152,7 +1152,7 @@
       "dividend_frequency": "Reinvierte internamente el 100%",
       "score": 94.5,
       "cedear_ratio": "10:1",
-      "cedear_price_ars": 139109,
+      "cedear_price_ars": 138703,
       "thesis": "ETF de BlackRock domiciliado en Irlanda que no reparte efectivo: reinvierte los dividendos automáticamente, maximizando el interés compuesto libre de retenciones locales."
     },
     {

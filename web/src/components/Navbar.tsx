@@ -40,14 +40,14 @@ export default function Navbar() {
   return (
     <header className="w-full border-b border-[#162338]/80 bg-[#060B14]/90 backdrop-blur-md sticky top-0 z-50">
       {/* Top Navigation Bar */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-3 sm:space-x-4">
-          <Link className="flex items-center gap-3 group" href="/" title="DONDE INVIERTO - Inicio">
-            {/* Logo Oficial Donde Invierto */}
-            <div className="h-9 sm:h-10 flex items-center transition-transform group-hover:scale-[1.02]">
-              <Logo className="h-9 sm:h-10 w-auto" idPrefix="nav" />
+          <Link className="flex items-center gap-3.5 group" href="/" title="DONDE INVIERTO - Inicio">
+            {/* Logo Oficial Donde Invierto (Agrandado para presencia destacada de marca) */}
+            <div className="h-11 sm:h-12 flex items-center transition-transform group-hover:scale-[1.02]">
+              <Logo className="h-11 sm:h-12 w-auto" idPrefix="nav" />
             </div>
-            <div className="hidden sm:flex flex-col justify-center border-l border-slate-700/60 pl-3 leading-tight">
+            <div className="hidden sm:flex flex-col justify-center border-l border-slate-700/60 pl-3.5 leading-tight">
               <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-slate-400 group-hover:text-slate-200 transition-colors">
                 Terminal Quant
               </span>
@@ -60,18 +60,18 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
+        {/* Navigation Links (Más compactas y sutiles estilo ListeningLab) */}
+        <nav className="hidden md:flex items-center space-x-1 lg:space-x-1.5">
           {navLinks.map((link) => {
             const active = isActive(link.href);
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs lg:text-[13px] font-medium transition-all ${
                   active
-                    ? "text-[#00F5A0] bg-emerald-500/10 border border-emerald-500/20"
-                    : "text-slate-300 hover:text-white hover:bg-slate-800/40"
+                    ? "text-[#00F5A0] bg-emerald-500/10 border border-emerald-500/25 shadow-[0_0_10px_rgba(0,245,160,0.1)]"
+                    : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/40"
                 }`}
               >
                 {link.name}
@@ -81,19 +81,19 @@ export default function Navbar() {
         </nav>
 
         {/* Right Action & Profile Button */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2.5">
           <Link
-            className="px-4 py-2 text-xs md:text-sm font-bold bg-[#00F5A0] hover:bg-[#00d68b] text-[#050911] rounded-lg shadow-[0_0_20px_rgba(0,245,160,0.3)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            className="px-3.5 py-1.5 text-xs font-bold bg-[#00F5A0] hover:bg-[#00d68b] text-[#050911] rounded-lg shadow-[0_0_18px_rgba(0,245,160,0.25)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             href="/#planes-precios"
           >
             Suscribirse Pro
           </Link>
           <button
             aria-label="Perfil de usuario"
-            className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 hover:border-slate-500 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+            className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 hover:border-slate-500 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
             type="button"
           >
-            <User className="w-4 h-4" />
+            <User className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

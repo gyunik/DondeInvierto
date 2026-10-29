@@ -4,6 +4,12 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] automation & ui | Barrido pre-market 6am y post-mercado, y ajuste de proporciones estilo ListeningLab
+* Configuración de GitHub Actions Cron ampliado: barrido matutino Pre-Market a las 6:00 AM de Buenos Aires (09:00 UTC), barrido horario durante rueda (10:00 a 18:00 hs ART) y barrido post-cierre a las 19:00 hs ART (22:00 UTC).
+* Soporte en scripts/update_market.js para captura de preMarketPrice (con flag includePrePost=true).
+* Ejecución local inmediata: actualización de cotizaciones y marca temporal a hoy 2026-10-29.
+* Ajuste de proporciones en Navbar.tsx según referencia ListeningLab: isologo agrandado (h-11 sm:h-12) y opciones centrales más compactas (text-xs / 13px).
+
 ## [2026-10-29] fix & data | Saneamiento de targets (NFLX y NOW) y estandarización a bancos Tier-1 exclusivos
 * Corrección del precio objetivo de Netflix (NFLX): desfasaje corregido de $969.90 USD (+1464.6%) a $84.50 USD (+36.3% de upside), alineado con la cotización real post-split ($61.99 USD).
 * Corrección preventiva de ServiceNow (NOW): precio objetivo saneado de $1179.36 USD (+685.6%) a $185.00 USD (+23.2% upside).
