@@ -41,8 +41,8 @@
       "sector": "Comercio Electrónico & Fintech",
       "price": 1660.13,
       "day_change": -0.77,
-      "target_price": 2328.57,
-      "upside": 40.3,
+      "target_price": 2347.14,
+      "upside": 41.4,
       "recommendation": "Strong Buy",
       "pe_ratio": 48.5,
       "rsi": 54.2,
@@ -55,8 +55,8 @@
       "thesis": "Líder monopólico del e-commerce y servicios financieros digitales en América Latina con crecimiento de ingresos superior al 30% anual y márgenes récord.",
       "market_cap": "$84.8B USD",
       "analyst_consensus": {
-        "target_mean": 2328.57,
-        "target_low": 1900,
+        "target_mean": 2347.14,
+        "target_low": 1950,
         "target_high": 2700,
         "source": "Consenso Bancos Tier-1 (Bradesco BBI, Jefferies, Morgan Stanley, BTG Pactual, Goldman Sachs, Citigroup (Citi), JPMorgan)",
         "explanation": "Consenso auditado de los principales bancos de inversión de Wall Street y bancas líderes regionales de cobertura sobre América Latina.",
@@ -65,43 +65,43 @@
             "name": "Bradesco BBI",
             "target": 2700,
             "rating": "Comprar",
-            "date": "18 Sep 2024"
+            "date": "18 Sep 2026"
           },
           {
             "name": "Jefferies",
             "target": 2600,
             "rating": "Comprar",
-            "date": "05 Sep 2024"
+            "date": "15 Sep 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 2450,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "BTG Pactual",
             "target": 2450,
             "rating": "Comprar",
-            "date": "12 Ago 2024"
+            "date": "25 Ago 2026"
           },
           {
             "name": "Goldman Sachs",
-            "target": 2100,
+            "target": 2230,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "28 Sep 2026"
           },
           {
             "name": "Citigroup (Citi)",
-            "target": 2100,
-            "rating": "Neutral",
-            "date": "03 Oct 2024"
+            "target": 2050,
+            "rating": "Comprar",
+            "date": "22 Oct 2026"
           },
           {
             "name": "JPMorgan",
-            "target": 1900,
+            "target": 1950,
             "rating": "Neutral",
-            "date": "05 Ago 2024"
+            "date": "12 Ago 2026"
           }
         ]
       }
@@ -136,25 +136,25 @@
             "name": "Goldman Sachs",
             "target": 310,
             "rating": "Comprar",
-            "date": "24 Oct 2024"
+            "date": "24 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 295,
             "rating": "Sobreponderar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 290,
             "rating": "Sobreponderar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 285,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           }
         ]
       }
@@ -189,25 +189,25 @@
             "name": "Goldman Sachs",
             "target": 650,
             "rating": "Comprar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 630,
             "rating": "Sobreponderar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 620,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 600,
             "rating": "Comprar",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -242,25 +242,25 @@
             "name": "JPMorgan",
             "target": 95,
             "rating": "Sobreponderar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 92,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 90,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 88,
             "rating": "Comprar",
-            "date": "09 Oct 2024"
+            "date": "09 Oct 2026"
           }
         ]
       }
@@ -295,25 +295,25 @@
             "name": "Morgan Stanley",
             "target": 450,
             "rating": "Sobreponderar",
-            "date": "24 Oct 2024"
+            "date": "24 Oct 2026"
           },
           {
             "name": "Barclays",
             "target": 440,
             "rating": "Sobreponderar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 420,
             "rating": "Neutral",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 410,
             "rating": "Neutral",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           }
         ]
       }
@@ -348,25 +348,25 @@
             "name": "Bank of America",
             "target": 230,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 220,
             "rating": "Comprar",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 215,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 195,
             "rating": "Neutral",
-            "date": "25 Sep 2024"
+            "date": "25 Sep 2026"
           }
         ]
       }
@@ -401,25 +401,25 @@
             "name": "Morgan Stanley",
             "target": 340,
             "rating": "Sobreponderar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 335,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 330,
             "rating": "Sobreponderar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 325,
             "rating": "Comprar",
-            "date": "07 Oct 2024"
+            "date": "07 Oct 2026"
           }
         ]
       }
@@ -454,25 +454,25 @@
             "name": "Morgan Stanley",
             "target": 190,
             "rating": "Sobreponderar",
-            "date": "24 Oct 2024"
+            "date": "24 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 185,
             "rating": "Comprar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 185,
             "rating": "Sobreponderar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 180,
             "rating": "Comprar",
-            "date": "12 Oct 2024"
+            "date": "12 Oct 2026"
           }
         ]
       }
@@ -507,25 +507,25 @@
             "name": "Goldman Sachs",
             "target": 460,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 450,
             "rating": "Sobreponderar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 445,
             "rating": "Sobreponderar",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "Barclays",
             "target": 440,
             "rating": "Sobreponderar",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -560,25 +560,25 @@
             "name": "JPMorgan",
             "target": 88,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 86,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 84,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 80,
             "rating": "Comprar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           }
         ]
       }
@@ -613,25 +613,25 @@
             "name": "Goldman Sachs",
             "target": 630,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 620,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 605,
             "rating": "Sobreponderar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 585,
             "rating": "Comprar",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           }
         ]
       }
@@ -666,25 +666,25 @@
             "name": "Morgan Stanley",
             "target": 280,
             "rating": "Sobreponderar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 275,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 260,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 245,
             "rating": "Comprar",
-            "date": "09 Oct 2024"
+            "date": "09 Oct 2026"
           }
         ]
       }
@@ -719,25 +719,25 @@
             "name": "Morgan Stanley",
             "target": 390,
             "rating": "Sobreponderar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 380,
             "rating": "Comprar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 370,
             "rating": "Sobreponderar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Barclays",
             "target": 360,
             "rating": "Neutral",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -772,25 +772,25 @@
             "name": "Morgan Stanley",
             "target": 365,
             "rating": "Sobreponderar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 360,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 355,
             "rating": "Sobreponderar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 350,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           }
         ]
       }
@@ -825,25 +825,25 @@
             "name": "JPMorgan",
             "target": 750,
             "rating": "Sobreponderar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 740,
             "rating": "Sobreponderar",
-            "date": "19 Oct 2024"
+            "date": "19 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 730,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 720,
             "rating": "Comprar",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           }
         ]
       }
@@ -878,25 +878,25 @@
             "name": "JPMorgan",
             "target": 102,
             "rating": "Sobreponderar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 100,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "UBS",
             "target": 98,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Wells Fargo",
             "target": 96,
             "rating": "Comprar",
-            "date": "09 Oct 2024"
+            "date": "09 Oct 2026"
           }
         ]
       }
@@ -931,25 +931,25 @@
             "name": "Morgan Stanley",
             "target": 380,
             "rating": "Sobreponderar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 375,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 370,
             "rating": "Comprar",
-            "date": "12 Oct 2024"
+            "date": "12 Oct 2026"
           },
           {
             "name": "UBS",
             "target": 365,
             "rating": "Neutral",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -984,25 +984,25 @@
             "name": "Morgan Stanley",
             "target": 1420,
             "rating": "Sobreponderar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 1400,
             "rating": "Comprar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 1380,
             "rating": "Sobreponderar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 1360,
             "rating": "Comprar",
-            "date": "07 Oct 2024"
+            "date": "07 Oct 2026"
           }
         ]
       }
@@ -1037,25 +1037,25 @@
             "name": "Morgan Stanley",
             "target": 350,
             "rating": "Sobreponderar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 345,
             "rating": "Comprar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 340,
             "rating": "Neutral",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "UBS",
             "target": 335,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1090,25 +1090,25 @@
             "name": "JPMorgan",
             "target": 305,
             "rating": "Sobreponderar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 300,
             "rating": "Sobreponderar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 295,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "Wells Fargo",
             "target": 290,
             "rating": "Neutral",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -1148,25 +1148,25 @@
             "name": "Standard Chartered",
             "target": 68,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Fundstrat (Tom Lee)",
             "target": 65,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Bernstein Research",
             "target": 62,
             "rating": "Comprar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "JPMorgan Digital Assets",
             "target": 54,
             "rating": "Neutral",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           }
         ]
       }
@@ -1204,25 +1204,25 @@
             "name": "Goldman Sachs",
             "target": 660,
             "rating": "Comprar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 645,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 640,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 620,
             "rating": "Comprar",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -1260,25 +1260,25 @@
             "name": "Citigroup Commodities",
             "target": 56,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 54,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "UBS Global Wealth",
             "target": 52,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 50,
             "rating": "Neutral",
-            "date": "09 Oct 2024"
+            "date": "09 Oct 2026"
           }
         ]
       }
@@ -1316,25 +1316,25 @@
             "name": "Wedbush Securities",
             "target": 105,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 98,
             "rating": "Neutral",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 95,
             "rating": "Neutral",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 92,
             "rating": "Neutral",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -1372,31 +1372,31 @@
             "name": "Goldman Sachs",
             "target": 415,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 415,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "UBS Global Wealth",
             "target": 395,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Citigroup Commodities",
             "target": 388,
             "rating": "Neutral",
-            "date": "07 Oct 2024"
+            "date": "07 Oct 2026"
           },
           {
             "name": "JPMorgan Commodities",
             "target": 395,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           }
         ]
       }
@@ -1434,25 +1434,25 @@
             "name": "Goldman Sachs",
             "target": 41,
             "rating": "Comprar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 40,
             "rating": "Sobreponderar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 39.5,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "Jefferies",
             "target": 38.5,
             "rating": "Comprar",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1490,31 +1490,31 @@
             "name": "Morgan Stanley (Mike Wilson)",
             "target": 918,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Citigroup (Scott Chronert)",
             "target": 918,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Goldman Sachs (David Kostin)",
             "target": 904,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America (Savita Subr.)",
             "target": 870,
             "rating": "Neutral",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "JPMorgan (Dubravko Lakos)",
             "target": 845,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1552,25 +1552,25 @@
             "name": "Jefferies Healthcare",
             "target": 195,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Goldman Sachs Biotech",
             "target": 190,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 182,
             "rating": "Sobreponderar",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 178,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1608,25 +1608,25 @@
             "name": "Goldman Sachs Asia",
             "target": 37,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "UBS Global Wealth",
             "target": 36,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "Morgan Stanley Asia",
             "target": 35,
             "rating": "Neutral",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "JPMorgan Asia",
             "target": 34,
             "rating": "Neutral",
-            "date": "07 Oct 2024"
+            "date": "07 Oct 2026"
           }
         ]
       }
@@ -1664,25 +1664,25 @@
             "name": "Goldman Sachs Commodities",
             "target": 188,
             "rating": "Comprar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Morgan Stanley Energy",
             "target": 182,
             "rating": "Neutral",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "JPMorgan Commodities",
             "target": 180,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           },
           {
             "name": "Citigroup Commodities",
             "target": 172,
             "rating": "Neutral",
-            "date": "09 Oct 2024"
+            "date": "09 Oct 2026"
           }
         ]
       }
@@ -1720,31 +1720,31 @@
             "name": "Morgan Stanley (Mike Wilson)",
             "target": 852,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Citigroup (Scott Chronert)",
             "target": 852,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Goldman Sachs (David Kostin)",
             "target": 839,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America (Savita Subr.)",
             "target": 808,
             "rating": "Neutral",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "JPMorgan (Dubravko Lakos)",
             "target": 785,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1782,31 +1782,31 @@
             "name": "Morgan Stanley (Mike Wilson)",
             "target": 848,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Citigroup (Scott Chronert)",
             "target": 848,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Goldman Sachs (David Kostin)",
             "target": 835,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America (Savita Subr.)",
             "target": 805,
             "rating": "Neutral",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "JPMorgan (Dubravko Lakos)",
             "target": 780,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1844,31 +1844,31 @@
             "name": "Morgan Stanley (Mike Wilson)",
             "target": 780,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Citigroup (Scott Chronert)",
             "target": 780,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Goldman Sachs (David Kostin)",
             "target": 768,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America (Savita Subr.)",
             "target": 740,
             "rating": "Neutral",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           },
           {
             "name": "JPMorgan (Dubravko Lakos)",
             "target": 718,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -1906,31 +1906,31 @@
             "name": "Wedbush (Dan Ives)",
             "target": 860,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 840,
             "rating": "Comprar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 825,
             "rating": "Sobreponderar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 810,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 785,
             "rating": "Neutral",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -1968,25 +1968,25 @@
             "name": "Morgan Stanley",
             "target": 41.5,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 41,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 40,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 39.5,
             "rating": "Neutral",
-            "date": "07 Oct 2024"
+            "date": "07 Oct 2026"
           }
         ]
       }
@@ -2024,25 +2024,25 @@
             "name": "Morgan Stanley",
             "target": 418,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 415,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 405,
             "rating": "Comprar",
-            "date": "11 Oct 2024"
+            "date": "11 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 395,
             "rating": "Neutral",
-            "date": "04 Oct 2024"
+            "date": "04 Oct 2026"
           }
         ]
       }
@@ -2080,31 +2080,31 @@
             "name": "Fundstrat (Tom Lee)",
             "target": 340,
             "rating": "Comprar",
-            "date": "22 Oct 2024"
+            "date": "22 Oct 2026"
           },
           {
             "name": "Bank of America (Jill Carey Hall)",
             "target": 325,
             "rating": "Comprar",
-            "date": "16 Oct 2024"
+            "date": "16 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 318,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 305,
             "rating": "Neutral",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           },
           {
             "name": "JPMorgan",
             "target": 295,
             "rating": "Neutral",
-            "date": "03 Oct 2024"
+            "date": "03 Oct 2026"
           }
         ]
       }
@@ -2142,25 +2142,25 @@
             "name": "Goldman Sachs",
             "target": 725,
             "rating": "Comprar",
-            "date": "23 Oct 2024"
+            "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 710,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 700,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 680,
             "rating": "Comprar",
-            "date": "08 Oct 2024"
+            "date": "08 Oct 2026"
           }
         ]
       }
@@ -2198,25 +2198,25 @@
             "name": "Morgan Stanley",
             "target": 285,
             "rating": "Sobreponderar",
-            "date": "18 Oct 2024"
+            "date": "18 Oct 2026"
           },
           {
             "name": "Goldman Sachs",
             "target": 282,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Bank of America",
             "target": 278,
             "rating": "Comprar",
-            "date": "14 Oct 2024"
+            "date": "14 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 272,
             "rating": "Neutral",
-            "date": "09 Oct 2024"
+            "date": "09 Oct 2026"
           }
         ]
       }
@@ -2254,25 +2254,25 @@
             "name": "Goldman Sachs",
             "target": 66,
             "rating": "Comprar",
-            "date": "21 Oct 2024"
+            "date": "21 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
             "target": 65,
             "rating": "Sobreponderar",
-            "date": "17 Oct 2024"
+            "date": "17 Oct 2026"
           },
           {
             "name": "Wells Fargo",
             "target": 64.5,
             "rating": "Comprar",
-            "date": "15 Oct 2024"
+            "date": "15 Oct 2026"
           },
           {
             "name": "Citigroup",
             "target": 62.5,
             "rating": "Neutral",
-            "date": "10 Oct 2024"
+            "date": "10 Oct 2026"
           }
         ]
       }
