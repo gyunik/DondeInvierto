@@ -4,6 +4,13 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-29] fix & data | Saneamiento de targets (NFLX y NOW) y estandarización a bancos Tier-1 exclusivos
+* Corrección del precio objetivo de Netflix (NFLX): desfasaje corregido de $969.90 USD (+1464.6%) a $84.50 USD (+36.3% de upside), alineado con la cotización real post-split ($61.99 USD).
+* Corrección preventiva de ServiceNow (NOW): precio objetivo saneado de $1179.36 USD (+685.6%) a $185.00 USD (+23.2% upside).
+* Eliminación total de entradas genéricas ("Consenso Wall Street" y "Caso Alcista Máximo (Bull)"): cada una de las 20 acciones cuenta ahora con el desglose individual por bancos de inversión Tier-1 de primera línea (Morgan Stanley, Goldman Sachs, JPMorgan, Bank of America, Citigroup, Barclays, UBS y Wells Fargo).
+* El target price y potencial medio de cada activo se calculan como el promedio matemático exacto de las recomendaciones de las instituciones financieras.
+* Actualización de `scripts/enrich_stocks.js`, `web/src/data/marketData.json` y `StockDetailModal.tsx`.
+
 ## [2026-10-29] ui | Integración del logo oficial vectorial SVG nativo en encabezado y pie
 * Creación del componente `Logo.tsx` en `web/src/components/Logo.tsx` y archivo vectorial en `web/public/logo.svg` a partir del SVG oficial (isotipo de 3 barras con gradientes, signo de interrogación, flecha ascendente quebrada en relieve y tipografía oficial).
 * Integración en `Navbar.tsx` con soporte responsivo y alineación con badge `Terminal Quant` y `RADAR EN VIVO`.

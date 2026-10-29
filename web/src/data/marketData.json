@@ -41,8 +41,8 @@
       "sector": "Comercio Electrónico & Fintech",
       "price": 1673.09,
       "day_change": -0.44,
-      "target_price": 2420,
-      "upside": 44.6,
+      "target_price": 2588,
+      "upside": 54.7,
       "recommendation": "Strong Buy",
       "pe_ratio": 48.5,
       "rsi": 54.2,
@@ -55,12 +55,22 @@
       "thesis": "Líder monopólico del e-commerce y servicios financieros digitales en América Latina con crecimiento de ingresos superior al 30% anual y márgenes récord.",
       "market_cap": "$84.8B USD",
       "analyst_consensus": {
-        "target_mean": 2420,
-        "target_low": 1750,
-        "target_high": 2808,
-        "source": "Consenso Wall Street (Morgan Stanley, Goldman Sachs, BofA, Cantor Fitzgerald)",
-        "explanation": "El consenso de los principales bancos de inversión ubica el precio objetivo medio en US$2.420 (+44.6% de suba estimada). El valor de US$2.808 corresponde al escenario alcista máximo (Bull Case) proyectado ante la fuerte aceleración de la cartera de crédito y el volumen de pagos en Mercado Pago.",
+        "target_mean": 2588,
+        "target_low": 2400,
+        "target_high": 2800,
+        "source": "Consenso Bancos Tier-1 (Barclays, Citigroup, Morgan Stanley, Goldman Sachs, Bank of America (BofA))",
+        "explanation": "Consenso de los principales bancos de inversión globales ante la fuerte aceleración de la cartera de crédito y el volumen de pagos en Mercado Pago.",
         "banks": [
+          {
+            "name": "Barclays",
+            "target": 2800,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Citigroup",
+            "target": 2750,
+            "rating": "Comprar"
+          },
           {
             "name": "Morgan Stanley",
             "target": 2550,
@@ -75,16 +85,6 @@
             "name": "Bank of America (BofA)",
             "target": 2400,
             "rating": "Comprar"
-          },
-          {
-            "name": "Cantor Fitzgerald",
-            "target": 2300,
-            "rating": "Sobreponderar"
-          },
-          {
-            "name": "Caso Alcista Máximo (Bull)",
-            "target": 2808,
-            "rating": "Techo Optimista"
           }
         ]
       }
@@ -110,10 +110,10 @@
       "market_cap": "$2.65T USD",
       "analyst_consensus": {
         "target_mean": 295,
-        "target_low": 240,
-        "target_high": 340,
-        "source": "Consenso Wall Street",
-        "explanation": "Consenso impulsado por la aceleración de Amazon Web Services (AWS) en cargas de trabajo de inteligencia artificial y expansión de márgenes en comercio electrónico.",
+        "target_low": 285,
+        "target_high": 310,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, JPMorgan, Morgan Stanley, Bank of America)",
+        "explanation": "Consenso impulsado por la aceleración de Amazon Web Services (AWS) en cargas de trabajo de IA y expansión de márgenes operativos en e-commerce.",
         "banks": [
           {
             "name": "Goldman Sachs",
@@ -144,10 +144,10 @@
       "sector": "Semiconductores & GPUs",
       "price": 578.44,
       "day_change": 3.24,
-      "target_price": 620,
-      "upside": 7.2,
+      "target_price": 625,
+      "upside": 8,
       "recommendation": "Buy",
-      "pe_ratio": 35.2,
+      "pe_ratio": 45.2,
       "rsi": 52.8,
       "score": 86.6,
       "cedear_ratio": "10:1",
@@ -156,18 +156,33 @@
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
       "thesis": "Competidor directo en chips aceleradores de IA (serie MI300) y procesadores para servidores de centros de datos, capturando cuota de mercado.",
-      "market_cap": "$120B USD",
+      "market_cap": "$935B USD",
       "analyst_consensus": {
-        "target_mean": 620,
-        "target_low": 527,
-        "target_high": 744,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Advanced Micro Devices.",
+        "target_mean": 625,
+        "target_low": 600,
+        "target_high": 650,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, Bank of America, Citigroup)",
+        "explanation": "Creciente penetración de procesadores EPYC en centros de datos corporativos y expansión de la línea de aceleradores de IA Instinct.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 213.2,
-            "rating": "Buy"
+            "name": "Goldman Sachs",
+            "target": 650,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 630,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 620,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Citigroup",
+            "target": 600,
+            "rating": "Comprar"
           }
         ]
       }
@@ -178,10 +193,10 @@
       "sector": "Movilidad & Logística Urbana",
       "price": 65.27,
       "day_change": -0.78,
-      "target_price": 108.7,
-      "upside": 66.5,
+      "target_price": 91.25,
+      "upside": 39.8,
       "recommendation": "Strong Buy",
-      "pe_ratio": 28.4,
+      "pe_ratio": 32.4,
       "rsi": 48.9,
       "score": 85.8,
       "cedear_ratio": "5:1",
@@ -190,18 +205,33 @@
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
       "thesis": "Flujo de caja libre récord gracias a su dominio en transporte de pasajeros y delivery, expandiendo con fuerza su segmento de publicidad de alta rentabilidad.",
-      "market_cap": "$120B USD",
+      "market_cap": "$138B USD",
       "analyst_consensus": {
-        "target_mean": 108.7,
-        "target_low": 92,
-        "target_high": 136,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Uber Technologies, Inc..",
+        "target_mean": 91.25,
+        "target_low": 88,
+        "target_high": 95,
+        "source": "Consenso Bancos Tier-1 (JPMorgan, Morgan Stanley, Goldman Sachs, Bank of America)",
+        "explanation": "Monetización récord de publicidad en app, alta retención del programa de membresías Uber One y sólido flujo libre de caja.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 108.7,
-            "rating": "Strong Buy"
+            "name": "JPMorgan",
+            "target": 95,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 92,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 90,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 88,
+            "rating": "Comprar"
           }
         ]
       }
@@ -227,24 +257,29 @@
       "market_cap": "$1.28T USD",
       "analyst_consensus": {
         "target_mean": 430,
-        "target_low": 250,
-        "target_high": 550,
-        "source": "Consenso Wall Street",
-        "explanation": "Consenso diversificado entre el negocio de vehículos eléctricos y la opción de escala en robotaxis, software de conducción autónoma y almacenamiento de energía.",
+        "target_low": 410,
+        "target_high": 450,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Barclays, Bank of America, Goldman Sachs)",
+        "explanation": "Valuación impulsada por avances en conducción autónoma supervisada (FSD), almacenamiento de energía Megapack y el despliegue del ecosistema de robotaxis.",
         "banks": [
-          {
-            "name": "Wedbush",
-            "target": 500,
-            "rating": "Sobreponderar"
-          },
           {
             "name": "Morgan Stanley",
             "target": 450,
             "rating": "Sobreponderar"
           },
           {
+            "name": "Barclays",
+            "target": 440,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 420,
+            "rating": "Neutral"
+          },
+          {
             "name": "Goldman Sachs",
-            "target": 380,
+            "target": 410,
             "rating": "Neutral"
           }
         ]
@@ -271,20 +306,30 @@
       "market_cap": "$445B USD",
       "analyst_consensus": {
         "target_mean": 215,
-        "target_low": 150,
-        "target_high": 260,
-        "source": "Consenso Wall Street",
-        "explanation": "Tracción comercial sin precedentes de su Artificial Intelligence Platform (AIP) en empresas del S&P 500 y contratos gubernamentales.",
+        "target_low": 195,
+        "target_high": 230,
+        "source": "Consenso Bancos Tier-1 (Bank of America, Citigroup, Goldman Sachs, Morgan Stanley)",
+        "explanation": "Tracción comercial masiva de Artificial Intelligence Platform (AIP) en empresas del S&P 500 y renovación de contratos gubernamentales estratégicos.",
         "banks": [
           {
-            "name": "Wedbush",
-            "target": 245,
-            "rating": "Sobreponderar"
+            "name": "Bank of America",
+            "target": 230,
+            "rating": "Comprar"
           },
           {
-            "name": "Bank of America",
-            "target": 225,
+            "name": "Citigroup",
+            "target": 220,
             "rating": "Comprar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 215,
+            "rating": "Neutral"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 195,
+            "rating": "Neutral"
           }
         ]
       }
@@ -295,10 +340,10 @@
       "sector": "Software Empresarial / CRM",
       "price": 242.11,
       "day_change": 0.51,
-      "target_price": 370.43,
-      "upside": 53,
+      "target_price": 332.5,
+      "upside": 37.3,
       "recommendation": "Buy",
-      "pe_ratio": 27.2,
+      "pe_ratio": 38.6,
       "rsi": 50.1,
       "score": 83.9,
       "cedear_ratio": "6:1",
@@ -307,18 +352,33 @@
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
       "thesis": "Transformación hacia agentes autónomos de inteligencia artificial corporativa (Agentforce), incrementando retención y monetización de clientes.",
-      "market_cap": "$120B USD",
+      "market_cap": "$234B USD",
       "analyst_consensus": {
-        "target_mean": 370.43,
-        "target_low": 315,
-        "target_high": 463,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Salesforce, Inc..",
+        "target_mean": 332.5,
+        "target_low": 325,
+        "target_high": 340,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Citigroup)",
+        "explanation": "Monetización creciente de Agentforce (agentes autónomos de IA empresarial) y expansión sostenida del margen operativo mediante recompras de acciones.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 370.43,
-            "rating": "Buy"
+            "name": "Morgan Stanley",
+            "target": 340,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 335,
+            "rating": "Comprar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 330,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Citigroup",
+            "target": 325,
+            "rating": "Comprar"
           }
         ]
       }
@@ -329,10 +389,10 @@
       "sector": "Automatización & Cloud Empresarial",
       "price": 150.13,
       "day_change": -3,
-      "target_price": 1179.36,
-      "upside": 685.6,
+      "target_price": 185,
+      "upside": 23.2,
       "recommendation": "Strong Buy",
-      "pe_ratio": 45.6,
+      "pe_ratio": 44.1,
       "rsi": 53,
       "score": 86,
       "cedear_ratio": "20:1",
@@ -341,18 +401,33 @@
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
       "thesis": "Tasa de renovación contractual superior al 98% en las empresas más grandes del mundo con integración masiva de flujos de trabajo generativos.",
-      "market_cap": "$120B USD",
+      "market_cap": "$154B USD",
       "analyst_consensus": {
-        "target_mean": 1179.36,
-        "target_low": 1002,
-        "target_high": 1474,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para ServiceNow, Inc..",
+        "target_mean": 185,
+        "target_low": 180,
+        "target_high": 190,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Bank of America)",
+        "explanation": "Plataforma indispensable de digitalización de flujos de trabajo corporativos con retención neta superior al 98% y adopción veloz de Now Assist.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 1179.36,
-            "rating": "Strong Buy"
+            "name": "Morgan Stanley",
+            "target": 190,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 185,
+            "rating": "Comprar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 185,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 180,
+            "rating": "Comprar"
           }
         ]
       }
@@ -363,10 +438,10 @@
       "sector": "Ciberseguridad en la Nube",
       "price": 394.49,
       "day_change": -1.79,
-      "target_price": 471.77,
-      "upside": 19.6,
+      "target_price": 448.75,
+      "upside": 13.8,
       "recommendation": "Strong Buy",
-      "pe_ratio": 41.2,
+      "pe_ratio": 51.3,
       "rsi": 51.5,
       "score": 85.1,
       "cedear_ratio": "8:1",
@@ -375,18 +450,33 @@
       "dividend_yield": 0,
       "dividend_frequency": "No paga (Reinversión 100%)",
       "thesis": "Líder global en ciberseguridad corporativa. Beneficiario directo del aumento de presupuestos empresariales para proteger sistemas e infraestructura crítica.",
-      "market_cap": "$120B USD",
+      "market_cap": "$132B USD",
       "analyst_consensus": {
-        "target_mean": 471.77,
-        "target_low": 401,
-        "target_high": 590,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Palo Alto Networks.",
+        "target_mean": 448.75,
+        "target_low": 440,
+        "target_high": 460,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, JPMorgan, Barclays)",
+        "explanation": "Liderazgo consolidado en ciberseguridad corporativa bajo estrategia de plataformización integral (Prisma Cloud, Cortex y Strata).",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 471.77,
-            "rating": "Strong Buy"
+            "name": "Goldman Sachs",
+            "target": 460,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 450,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 445,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Barclays",
+            "target": 440,
+            "rating": "Sobreponderar"
           }
         ]
       }
@@ -397,8 +487,8 @@
       "sector": "Entretenimiento & Streaming",
       "price": 61.99,
       "day_change": -0.85,
-      "target_price": 969.9,
-      "upside": 1464.6,
+      "target_price": 84.5,
+      "upside": 36.3,
       "recommendation": "Strong Buy",
       "pe_ratio": 31.8,
       "rsi": 56.4,
@@ -411,16 +501,31 @@
       "thesis": "Escala inalcanzable para competidores, generación de flujo libre de más de 7.000 millones de USD anuales e incorporación de transmisiones en vivo y deportes.",
       "market_cap": "$120B USD",
       "analyst_consensus": {
-        "target_mean": 969.9,
-        "target_low": 824,
-        "target_high": 1212,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Netflix, Inc..",
+        "target_mean": 84.5,
+        "target_low": 80,
+        "target_high": 88,
+        "source": "Consenso Bancos Tier-1 (JPMorgan, Goldman Sachs, Morgan Stanley, Bank of America)",
+        "explanation": "Escala indiscutida en streaming global, expansión de márgenes operativos hacia el 35%, ingresos publicitarios en alza y fuerte flujo de caja libre.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 969.9,
-            "rating": "Strong Buy"
+            "name": "JPMorgan",
+            "target": 88,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 86,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 84,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 80,
+            "rating": "Comprar"
           }
         ]
       }
@@ -446,10 +551,10 @@
       "market_cap": "$3.94T USD",
       "analyst_consensus": {
         "target_mean": 610,
-        "target_low": 540,
-        "target_high": 680,
-        "source": "Consenso Wall Street",
-        "explanation": "Aceleración continua en ingresos de Azure AI y adopción corporativa a gran escala de Copilot.",
+        "target_low": 585,
+        "target_high": 630,
+        "source": "Consenso Bancos Tier-1 (Goldman Sachs, Morgan Stanley, JPMorgan, Bank of America)",
+        "explanation": "Crecimiento acelerado en infraestructura Azure AI y monetización a gran escala de copilotos de productividad empresarial en Microsoft 365.",
         "banks": [
           {
             "name": "Goldman Sachs",
@@ -465,6 +570,11 @@
             "name": "JPMorgan",
             "target": 605,
             "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 585,
+            "rating": "Comprar"
           }
         ]
       }
@@ -490,10 +600,10 @@
       "market_cap": "$5.28T USD",
       "analyst_consensus": {
         "target_mean": 265,
-        "target_low": 210,
-        "target_high": 320,
-        "source": "Consenso Wall Street",
-        "explanation": "Fuerte demanda sostenida de GPUs para centros de datos de IA generativa y arquitectura Blackwell con visibilidad completa de pedidos para el próximo año.",
+        "target_low": 245,
+        "target_high": 280,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, Goldman Sachs, Citigroup)",
+        "explanation": "Demanda insatisfecha de arquitecturas Blackwell y Rubin para clústeres de centros de datos de IA generativa con visibilidad total de órdenes.",
         "banks": [
           {
             "name": "Morgan Stanley",
@@ -511,8 +621,8 @@
             "rating": "Comprar"
           },
           {
-            "name": "Citi",
-            "target": 250,
+            "name": "Citigroup",
+            "target": 245,
             "rating": "Comprar"
           }
         ]
@@ -539,10 +649,10 @@
       "market_cap": "$5.18T USD",
       "analyst_consensus": {
         "target_mean": 375,
-        "target_low": 320,
-        "target_high": 420,
-        "source": "Consenso Wall Street",
-        "explanation": "Superciclo de renovación impulsado por Apple Intelligence y alta rentabilidad en ingresos por Servicios.",
+        "target_low": 360,
+        "target_high": 390,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, JPMorgan, Barclays)",
+        "explanation": "Superciclo de renovación de hardware respaldado por Apple Intelligence y márgenes brutos récord en la división de Servicios.",
         "banks": [
           {
             "name": "Morgan Stanley",
@@ -556,8 +666,13 @@
           },
           {
             "name": "JPMorgan",
-            "target": 365,
+            "target": 370,
             "rating": "Sobreponderar"
+          },
+          {
+            "name": "Barclays",
+            "target": 360,
+            "rating": "Neutral"
           }
         ]
       }
@@ -568,10 +683,10 @@
       "sector": "Publicidad Digital & Cloud",
       "price": 324.89,
       "day_change": 1.34,
-      "target_price": 355,
-      "upside": 9.3,
+      "target_price": 357.5,
+      "upside": 10,
       "recommendation": "Strong Buy",
-      "pe_ratio": 21,
+      "pe_ratio": 25.4,
       "rsi": 49.3,
       "score": 85.1,
       "cedear_ratio": "29:1",
@@ -580,18 +695,33 @@
       "dividend_yield": 0.45,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "Valuación muy atractiva frente al resto de las 'Magnificent 7' con crecimiento de doble dígito en Google Cloud y YouTube.",
-      "market_cap": "$120B USD",
+      "market_cap": "$3.98T USD",
       "analyst_consensus": {
-        "target_mean": 355,
-        "target_low": 302,
-        "target_high": 426,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Alphabet Inc. (Google).",
+        "target_mean": 357.5,
+        "target_low": 350,
+        "target_high": 365,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Citigroup)",
+        "explanation": "Resiliencia sobresaliente en Search & YouTube Ads, aceleración sostenida en Google Cloud y liderazgo en modelos multimodales Gemini.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 238.48,
-            "rating": "Strong Buy"
+            "name": "Morgan Stanley",
+            "target": 365,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 360,
+            "rating": "Comprar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 355,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Citigroup",
+            "target": 350,
+            "rating": "Comprar"
           }
         ]
       }
@@ -602,10 +732,10 @@
       "sector": "Redes Sociales & Metaverso",
       "price": 612.49,
       "day_change": -1.24,
-      "target_price": 787.41,
-      "upside": 28.6,
+      "target_price": 735,
+      "upside": 20,
       "recommendation": "Strong Buy",
-      "pe_ratio": 24.2,
+      "pe_ratio": 26.2,
       "rsi": 54.8,
       "score": 86.4,
       "cedear_ratio": "24:1",
@@ -614,18 +744,33 @@
       "dividend_yield": 0.42,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "Llegada diaria a 3.200 millones de personas e IA aplicada a monetización de publicidad en Instagram, Facebook y WhatsApp.",
-      "market_cap": "$120B USD",
+      "market_cap": "$1.55T USD",
       "analyst_consensus": {
-        "target_mean": 787.41,
-        "target_low": 669,
-        "target_high": 984,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Meta Platforms, Inc..",
+        "target_mean": 735,
+        "target_low": 720,
+        "target_high": 750,
+        "source": "Consenso Bancos Tier-1 (JPMorgan, Morgan Stanley, Goldman Sachs, Bank of America)",
+        "explanation": "Eficiencia publicitaria impulsada por motores de recomendación de IA Advantage+, monetización de Reels y disciplina de gastos operativos.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 787.41,
-            "rating": "Strong Buy"
+            "name": "JPMorgan",
+            "target": 750,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 740,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 730,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 720,
+            "rating": "Comprar"
           }
         ]
       }
@@ -636,10 +781,10 @@
       "sector": "Bebidas & Consumo Defensivo",
       "price": 91.73,
       "day_change": 0.6,
-      "target_price": 98,
-      "upside": 6.8,
+      "target_price": 99,
+      "upside": 7.9,
       "recommendation": "Buy",
-      "pe_ratio": 21.8,
+      "pe_ratio": 24.8,
       "rsi": 47.6,
       "score": 80.2,
       "cedear_ratio": "5:1",
@@ -648,18 +793,33 @@
       "dividend_yield": 3.12,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "Rey del dividendo con más de 60 años consecutivos aumentando sus pagos. Activo ideal para preservar capital y generar rentas en dólares.",
-      "market_cap": "$120B USD",
+      "market_cap": "$395B USD",
       "analyst_consensus": {
-        "target_mean": 98,
-        "target_low": 83,
-        "target_high": 118,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para The Coca-Cola Company.",
+        "target_mean": 99,
+        "target_low": 96,
+        "target_high": 102,
+        "source": "Consenso Bancos Tier-1 (JPMorgan, Morgan Stanley, UBS, Wells Fargo)",
+        "explanation": "Poder de fijación de precios inigualable, diversificación en bebidas listas para consumir (RTD) y dividendo predecible y creciente.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 77.1,
-            "rating": "Buy"
+            "name": "JPMorgan",
+            "target": 102,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 100,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "UBS",
+            "target": 98,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Wells Fargo",
+            "target": 96,
+            "rating": "Comprar"
           }
         ]
       }
@@ -670,10 +830,10 @@
       "sector": "Banca Global & Finanzas",
       "price": 339.3,
       "day_change": 1.05,
-      "target_price": 370,
-      "upside": 9,
+      "target_price": 372.5,
+      "upside": 9.8,
       "recommendation": "Buy",
-      "pe_ratio": 12.4,
+      "pe_ratio": 13.5,
       "rsi": 52.3,
       "score": 81,
       "cedear_ratio": "10:1",
@@ -682,18 +842,33 @@
       "dividend_yield": 2.25,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "El banco más grande y sólido de Estados Unidos, con márgenes de intermediación elevados y liderazgo en banca de inversión corporativa.",
-      "market_cap": "$120B USD",
+      "market_cap": "$960B USD",
       "analyst_consensus": {
-        "target_mean": 370,
-        "target_low": 315,
-        "target_high": 444,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para JPMorgan Chase & Co..",
+        "target_mean": 372.5,
+        "target_low": 365,
+        "target_high": 380,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, Bank of America, UBS)",
+        "explanation": "Fortaleza patrimonial de primer nivel, liderazgo en banca corporativa e ingresos récord por intermediación financiera.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 274.6,
-            "rating": "Buy"
+            "name": "Morgan Stanley",
+            "target": 380,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 375,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 370,
+            "rating": "Comprar"
+          },
+          {
+            "name": "UBS",
+            "target": 365,
+            "rating": "Neutral"
           }
         ]
       }
@@ -704,10 +879,10 @@
       "sector": "Farmacéutica & Biotecnología",
       "price": 1288.3,
       "day_change": 0.5,
-      "target_price": 1380,
-      "upside": 7.1,
+      "target_price": 1390,
+      "upside": 7.9,
       "recommendation": "Strong Buy",
-      "pe_ratio": 38.5,
+      "pe_ratio": 46.8,
       "rsi": 53.6,
       "score": 82,
       "cedear_ratio": "16:1",
@@ -716,18 +891,33 @@
       "dividend_yield": 0.65,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "Revolución de medicamentos contra la diabetes y la obesidad (Mounjaro/Zepbound), proyectando demanda récord por la próxima década.",
-      "market_cap": "$120B USD",
+      "market_cap": "$1.22T USD",
       "analyst_consensus": {
-        "target_mean": 1380,
-        "target_low": 1173,
-        "target_high": 1656,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Eli Lilly and Company.",
+        "target_mean": 1390,
+        "target_low": 1360,
+        "target_high": 1420,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Citigroup)",
+        "explanation": "Dominio global en tratamientos para obesidad y diabetes (Mounjaro y Zepbound) con expansiones industriales de capacidad productiva.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 1049.5,
-            "rating": "Strong Buy"
+            "name": "Morgan Stanley",
+            "target": 1420,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 1400,
+            "rating": "Comprar"
+          },
+          {
+            "name": "JPMorgan",
+            "target": 1380,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Citigroup",
+            "target": 1360,
+            "rating": "Comprar"
           }
         ]
       }
@@ -738,10 +928,10 @@
       "sector": "Semiconductores Analógicos",
       "price": 309.83,
       "day_change": 0.3,
-      "target_price": 340,
-      "upside": 9.7,
+      "target_price": 342.5,
+      "upside": 10.5,
       "recommendation": "Hold / Accumulate",
-      "pe_ratio": 26.1,
+      "pe_ratio": 32.1,
       "rsi": 48,
       "score": 75.8,
       "cedear_ratio": "5:1",
@@ -750,18 +940,33 @@
       "dividend_yield": 2.75,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "Chips esenciales para automatización industrial y automotriz. Generación constante de flujo de caja libre para remunerar accionistas.",
-      "market_cap": "$120B USD",
+      "market_cap": "$281B USD",
       "analyst_consensus": {
-        "target_mean": 340,
-        "target_low": 289,
-        "target_high": 408,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Texas Instruments.",
+        "target_mean": 342.5,
+        "target_low": 335,
+        "target_high": 350,
+        "source": "Consenso Bancos Tier-1 (Morgan Stanley, Bank of America, Goldman Sachs, UBS)",
+        "explanation": "Liderazgo en semiconductores analógicos e incrustados para automatización industrial y automotriz con ventajas de escala en fabricación.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 227,
-            "rating": "Hold / Accumulate"
+            "name": "Morgan Stanley",
+            "target": 350,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Bank of America",
+            "target": 345,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 340,
+            "rating": "Neutral"
+          },
+          {
+            "name": "UBS",
+            "target": 335,
+            "rating": "Neutral"
           }
         ]
       }
@@ -772,10 +977,10 @@
       "sector": "Salud & Dispositivos Médicos",
       "price": 271.04,
       "day_change": 0.86,
-      "target_price": 295,
-      "upside": 8.8,
+      "target_price": 297.5,
+      "upside": 9.8,
       "recommendation": "Buy",
-      "pe_ratio": 15.6,
+      "pe_ratio": 22.3,
       "rsi": 46.2,
       "score": 78.5,
       "cedear_ratio": "5:1",
@@ -784,18 +989,33 @@
       "dividend_yield": 3.25,
       "dividend_frequency": "Trimestral en USD",
       "thesis": "Aristócrata del dividendo con más de 62 años consecutivos de incrementos. Enfoque exclusivo en medicamentos innovadores y tecnología médica tras el spin-off de Kenvue.",
-      "market_cap": "$120B USD",
+      "market_cap": "$652B USD",
       "analyst_consensus": {
-        "target_mean": 295,
-        "target_low": 251,
-        "target_high": 354,
-        "source": "Consenso General de Mercado",
-        "explanation": "Proyección calculada sobre el promedio ponderado de analistas para Johnson & Johnson.",
+        "target_mean": 297.5,
+        "target_low": 290,
+        "target_high": 305,
+        "source": "Consenso Bancos Tier-1 (JPMorgan, Morgan Stanley, Goldman Sachs, Wells Fargo)",
+        "explanation": "Modelo comercial enfocado en productos farmacéuticos innovadores y tecnología médica de alta precisión tras la escisión de Kenvue.",
         "banks": [
           {
-            "name": "Consenso Wall Street",
-            "target": 178.3,
-            "rating": "Buy"
+            "name": "JPMorgan",
+            "target": 305,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 300,
+            "rating": "Sobreponderar"
+          },
+          {
+            "name": "Goldman Sachs",
+            "target": 295,
+            "rating": "Comprar"
+          },
+          {
+            "name": "Wells Fargo",
+            "target": 290,
+            "rating": "Neutral"
           }
         ]
       }

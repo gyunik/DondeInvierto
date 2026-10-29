@@ -87,17 +87,17 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
               <div className="text-lg font-black text-white font-mono mt-0.5">
                 {stock.recommendation}
               </div>
-              <span className="text-[10px] text-emerald-400 font-mono">Consenso de analistas</span>
+              <span className="text-[10px] text-emerald-400 font-mono">Bancos de Inversión Tier-1</span>
             </div>
           </div>
         </div>
 
-        {/* 2. Consenso de Wall Street (Precio Objetivo) */}
+        {/* 2. Proyección de Bancos de Inversión (Precio Objetivo) */}
         <div className="mt-5 pt-4 border-t border-slate-800">
           <div className="flex items-center justify-between">
             <div>
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                Proyección a 12 Meses (Wall Street)
+                Proyección a 12 Meses (Promedio Bancos Tier-1)
               </span>
               <div className="flex items-baseline gap-2 mt-0.5">
                 <span className="text-2xl font-black text-white font-mono">
@@ -118,10 +118,10 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                   Mínimo: <strong className="text-slate-200">${stock.analyst_consensus.target_low}</strong>
                 </span>
                 <span>
-                  Consenso Medio: <strong className="text-[#00F5A0]">${stock.analyst_consensus.target_mean}</strong>
+                  Promedio Tier-1: <strong className="text-[#00F5A0]">${stock.analyst_consensus.target_mean}</strong>
                 </span>
                 <span>
-                  Máximo (Bull): <strong className="text-slate-200">${stock.analyst_consensus.target_high}</strong>
+                  Máximo: <strong className="text-slate-200">${stock.analyst_consensus.target_high}</strong>
                 </span>
               </div>
               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden relative">
@@ -143,16 +143,16 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
             <div className="mt-2 divide-y divide-slate-800/80 border border-slate-800 rounded-xl overflow-hidden bg-[#0a1424]/90">
               {stock.analyst_consensus.banks.map((bank, bIdx) => {
                 const upsideBank = Math.round(((bank.target - stock.price) / stock.price) * 1000) / 10;
-                const isBull = bank.name.includes("Bull") || bank.name.includes("Máx") || bank.name.includes("Alcista");
+                const isTopTarget = bank.target === stock.analyst_consensus.target_high;
                 return (
                   <div
                     key={bIdx}
                     className={`flex items-center justify-between p-2.5 sm:px-3.5 text-xs sm:text-sm font-mono ${
-                      isBull ? "bg-emerald-500/10" : ""
+                      isTopTarget ? "bg-emerald-500/10" : ""
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <span className={`font-semibold ${isBull ? "text-[#00F5A0] font-bold" : "text-white"}`}>
+                      <span className={`font-semibold ${isTopTarget ? "text-[#00F5A0] font-bold" : "text-white"}`}>
                         {bank.name}
                       </span>
                     </div>
