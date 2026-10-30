@@ -4,6 +4,18 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] ui & brand | Rediseño de Logo (Flecha continua azul eléctrico) y armonización total de Light Mode
+* Rediseño de Logo (`web/src/components/Logo.tsx`):
+  - Flecha de rendimiento ascendente ahora continua y unificada, eliminando el corte blanco / biselado previo.
+  - Nuevo gradiente azul eléctrico (`#0052FF` -> `#0080FF` -> `#00E5FF`) de alto impacto visual y sofisticación institucional.
+  - Tipografía `"donde"` adaptativa (`fill-slate-900 dark:fill-white`) para total visibilidad tanto en fondo blanco como en fondo oscuro.
+* Armonización y Contraste de Light Mode en todo el Screener y Landing (`web/src/...`):
+  - Header del Radar, buscador y filtros: reemplazados fondos negros rígidos por `bg-white dark:bg-[#09111e]/90`, bordes sutiles y textos oscuros de alta legibilidad (`text-slate-900 dark:text-white`).
+  - Tarjetas de acciones, ETFs, ONs, Merval y Bonos: corregido el contraste de tickers y nombres de empresas para que no se vean blancos sobre fondo blanco.
+  - Métricas clave y cajas de tesis de inversión: fondos claros `bg-slate-100/90 dark:bg-[#091220]/90` con textos oscuros nítidos.
+  - Modales de Análisis Cuantitativo (`StockDetailModal.tsx` y `ScoreDetailModal.tsx`): adaptación completa de tablas de consenso de bancos y pilares de puntuación a modo claro y oscuro.
+  - Banner superior de asesoría personalizada con contraste adaptativo.
+
 ## [2026-10-30] ui & theme | Implementación de Switch Dark / Light Mode con diseño neumórfico en Navbar
 * Creación de `web/src/components/ThemeToggle.tsx`:
   - Botón interactivo tipo cápsula/switch idéntico a la referencia visual (perilla deslizante blanca con sol ámbar en modo claro y luna azul índigo en modo oscuro, con iconos sutiles de fondo).

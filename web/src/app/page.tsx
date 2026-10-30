@@ -20,41 +20,41 @@ export default function HomePage() {
   const { market, ccl_dollar, brecha_cambiaria } = marketData;
 
   return (
-    <div className="min-h-screen bg-[#050911] text-slate-100 font-sans antialiased selection:bg-[#00F5A0] selection:text-black overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#050911] text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-[#00F5A0] selection:text-black overflow-x-hidden transition-colors duration-200">
       {/* 1. Header con Ticker Tape */}
       <Navbar />
 
       <main className="w-full">
         {/* 2. Hero Section */}
-        <section className="w-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 py-12 lg:py-16 radial-glow relative border-b border-[#162338]/80">
+        <section className="w-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 py-12 lg:py-16 radial-glow relative border-b border-slate-200 dark:border-[#162338]/80">
           <div className="w-full max-w-7xl mx-auto flex flex-col items-center text-center my-auto">
             {/* Market Scope Capsule Pill */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0D182A]/90 border border-slate-700/60 shadow-lg text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-slate-300 mb-6">
-              <Globe className="w-3.5 h-3.5 text-[#00F5A0]" />
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-[#0D182A]/90 border border-slate-300 dark:border-slate-700/60 shadow-sm dark:shadow-lg text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-slate-700 dark:text-slate-300 mb-6">
+              <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-[#00F5A0]" />
               <span>WALL STREET, CEDEARS, OBLIGACIONES NEGOCIABLES Y MERVAL</span>
             </div>
 
             {/* Hero Heading */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.12]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white max-w-5xl leading-[1.12]">
               ¿En qué conviene invertir hoy? <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F5A0] via-emerald-300 to-teal-400 drop-shadow-[0_4px_25px_rgba(0,245,160,0.25)]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-400 dark:from-[#00F5A0] dark:via-emerald-300 dark:to-teal-400 drop-shadow-sm dark:drop-shadow-[0_4px_25px_rgba(0,245,160,0.25)]">
                 Decisiones con datos reales.
               </span>
             </h1>
 
             {/* Detailed Description Box */}
             <div className="mt-7 max-w-3xl px-2">
-              <p className="text-base sm:text-lg md:text-xl text-slate-100 font-normal leading-relaxed tracking-wide">
+              <p className="text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-100 font-normal leading-relaxed tracking-wide">
                 Monitoreamos diariamente los mejores{" "}
-                <strong className="text-white font-bold underline decoration-[#00F5A0]/50 underline-offset-4">
+                <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
                   CEDEARs de Wall Street
                 </strong>{" "}
                 (con precio en pesos y dividendos), las{" "}
-                <strong className="text-white font-bold underline decoration-[#00F5A0]/50 underline-offset-4">
+                <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
                   Obligaciones Negociables (ONs en dólares)
                 </strong>{" "}
                 más rentables y las oportunidades del{" "}
-                <strong className="text-white font-bold underline decoration-[#00F5A0]/50 underline-offset-4">
+                <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
                   Merval y Bonos soberanos
                 </strong>.
               </p>
@@ -63,17 +63,17 @@ export default function HomePage() {
             {/* Action Buttons */}
             <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
               <Link
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm sm:text-base font-bold text-[#050911] bg-[#00F5A0] hover:bg-[#02e093] rounded-xl shadow-[0_0_25px_rgba(0,245,160,0.4)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm sm:text-base font-bold text-black bg-[#00F5A0] hover:bg-[#02e093] rounded-xl shadow-[0_0_25px_rgba(0,245,160,0.3)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                 href="/screener"
               >
                 <TrendingUp className="w-4 h-4 stroke-[2.5]" />
-                <span>Explorar Mercado & Screener</span>
+                <span>Explorar Mercado &amp; Screener</span>
               </Link>
               <Link
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm sm:text-base font-semibold text-slate-200 bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/80 hover:border-slate-500 rounded-xl backdrop-blur-md transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm sm:text-base font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800/90 border border-slate-300 dark:border-slate-700/80 hover:border-slate-400 dark:hover:border-slate-500 rounded-xl backdrop-blur-md transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-sm"
                 href="/simulador"
               >
-                <SlidersHorizontal className="w-4 h-4 text-[#00F5A0]" />
+                <SlidersHorizontal className="w-4 h-4 text-emerald-600 dark:text-[#00F5A0]" />
                 <span>Simular mi Cartera</span>
               </Link>
             </div>
@@ -84,38 +84,38 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {/* Card 1: Dólar CCL */}
               <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
-                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
+                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-600 dark:text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
                   <span>DÓLAR CCL HOY</span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight font-mono">
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight font-mono">
                       ${ccl_dollar.toFixed(2)}
                     </span>
-                    <span className="text-xs sm:text-sm font-extrabold text-slate-100 bg-[#162742] px-2 py-0.5 rounded border border-slate-600 font-mono">
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-700 dark:text-slate-100 bg-slate-200 dark:bg-[#162742] px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600 font-mono">
                       ARS
                     </span>
                   </div>
-                  <span className="text-sm sm:text-base font-mono font-bold text-[#00F5A0]">
+                  <span className="text-sm sm:text-base font-mono font-bold text-emerald-600 dark:text-[#00F5A0]">
                     ▲ +{market["CCL"].change}%
                   </span>
                 </div>
-                <div className="mt-3.5 bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-700/80 inline-block self-start">
-                  <span className="text-xs sm:text-sm text-slate-200 font-mono font-semibold">
-                    Brecha cambiaria: <strong className="text-white font-bold">{brecha_cambiaria ? `${brecha_cambiaria}%` : "5.8%"}</strong>
+                <div className="mt-3.5 bg-slate-100 dark:bg-[#0d1c2d] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700/80 inline-block self-start">
+                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-200 font-mono font-semibold">
+                    Brecha cambiaria: <strong className="text-slate-900 dark:text-white font-bold">{brecha_cambiaria ? `${brecha_cambiaria}%` : "5.8%"}</strong>
                   </span>
                 </div>
               </div>
 
               {/* Card 2: S&P Merval */}
               <div className="card-glass rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all">
-                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
+                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-600 dark:text-slate-200 font-mono font-bold tracking-wider uppercase mb-1">
                   <span>S&P MERVAL</span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></span>
                 </div>
                 <div className="flex items-baseline justify-between mt-1">
-                  <span className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight font-mono">
+                  <span className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight font-mono">
                     {market["^MERVAL"].price.toLocaleString("es-AR")}
                   </span>
                   <span className="text-sm sm:text-base font-mono font-bold text-[#00F5A0]">

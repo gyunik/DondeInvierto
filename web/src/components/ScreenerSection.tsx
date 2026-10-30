@@ -129,53 +129,53 @@ export default function ScreenerSection({
   return (
     <section className="w-full max-w-7xl mx-auto mb-16 scroll-mt-24 px-4 sm:px-6 lg:px-8" id="radar-section">
       {/* Header del Radar y Controles */}
-      <div className="bg-[#09111e]/90 border border-slate-700/80 rounded-3xl p-5 sm:p-7 shadow-2xl backdrop-blur-xl">
+      <div className="bg-white dark:bg-[#09111e]/90 border border-slate-200 dark:border-slate-700/80 rounded-3xl p-5 sm:p-7 shadow-sm dark:shadow-2xl backdrop-blur-xl transition-colors duration-200">
         {/* Fila Superior: Subtítulo + Título + Buscador */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-6 border-b border-slate-800">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div>
             {!hideTitle && (
               <>
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#00F5A0] tracking-wider uppercase mb-2">
-                  <Activity className="w-4 h-4 text-[#00F5A0]" />
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-600 dark:text-[#00F5A0] tracking-wider uppercase mb-2">
+                  <Activity className="w-4 h-4 text-emerald-600 dark:text-[#00F5A0]" />
                   <span>SELECCIÓN CUANTITATIVA DIARIA</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
                   Radar Diario de Oportunidades
                 </h2>
               </>
             )}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2 text-xs sm:text-sm font-mono">
-              <span className="text-slate-300 font-medium">
+              <span className="text-slate-600 dark:text-slate-300 font-medium">
                 Dólar CCL:{" "}
-                <strong className="text-white font-bold bg-[#142338] px-2 py-0.5 rounded border border-slate-600/60">
+                <strong className="text-slate-900 dark:text-white font-bold bg-slate-100 dark:bg-[#142338] px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600/60">
                   ${ccl_dollar} ARS
                 </strong>
               </span>
-              <span className="text-slate-500 hidden sm:inline">|</span>
+              <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">|</span>
               <span
-                className="text-slate-300 font-medium flex items-center gap-1.5 cursor-help"
+                className="text-slate-600 dark:text-slate-300 font-medium flex items-center gap-1.5 cursor-help"
                 title={macro?.source || "Tasa oficial de referencia de la Reserva Federal (EFFR)"}
               >
                 <span>Tasa FED:</span>
-                <strong className="text-[#00F5A0] font-bold bg-[#0a1e1b] px-2 py-0.5 rounded border border-emerald-500/40">
+                <strong className="text-emerald-700 dark:text-[#00F5A0] font-bold bg-emerald-50 dark:bg-[#0a1e1b] px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/40">
                   {macro?.tasa_actual_fed ?? 3.88}%
                 </strong>
-                <span className="text-slate-400 text-xs hidden md:inline">
-                  (Proy. 1A: <span className="text-white font-semibold">{macro?.tasa_proyectada_fed_1a ?? 3.16}%</span>)
+                <span className="text-slate-500 dark:text-slate-400 text-xs hidden md:inline">
+                  (Proy. 1A: <span className="text-slate-900 dark:text-white font-semibold">{macro?.tasa_proyectada_fed_1a ?? 3.16}%</span>)
                 </span>
                 {macro?.is_fallback && (
                   <span
-                    className="text-[10px] bg-amber-950/80 text-amber-300 border border-amber-600/50 px-1.5 py-0.5 rounded font-mono font-bold"
+                    className="text-[10px] bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-600/50 px-1.5 py-0.5 rounded font-mono font-bold"
                     title="Se están utilizando valores de fallback de contingencia debido a un fallo temporal de la API"
                   >
                     FALLBACK
                   </span>
                 )}
               </span>
-              <span className="text-slate-500 hidden sm:inline">|</span>
-              <span className="text-slate-300">
-                Actualizado: <span className="text-white font-semibold">{formattedLastUpdated}</span>{" "}
-                <span className="text-slate-400">(Hora Buenos Aires, UTC-3)</span>
+              <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">|</span>
+              <span className="text-slate-600 dark:text-slate-300">
+                Actualizado: <span className="text-slate-900 dark:text-white font-semibold">{formattedLastUpdated}</span>{" "}
+                <span className="text-slate-500 dark:text-slate-400">(Hora Buenos Aires, UTC-3)</span>
               </span>
             </div>
           </div>
@@ -184,14 +184,14 @@ export default function ScreenerSection({
           <div className="w-full lg:w-96">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-emerald-400" />
+                <Search className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               </div>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar ticker, empresa, ON..."
-                className="w-full pl-10 pr-4 py-2.5 bg-[#0e1b2f] border border-slate-600 focus:border-[#00F5A0] focus:ring-1 focus:ring-[#00F5A0] rounded-xl text-white text-sm placeholder-slate-400 transition-all font-sans font-medium"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-[#0e1b2f] border border-slate-300 dark:border-slate-600 focus:border-emerald-500 dark:focus:border-[#00F5A0] focus:ring-1 focus:ring-emerald-500 dark:focus:ring-[#00F5A0] rounded-xl text-slate-900 dark:text-white text-sm placeholder-slate-500 dark:placeholder-slate-400 transition-all font-sans font-medium"
               />
             </div>
           </div>
@@ -205,7 +205,7 @@ export default function ScreenerSection({
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === "cedears"
                   ? "bg-[#00F5A0] text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
-                  : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500 font-semibold"
+                  : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 font-semibold"
               }`}
             >
               <Globe className="w-4 h-4" />
@@ -216,7 +216,7 @@ export default function ScreenerSection({
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === "ons"
                   ? "bg-[#00F5A0] text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
-                  : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500 font-semibold"
+                  : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 font-semibold"
               }`}
             >
               <Building2 className="w-4 h-4" />
@@ -227,7 +227,7 @@ export default function ScreenerSection({
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === "argentina"
                   ? "bg-[#00F5A0] text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
-                  : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500 font-semibold"
+                  : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 font-semibold"
               }`}
             >
               <Shield className="w-4 h-4" />
@@ -237,14 +237,14 @@ export default function ScreenerSection({
 
           {/* Sub-selector de vista */}
           {activeTab === "cedears" && (
-            <div className="flex items-center gap-1.5 bg-[#0e1b2f] p-1 rounded-xl border border-slate-700 self-start sm:self-auto text-xs font-medium">
-              <span className="text-slate-400 px-2 font-mono">Ver:</span>
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0e1b2f] p-1 rounded-xl border border-slate-300 dark:border-slate-700 self-start sm:self-auto text-xs font-medium">
+              <span className="text-slate-500 dark:text-slate-400 px-2 font-mono">Ver:</span>
               <button
                 onClick={() => setCedearSubTab("stocks")}
                 className={`px-2.5 py-1 rounded-lg transition-all ${
                   cedearSubTab === "stocks"
-                    ? "bg-emerald-500/20 text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-300 hover:text-white"
+                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 Acciones ({filteredStocks.length})
@@ -253,8 +253,8 @@ export default function ScreenerSection({
                 onClick={() => setCedearSubTab("etfs")}
                 className={`px-2.5 py-1 rounded-lg transition-all ${
                   cedearSubTab === "etfs"
-                    ? "bg-emerald-500/20 text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-300 hover:text-white"
+                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 Top ETFs ({filteredEtfs.length})
@@ -263,14 +263,14 @@ export default function ScreenerSection({
           )}
 
           {activeTab === "argentina" && (
-            <div className="flex items-center gap-1.5 bg-[#0e1b2f] p-1 rounded-xl border border-slate-700 self-start sm:self-auto text-xs font-medium">
-              <span className="text-slate-400 px-2 font-mono">Ver:</span>
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0e1b2f] p-1 rounded-xl border border-slate-300 dark:border-slate-700 self-start sm:self-auto text-xs font-medium">
+              <span className="text-slate-500 dark:text-slate-400 px-2 font-mono">Ver:</span>
               <button
                 onClick={() => setArgSubTab("merval")}
                 className={`px-2.5 py-1 rounded-lg transition-all ${
                   argSubTab === "merval"
-                    ? "bg-emerald-500/20 text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-300 hover:text-white"
+                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 Acciones Merval ({filteredMerval.length})
@@ -279,8 +279,8 @@ export default function ScreenerSection({
                 onClick={() => setArgSubTab("bonds")}
                 className={`px-2.5 py-1 rounded-lg transition-all ${
                   argSubTab === "bonds"
-                    ? "bg-emerald-500/20 text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-300 hover:text-white"
+                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 Bonos Soberanos ({filteredSovereign.length})
@@ -294,13 +294,13 @@ export default function ScreenerSection({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
             {/* Selector de Mercado: Todo S&P 500 vs Solo con CEDEAR */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-300 font-semibold mr-1">Mercado:</span>
+              <span className="text-slate-700 dark:text-slate-300 font-semibold mr-1">Mercado:</span>
               <button
                 onClick={() => { setStockMarketFilter("all_sp500"); setVisibleCount(30); }}
                 className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                   stockMarketFilter === "all_sp500"
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400 font-bold shadow-sm"
-                    : "bg-[#111e33] hover:bg-[#162742] text-slate-300 border border-slate-700 hover:border-slate-500"
+                    ? "bg-cyan-100 text-cyan-900 border border-cyan-300 dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-400 font-bold shadow-sm"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500"
                 }`}
                 title="Muestra todo el universo del S&P 500 y ADRs líderes de Wall Street"
               >
@@ -310,22 +310,22 @@ export default function ScreenerSection({
                 onClick={() => { setStockMarketFilter("cedear_only"); setVisibleCount(30); }}
                 className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                   stockMarketFilter === "cedear_only"
-                    ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
-                    : "bg-[#111e33] hover:bg-[#162742] text-slate-300 border border-slate-700 hover:border-slate-500"
+                    ? "bg-emerald-100 text-emerald-900 border border-emerald-400 dark:bg-emerald-500/20 dark:text-[#00F5A0] dark:border-[#00F5A0] font-bold shadow-sm"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500"
                 }`}
                 title="Muestra solo acciones con CEDEAR habilitado para comprar en Pesos (ARS)"
               >
                 <span>🟢 Solo con CEDEAR ({stocks.filter((stk) => stk.has_cedear).length})</span>
               </button>
 
-              <span className="text-slate-500 mx-1 hidden sm:inline">|</span>
+              <span className="text-slate-300 dark:text-slate-600 mx-1 hidden sm:inline">|</span>
 
               <button
                 onClick={() => setStockOpportunityFilter(stockOpportunityFilter === "opportunities" ? "all" : "opportunities")}
                 className={`px-2.5 py-1.5 rounded-lg transition-all text-xs font-bold border ${
                   stockOpportunityFilter === "opportunities"
-                    ? "bg-emerald-950/70 text-[#00F5A0] border-emerald-500/40"
-                    : "bg-[#0b1626] text-slate-400 border-slate-700 hover:text-white"
+                    ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-[#00F5A0] dark:border-emerald-500/40"
+                    : "bg-slate-100 text-slate-600 border-slate-300 hover:text-slate-900 dark:bg-[#0b1626] dark:text-slate-400 dark:border-slate-700 dark:hover:text-white"
                 }`}
                 title="Alternar entre solo acciones con Score >= 60 o el ranking completo"
               >
@@ -335,13 +335,13 @@ export default function ScreenerSection({
 
             {/* Filtro de Dividendos */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-400 font-semibold mr-1">Dividendos:</span>
+              <span className="text-slate-600 dark:text-slate-400 font-semibold mr-1">Dividendos:</span>
               <button
                 onClick={() => setStockDivFilter("all")}
                 className={`px-2.5 py-1 rounded-lg transition-all ${
                   stockDivFilter === "all"
-                    ? "bg-[#162b45] text-white font-bold border border-slate-500"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-slate-200 text-slate-900 font-bold border border-slate-400 dark:bg-[#162b45] dark:text-white dark:border-slate-500"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 Todos
@@ -350,8 +350,8 @@ export default function ScreenerSection({
                 onClick={() => setStockDivFilter("dividend")}
                 className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 ${
                   stockDivFilter === "dividend"
-                    ? "bg-[#162b45] text-[#00F5A0] font-bold border border-emerald-500/50"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-emerald-50 text-emerald-800 font-bold border border-emerald-300 dark:bg-[#162b45] dark:text-[#00F5A0] dark:border-emerald-500/50"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 <CircleDollarSign className="w-3.5 h-3.5" />
@@ -359,10 +359,10 @@ export default function ScreenerSection({
               </button>
               <button
                 onClick={() => setStockDivFilter("growth")}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 ${
                   stockDivFilter === "growth"
-                    ? "bg-[#162b45] text-[#00F5A0] font-bold border border-emerald-500/50"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-emerald-50 text-emerald-800 font-bold border border-emerald-300 dark:bg-[#162b45] dark:text-[#00F5A0] dark:border-emerald-500/50"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 🚀 Crecimiento
@@ -477,19 +477,19 @@ export default function ScreenerSection({
                       </span>
                       <div>
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                          <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                          <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
                             {stock.ticker}
                           </span>
-                          <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                          <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                             {stock.sector}
                           </span>
                           <span className={`px-2.5 py-1 rounded-md border text-xs font-black tracking-wider uppercase ${recBadge.className}`}>
                             {recBadge.text}
                           </span>
                         </div>
-                        <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                        <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
                           {stock.name}{" "}
-                          <span className="text-white font-medium">
+                          <span className="text-slate-900 dark:text-white font-medium">
                             • {stock.pays_dividend ? `Div. ${stock.dividend_yield}% anual` : "Sin dividendo (Reinvierte)"}
                           </span>
                         </div>
@@ -497,18 +497,18 @@ export default function ScreenerSection({
                     </div>
 
                     {/* Derecha: Grid de 4 Métricas Clave */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
                       <div className="flex flex-col">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                           PRECIO USA (USD)
                         </span>
                         <div className="flex items-baseline gap-1.5 mt-0.5">
-                          <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                          <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                             ${stock.price.toFixed(2)}
                           </span>
                           <span
                             className={`text-xs sm:text-sm font-bold font-mono ${
-                              isPositive ? "text-[#00F5A0]" : "text-rose-400"
+                              isPositive ? "text-emerald-600 dark:text-[#00F5A0]" : "text-rose-500 dark:text-rose-400"
                             }`}
                           >
                             {isPositive ? `+${stock.day_change}%` : `${stock.day_change}%`}
@@ -517,29 +517,29 @@ export default function ScreenerSection({
                       </div>
 
                       <div className="flex flex-col">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                           OPERATORIA LOCAL
                         </span>
                         {stock.has_cedear && stock.cedear_price_ars ? (
                           <>
                             <div className="flex items-baseline gap-1.5 mt-0.5">
-                              <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                              <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                                 ${stock.cedear_price_ars.toLocaleString("es-AR")}
                               </span>
-                              <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
+                              <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">ARS</span>
                             </div>
-                            <span className="text-[11px] font-mono font-medium text-emerald-400">
+                            <span className="text-[11px] font-mono font-medium text-emerald-600 dark:text-emerald-400">
                               CEDEAR Ratio {stock.cedear_ratio}
                             </span>
                           </>
                         ) : (
                           <>
                             <div className="flex items-baseline gap-1.5 mt-0.5">
-                              <span className="text-sm font-bold text-slate-300 font-mono">
+                              <span className="text-sm font-bold text-slate-700 dark:text-slate-300 font-mono">
                                 Broker Exterior
                               </span>
                             </div>
-                            <span className="text-[11px] font-mono font-medium text-slate-400">
+                            <span className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400">
                               NYSE / NASDAQ
                             </span>
                           </>
@@ -548,19 +548,19 @@ export default function ScreenerSection({
 
                       <div
                         onClick={() => setSelectedStockForModal(stock)}
-                        className="flex flex-col cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                        className="flex flex-col cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                         title="Ver desglose de consenso de bancos, PER y capitalización"
                       >
                         <div className="flex items-center justify-between gap-1">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             POTENCIAL ESTIMADO (1A)
                           </span>
-                          <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                          <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                             Desglose ↗
                           </span>
                         </div>
                         <div className="flex items-baseline gap-1.5 mt-0.5">
-                          <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
+                          <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
                             {(() => {
                               const ret = stock.retorno_estimado_pct ?? (stock as { retornoEstimadoPct?: number }).retornoEstimadoPct ?? stock.upside;
                               if (ret === undefined) return "N/D";
@@ -568,30 +568,30 @@ export default function ScreenerSection({
                             })()}
                           </span>
                         </div>
-                        <span className="text-xs font-mono font-medium text-slate-300">
-                          Target Algoritmo: <strong className="text-white">${(stock.precio_objetivo_algoritmo ?? (stock as { precioObjetivoAlgoritmo?: number }).precioObjetivoAlgoritmo ?? stock.target_price ?? 0).toFixed(2)}</strong> USD
+                        <span className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300">
+                          Target Algoritmo: <strong className="text-slate-900 dark:text-white">${(stock.precio_objetivo_algoritmo ?? (stock as { precioObjetivoAlgoritmo?: number }).precioObjetivoAlgoritmo ?? stock.target_price ?? 0).toFixed(2)}</strong> USD
                         </span>
                       </div>
 
                       <div
                         onClick={() => setSelectedScoreItem(stock)}
-                        className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                        className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                         title="Ver desglose detallado de cómo se compone este Score"
                       >
                         <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             SCORE TOTAL
                           </span>
-                          <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                          <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                             Desglose ↗
                           </span>
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                          <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                             {stock.score_total ?? (stock as { scoreTotal?: number }).scoreTotal ?? stock.score}
                           </span>
-                          <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                          <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
+                          <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
+                          <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                             <Zap className="w-4 h-4 fill-current" />
                           </div>
                         </div>
@@ -600,11 +600,11 @@ export default function ScreenerSection({
                   </div>
 
                   {/* Tesis de Inversión */}
-                  <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
-                    <span className="text-xs sm:text-sm font-extrabold font-mono text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                  <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-100/90 dark:bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
                       TESIS:
                     </span>
-                    <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                    <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-100 leading-relaxed">
                       {stock.thesis}
                     </p>
                   </div>
@@ -615,12 +615,12 @@ export default function ScreenerSection({
             {/* Paginación progresiva */}
             {filteredStocks.length > visibleCount && (
               <div className="flex flex-col items-center justify-center pt-6 pb-2">
-                <span className="text-xs font-mono text-slate-400 mb-2">
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-400 mb-2">
                   Mostrando {visibleCount} de {filteredStocks.length} acciones analizadas
                 </span>
                 <button
                   onClick={() => setVisibleCount((prev) => prev + 30)}
-                  className="px-6 py-2.5 rounded-xl bg-[#111e33] hover:bg-[#162742] text-[#00F5A0] border border-emerald-500/40 hover:border-[#00F5A0] font-bold text-sm transition-all shadow-lg hover:shadow-[0_0_15px_rgba(0,245,160,0.2)]"
+                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-emerald-700 dark:text-[#00F5A0] border border-emerald-500/40 hover:border-emerald-600 dark:hover:border-[#00F5A0] font-bold text-sm transition-all shadow-md dark:shadow-lg"
                 >
                   Cargar 30 Acciones Más ({filteredStocks.length - visibleCount} restantes) ⭣
                 </button>
@@ -636,102 +636,102 @@ export default function ScreenerSection({
               <div key={etf.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
-                    <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono tracking-tight pt-0.5">
+                    <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
                       #{idx + 1}
                     </span>
                     <div>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
                           {etf.ticker}
                         </span>
-                        <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                        <span className="px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-[#132840] border border-emerald-200 dark:border-cyan-500/40 text-emerald-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                           {etf.manager}
                         </span>
-                        <span className="px-2.5 py-1 rounded-md bg-[#162742] border border-slate-600 text-slate-300 text-xs font-semibold">
+                        <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#162742] border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-xs font-semibold">
                           {etf.category}
                         </span>
                       </div>
-                      <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
                         {etf.name}{" "}
-                        <span className="text-white font-medium">
+                        <span className="text-slate-900 dark:text-white font-medium">
                           • {etf.pays_dividend ? `Div. ${etf.dividend_yield}% anual` : "Acumulación (0% dividendo)"} • Costo: {etf.expense_ratio}%
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
                     <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         PRECIO USA (USD)
                       </span>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                           ${etf.price.toFixed(2)}
                         </span>
-                        <span className="text-xs sm:text-sm font-bold font-mono text-[#00F5A0]">
+                        <span className="text-xs sm:text-sm font-bold font-mono text-emerald-600 dark:text-[#00F5A0]">
                           +{etf.day_change}%
                         </span>
                       </div>
                     </div>
 
                     <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         CEDEAR EN PESOS
                       </span>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                           ${etf.cedear_price_ars.toLocaleString("es-AR")}
                         </span>
-                        <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
+                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">ARS</span>
                       </div>
-                      <span className="text-[11px] font-mono font-medium text-slate-300">
+                      <span className="text-[11px] font-mono font-medium text-slate-600 dark:text-slate-300">
                         Ratio {etf.cedear_ratio}
                       </span>
                     </div>
 
                     <div
                       onClick={() => setSelectedStockForModal(etf)}
-                      className="flex flex-col cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                      className="flex flex-col cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                       title="Ver desglose de consenso de bancos y estrategas de Wall Street"
                     >
                       <div className="flex items-center justify-between gap-1">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                           POTENCIAL ANALISTAS
                         </span>
-                        <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                           Desglose ↗
                         </span>
                       </div>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
+                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.3)]">
                           {etf.upside && etf.upside >= 0 ? `+${etf.upside}%` : `${etf.upside}%`}
                         </span>
                       </div>
-                      <span className="text-xs font-mono font-medium text-slate-300">
-                        Target: <strong className="text-white">${etf.target_price ? etf.target_price.toFixed(2) : "N/D"}</strong> USD
+                      <span className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300">
+                        Target: <strong className="text-slate-900 dark:text-white">${etf.target_price ? etf.target_price.toFixed(2) : "N/D"}</strong> USD
                       </span>
                     </div>
 
                     <div
                       onClick={() => setSelectedScoreItem(etf)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                       title="Ver desglose detallado de cómo se compone este Score"
                     >
                       <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                           SCORE TOTAL
                         </span>
-                        <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                           Desglose ↗
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                           {etf.score}
                         </span>
-                        <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
+                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                           <Zap className="w-4 h-4 fill-current" />
                         </div>
                       </div>
@@ -770,42 +770,42 @@ export default function ScreenerSection({
                     </span>
                     <div>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
                           {on.ticker}
                         </span>
                         <span
                           className={`px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border ${
                             on.law.includes("Nueva York")
-                              ? "bg-[#132840] border-cyan-500/40 text-cyan-200"
-                              : "bg-[#291e10] border-amber-500/40 text-amber-300"
+                              ? "bg-cyan-50 dark:bg-[#132840] border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200"
+                              : "bg-amber-50 dark:bg-[#291e10] border-amber-200 dark:border-amber-500/40 text-amber-800 dark:text-amber-300"
                           }`}
                         >
                           {on.law}
                         </span>
-                        <span className="px-2.5 py-1 rounded-md bg-[#142338] border border-slate-700 text-slate-200 text-xs font-mono">
-                          Vence: <strong className="text-[#00F5A0]">{on.maturity_date}</strong>
+                        <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
+                          Vence: <strong className="text-emerald-700 dark:text-[#00F5A0]">{on.maturity_date}</strong>
                         </span>
                       </div>
-                      <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
-                        {on.name} <span className="text-slate-400 font-normal">• Emisor: {on.issuer}</span>
+                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
+                        {on.name} <span className="text-slate-500 dark:text-slate-400 font-normal">• Emisor: {on.issuer}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
                     <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         PRECIO &amp; PARIDAD
                       </span>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                           ${on.price_usd ? on.price_usd.toFixed(2) : "100.00"}
                         </span>
-                        <span className="text-xs font-bold font-mono text-slate-300">USD</span>
+                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">USD</span>
                       </div>
                       <span
                         className={`text-xs font-mono font-bold ${
-                          on.parity > 100 ? "text-cyan-300" : on.parity < 100 ? "text-amber-300" : "text-[#00F5A0]"
+                          on.parity > 100 ? "text-cyan-600 dark:text-cyan-300" : on.parity < 100 ? "text-amber-600 dark:text-amber-300" : "text-emerald-600 dark:text-[#00F5A0]"
                         }`}
                       >
                         {on.parity_status || (on.parity > 100 ? "Sobre par" : "Bajo par")} ({on.parity}%)
@@ -813,48 +813,48 @@ export default function ScreenerSection({
                     </div>
 
                     <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         RENDIMIENTO (TIR)
                       </span>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-[#00F5A0] font-mono">
+                        <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00F5A0] font-mono">
                           {on.tir_usd}%
                         </span>
                       </div>
-                      <span className="text-xs font-bold font-mono text-slate-300">Tasa neta anual USD</span>
+                      <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">Tasa neta anual USD</span>
                     </div>
 
                     <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         CUPÓN &amp; FRECUENCIA
                       </span>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                           {on.coupon}%
                         </span>
                       </div>
-                      <span className="text-xs font-medium font-mono text-slate-300">{on.frequency}</span>
+                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">{on.frequency}</span>
                     </div>
 
                     <div
                       onClick={() => setSelectedScoreItem(on)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                       title="Ver desglose detallado de cómo se compone esta calificación de Solvencia"
                     >
                       <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                           SOLIDEZ
                         </span>
-                        <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                           Desglose ↗
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                           {on.score}
                         </span>
-                        <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
+                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                           <Building2 className="w-4 h-4" />
                         </div>
                       </div>
@@ -884,83 +884,83 @@ export default function ScreenerSection({
                   <div key={m.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                       <div className="flex items-start gap-4">
-                        <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono tracking-tight pt-0.5">
+                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
                           #{idx + 1}
                         </span>
                         <div>
                           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                            <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                            <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
                               {m.ticker}
                             </span>
-                            <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                            <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                               {m.sector}
                             </span>
                           </div>
-                          <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                          <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
                             {m.name}
                           </div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
                         <div className="flex flex-col">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             PRECIO EN PESOS
                           </span>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                            <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                               ${m.price_ars.toLocaleString("es-AR")}
                             </span>
-                            <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
+                            <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">ARS</span>
                           </div>
-                          <span className="text-xs font-mono font-bold text-[#00F5A0]">
+                          <span className="text-xs font-mono font-bold text-emerald-600 dark:text-[#00F5A0]">
                             +{m.day_change}% hoy
                           </span>
                         </div>
 
                         <div className="flex flex-col">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             VALUACIÓN (P/E)
                           </span>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                            <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                               {m.pe_ratio}x
                             </span>
                           </div>
-                          <span className="text-xs font-medium font-mono text-slate-300">Ganancias anuales</span>
+                          <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">Ganancias anuales</span>
                         </div>
 
                         <div className="flex flex-col">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             MERCADO
                           </span>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                            <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                               BYMA
                             </span>
                           </div>
-                          <span className="text-xs font-medium font-mono text-emerald-400">Panel Líder</span>
+                          <span className="text-xs font-medium font-mono text-emerald-600 dark:text-emerald-400">Panel Líder</span>
                         </div>
 
                         <div
                           onClick={() => setSelectedScoreItem(m)}
-                          className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                          className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                           title="Ver desglose detallado de cómo se compone este Score"
                         >
                           <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                               SCORE
                             </span>
-                            <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                            <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                               Desglose ↗
                             </span>
                           </div>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                               {m.score}
                             </span>
-                            <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
+                            <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                               <Zap className="w-4 h-4 fill-current" />
                             </div>
                           </div>
@@ -968,11 +968,11 @@ export default function ScreenerSection({
                       </div>
                     </div>
 
-                    <div className="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-800">
-                      <span className="text-xs sm:text-sm font-extrabold font-mono text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
+                    <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-100/90 dark:bg-[#0c1626]/70 p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                      <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
                         TESIS LOCAL:
                       </span>
-                      <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                      <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-100 leading-relaxed">
                         {m.thesis}
                       </p>
                     </div>
@@ -987,41 +987,41 @@ export default function ScreenerSection({
                   <div key={b.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                       <div className="flex items-start gap-4">
-                        <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono tracking-tight pt-0.5">
+                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
                           #{idx + 1}
                         </span>
                         <div>
                           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                            <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                            <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
                               {b.ticker}
                             </span>
-                            <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                            <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                               {b.law}
                             </span>
-                            <span className="px-2.5 py-1 rounded-md bg-[#142338] border border-slate-700 text-slate-200 text-xs font-mono">
-                              Vence: <strong className="text-[#00F5A0]">{b.maturity_date}</strong>
+                            <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
+                              Vence: <strong className="text-emerald-700 dark:text-[#00F5A0]">{b.maturity_date}</strong>
                             </span>
                           </div>
-                          <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
+                          <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
                             {b.name}
                           </div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-700/80">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
                         <div className="flex flex-col">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             COTIZACIÓN &amp; PARIDAD
                           </span>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                            <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                               ${b.price_usd}
                             </span>
-                            <span className="text-xs font-bold font-mono text-slate-300">USD</span>
+                            <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">USD</span>
                           </div>
                           <span
                             className={`text-xs font-mono font-bold ${
-                              b.parity >= 100 ? "text-cyan-300" : "text-amber-300"
+                              b.parity >= 100 ? "text-cyan-600 dark:text-cyan-300" : "text-amber-600 dark:text-amber-300"
                             }`}
                           >
                             {b.parity_status || (b.parity >= 100 ? "Sobre par" : "Bajo par")} ({b.parity}%)
@@ -1029,48 +1029,48 @@ export default function ScreenerSection({
                         </div>
 
                         <div className="flex flex-col">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             RENDIMIENTO (TIR)
                           </span>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-lg sm:text-xl font-extrabold text-[#00F5A0] font-mono">
+                            <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00F5A0] font-mono">
                               {b.tir_usd}%
                             </span>
                           </div>
-                          <span className="text-xs font-bold font-mono text-slate-300">Renta neta en USD</span>
+                          <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">Renta neta en USD</span>
                         </div>
 
                         <div className="flex flex-col">
-                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                          <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                             TIPO DE ACTIVO
                           </span>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                            <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
                               Soberano
                             </span>
                           </div>
-                          <span className="text-xs font-medium font-mono text-slate-300">Bonares / Globales</span>
+                          <span className="text-xs font-medium font-mono text-slate-500 dark:text-slate-300">Bonares / Globales</span>
                         </div>
 
                         <div
                           onClick={() => setSelectedScoreItem(b)}
-                          className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-[#0e1a2c]/60 hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+                          className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
                           title="Ver desglose detallado de cómo se compone este Score"
                         >
                           <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
+                            <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                               SCORE
                             </span>
-                            <span className="text-[10px] text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
+                            <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
                               Desglose ↗
                             </span>
                           </div>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-xl sm:text-2xl font-black text-[#00F5A0] font-mono drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
+                            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
                               {b.score}
                             </span>
-                            <span className="text-xs font-bold font-mono text-slate-300">/100</span>
-                            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
+                            <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
                               <Shield className="w-4 h-4" />
                             </div>
                           </div>
@@ -1082,7 +1082,7 @@ export default function ScreenerSection({
                       <span className="text-xs sm:text-sm font-extrabold font-mono text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30 self-start">
                         TESIS SOBERANA:
                       </span>
-                      <p className="text-sm sm:text-[15px] font-normal text-slate-100 leading-relaxed">
+                      <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-100 leading-relaxed">
                         {b.thesis}
                       </p>
                     </div>
