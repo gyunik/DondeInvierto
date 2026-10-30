@@ -62,10 +62,12 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   // 3. Capa C (Precio Objetivo Teórico con Candado de Seguridad):
   let precio_teorico = eps_fwd * per_ajustado;
 
-  // CANDADO DE SEGURIDAD (SAFETY COLLAR):
-  // El precio objetivo algorítmico no puede despegarse en el vacío más de un +/- 25% del consenso de Wall Street
-  const minTarget = target_analistas_promedio * 0.75;
-  const maxTarget = target_analistas_promedio * 1.25;
+  // CANDADO DE SEGURIDAD ESTRICTO (PRUDENCIA INSTITUCIONAL):
+  // 1. Techo Infranqueable: El algoritmo NUNCA puede estimar un precio mayor al consenso de Wall Street.
+  //    (La función de la plataforma es aplicar disciplina cuantitativa y descuentos de riesgo, NUNCA inflar expectativas por encima del consenso profesional).
+  // 2. Piso de tolerancia: No menor al 70% del consenso.
+  const maxTarget = target_analistas_promedio;
+  const minTarget = target_analistas_promedio * 0.70;
   const precio_objetivo_estimado = Math.round(Math.min(maxTarget, Math.max(minTarget, precio_teorico)) * 100) / 100;
 
   // Retorno estimado porcentual

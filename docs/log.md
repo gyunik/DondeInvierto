@@ -4,6 +4,13 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] quant & discipline | Techo Institucional Infranqueable: Ningún activo supera el consenso de Wall Street
+* Adopción del Principio de Prudencia y Sentido Común Financiero:
+  - Se modificó `scripts/quant_algorithm.js`: el precio objetivo del algoritmo ahora tiene un **techo absoluto fijado en el consenso medio de Wall Street** (`maxTarget = target_analistas_promedio`).
+  - La plataforma asume formalmente el rol de filtro cuantitativo defensivo y disciplinado: aplica descuentos y exigencias de margen, pero **jamás infla expectativas de retorno por encima de lo que proyectan los bancos de inversión**.
+  - Auditoría del 100% del universo (450 acciones): **0 activos** tienen un precio objetivo o retorno superior al consenso de analistas.
+  - Caso Nvidia (NVDA) reajustado: De un irreal +89.8% ($393 USD) a exactamente **+59.4% ($328.95 USD)**, 100% alineado con el consenso de los 58 analistas de Wall Street y por debajo de las firmas más alcistas (Rosenblatt $390 USD).
+
 ## [2026-10-30] risk & quant | Blindaje Institucional: Stale Targets Guard (Balance Posterior), Crash Guard y Corrección ONs
 * Regla de Invalidez de Previsión por Balance Posterior (`scripts/scan_sp500_quant.js`):
   - Condición estricta: si una empresa presentó balance a posteriori del último precio objetivo de los bancos (`earningsDate > latestBankTargetDate`), la previsión se invalida por obsoleta/pre-balance.
