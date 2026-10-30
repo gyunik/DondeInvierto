@@ -90,29 +90,58 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
     score_margen = Math.max(0, Math.round((15 - (sobreprecio / 0.4) * 15) * 10) / 10);
   }
 
-  // Pilar 3: Filtro de Timing Técnico SMA200 (15%)
+  // Pilar 3: Filtro de Timing Técnico y Tendencia SMA200 (15%)
   const sma_200 = stock.sma_200 || (precio_actual * 0.95);
   const desvio_tecnico = (precio_actual - sma_200) / sma_200;
   let score_tecnico = 10;
-  if (desvio_tecnico <= 0) {
+  if (desvio_tecnico >= 0 && desvio_tecnico <= 0.15) {
+    // Tendencia alcista sana y contenida (+0% a +15% sobre SMA 200)
     score_tecnico = 15;
-  } else if (desvio_tecnico <= 0.15) {
-    score_tecnico = Math.round((15 - (desvio_tecnico / 0.15) * 5) * 10) / 10;
+  } else if (desvio_tecnico > 0.15) {
+    // Sobrecomprada respecto a su promedio móvil
+    const exceso = (desvio_tecnico - 0.15) / 0.20;
+    score_tecnico = Math.max(5, Math.round((15 - exceso * 10) * 10) / 10);
   } else {
-    const exceso = (desvio_tecnico - 0.15) / 0.15;
-    score_tecnico = Math.max(0, Math.round((10 - exceso * 10) * 10) / 10);
+    // Por debajo de la SMA 200: PENALIZACIÓN por tendencia bajista (en lugar de premio)
+    const caidaDebajo = Math.abs(desvio_tecnico);
+    if (caidaDebajo <= 0.05) {
+      score_tecnico = 8; // Leve debilidad
+    } else if (caidaDebajo <= 0.12) {
+      score_tecnico = 4; // Tendencia bajista activa
+    } else {
+      score_tecnico = 0; // Desplome o quiebre técnico severo (> 12% debajo de SMA 200)
+    }
   }
 
-  const score_total = Math.min(100, Math.max(0, Math.round((score_retorno + score_margen + score_tecnico) * 10) / 10));
+  // CANDADO CRÍTICO: CRASH GUARD (Protección contra cuchillos cayendo)
+  // Si una acción cae fuertemente en la rueda de hoy:
+  const day_change = typeof stock.day_change === 'number' ? stock.day_change : 0;
+  let crash_penalty = 0;
+  let is_crashing = false;
+
+  if (day_change <= -10.0) {
+    // Desplome masivo (-10% o peor, ej. balance fallido)
+    crash_penalty = 50;
+    is_crashing = true;
+  } else if (day_change <= -4.0) {
+    // Caída severa intradiaria (-4% a -10%)
+    crash_penalty = 25;
+    is_crashing = true;
+  }
+
+  const score_total = Math.min(100, Math.max(0, Math.round((score_retorno + score_margen + score_tecnico - crash_penalty) * 10) / 10));
 
   return {
     precio_objetivo_estimado,
     retorno_estimado_pct,
     score_total,
+    is_crashing,
+    crash_penalty,
     score_breakdown: {
       score_retorno,
       score_margen,
       score_tecnico,
+      crash_penalty,
       per_bancos: Math.round(per_bancos * 100) / 100,
       per_base: Math.round(per_base * 100) / 100,
       per_ajustado: Math.round(per_ajustado * 100) / 100,

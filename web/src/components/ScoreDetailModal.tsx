@@ -160,7 +160,9 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         points: p2,
         maxPoints: 30,
         icon: <ShieldCheck className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />,
-        desc: "Protección bajo legislación de Nueva York y máxima nota de solvencia crediticia otorgada por calificadoras de riesgo.",
+        desc: "law" in onItem && typeof onItem.law === "string" && onItem.law.toLowerCase().includes("argentina")
+          ? "Emisión bajo marco regulatorio y tribunales de la República Argentina con calificación crediticia local."
+          : "Protección jurídica internacional bajo legislación de Nueva York y máxima nota de solvencia crediticia.",
         metricDetail: "law" in onItem ? `Jurisdicción: ${onItem.law}` : "Grado de inversión seguro"
       },
       {

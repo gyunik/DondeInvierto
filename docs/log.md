@@ -4,6 +4,19 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] risk & quant | Blindaje Institucional: Stale Targets Guard (Balance Posterior), Crash Guard y Corrección ONs
+* Regla de Invalidez de Previsión por Balance Posterior (`scripts/scan_sp500_quant.js`):
+  - Condición estricta: si una empresa presentó balance a posteriori del último precio objetivo de los bancos (`earningsDate > latestBankTargetDate`), la previsión se invalida por obsoleta/pre-balance.
+  - La acción se descarta automáticamente del ranking cuantitativo hasta que los analistas publiquen nuevos targets post-balance.
+* Candado Anti-Desplome / Cuchillo Cayendo y Filtro de Tendencia (`scripts/quant_algorithm.js`):
+  - Conexión del rendimiento porcentual intradiario real de hoy (`regularMarketChangePercent`).
+  - Crash Guard: Si la variación intradiaria de hoy cae $\le -4\%$, penalización de 25 pts; si cae $\le -10\%$, penalización de 50 pts y veto obligatorio a recomendación "Evitar / En Revisión".
+  - Inversión del filtro SMA 200: estar por debajo de la media móvil ahora penaliza con 0 puntos por tendencia bajista destructiva.
+  - Caso Intel (INTC) saneado: Variación hoy corregida a -27.3%, Score desplomado a 26.3 / 100, recomendación bloqueada en "Evitar" y expulsada del Top.
+* Corrección de Ley Jurídica en Desglose de ONs (`web/src/components/ScoreDetailModal.tsx`):
+  - Se eliminó el texto hardcodeado "legislación de Nueva York" para todas las ONs.
+  - Ahora evalúa dinámicamente `onItem.law`: si indica "Ley Argentina" (ej. Pampa Energía PNDCO), muestra explícitamente "Emisión bajo marco regulatorio y tribunales de la República Argentina con calificación crediticia local".
+
 ## [2026-10-30] ui & brand | Rediseño de Logo (Flecha continua azul eléctrico) y armonización total de Light Mode
 * Rediseño de Logo (`web/src/components/Logo.tsx`):
   - Flecha de rendimiento ascendente ahora continua y unificada, eliminando el corte blanco / biselado previo.

@@ -93,7 +93,10 @@ async function fetchTickerDetails(item, auth) {
     if (price <= 0) return null;
 
     const prevClose = meta.chartPreviousClose || price;
-    const day_change = prevClose > 0 ? Math.round(((price - prevClose) / prevClose) * 1000) / 10 : 0;
+    // Variación real porcentual de hoy (rueda de hoy vs cierre anterior)
+    const day_change = typeof meta.regularMarketChangePercent === 'number'
+      ? Math.round(meta.regularMarketChangePercent * 10) / 10
+      : (prevClose > 0 ? Math.round(((price - prevClose) / prevClose) * 1000) / 10 : 0);
 
     const closes = result.indicators?.quote?.[0]?.close || [];
     const validCloses = closes.filter((c) => typeof c === 'number' && c > 0);
@@ -101,10 +104,10 @@ async function fetchTickerDetails(item, auth) {
       ? Math.round((validCloses.reduce((a, b) => a + b, 0) / validCloses.length) * 100) / 100
       : Math.round(price * 0.95 * 100) / 100;
 
-    // 2. QuoteSummary con módulos completos (upgradeDowngradeHistory, financialData, defaultKeyStatistics, summaryDetail)
+    // 2. QuoteSummary con módulos completos (upgradeDowngradeHistory, financialData, defaultKeyStatistics, summaryDetail, earnings, calendarEvents)
     if (!auth.crumb || !auth.cookie) return null;
 
-    const sumUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(ticker)}?modules=upgradeDowngradeHistory,financialData,defaultKeyStatistics,summaryDetail&crumb=${auth.crumb}`;
+    const sumUrl = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(ticker)}?modules=upgradeDowngradeHistory,financialData,defaultKeyStatistics,summaryDetail,earnings,calendarEvents&crumb=${auth.crumb}`;
     const sumRes = await fetch(sumUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0', 'Cookie': auth.cookie },
       signal: AbortSignal.timeout(7000)
@@ -156,7 +159,20 @@ async function fetchTickerDetails(item, auth) {
     }
 
     // REGLA ESTRICTA DE DESCARTE (ORDEN DEL USUARIO):
-    // Si no tiene precio objetivo de consenso, o no tiene EPS forward positivo, o no tiene PER razonable, o no tiene al menos 2 bancos calificados con fecha, DESCARTAR.
+    // 1. "no tomar en cuenta la previsión de los analistas si se presentó balance a posteriori del último precio objetivo de las calificadoras de riesgo"
+    const qList = qs.earnings?.earningsChart?.quarterly || [];
+    const lastQuarter = qList.length > 0 ? qList[qList.length - 1] : null;
+    const earningsEpoch = lastQuarter?.reportedDate?.raw || qs.calendarEvents?.earnings?.earningsCallDate?.[0]?.raw || 0;
+
+    const validHistoryTargets = rawHistory.filter((h) => h.currentPriceTarget > 0 && h.epochGradeDate > 0);
+    const latestBankEpoch = validHistoryTargets.length > 0 ? Math.max(...validHistoryTargets.map((h) => h.epochGradeDate)) : 0;
+
+    if (earningsEpoch > 0 && latestBankEpoch > 0 && earningsEpoch > latestBankEpoch) {
+      // El balance se presentó DESPUÉS del último precio objetivo emitido -> la previsión quedó caduca/pre-balance
+      return null;
+    }
+
+    // 2. Si no tiene precio objetivo de consenso, o no tiene EPS forward positivo, o no tiene PER razonable, o no tiene al menos 2 bancos calificados con fecha, DESCARTAR.
     if (!price || price <= 0) return null;
     if (!target_price || target_price <= 0) return null;
     if (!eps_fwd || eps_fwd <= 0) return null;
@@ -256,9 +272,11 @@ async function main() {
 
     const upside = stock.target_price > 0 ? Math.round(((stock.target_price - stock.price) / stock.price) * 1000) / 10 : 0;
 
-    // Semáforo dinámico e institucional
+    // Semáforo dinámico e institucional con Crash Guard
     let recommendation = 'Hold';
-    if (quant.score_total >= 85 && quant.retorno_estimado_pct >= 30) {
+    if (quant.is_crashing || stock.day_change <= -4.0 || quant.score_total < 40) {
+      recommendation = 'Avoid';
+    } else if (quant.score_total >= 85 && quant.retorno_estimado_pct >= 30) {
       recommendation = 'Strong Buy';
     } else if (quant.score_total >= 60 && quant.retorno_estimado_pct > 0) {
       recommendation = 'Buy';
