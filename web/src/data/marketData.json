@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "last_updated": "2026-10-29 21:23 hs",
+  "last_updated": "2026-10-29 22:58 hs",
   "ccl_dollar": 1650.3,
   "market": {
     "^GSPC": {
@@ -2941,6 +2941,6 @@
     "is_fallback": false,
     "source": "Federal Reserve Bank of New York (EFFR: 3.88%, Proyección 1A: 3.16%)",
     "effective_date": "2026-10-28",
-    "last_fetched": "2026-10-30T00:23:31.967Z"
+    "last_fetched": "2026-10-30T01:58:04.838Z"
   }
 }
