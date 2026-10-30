@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "last_updated": "2026-10-29 17:28 hs",
+  "last_updated": "2026-10-29 21:23 hs",
   "ccl_dollar": 1650.3,
   "market": {
     "^GSPC": {
@@ -30,8 +30,8 @@
     },
     "^VIX": {
       "name": "VIX (Volatilidad)",
-      "price": 17.21,
-      "change": 1.77
+      "price": 17.2,
+      "change": 1.71
     }
   },
   "stocks": [
@@ -2688,8 +2688,8 @@
       "manager": "State Street (SPDR)",
       "pays_dividend": true,
       "dividend_policy": "Distribución (Paga efectivo)",
-      "price": 56.91,
-      "day_change": 1.39,
+      "price": 56.94,
+      "day_change": 1.44,
       "return_1y": 29.2,
       "return_3m": 6.9,
       "expense_ratio": 0.09,
@@ -2697,7 +2697,7 @@
       "dividend_frequency": "Trimestral en USD",
       "score": 85.2,
       "cedear_ratio": "2:1",
-      "cedear_price_ars": 46959,
+      "cedear_price_ars": 46984,
       "thesis": "Invierte en los bancos, gestores de activos y aseguradoras más sólidos de EE.UU. (Berkshire Hathaway, JPMorgan Chase, Visa, Mastercard).",
       "pe_ratio": 16.8,
       "market_cap": "$44B AUM",
@@ -2884,8 +2884,8 @@
         "ticker": "BMA",
         "name": "Banco Macro",
         "sector": "Banca Minorista y Corporativa",
-        "price_ars": 10100,
-        "day_change": 1.05,
+        "price_ars": 10080,
+        "day_change": 0.85,
         "pe_ratio": 7.2,
         "score": 85.5,
         "thesis": "Excelente ratio de capitalización (Tier 1) y absorción exitosa de la cartera del ex Itaú Argentina."
@@ -2941,6 +2941,6 @@
     "is_fallback": false,
     "source": "Federal Reserve Bank of New York (EFFR: 3.88%, Proyección 1A: 3.16%)",
     "effective_date": "2026-10-28",
-    "last_fetched": "2026-10-29T22:50:52.572Z"
+    "last_fetched": "2026-10-30T00:23:31.967Z"
   }
 }
