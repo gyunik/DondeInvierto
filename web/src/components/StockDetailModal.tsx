@@ -4,8 +4,7 @@ import React from "react";
 import { X, Layers } from "lucide-react";
 import marketData from "@/data/marketData.json";
 
-export type StockItem = (typeof marketData.stocks)[0];
-export type EtfItem = (typeof marketData.etfs)[0];
+import { StockItem, EtfItem } from "@/types/market";
 export type ModalItem = StockItem | EtfItem;
 
 interface StockDetailModalProps {
@@ -72,11 +71,19 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                 Precio USA: <strong className="text-white">${stock.price.toFixed(2)} USD</strong>
               </span>
               <span>•</span>
-              <span>
-                CEDEAR: <strong className="text-[#00F5A0]">${stock.cedear_price_ars.toLocaleString("es-AR")} ARS</strong>
-              </span>
-              <span>•</span>
-              <span>Ratio: {stock.cedear_ratio}</span>
+              {stock.cedear_price_ars ? (
+                <>
+                  <span>
+                    CEDEAR: <strong className="text-[#00F5A0]">${stock.cedear_price_ars.toLocaleString("es-AR")} ARS</strong>
+                  </span>
+                  <span>•</span>
+                  <span>Ratio: {stock.cedear_ratio}</span>
+                </>
+              ) : (
+                <span className="text-slate-400">
+                  Operable vía <strong className="text-cyan-300 font-semibold">Broker Exterior (NYSE / NASDAQ)</strong>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -159,7 +166,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                 {isEtf ? "Patrimonio (AUM)" : "Capitalización (Market Cap)"}
               </span>
               <div className="text-lg font-black text-[#00F5A0] font-mono mt-0.5">
-                {stock.market_cap || "N/D"}
+                {isEtf ? (stock as EtfItem).aum || "N/D" : (stock as StockItem).market_cap || "N/D"}
               </div>
               <span className="text-[10px] text-slate-400 font-mono">
                 {isEtf ? "Activos bajo gestión" : "Valuación bursátil"}
@@ -192,7 +199,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
             <div className="mt-1 divide-y divide-slate-800/80 border border-slate-800 rounded-xl overflow-hidden bg-[#0a1424]/90 max-h-48 overflow-y-auto">
               {stock.analyst_consensus.banks.map((bank, bIdx) => {
                 const upsideBank = Math.round(((bank.target - stock.price) / stock.price) * 1000) / 10;
-                const isTopTarget = bank.target === stock.analyst_consensus.target_high;
+                const isTopTarget = bank.target === stock.analyst_consensus?.target_high;
                 return (
                   <div
                     key={bIdx}

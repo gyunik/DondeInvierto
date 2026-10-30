@@ -28,7 +28,7 @@ export interface AnalystConsensus {
   target_mean: number;
   target_low: number;
   target_high: number;
-  source: string;
+  source?: string;
   explanation: string;
   banks?: BankConsensusItem[];
 }
@@ -45,8 +45,9 @@ export interface StockItem {
   pe_ratio: number;
   rsi: number;
   score: number;
-  cedear_ratio: string;
-  cedear_price_ars: number;
+  cedear_ratio: string | null;
+  cedear_price_ars: number | null;
+  has_cedear?: boolean;
   pays_dividend: boolean;
   dividend_yield: number;
   dividend_frequency: string;
@@ -54,7 +55,7 @@ export interface StockItem {
   market_cap?: string;
   analyst_consensus?: AnalystConsensus;
   sma_200?: number;
-  eps_fwd?: number;
+  eps_fwd?: number | null;
   per_mediana_5a?: number;
   // Campos del Algoritmo Cuantitativo de 3 Capas
   precio_objetivo_algoritmo?: number;
@@ -76,10 +77,12 @@ export interface EtfItem {
   target_price?: number;
   upside?: number;
   expense_ratio: number;
+  pe_ratio?: number | null;
   recommendation: string;
   score: number;
-  cedear_ratio: string;
-  cedear_price_ars: number;
+  cedear_ratio: string | null;
+  cedear_price_ars: number | null;
+  has_cedear?: boolean;
   pays_dividend: boolean;
   dividend_yield: number;
   dividend_frequency: string;

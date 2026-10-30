@@ -1,0 +1,3579 @@
+[
+  {
+    "ticker": "MELI",
+    "name": "MercadoLibre, Inc.",
+    "sector": "Comercio Electrónico & Fintech",
+    "has_cedear": true,
+    "cedear_ratio": "120:1"
+  },
+  {
+    "ticker": "TSM",
+    "name": "Taiwan Semiconductor",
+    "sector": "Semiconductores",
+    "has_cedear": true,
+    "cedear_ratio": "9:1"
+  },
+  {
+    "ticker": "BABA",
+    "name": "Alibaba Group",
+    "sector": "E-Commerce & Cloud",
+    "has_cedear": true,
+    "cedear_ratio": "9:1"
+  },
+  {
+    "ticker": "SPOT",
+    "name": "Spotify Technology",
+    "sector": "Streaming & Música",
+    "has_cedear": true,
+    "cedear_ratio": "14:1"
+  },
+  {
+    "ticker": "SHOP",
+    "name": "Shopify Inc.",
+    "sector": "Software & E-Commerce",
+    "has_cedear": true,
+    "cedear_ratio": "15:1"
+  },
+  {
+    "ticker": "SNOW",
+    "name": "Snowflake Inc.",
+    "sector": "Cloud Data Platform",
+    "has_cedear": true,
+    "cedear_ratio": "15:1"
+  },
+  {
+    "ticker": "VALE",
+    "name": "Vale S.A.",
+    "sector": "Minería & Materiales",
+    "has_cedear": true,
+    "cedear_ratio": "2:1"
+  },
+  {
+    "ticker": "PBR",
+    "name": "Petrobras",
+    "sector": "Petróleo & Gas",
+    "has_cedear": true,
+    "cedear_ratio": "1:1"
+  },
+  {
+    "ticker": "MMM",
+    "name": "3M",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "AOS",
+    "name": "A. O. Smith",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ABT",
+    "name": "Abbott Laboratories",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "ABBV",
+    "name": "AbbVie",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "ACN",
+    "name": "Accenture",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ADBE",
+    "name": "Adobe Inc.",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "44:1"
+  },
+  {
+    "ticker": "AMD",
+    "name": "Advanced Micro Devices",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "AES",
+    "name": "AES Corporation",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AFL",
+    "name": "Aflac",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "A",
+    "name": "Agilent Technologies",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "APD",
+    "name": "Air Products",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ABNB",
+    "name": "Airbnb",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AKAM",
+    "name": "Akamai Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ALB",
+    "name": "Albemarle Corporation",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ARE",
+    "name": "Alexandria Real Estate Equities",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ALGN",
+    "name": "Align Technology",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ALLE",
+    "name": "Allegion",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LNT",
+    "name": "Alliant Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ALL",
+    "name": "Allstate",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GOOGL",
+    "name": "Alphabet Inc. (Class A)",
+    "sector": "Communication Services",
+    "has_cedear": true,
+    "cedear_ratio": "29:1"
+  },
+  {
+    "ticker": "GOOG",
+    "name": "Alphabet Inc. (Class C)",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MO",
+    "name": "Altria",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "4:1"
+  },
+  {
+    "ticker": "AMZN",
+    "name": "Amazon",
+    "sector": "Consumer Discretionary",
+    "has_cedear": true,
+    "cedear_ratio": "144:1"
+  },
+  {
+    "ticker": "AMCR",
+    "name": "Amcor",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AEE",
+    "name": "Ameren",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AEP",
+    "name": "American Electric Power",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AXP",
+    "name": "American Express",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "15:1"
+  },
+  {
+    "ticker": "AIG",
+    "name": "American International Group",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AMT",
+    "name": "American Tower",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AWK",
+    "name": "American Water Works",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AMP",
+    "name": "Ameriprise Financial",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AME",
+    "name": "Ametek",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AMGN",
+    "name": "Amgen",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "12:1"
+  },
+  {
+    "ticker": "APH",
+    "name": "Amphenol",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ADI",
+    "name": "Analog Devices",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AON",
+    "name": "Aon plc",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "20:1"
+  },
+  {
+    "ticker": "APA",
+    "name": "APA Corporation",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "APO",
+    "name": "Apollo Global Management",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AAPL",
+    "name": "Apple Inc.",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "20:1"
+  },
+  {
+    "ticker": "AMAT",
+    "name": "Applied Materials",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "APP",
+    "name": "AppLovin",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "APTV",
+    "name": "Aptiv",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ACGL",
+    "name": "Arch Capital Group",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ADM",
+    "name": "Archer Daniels Midland",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ARES",
+    "name": "Ares Management",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ANET",
+    "name": "Arista Networks",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AJG",
+    "name": "Arthur J. Gallagher & Co.",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AIZ",
+    "name": "Assurant",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "T",
+    "name": "AT&T",
+    "sector": "Communication Services",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "ATO",
+    "name": "Atmos Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ADSK",
+    "name": "Autodesk",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ADP",
+    "name": "Automatic Data Processing",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AZO",
+    "name": "AutoZone",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AVY",
+    "name": "Avery Dennison",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "AXON",
+    "name": "Axon Enterprise",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BKR",
+    "name": "Baker Hughes",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BALL",
+    "name": "Ball Corporation",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BAC",
+    "name": "Bank of America",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "4:1"
+  },
+  {
+    "ticker": "BAX",
+    "name": "Baxter International",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BDX",
+    "name": "Becton Dickinson",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BRK-B",
+    "name": "Berkshire Hathaway",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "44:1"
+  },
+  {
+    "ticker": "BBY",
+    "name": "Best Buy",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TECH",
+    "name": "Bio-Techne",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BIIB",
+    "name": "Biogen",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "13:1"
+  },
+  {
+    "ticker": "BLK",
+    "name": "BlackRock",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BX",
+    "name": "Blackstone Inc.",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "XYZ",
+    "name": "Block",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BE",
+    "name": "Bloom Energy",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BNY",
+    "name": "BNY Mellon",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BA",
+    "name": "Boeing",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "BKNG",
+    "name": "Booking Holdings",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BSX",
+    "name": "Boston Scientific",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BMY",
+    "name": "Bristol Myers Squibb",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "AVGO",
+    "name": "Broadcom",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "100:1"
+  },
+  {
+    "ticker": "BR",
+    "name": "Broadridge Financial Solutions",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BRO",
+    "name": "Brown & Brown",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BF-B",
+    "name": "Brown–Forman",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BG",
+    "name": "Bunge Global",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BXP",
+    "name": "BXP",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CHRW",
+    "name": "C.H. Robinson",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CDNS",
+    "name": "Cadence Design Systems",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CPT",
+    "name": "Camden Property Trust",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COF",
+    "name": "Capital One",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CAH",
+    "name": "Cardinal Health",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CCL",
+    "name": "Carnival Corporation",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CARR",
+    "name": "Carrier Global",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CVNA",
+    "name": "Carvana",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CASY",
+    "name": "Casey's",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CAT",
+    "name": "Caterpillar Inc.",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "20:1"
+  },
+  {
+    "ticker": "CBOE",
+    "name": "Cboe Global Markets",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CBRE",
+    "name": "CBRE Group",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CDW",
+    "name": "CDW Corporation",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COR",
+    "name": "Cencora",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CNC",
+    "name": "Centene Corporation",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CNP",
+    "name": "CenterPoint Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CF",
+    "name": "CF Industries",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CRL",
+    "name": "Charles River Laboratories",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SCHW",
+    "name": "Charles Schwab Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CHTR",
+    "name": "Charter Communications",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CVX",
+    "name": "Chevron Corporation",
+    "sector": "Energy",
+    "has_cedear": true,
+    "cedear_ratio": "8:1"
+  },
+  {
+    "ticker": "CMG",
+    "name": "Chipotle Mexican Grill",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CB",
+    "name": "Chubb Limited",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CHD",
+    "name": "Church & Dwight",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CIEN",
+    "name": "Ciena",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CI",
+    "name": "Cigna",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CINF",
+    "name": "Cincinnati Financial",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CTAS",
+    "name": "Cintas",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CSCO",
+    "name": "Cisco",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "C",
+    "name": "Citigroup",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "CFG",
+    "name": "Citizens Financial Group",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CLX",
+    "name": "Clorox",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CME",
+    "name": "CME Group",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CMS",
+    "name": "CMS Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KO",
+    "name": "Coca-Cola Company (The)",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "CTSH",
+    "name": "Cognizant",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COHR",
+    "name": "Coherent Corp.",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COIN",
+    "name": "Coinbase",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "28:1"
+  },
+  {
+    "ticker": "CL",
+    "name": "Colgate-Palmolive",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "CMCSA",
+    "name": "Comcast",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FIX",
+    "name": "Comfort Systems USA",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COP",
+    "name": "ConocoPhillips",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ED",
+    "name": "Consolidated Edison",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "STZ",
+    "name": "Constellation Brands",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CEG",
+    "name": "Constellation Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COO",
+    "name": "Cooper Companies (The)",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CPRT",
+    "name": "Copart",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GLW",
+    "name": "Corning Inc.",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "CPAY",
+    "name": "Corpay",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CSGP",
+    "name": "CoStar Group",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "COST",
+    "name": "Costco",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "96:1"
+  },
+  {
+    "ticker": "CRH",
+    "name": "CRH plc",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CRWD",
+    "name": "CrowdStrike",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CCI",
+    "name": "Crown Castle",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CSX",
+    "name": "CSX Corporation",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CMI",
+    "name": "Cummins",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CVS",
+    "name": "CVS Health",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DHR",
+    "name": "Danaher Corporation",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DRI",
+    "name": "Darden Restaurants",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DDOG",
+    "name": "Datadog",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DVA",
+    "name": "DaVita",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DECK",
+    "name": "Deckers Brands",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DE",
+    "name": "Deere & Company",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "20:1"
+  },
+  {
+    "ticker": "DELL",
+    "name": "Dell Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DAL",
+    "name": "Delta Air Lines",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DVN",
+    "name": "Devon Energy",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DXCM",
+    "name": "Dexcom",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FANG",
+    "name": "Diamondback Energy",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DLR",
+    "name": "Digital Realty",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DG",
+    "name": "Dollar General",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DLTR",
+    "name": "Dollar Tree",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "D",
+    "name": "Dominion Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DPZ",
+    "name": "Domino's",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DASH",
+    "name": "DoorDash",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DOV",
+    "name": "Dover Corporation",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DOW",
+    "name": "Dow Inc.",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DHI",
+    "name": "D. R. Horton",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DTE",
+    "name": "DTE Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DUK",
+    "name": "Duke Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DD",
+    "name": "DuPont",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ETN",
+    "name": "Eaton Corporation",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EBAY",
+    "name": "eBay Inc.",
+    "sector": "Consumer Discretionary",
+    "has_cedear": true,
+    "cedear_ratio": "2:1"
+  },
+  {
+    "ticker": "ECHO",
+    "name": "EchoStar",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ECL",
+    "name": "Ecolab",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EIX",
+    "name": "Edison International",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EW",
+    "name": "Edwards Lifesciences",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ELV",
+    "name": "Elevance Health",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EME",
+    "name": "Emcor",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EMR",
+    "name": "Emerson Electric",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ETR",
+    "name": "Entergy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EOG",
+    "name": "EOG Resources",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EQT",
+    "name": "EQT Corporation",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EFX",
+    "name": "Equifax",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "12:1"
+  },
+  {
+    "ticker": "EQIX",
+    "name": "Equinix",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ERIE",
+    "name": "Erie Indemnity",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ESS",
+    "name": "Essex Property Trust",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EL",
+    "name": "Estée Lauder Companies (The)",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EG",
+    "name": "Everest Group",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EVRG",
+    "name": "Evergy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "P",
+    "name": "Everpure",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ES",
+    "name": "Eversource Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EXC",
+    "name": "Exelon",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EXE",
+    "name": "Expand Energy",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EXPE",
+    "name": "Expedia Group",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EXPD",
+    "name": "Expeditors International",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "EXR",
+    "name": "Extra Space Storage",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "XOM",
+    "name": "ExxonMobil",
+    "sector": "Energy",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "FFIV",
+    "name": "F5",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FDS",
+    "name": "FactSet",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FICO",
+    "name": "Fair Isaac",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FAST",
+    "name": "Fastenal",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FRT",
+    "name": "Federal Realty Investment Trust",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FDX",
+    "name": "FedEx",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "FDXF",
+    "name": "FedEx Freight",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FERG",
+    "name": "Ferguson Enterprises",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FIS",
+    "name": "Fidelity National Information Services",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FITB",
+    "name": "Fifth Third Bancorp",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FSLR",
+    "name": "First Solar",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FE",
+    "name": "FirstEnergy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FISV",
+    "name": "Fiserv",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FLEX",
+    "name": "Flex Ltd.",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "F",
+    "name": "Ford Motor Company",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FTNT",
+    "name": "Fortinet",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FTV",
+    "name": "Fortive",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FOXA",
+    "name": "Fox Corporation (Class A)",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FOX",
+    "name": "Fox Corporation (Class B)",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "BEN",
+    "name": "Franklin Resources",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "FCX",
+    "name": "Freeport-McMoRan",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GRMN",
+    "name": "Garmin",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IT",
+    "name": "Gartner",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GE",
+    "name": "GE Aerospace",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "GEHC",
+    "name": "GE HealthCare",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GEV",
+    "name": "GE Vernova",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GEN",
+    "name": "Gen Digital",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GNRC",
+    "name": "Generac",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GD",
+    "name": "General Dynamics",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GIS",
+    "name": "General Mills",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GM",
+    "name": "General Motors",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GPC",
+    "name": "Genuine Parts Company",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GILD",
+    "name": "Gilead Sciences",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "4:1"
+  },
+  {
+    "ticker": "GPN",
+    "name": "Global Payments",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GL",
+    "name": "Globe Life",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GDDY",
+    "name": "GoDaddy",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GS",
+    "name": "Goldman Sachs",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "13:1"
+  },
+  {
+    "ticker": "HAL",
+    "name": "Halliburton",
+    "sector": "Energy",
+    "has_cedear": true,
+    "cedear_ratio": "2:1"
+  },
+  {
+    "ticker": "HIG",
+    "name": "Hartford (The)",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HAS",
+    "name": "Hasbro",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HCA",
+    "name": "HCA Healthcare",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DOC",
+    "name": "Healthpeak Properties",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HSIC",
+    "name": "Henry Schein",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HSY",
+    "name": "Hershey Company (The)",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HPE",
+    "name": "Hewlett Packard Enterprise",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HLT",
+    "name": "Hilton Worldwide",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HD",
+    "name": "Home Depot (The)",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HONA",
+    "name": "Honeywell Aerospace",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HON",
+    "name": "Honeywell Technologies",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "HRL",
+    "name": "Hormel Foods",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HST",
+    "name": "Host Hotels & Resorts",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HWM",
+    "name": "Howmet Aerospace",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HPQ",
+    "name": "HP Inc.",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "1:1"
+  },
+  {
+    "ticker": "HUBB",
+    "name": "Hubbell Incorporated",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HUM",
+    "name": "Humana",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HBAN",
+    "name": "Huntington Bancshares",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HII",
+    "name": "Huntington Ingalls Industries",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IBM",
+    "name": "IBM",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "IEX",
+    "name": "IDEX Corporation",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IDXX",
+    "name": "Idexx Laboratories",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ITW",
+    "name": "Illinois Tool Works",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ILMN",
+    "name": "Illumina",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "INCY",
+    "name": "Incyte",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IR",
+    "name": "Ingersoll Rand",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PODD",
+    "name": "Insulet Corporation",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "INTC",
+    "name": "Intel",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "IBKR",
+    "name": "Interactive Brokers",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ICE",
+    "name": "Intercontinental Exchange",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IFF",
+    "name": "International Flavors & Fragrances",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IP",
+    "name": "International Paper",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "INTU",
+    "name": "Intuit",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ISRG",
+    "name": "Intuitive Surgical",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IVZ",
+    "name": "Invesco",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "INVH",
+    "name": "Invitation Homes",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IQV",
+    "name": "IQVIA",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "IRM",
+    "name": "Iron Mountain",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "JBHT",
+    "name": "J.B. Hunt",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "JBL",
+    "name": "Jabil",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "JKHY",
+    "name": "Jack Henry & Associates",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "J",
+    "name": "Jacobs Solutions",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "JNJ",
+    "name": "Johnson & Johnson",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "JCI",
+    "name": "Johnson Controls",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "JPM",
+    "name": "JPMorgan Chase",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "KVUE",
+    "name": "Kenvue",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KDP",
+    "name": "Keurig Dr Pepper",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KEY",
+    "name": "KeyCorp",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KEYS",
+    "name": "Keysight Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KMB",
+    "name": "Kimberly-Clark",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "KIM",
+    "name": "Kimco Realty",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KMI",
+    "name": "Kinder Morgan",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KKR",
+    "name": "KKR & Co.",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KLAC",
+    "name": "KLA Corporation",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KHC",
+    "name": "Kraft Heinz",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "KR",
+    "name": "Kroger",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LHX",
+    "name": "L3Harris",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LH",
+    "name": "Labcorp",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LRCX",
+    "name": "Lam Research",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LVS",
+    "name": "Las Vegas Sands",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LDOS",
+    "name": "Leidos",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LEN",
+    "name": "Lennar",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LII",
+    "name": "Lennox International",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LLY",
+    "name": "Lilly (Eli)",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "16:1"
+  },
+  {
+    "ticker": "LIN",
+    "name": "Linde plc",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LYV",
+    "name": "Live Nation Entertainment",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LMT",
+    "name": "Lockheed Martin",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "20:1"
+  },
+  {
+    "ticker": "L",
+    "name": "Loews Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LOW",
+    "name": "Lowe's",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LULU",
+    "name": "Lululemon Athletica",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LITE",
+    "name": "Lumentum",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LYB",
+    "name": "LyondellBasell",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MTB",
+    "name": "M&T Bank",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MPC",
+    "name": "Marathon Petroleum",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MAR",
+    "name": "Marriott International",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MRSH",
+    "name": "Marsh McLennan",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MLM",
+    "name": "Martin Marietta Materials",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MRVL",
+    "name": "Marvell Technology",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MAS",
+    "name": "Masco",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MA",
+    "name": "Mastercard",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "33:1"
+  },
+  {
+    "ticker": "MKC",
+    "name": "McCormick & Company",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MCD",
+    "name": "McDonald's",
+    "sector": "Consumer Discretionary",
+    "has_cedear": true,
+    "cedear_ratio": "24:1"
+  },
+  {
+    "ticker": "MCK",
+    "name": "McKesson",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MDT",
+    "name": "Medtronic",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "4:1"
+  },
+  {
+    "ticker": "MRK",
+    "name": "Merck & Co.",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "META",
+    "name": "Meta Platforms",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MET",
+    "name": "MetLife",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MTD",
+    "name": "Mettler Toledo",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MGM",
+    "name": "MGM Resorts",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MCHP",
+    "name": "Microchip Technology",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MU",
+    "name": "Micron Technology",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "MSFT",
+    "name": "Microsoft",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "MAA",
+    "name": "Mid-America Apartment Communities",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MRNA",
+    "name": "Moderna",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MDLZ",
+    "name": "Mondelez International",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MPWR",
+    "name": "Monolithic Power Systems",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MNST",
+    "name": "Monster Beverage",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MCO",
+    "name": "Moody's Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MS",
+    "name": "Morgan Stanley",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MOS",
+    "name": "Mosaic Company (The)",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "MSI",
+    "name": "Motorola Solutions",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "18:1"
+  },
+  {
+    "ticker": "MSCI",
+    "name": "MSCI",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NDAQ",
+    "name": "Nasdaq",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NTAP",
+    "name": "NetApp",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NFLX",
+    "name": "Netflix",
+    "sector": "Communication Services",
+    "has_cedear": true,
+    "cedear_ratio": "16:1"
+  },
+  {
+    "ticker": "NEM",
+    "name": "Newmont",
+    "sector": "Materials",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "NWSA",
+    "name": "News Corp (Class A)",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NWS",
+    "name": "News Corp (Class B)",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NEE",
+    "name": "NextEra Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NKE",
+    "name": "Nike",
+    "sector": "Inc.",
+    "has_cedear": true,
+    "cedear_ratio": "12:1"
+  },
+  {
+    "ticker": "NI",
+    "name": "NiSource",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NDSN",
+    "name": "Nordson Corporation",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NSC",
+    "name": "Norfolk Southern",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NTRS",
+    "name": "Northern Trust",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NOC",
+    "name": "Northrop Grumman",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NCLH",
+    "name": "Norwegian Cruise Line Holdings",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NRG",
+    "name": "NRG Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NUE",
+    "name": "Nucor",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NVDA",
+    "name": "Nvidia",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "24:1"
+  },
+  {
+    "ticker": "NVR",
+    "name": "NVR",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NXPI",
+    "name": "NXP Semiconductors",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ORLY",
+    "name": "O'Reilly Automotive",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "OXY",
+    "name": "Occidental Petroleum",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ODFL",
+    "name": "Old Dominion",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "OMC",
+    "name": "Omnicom Group",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ON",
+    "name": "ON Semiconductor",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "OKE",
+    "name": "Oneok",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ORCL",
+    "name": "Oracle Corporation",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "7:1"
+  },
+  {
+    "ticker": "OTIS",
+    "name": "Otis Worldwide",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PCAR",
+    "name": "Paccar",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "4:1"
+  },
+  {
+    "ticker": "PKG",
+    "name": "Packaging Corporation of America",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PLTR",
+    "name": "Palantir Technologies",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "2:1"
+  },
+  {
+    "ticker": "PANW",
+    "name": "Palo Alto Networks",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "8:1"
+  },
+  {
+    "ticker": "PH",
+    "name": "Parker Hannifin",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PAYX",
+    "name": "Paychex",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PYPL",
+    "name": "PayPal",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "8:1"
+  },
+  {
+    "ticker": "PNR",
+    "name": "Pentair",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PEP",
+    "name": "PepsiCo",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "PFE",
+    "name": "Pfizer",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "2:1"
+  },
+  {
+    "ticker": "PCG",
+    "name": "PG&E Corporation",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PM",
+    "name": "Philip Morris International",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "PSX",
+    "name": "Phillips 66",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PNW",
+    "name": "Pinnacle West Capital",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PNC",
+    "name": "PNC Financial Services",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PPG",
+    "name": "PPG Industries",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PPL",
+    "name": "PPL Corporation",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PFG",
+    "name": "Principal Financial Group",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PG",
+    "name": "Procter & Gamble",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "PGR",
+    "name": "Progressive Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PLD",
+    "name": "Prologis",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PRU",
+    "name": "Prudential Financial",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PTC",
+    "name": "PTC Inc.",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PEG",
+    "name": "Public Service Enterprise Group",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PSA",
+    "name": "Public Storage",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "PHM",
+    "name": "PulteGroup",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "Q",
+    "name": "Qnity Electronics",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "QCOM",
+    "name": "Qualcomm",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "11:1"
+  },
+  {
+    "ticker": "PWR",
+    "name": "Quanta Services",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "DGX",
+    "name": "Quest Diagnostics",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RL",
+    "name": "Ralph Lauren Corporation",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RJF",
+    "name": "Raymond James Financial",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RDDT",
+    "name": "Reddit",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "O",
+    "name": "Realty Income",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "REG",
+    "name": "Regency Centers",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "REGN",
+    "name": "Regeneron Pharmaceuticals",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RF",
+    "name": "Regions Financial Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RSG",
+    "name": "Republic Services",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RMD",
+    "name": "ResMed",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RVTY",
+    "name": "Revvity",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "HOOD",
+    "name": "Robinhood Markets",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ROK",
+    "name": "Rockwell Automation",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ROL",
+    "name": "Rollins",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ROP",
+    "name": "Roper Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ROST",
+    "name": "Ross Stores",
+    "sector": "Consumer Discretionary",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "RCL",
+    "name": "Royal Caribbean Group",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "RTX",
+    "name": "RTX Corporation",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "SPGI",
+    "name": "S&P Global",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "CRM",
+    "name": "Salesforce",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "6:1"
+  },
+  {
+    "ticker": "SNDK",
+    "name": "Sandisk",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SBAC",
+    "name": "SBA Communications",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SLB",
+    "name": "Schlumberger",
+    "sector": "Energy",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "STX",
+    "name": "Seagate Technology",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SRE",
+    "name": "Sempra",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "NOW",
+    "name": "ServiceNow",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "20:1"
+  },
+  {
+    "ticker": "SHW",
+    "name": "Sherwin-Williams",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SPG",
+    "name": "Simon Property Group",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SKYD",
+    "name": "Skydance",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SWKS",
+    "name": "Skyworks Solutions",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SJM",
+    "name": "J.M. Smucker Company (The)",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SW",
+    "name": "Smurfit Westrock",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SNA",
+    "name": "Snap-on",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SOLV",
+    "name": "Solventum",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SO",
+    "name": "Southern Company",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "LUV",
+    "name": "Southwest Airlines",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SWK",
+    "name": "Stanley Black & Decker",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SBUX",
+    "name": "Starbucks",
+    "sector": "Consumer Discretionary",
+    "has_cedear": true,
+    "cedear_ratio": "12:1"
+  },
+  {
+    "ticker": "STT",
+    "name": "State Street Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "STLD",
+    "name": "Steel Dynamics",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "STE",
+    "name": "Steris",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SYK",
+    "name": "Stryker Corporation",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SMCI",
+    "name": "Supermicro",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SYF",
+    "name": "Synchrony Financial",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SNPS",
+    "name": "Synopsys",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "SYY",
+    "name": "Sysco",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "4:1"
+  },
+  {
+    "ticker": "TMUS",
+    "name": "T-Mobile US",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TROW",
+    "name": "T. Rowe Price",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TTWO",
+    "name": "Take-Two Interactive",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TPR",
+    "name": "Tapestry",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TRGP",
+    "name": "Targa Resources",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TGT",
+    "name": "Target Corporation",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "8:1"
+  },
+  {
+    "ticker": "TEL",
+    "name": "TE Connectivity",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TDY",
+    "name": "Teledyne Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TER",
+    "name": "Teradyne",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TSLA",
+    "name": "Tesla",
+    "sector": "Inc.",
+    "has_cedear": true,
+    "cedear_ratio": "15:1"
+  },
+  {
+    "ticker": "TXN",
+    "name": "Texas Instruments",
+    "sector": "Information Technology",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "TPL",
+    "name": "Texas Pacific Land Corporation",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TXT",
+    "name": "Textron",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TMO",
+    "name": "Thermo Fisher Scientific",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "22:1"
+  },
+  {
+    "ticker": "TJX",
+    "name": "TJX Companies",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TKO",
+    "name": "TKO Group Holdings",
+    "sector": "Communication Services",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TSCO",
+    "name": "Tractor Supply",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TT",
+    "name": "Trane Technologies",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TDG",
+    "name": "TransDigm Group",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TRV",
+    "name": "Travelers Companies (The)",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "TRMB",
+    "name": "Trimble Inc.",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TFC",
+    "name": "Truist Financial",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TWLO",
+    "name": "Twilio",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TYL",
+    "name": "Tyler Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "TSN",
+    "name": "Tyson Foods",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "USB",
+    "name": "U.S. Bancorp",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "3:1"
+  },
+  {
+    "ticker": "UBER",
+    "name": "Uber",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "UDR",
+    "name": "UDR",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ULTA",
+    "name": "Ulta Beauty",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "UNP",
+    "name": "Union Pacific Corporation",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "UAL",
+    "name": "United Airlines Holdings",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "UPS",
+    "name": "United Parcel Service",
+    "sector": "Industrials",
+    "has_cedear": true,
+    "cedear_ratio": "10:1"
+  },
+  {
+    "ticker": "URI",
+    "name": "United Rentals",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "UNH",
+    "name": "UnitedHealth Group",
+    "sector": "Health Care",
+    "has_cedear": true,
+    "cedear_ratio": "33:1"
+  },
+  {
+    "ticker": "UHS",
+    "name": "Universal Health Services",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VLO",
+    "name": "Valero Energy",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VEEV",
+    "name": "Veeva Systems",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VTR",
+    "name": "Ventas",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VLTO",
+    "name": "Veralto",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VRSN",
+    "name": "Verisign",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VRSK",
+    "name": "Verisk Analytics",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VZ",
+    "name": "Verizon",
+    "sector": "Communication Services",
+    "has_cedear": true,
+    "cedear_ratio": "2:1"
+  },
+  {
+    "ticker": "VRTX",
+    "name": "Vertex Pharmaceuticals",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VRT",
+    "name": "Vertiv",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VTRS",
+    "name": "Viatris",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VICI",
+    "name": "Vici Properties",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "V",
+    "name": "Visa Inc.",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "18:1"
+  },
+  {
+    "ticker": "VST",
+    "name": "Vistra Corp.",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VMRK",
+    "name": "Vivmark Residential",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VMC",
+    "name": "Vulcan Materials Company",
+    "sector": "Materials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "VYLR",
+    "name": "Vylor",
+    "sector": "Consumer Staples",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WRB",
+    "name": "W. R. Berkley Corporation",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "GWW",
+    "name": "W. W. Grainger",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WAB",
+    "name": "Wabtec",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WMT",
+    "name": "Walmart",
+    "sector": "Consumer Staples",
+    "has_cedear": true,
+    "cedear_ratio": "18:1"
+  },
+  {
+    "ticker": "DIS",
+    "name": "Walt Disney Company (The)",
+    "sector": "Communication Services",
+    "has_cedear": true,
+    "cedear_ratio": "12:1"
+  },
+  {
+    "ticker": "WM",
+    "name": "Waste Management",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WAT",
+    "name": "Waters Corporation",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WEC",
+    "name": "WEC Energy Group",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WFC",
+    "name": "Wells Fargo",
+    "sector": "Financials",
+    "has_cedear": true,
+    "cedear_ratio": "5:1"
+  },
+  {
+    "ticker": "WELL",
+    "name": "Welltower",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WST",
+    "name": "West Pharmaceutical Services",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WDC",
+    "name": "Western Digital",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WY",
+    "name": "Weyerhaeuser",
+    "sector": "Real Estate",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WSM",
+    "name": "Williams-Sonoma",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WMB",
+    "name": "Williams Companies",
+    "sector": "Energy",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WTW",
+    "name": "Willis Towers Watson",
+    "sector": "Financials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WDAY",
+    "name": "Workday",
+    "sector": "Inc.",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "WYNN",
+    "name": "Wynn Resorts",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "XEL",
+    "name": "Xcel Energy",
+    "sector": "Utilities",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "XYL",
+    "name": "Xylem Inc.",
+    "sector": "Industrials",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "YUM",
+    "name": "Yum! Brands",
+    "sector": "Consumer Discretionary",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ZBRA",
+    "name": "Zebra Technologies",
+    "sector": "Information Technology",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ZBH",
+    "name": "Zimmer Biomet",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  },
+  {
+    "ticker": "ZTS",
+    "name": "Zoetis",
+    "sector": "Health Care",
+    "has_cedear": false,
+    "cedear_ratio": null
+  }
+]

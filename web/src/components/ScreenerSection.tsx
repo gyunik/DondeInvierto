@@ -32,6 +32,8 @@ export default function ScreenerSection({
   const [argSubTab, setArgSubTab] = useState<"merval" | "bonds">("merval");
   const [searchQuery, setSearchQuery] = useState("");
   const [stockOpportunityFilter, setStockOpportunityFilter] = useState<"opportunities" | "all">("opportunities");
+  const [stockMarketFilter, setStockMarketFilter] = useState<"all_sp500" | "cedear_only">("all_sp500");
+  const [visibleCount, setVisibleCount] = useState<number>(30);
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
@@ -58,6 +60,7 @@ export default function ScreenerSection({
         if (sc < 60 || ret <= 0) return false;
       }
 
+      if (stockMarketFilter === "cedear_only" && !s.has_cedear) return false;
       if (stockDivFilter === "dividend") return s.pays_dividend;
       if (stockDivFilter === "growth") return !s.pays_dividend;
       return true;
@@ -286,33 +289,47 @@ export default function ScreenerSection({
           )}
         </div>
 
-        {/* Fila de Filtros de Dividendos y Oportunidades para CEDEARs */}
+        {/* Fila de Filtros de Mercado y Oportunidades para Wall Street */}
         {activeTab === "cedears" && cedearSubTab === "stocks" && (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
-            {/* Selector de Modo: Solo Oportunidades vs Ver Todo */}
-            <div className="flex items-center gap-2">
-              <span className="text-slate-300 font-semibold mr-1">Radar:</span>
+            {/* Selector de Mercado: Todo S&P 500 vs Solo con CEDEAR */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-slate-300 font-semibold mr-1">Mercado:</span>
               <button
-                onClick={() => setStockOpportunityFilter("opportunities")}
+                onClick={() => { setStockMarketFilter("all_sp500"); setVisibleCount(30); }}
                 className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                  stockOpportunityFilter === "opportunities"
-                    ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
+                  stockMarketFilter === "all_sp500"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400 font-bold shadow-sm"
                     : "bg-[#111e33] hover:bg-[#162742] text-slate-300 border border-slate-700 hover:border-slate-500"
                 }`}
-                title="Muestra solo acciones con Score >= 60 y Retorno Proyectado positivo"
+                title="Muestra todo el universo del S&P 500 y ADRs líderes de Wall Street"
               >
-                <span>🔥 Solo Oportunidades (Score ≥ 60)</span>
+                <span>🌐 Todo Wall Street (S&P 500)</span>
               </button>
               <button
-                onClick={() => setStockOpportunityFilter("all")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
-                  stockOpportunityFilter === "all"
+                onClick={() => { setStockMarketFilter("cedear_only"); setVisibleCount(30); }}
+                className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                  stockMarketFilter === "cedear_only"
                     ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
                     : "bg-[#111e33] hover:bg-[#162742] text-slate-300 border border-slate-700 hover:border-slate-500"
                 }`}
-                title="Ver todas las acciones del universo (incluyendo neutrales y sobrevaloradas a evitar)"
+                title="Muestra solo acciones con CEDEAR habilitado para comprar en Pesos (ARS)"
               >
-                Ver Todo el Universo ({stocks.length})
+                <span>🟢 Solo con CEDEAR ({stocks.filter((stk) => stk.has_cedear).length})</span>
+              </button>
+
+              <span className="text-slate-500 mx-1 hidden sm:inline">|</span>
+
+              <button
+                onClick={() => setStockOpportunityFilter(stockOpportunityFilter === "opportunities" ? "all" : "opportunities")}
+                className={`px-2.5 py-1.5 rounded-lg transition-all text-xs font-bold border ${
+                  stockOpportunityFilter === "opportunities"
+                    ? "bg-emerald-950/70 text-[#00F5A0] border-emerald-500/40"
+                    : "bg-[#0b1626] text-slate-400 border-slate-700 hover:text-white"
+                }`}
+                title="Filtrar solo acciones con Score >= 60 y retorno positivo"
+              >
+                {stockOpportunityFilter === "opportunities" ? "🔥 Filtrando: Solo Oportunidades" : "📋 Mostrando: Todo el Ranking"}
               </button>
             </div>
 
@@ -353,7 +370,7 @@ export default function ScreenerSection({
             </div>
           </div>
         )}
-
+        
         {/* Fila de Filtros para ETFs */}
         {activeTab === "cedears" && cedearSubTab === "etfs" && (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
@@ -418,7 +435,7 @@ export default function ScreenerSection({
         {/* 1. ACCIONES CEDEAR */}
         {activeTab === "cedears" && cedearSubTab === "stocks" && (
           <>
-            {filteredStocks.map((stock, idx) => {
+            {filteredStocks.slice(0, visibleCount).map((stock, idx) => {
               const isPositive = stock.day_change >= 0;
               const ret = stock.retorno_estimado_pct ?? (stock as { retornoEstimadoPct?: number }).retornoEstimadoPct ?? stock.upside ?? 0;
               const sc = stock.score_total ?? (stock as { scoreTotal?: number }).scoreTotal ?? stock.score ?? 0;
@@ -501,17 +518,32 @@ export default function ScreenerSection({
 
                       <div className="flex flex-col">
                         <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-300 tracking-wider">
-                          CEDEAR EN PESOS
+                          OPERATORIA LOCAL
                         </span>
-                        <div className="flex items-baseline gap-1.5 mt-0.5">
-                          <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
-                            ${stock.cedear_price_ars.toLocaleString("es-AR")}
-                          </span>
-                          <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
-                        </div>
-                        <span className="text-[11px] font-mono font-medium text-slate-300">
-                          Ratio {stock.cedear_ratio}
-                        </span>
+                        {stock.has_cedear && stock.cedear_price_ars ? (
+                          <>
+                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                              <span className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                                ${stock.cedear_price_ars.toLocaleString("es-AR")}
+                              </span>
+                              <span className="text-xs font-bold font-mono text-slate-300">ARS</span>
+                            </div>
+                            <span className="text-[11px] font-mono font-medium text-emerald-400">
+                              CEDEAR Ratio {stock.cedear_ratio}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                              <span className="text-sm font-bold text-slate-300 font-mono">
+                                Broker Exterior
+                              </span>
+                            </div>
+                            <span className="text-[11px] font-mono font-medium text-slate-400">
+                              NYSE / NASDAQ
+                            </span>
+                          </>
+                        )}
                       </div>
 
                       <div
@@ -579,6 +611,21 @@ export default function ScreenerSection({
                 </div>
               );
             })}
+
+            {/* Paginación progresiva */}
+            {filteredStocks.length > visibleCount && (
+              <div className="flex flex-col items-center justify-center pt-6 pb-2">
+                <span className="text-xs font-mono text-slate-400 mb-2">
+                  Mostrando {visibleCount} de {filteredStocks.length} acciones analizadas
+                </span>
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 30)}
+                  className="px-6 py-2.5 rounded-xl bg-[#111e33] hover:bg-[#162742] text-[#00F5A0] border border-emerald-500/40 hover:border-[#00F5A0] font-bold text-sm transition-all shadow-lg hover:shadow-[0_0_15px_rgba(0,245,160,0.2)]"
+                >
+                  Cargar 30 Acciones Más ({filteredStocks.length - visibleCount} restantes) ⭣
+                </button>
+              </div>
+            )}
           </>
         )}
 

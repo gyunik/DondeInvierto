@@ -4,6 +4,20 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] quant & feature | Expansión del universo a S&P 500 completo (+511 acciones) y selector CEDEAR
+* Construcción del Universo Maestro (`scripts/build_sp500_universe.js`):
+  - Ingesta de las 503 empresas oficiales del índice S&P 500 + ADRs clave de alta liquidez (MELI, TSM, BABA, SPOT, SHOP, SNOW, VALE, PBR) totalizando 511 activos.
+  - Cruce y mapeo con la base oficial de CEDEARs autorizados en BYMA (`scripts/cedear_ratios.json`): 97 acciones identificadas con ratio y cotización en Pesos ARS, y 414 etiquetadas como "Solo Broker Exterior (NYSE/NASDAQ)".
+* Escáner Masivo Cuantitativo (`scripts/scan_sp500_quant.js`):
+  - Extracción masiva y concurrente de precios en vivo, medias móviles SMA 200, forward EPS y consensus targets.
+  - Ejecución en lote del Algoritmo Cuantitativo de 3 Capas ajustado dinámicamente con la tasa FED en vivo (3.88% / 3.16%).
+  - Cálculo del Score Total (0 a 100) para las 511 acciones y ordenamiento descendente estricto.
+* Mejoras en Frontend (`web/src/components/ScreenerSection.tsx` & `StockDetailModal.tsx`):
+  - Selector de Mercado con 1 clic: `🌐 Todo Wall Street (S&P 500)` vs `🟢 Solo con CEDEAR (97 acciones)`.
+  - Paginación progresiva de 30 en 30 para garantizar carga instantánea de la página.
+  - Insignia de operatoria en cada tarjeta (`🟢 CEDEAR [Ratio]` con precio en ARS vs `🌐 Solo Broker Exterior`).
+  - Semáforo dinámico de recomendaciones (`FUERTE COMPRA`, `COMPRA`, `MANTENER / NEUTRAL` y `EVITAR / SOBREVALUADA` para activos con proyección negativa como TSLA y PLTR).
+
 ## [2026-10-29] automation & macro | Fetch automatizado de tasas FED, sistema de fallback tolerante y alertas críticas
 * Creación de `scripts/macro_service.js`:
   - **Bloque Try (Fetch Automático Oficial)**: Conexión dinámica contra la API oficial del Federal Reserve Bank of New York (`markets.newyorkfed.org/api/rates/all/latest.json`) extrayendo la tasa efectiva de la FED (`EFFR`) y la pendiente de la curva de futuros/SOFR a 12 meses (`tasa_actual_fed = 3.88%`, `tasa_proyectada_fed_1a = 3.16%`), con respaldo secundario en Yahoo Finance (`^IRX` - T-Bill 13 semanas).
