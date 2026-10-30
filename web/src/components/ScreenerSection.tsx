@@ -247,7 +247,7 @@ export default function ScreenerSection({
                     : "text-slate-300 hover:text-white"
                 }`}
               >
-                Acciones CEDEAR ({filteredStocks.length})
+                Acciones ({filteredStocks.length})
               </button>
               <button
                 onClick={() => setCedearSubTab("etfs")}
@@ -304,7 +304,7 @@ export default function ScreenerSection({
                 }`}
                 title="Muestra todo el universo del S&P 500 y ADRs líderes de Wall Street"
               >
-                <span>🌐 Todo Wall Street (S&P 500)</span>
+                <span>🌐 Todo Wall Street ({stocks.length})</span>
               </button>
               <button
                 onClick={() => { setStockMarketFilter("cedear_only"); setVisibleCount(30); }}
@@ -327,9 +327,9 @@ export default function ScreenerSection({
                     ? "bg-emerald-950/70 text-[#00F5A0] border-emerald-500/40"
                     : "bg-[#0b1626] text-slate-400 border-slate-700 hover:text-white"
                 }`}
-                title="Filtrar solo acciones con Score >= 60 y retorno positivo"
+                title="Alternar entre solo acciones con Score >= 60 o el ranking completo"
               >
-                {stockOpportunityFilter === "opportunities" ? "🔥 Filtrando: Solo Oportunidades" : "📋 Mostrando: Todo el Ranking"}
+                {stockOpportunityFilter === "opportunities" ? "🔥 Solo Oportunidades (Score ≥ 60)" : "📋 Todo el Ranking"}
               </button>
             </div>
 

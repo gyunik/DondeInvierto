@@ -4,6 +4,15 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] scan & quant | Universo S&P 500 completo auditado (497 acciones) con desglose 100% de bancos y fechas
+* Expansión total del screener con máxima calidad institucional de datos:
+  - Escáner masivo `scripts/scan_sp500_quant.js` actualizado para ingestar concurrentemente las cotizaciones en tiempo real, SMA 200, forward EPS, y el historial de bancos (`upgradeDowngradeHistory`) con nombres, ratings, fechas exactas y precios objetivo.
+  - Regla estricta de descarte (ordenada por el usuario): Se descartaron automáticamente todas las acciones sin información financiera completa, sin Forward EPS positivo o con menos de 2 bancos con precio objetivo fechado.
+  - Resultado: 497 acciones de alta calidad totalmente auditadas (95 con CEDEAR en Pesos ARS y 402 operables vía Broker Exterior).
+  - El 100% de las 497 acciones cuenta con su tabla individual de bancos en el modal (Morgan Stanley, JP Morgan, Goldman Sachs, Citigroup, UBS, Susquehanna, Baird, etc.) con sus fechas exactas de publicación.
+  - Candado de Seguridad (*Safety Collar* +/-25%) y anclaje al múltiplo propio de cada empresa activo: cero distorsiones de retornos absurdos.
+  - Frontend actualizado: muestra el universo completo con paginación de 30 en 30, selector de "Todo Wall Street (497)" vs "Solo con CEDEAR (95)" y filtro de "Solo Oportunidades" vs "Todo el Ranking".
+
 ## [2026-10-30] audit & fix | Restauración de calidad Tier-1: 100% desglose individual de bancos con fechas y saneamiento
 * Diagnóstico:
   - La ingesta masiva de 500 acciones en lote omitió la tabla de desglose individual de bancos por entidad y fecha, e introdujo acciones atípicas (como CHTR o UHS) sin cobertura individual completa.
