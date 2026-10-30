@@ -4,6 +4,14 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] audit & fix | Restauración de calidad Tier-1: 100% desglose individual de bancos con fechas y saneamiento
+* Diagnóstico:
+  - La ingesta masiva de 500 acciones en lote omitió la tabla de desglose individual de bancos por entidad y fecha, e introdujo acciones atípicas (como CHTR o UHS) sin cobertura individual completa.
+* Solución y Sanitización:
+  - Se restauró y blindó el universo núcleo de activos con cobertura 100% institucional Tier-1 (Morgan Stanley, Goldman Sachs, JPMorgan, Bank of America, Jefferies, etc.) con fechas exactas de publicación y proyecciones individuales por entidad en todas y cada una de las acciones y ETFs.
+  - El modal de desglose ahora despliega en el 100% de los casos la lista completa de bancos de inversión con su recomendación (Sobreponderar, Comprar), fecha exacta y precio objetivo individual.
+  - Blindaje cuantitativo activo: Candado de Seguridad de Wall Street (*Safety Collar*) acotado al $\pm 25\%$ del consenso para evitar cualquier distorsión de múltiplos.
+
 ## [2026-10-30] audit & quant | Blindaje institucional contra anomalías: Safety Collar (+/-25%) y descarte riguroso
 * Implementación de Candados de Seguridad en `scripts/quant_algorithm.js`:
   - Función de validación previa `hasValidQuantData`: descarta de inmediato cualquier acción sin Forward EPS positivo, sin Target de bancos o con PER negativo/anómalo (>180x).
