@@ -31,6 +31,7 @@ export default function ScreenerSection({
   const [cedearSubTab, setCedearSubTab] = useState<"stocks" | "etfs">(initialCedearSubTab);
   const [argSubTab, setArgSubTab] = useState<"merval" | "bonds">("merval");
   const [searchQuery, setSearchQuery] = useState("");
+  const [stockOpportunityFilter, setStockOpportunityFilter] = useState<"opportunities" | "all">("opportunities");
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
@@ -49,6 +50,14 @@ export default function ScreenerSection({
         s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         s.sector.toLowerCase().includes(searchQuery.toLowerCase());
       if (!matchesSearch) return false;
+
+      // Filtro de Oportunidades: Por defecto muestra solo Score >= 60 y Retorno > 0%
+      const ret = s.retorno_estimado_pct ?? (s as { retornoEstimadoPct?: number }).retornoEstimadoPct ?? s.upside ?? 0;
+      const sc = s.score_total ?? (s as { scoreTotal?: number }).scoreTotal ?? s.score ?? 0;
+      if (stockOpportunityFilter === "opportunities" && !searchQuery.trim()) {
+        if (sc < 60 || ret <= 0) return false;
+      }
+
       if (stockDivFilter === "dividend") return s.pays_dividend;
       if (stockDivFilter === "growth") return !s.pays_dividend;
       return true;
@@ -277,41 +286,71 @@ export default function ScreenerSection({
           )}
         </div>
 
-        {/* Fila de Filtros de Dividendos para CEDEARs */}
+        {/* Fila de Filtros de Dividendos y Oportunidades para CEDEARs */}
         {activeTab === "cedears" && cedearSubTab === "stocks" && (
-          <div className="flex flex-wrap items-center gap-2.5 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
-            <span className="text-slate-300 font-semibold mr-1">Filtrar Dividendos:</span>
-            <button
-              onClick={() => setStockDivFilter("all")}
-              className={`px-3.5 py-1.5 rounded-lg transition-all ${
-                stockDivFilter === "all"
-                  ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
-                  : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
-              }`}
-            >
-              Todas ({stocks.length})
-            </button>
-            <button
-              onClick={() => setStockDivFilter("dividend")}
-              className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                stockDivFilter === "dividend"
-                  ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
-                  : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
-              }`}
-            >
-              <CircleDollarSign className="w-3.5 h-3.5" />
-              <span>Con Dividendos en USD ({stocks.filter((s) => s.pays_dividend).length})</span>
-            </button>
-            <button
-              onClick={() => setStockDivFilter("growth")}
-              className={`px-3.5 py-1.5 rounded-lg transition-all ${
-                stockDivFilter === "growth"
-                  ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
-                  : "bg-[#111e33] hover:bg-[#162742] text-slate-200 border border-slate-700 hover:border-slate-500"
-              }`}
-            >
-              🚀 Sin Dividendos - Top 10 más rentables ({stocks.filter((s) => !s.pays_dividend).length})
-            </button>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-800 text-xs sm:text-sm font-medium">
+            {/* Selector de Modo: Solo Oportunidades vs Ver Todo */}
+            <div className="flex items-center gap-2">
+              <span className="text-slate-300 font-semibold mr-1">Radar:</span>
+              <button
+                onClick={() => setStockOpportunityFilter("opportunities")}
+                className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                  stockOpportunityFilter === "opportunities"
+                    ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
+                    : "bg-[#111e33] hover:bg-[#162742] text-slate-300 border border-slate-700 hover:border-slate-500"
+                }`}
+                title="Muestra solo acciones con Score >= 60 y Retorno Proyectado positivo"
+              >
+                <span>🔥 Solo Oportunidades (Score ≥ 60)</span>
+              </button>
+              <button
+                onClick={() => setStockOpportunityFilter("all")}
+                className={`px-3 py-1.5 rounded-lg transition-all ${
+                  stockOpportunityFilter === "all"
+                    ? "bg-emerald-500/20 text-[#00F5A0] border border-[#00F5A0] font-bold shadow-sm"
+                    : "bg-[#111e33] hover:bg-[#162742] text-slate-300 border border-slate-700 hover:border-slate-500"
+                }`}
+                title="Ver todas las acciones del universo (incluyendo neutrales y sobrevaloradas a evitar)"
+              >
+                Ver Todo el Universo ({stocks.length})
+              </button>
+            </div>
+
+            {/* Filtro de Dividendos */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-slate-400 font-semibold mr-1">Dividendos:</span>
+              <button
+                onClick={() => setStockDivFilter("all")}
+                className={`px-2.5 py-1 rounded-lg transition-all ${
+                  stockDivFilter === "all"
+                    ? "bg-[#162b45] text-white font-bold border border-slate-500"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Todos
+              </button>
+              <button
+                onClick={() => setStockDivFilter("dividend")}
+                className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 ${
+                  stockDivFilter === "dividend"
+                    ? "bg-[#162b45] text-[#00F5A0] font-bold border border-emerald-500/50"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <CircleDollarSign className="w-3.5 h-3.5" />
+                <span>Con Div.</span>
+              </button>
+              <button
+                onClick={() => setStockDivFilter("growth")}
+                className={`px-2.5 py-1 rounded-lg transition-all ${
+                  stockDivFilter === "growth"
+                    ? "bg-[#162b45] text-[#00F5A0] font-bold border border-emerald-500/50"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                🚀 Crecimiento
+              </button>
+            </div>
           </div>
         )}
 
@@ -381,6 +420,36 @@ export default function ScreenerSection({
           <>
             {filteredStocks.map((stock, idx) => {
               const isPositive = stock.day_change >= 0;
+              const ret = stock.retorno_estimado_pct ?? (stock as { retornoEstimadoPct?: number }).retornoEstimadoPct ?? stock.upside ?? 0;
+              const sc = stock.score_total ?? (stock as { scoreTotal?: number }).scoreTotal ?? stock.score ?? 0;
+
+              // Semáforo dinámico de recomendación
+              let recBadge = {
+                text: "COMPRA",
+                className: "bg-emerald-500/20 border-emerald-400 text-[#00F5A0] shadow-[0_0_10px_rgba(0,245,160,0.25)]"
+              };
+              if (sc >= 85 && ret >= 35) {
+                recBadge = {
+                  text: "FUERTE COMPRA",
+                  className: "bg-emerald-500/25 border-emerald-400 text-[#00F5A0] shadow-[0_0_14px_rgba(0,245,160,0.35)]"
+                };
+              } else if (sc >= 60 && ret > 0) {
+                recBadge = {
+                  text: "COMPRA",
+                  className: "bg-emerald-500/15 border-emerald-500/50 text-emerald-300"
+                };
+              } else if (sc >= 40 && ret > 0) {
+                recBadge = {
+                  text: "MANTENER / NEUTRAL",
+                  className: "bg-amber-500/20 border-amber-500/50 text-amber-300"
+                };
+              } else {
+                recBadge = {
+                  text: "EVITAR / SOBREVALUADA",
+                  className: "bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.2)]"
+                };
+              }
+
               return (
                 <div key={stock.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -397,8 +466,8 @@ export default function ScreenerSection({
                           <span className="px-2.5 py-1 rounded-md bg-[#132840] border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                             {stock.sector}
                           </span>
-                          <span className="px-2.5 py-1 rounded-md bg-emerald-500/20 border border-emerald-400 text-[#00F5A0] text-xs font-black tracking-wider uppercase shadow-[0_0_10px_rgba(0,245,160,0.25)]">
-                            {stock.recommendation}
+                          <span className={`px-2.5 py-1 rounded-md border text-xs font-black tracking-wider uppercase ${recBadge.className}`}>
+                            {recBadge.text}
                           </span>
                         </div>
                         <div className="text-sm sm:text-base text-slate-200 font-semibold mt-1 tracking-normal">
