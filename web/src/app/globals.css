@@ -42,6 +42,33 @@ body {
   border-color: #00F5A0;
   box-shadow: 0 6px 25px rgba(0, 245, 160, 0.15);
 }
+
+/* Light Mode Overrides */
+html.light body {
+  background: #f8fafc;
+  color: #0f172a;
+}
+html.light .radial-glow {
+  background: radial-gradient(circle at 50% 25%, rgba(0, 245, 160, 0.08) 0%, rgba(241, 245, 249, 0) 70%);
+}
+html.light .card-glass {
+  background: #ffffff;
+  backdrop-filter: blur(16px);
+  border: 1px solid #e2e8f0;
+}
+html.light .card-glass:hover {
+  border-color: rgba(0, 245, 160, 0.5);
+  box-shadow: 0 10px 25px -10px rgba(0, 245, 160, 0.2);
+}
+html.light .instrument-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+html.light .instrument-card:hover {
+  border-color: #00F5A0;
+  box-shadow: 0 6px 22px rgba(0, 245, 160, 0.15);
+}
 @keyframes subtle-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(1.15); }

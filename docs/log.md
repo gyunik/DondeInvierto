@@ -4,6 +4,17 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] ui & theme | Implementación de Switch Dark / Light Mode con diseño neumórfico en Navbar
+* Creación de `web/src/components/ThemeToggle.tsx`:
+  - Botón interactivo tipo cápsula/switch idéntico a la referencia visual (perilla deslizante blanca con sol ámbar en modo claro y luna azul índigo en modo oscuro, con iconos sutiles de fondo).
+  - Persistencia en `localStorage` (`theme: 'dark' | 'light'`) y sincronización instantánea con la clase `.dark` / `.light` de `<html>`.
+  - Script inline anticolisión en `web/src/app/layout.tsx` para evitar parpadeos visuales (flash of unstyled content) en la carga inicial.
+* Integración en `web/src/components/Navbar.tsx`:
+  - Ubicado estratégicamente a la izquierda del botón "Suscribirse Pro", respetando la maquetación solicitada por el usuario.
+* Configuración en `web/tailwind.config.ts` y `web/src/app/globals.css`:
+  - Activación de `darkMode: "class"`.
+  - Definición de estilos e iluminaciones adaptativas para modo claro en `.instrument-card`, `.card-glass` y `Navbar`.
+
 ## [2026-10-30] scan & quant | Universo S&P 500 completo auditado (497 acciones) con desglose 100% de bancos y fechas
 * Expansión total del screener con máxima calidad institucional de datos:
   - Escáner masivo `scripts/scan_sp500_quant.js` actualizado para ingestar concurrentemente las cotizaciones en tiempo real, SMA 200, forward EPS, y el historial de bancos (`upgradeDowngradeHistory`) con nombres, ratings, fechas exactas y precios objetivo.
