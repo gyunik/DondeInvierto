@@ -4,6 +4,17 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-30] audit & quant | Blindaje institucional contra anomalías: Safety Collar (+/-25%) y descarte riguroso
+* Implementación de Candados de Seguridad en `scripts/quant_algorithm.js`:
+  - Función de validación previa `hasValidQuantData`: descarta de inmediato cualquier acción sin Forward EPS positivo, sin Target de bancos o con PER negativo/anómalo (>180x).
+  - Eliminación de múltiplos genéricos inflados: anclaje estricto de la Capa A al PER real de la propia empresa (o mediana auditada), evitando asignar PERs de crecimiento a empresas de bajo múltiplo estructural.
+  - Candado de Seguridad de Wall Street (*Safety Collar*): el precio objetivo estimado queda acotado a un rango máximo de $\pm 25\%$ respecto al consenso de los analistas de Wall Street.
+* Sanitización masiva del dataset:
+  - De las 511 acciones, se descartaron rigurosamente 30 empresas con información incompleta, EPS negativo o balances atípicos.
+  - Universo sanitizado resultante: 481 acciones verificadas (90 con CEDEAR en Argentina y 391 para operar en Broker Exterior).
+  - Auditoría del 100% del dataset: 0 acciones fuera del rango de tolerancia y 0 anomalías de retorno extremo.
+  - Caso UHS auditado: Precio $176.61 USD, Consenso Bancos $192.41 USD (+8.9%), Algoritmo corregido $183.04 USD (+3.6%), Score 37.8/100 (Avoid / Evitar).
+
 ## [2026-10-30] quant & feature | Expansión del universo a S&P 500 completo (+511 acciones) y selector CEDEAR
 * Construcción del Universo Maestro (`scripts/build_sp500_universe.js`):
   - Ingesta de las 503 empresas oficiales del índice S&P 500 + ADRs clave de alta liquidez (MELI, TSM, BABA, SPOT, SHOP, SNOW, VALE, PBR) totalizando 511 activos.

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://w3.org" viewBox="0 0 500 500" width="100%" height="100%">
+    <defs>
+        <!-- Degradado para las barras de fondo -->
+        <linearGradient id="barGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF9100"/>
+            <stop offset="35%" stop-color="#E040FB"/>
+            <stop offset="100%" stop-color="#7B1FA2"/>
+        </linearGradient>
+        
+        <!-- Degradado para la flecha ascendente -->
+        <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="50%" y2="0%">
+            <stop offset="0%" stop-color="#FF1744"/>
+            <stop offset="60%" stop-color="#FF5252"/>
+            <stop offset="100%" stop-color="#FFAB40"/>
+        </linearGradient>
+    </defs>
+    
+    <g transform="translate(10, 0)">
+        <!-- Barra 1 (Izquierda) -->
+        <rect x="70" y="270" width="35" height="130" rx="8" fill="url(#barGrad)"/>
+        
+        <!-- Barra 2 -->
+        <rect x="125" y="200" width="35" height="200" rx="8" fill="url(#barGrad)"/>
+        
+        <!-- Barra 3 -->
+        <rect x="180" y="130" width="35" height="270" rx="8" fill="url(#barGrad)"/>
+        
+        <!-- Barra 4 + Signo de Pregunta integrado (Derecha) -->
+        <path d="M 235 170 L 235 400 A 17.5 17.5 0 0 0 270 400 L 270 240 A 45 45 0 0 1 315 195 A 45 45 0 0 1 360 240 A 45 45 0 0 1 315 285 L 295 285 A 15 15 0 0 0 280 300 L 280 330 A 15 15 0 0 0 295 345 L 315 345 A 75 75 0 0 0 390 240 A 75 75 0 0 0 315 165 A 75 75 0 0 0 250 200 L 250 170 A 15 15 0 0 0 235 155" fill="url(#barGrad)"/>
+              
+        <!-- Punto del signo de pregunta -->
+        <circle cx="315" cy="390" r="20" fill="url(#barGrad)"/>
+
+        <!-- Sombra de la flecha -->
+        <path d="M 50 370 Q 100 380 130 300 T 245 130" fill="none" stroke="#1A237E" stroke-width="28" stroke-linecap="round" opacity="0.15"/>
+              
+        <!-- Cuerpo de la línea de tendencia -->
+        <path d="M 50 370 Q 100 380 130 300 T 245 130" fill="none" stroke="url(#arrowGrad)" stroke-width="24" stroke-linecap="round"/>
+              
+        <!-- Cabeza de la Flecha -->
+        <path d="M 215 125 L 260 110 L 250 155 Z" fill="url(#arrowGrad)" stroke="url(#arrowGrad)" stroke-width="12" stroke-linejoin="round"/>
+              
+        <!-- Borde blanco interno en la cabeza de la flecha -->
+        <path d="M 223 130 L 252 120 L 246 148" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+</svg>
