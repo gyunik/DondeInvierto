@@ -47,6 +47,7 @@ export default function ScreenerSection({
   const [stockOpportunityFilter, setStockOpportunityFilter] = useState<"opportunities" | "all">("opportunities");
   const [visibleCount, setVisibleCount] = useState<number>(30);
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
+  const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
@@ -613,6 +614,43 @@ export default function ScreenerSection({
                 }`}
               >
                 Invesco (QQQ)
+              </button>
+            </div>
+
+            {/* Filtro de Dividendos en ETFs */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-600 dark:text-slate-400 text-xs font-mono">Dividendos:</span>
+              <button
+                onClick={() => setEtfDivFilter("all")}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  etfDivFilter === "all"
+                    ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                Todos
+              </button>
+              <button
+                onClick={() => setEtfDivFilter("dividend")}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                  etfDivFilter === "dividend"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <CircleDollarSign className="w-3 h-3 text-emerald-600 dark:text-[#00F5A0]" />
+                <span>Con Div.</span>
+              </button>
+              <button
+                onClick={() => setEtfDivFilter("growth")}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                  etfDivFilter === "growth"
+                    ? "bg-cyan-50 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-300 dark:border-cyan-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <Zap className="w-3 h-3 text-cyan-600 dark:text-cyan-300" />
+                <span>Crecimiento</span>
               </button>
             </div>
           </div>
