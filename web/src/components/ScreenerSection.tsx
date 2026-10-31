@@ -8,8 +8,8 @@ import {
   Search,
   CircleDollarSign,
   Zap,
-  Shield,
 } from "lucide-react";
+import ArgentinaFlag from "./ArgentinaFlag";
 import marketData from "@/data/marketData.json";
 import StockDetailModal, { ModalItem } from "./StockDetailModal";
 import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
@@ -49,6 +49,10 @@ export default function ScreenerSection({
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
+  const [usBondProfileFilter, setUsBondProfileFilter] = useState<"all" | "conservative" | "moderate" | "yield">("all");
+  const [usBondTermFilter, setUsBondTermFilter] = useState<"all" | "short" | "medium" | "long">("all");
+  const [usBondSort, setUsBondSort] = useState<"score" | "tir">("score");
+  const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
@@ -125,13 +129,37 @@ export default function ScreenerSection({
     .sort((a, b) => (b.score || 0) - (a.score || 0));
 
   // 4. Filtrado de Bonos Corporativos & Treasuries USA
-  let filteredUsBonds = us_bonds.filter(
-    (b: UsBondItem) =>
-      b.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.issuer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (b.rating && b.rating.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  let filteredUsBonds = us_bonds
+    .filter((b: UsBondItem) => {
+      const matchesSearch =
+        b.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        b.issuer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (b.rating && b.rating.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (b.category && b.category.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (!matchesSearch) return false;
+
+      // Filtro por Perfil de Inversor
+      if (usBondProfileFilter !== "all" && b.profile !== usBondProfileFilter) {
+        return false;
+      }
+
+      // Filtro por Plazo
+      if (usBondTermFilter !== "all" && b.term !== usBondTermFilter) {
+        return false;
+      }
+
+      return true;
+    })
+    .sort((a, b) => {
+      if (usBondSort === "tir") {
+        return (b.tir_usd || 0) - (a.tir_usd || 0);
+      }
+      if (usBondProfileFilter === "yield") {
+        return (b.tir_usd || 0) - (a.tir_usd || 0);
+      }
+      return (b.score || 0) - (a.score || 0);
+    });
 
   // 5. Filtrado de ONs en Dólares (Argentina)
   let filteredOns = ons.filter(
@@ -423,7 +451,7 @@ export default function ScreenerSection({
               }`}
             >
               <Globe className="w-4 h-4" />
-              <span>🌎 Wall Street (Cuenta en USA)</span>
+              <span>Wall Street</span>
             </button>
             <button
               onClick={() => { setActiveMarket("argentina"); setVisibleCount(30); }}
@@ -433,8 +461,8 @@ export default function ScreenerSection({
                   : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 font-semibold"
               }`}
             >
-              <Shield className="w-4 h-4" />
-              <span>🇦🇷 Mercado Local (Cuenta en Argentina)</span>
+              <ArgentinaFlag className="w-5 h-3.5 rounded-[2px] shadow-sm" />
+              <span>Mercado Local</span>
             </button>
           </div>
 
@@ -576,6 +604,130 @@ export default function ScreenerSection({
                 <Zap className="w-3 h-3 text-cyan-600 dark:text-cyan-300" />
                 <span>Crecimiento</span>
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Filtros Especiales para Bonos USA (Perfil de Inversor & Plazo) */}
+        {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium">
+            {/* 1. Selector de Perfil de Inversor */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Perfil:</span>
+              <button
+                onClick={() => { setUsBondProfileFilter("all"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondProfileFilter === "all"
+                    ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                Todos ({us_bonds.length})
+              </button>
+              <button
+                onClick={() => { setUsBondProfileFilter("conservative"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                  usBondProfileFilter === "conservative"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+                title="Bonos AAA y AA (Microsoft, Apple, Johnson & Johnson, Treasuries) para máxima preservación de capital"
+              >
+                <span>🛡️ Conservador (AAA / AA)</span>
+              </button>
+              <button
+                onClick={() => { setUsBondProfileFilter("moderate"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                  usBondProfileFilter === "moderate"
+                    ? "bg-cyan-50 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-300 dark:border-cyan-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+                title="Bonos A+ a A- (JPMorgan, Amazon, Disney, Coca-Cola) para equilibrio entre solidez y tasa"
+              >
+                <span>⚖️ Moderado (A+ / A-)</span>
+              </button>
+              <button
+                onClick={() => { setUsBondProfileFilter("yield"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                  usBondProfileFilter === "yield"
+                    ? "bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+                title="Bonos BBB+ / BBB (AT&T, Oracle, Netflix, Ford, HYG) para maximizar la tasa en dólares"
+              >
+                <span>🔥 Alto Rendimiento (BBB+ / BBB)</span>
+              </button>
+            </div>
+
+            {/* 2. Selector de Plazo y Orden */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Plazo:</span>
+                <button
+                  onClick={() => { setUsBondTermFilter("all"); setVisibleBondCount(30); }}
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondTermFilter === "all"
+                      ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Todos
+                </button>
+                <button
+                  onClick={() => { setUsBondTermFilter("short"); setVisibleBondCount(30); }}
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondTermFilter === "short"
+                      ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Corto (1-3A)
+                </button>
+                <button
+                  onClick={() => { setUsBondTermFilter("medium"); setVisibleBondCount(30); }}
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondTermFilter === "medium"
+                      ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Mediano (3-7A)
+                </button>
+                <button
+                  onClick={() => { setUsBondTermFilter("long"); setVisibleBondCount(30); }}
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondTermFilter === "long"
+                      ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Largo (+7A)
+                </button>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Ordenar:</span>
+                <button
+                  onClick={() => setUsBondSort("score")}
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondSort === "score"
+                      ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Score
+                </button>
+                <button
+                  onClick={() => setUsBondSort("tir")}
+                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondSort === "tir"
+                      ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Mayor TIR
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -821,7 +973,7 @@ export default function ScreenerSection({
               </span>
             </div>
 
-            {filteredUsBonds.map((bond: UsBondItem, idx: number) => (
+            {filteredUsBonds.slice(0, visibleBondCount).map((bond: UsBondItem, idx: number) => (
               <div key={bond.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
@@ -835,6 +987,18 @@ export default function ScreenerSection({
                         </span>
                         <span className="px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border bg-emerald-100 text-emerald-900 border-emerald-400 dark:bg-emerald-500/20 dark:text-[#00F5A0] dark:border-[#00F5A0]">
                           Rating: {bond.credit_rating || bond.rating}
+                        </span>
+                        <span className={`px-2 py-1 rounded text-xs font-bold border ${
+                          bond.profile === "conservative"
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-[#00F5A0] dark:border-emerald-500/40"
+                            : bond.profile === "moderate"
+                            ? "bg-cyan-50 text-cyan-800 border-cyan-300 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-500/40"
+                            : "bg-amber-50 text-amber-800 border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-500/40"
+                        }`}>
+                          {bond.profile === "conservative" ? "🛡️ Conservador" : bond.profile === "moderate" ? "⚖️ Moderado" : "🔥 Alto Rendimiento"}
+                        </span>
+                        <span className="px-2 py-1 rounded bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
+                          {bond.term === "short" ? "⏱️ Corto (1-3A)" : bond.term === "medium" ? "⏱️ Mediano (3-7A)" : "⏱️ Largo (+7A)"}
                         </span>
                         <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
                           Vence: <strong className="text-emerald-700 dark:text-[#00F5A0]">{bond.maturity_date}</strong>
@@ -920,6 +1084,17 @@ export default function ScreenerSection({
                 )}
               </div>
             ))}
+
+            {visibleBondCount < filteredUsBonds.length && (
+              <div className="pt-4 flex justify-center">
+                <button
+                  onClick={() => setVisibleBondCount((prev) => prev + 30)}
+                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                >
+                  Cargar más bonos ({visibleBondCount} de {filteredUsBonds.length}) ↓
+                </button>
+              </div>
+            )}
           </>
         )}
 

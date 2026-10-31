@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScreenerSection from "@/components/ScreenerSection";
 import PricingSection from "@/components/PricingSection";
+import ArgentinaFlag from "@/components/ArgentinaFlag";
 import marketData from "@/data/marketData.json";
 import {
   Globe,
@@ -195,11 +196,12 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] mb-4">
                   <Globe className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors">
-                  🌎 Wall Street (Cuenta en USA)
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-emerald-600 dark:text-[#00F5A0]" />
+                  <span>Wall Street</span>
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-                  Acciones del S&amp;P 500, ETFs globales y Bonos Corporativos Investment Grade (AAA/AA) para operar con cuenta en el exterior.
+                  Acciones del S&amp;P 500, ETFs globales y más de 50 Bonos Corporativos Investment Grade (AAA/AA/A) y Treasuries.
                 </p>
               </div>
               <div className="mt-4 flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-[#00F5A0]">
@@ -216,8 +218,9 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] mb-4">
                   <Building2 className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors">
-                  🇦🇷 Mercado Local (Argentina)
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors flex items-center gap-2">
+                  <ArgentinaFlag className="w-5 h-3.5 rounded-[2px] shadow-sm" />
+                  <span>Mercado Local</span>
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
                   CEDEARs en Pesos, ONs en Dólares billete y Acciones del Merval para operar en la Bolsa de Buenos Aires (BYMA).
