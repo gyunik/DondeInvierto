@@ -49,9 +49,10 @@ export default function ScreenerSection({
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
-  const [usBondProfileFilter, setUsBondProfileFilter] = useState<"all" | "conservative" | "moderate" | "yield">("all");
-  const [usBondTermFilter, setUsBondTermFilter] = useState<"all" | "short" | "medium" | "long">("all");
-  const [usBondSort, setUsBondSort] = useState<"score" | "tir">("score");
+  const [usBondMaturityBlock, setUsBondMaturityBlock] = useState<"all" | "short" | "medium" | "long">("all");
+  const [usBondBrandCategory, setUsBondBrandCategory] = useState<string>("all");
+  const [usBondSafetyFilter, setUsBondSafetyFilter] = useState<"all" | "Seguridad Máxima" | "Riesgo Ultra Bajo">("all");
+  const [usBondSort, setUsBondSort] = useState<"tir" | "score" | "maturity">("tir");
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
@@ -128,24 +129,34 @@ export default function ScreenerSection({
     })
     .sort((a, b) => (b.score || 0) - (a.score || 0));
 
-  // 4. Filtrado de Bonos Corporativos & Treasuries USA
+  // 4. Filtrado de Bonos Corporativos & Treasuries USA High Grade
   let filteredUsBonds = us_bonds
     .filter((b: UsBondItem) => {
-      const matchesSearch =
-        b.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.issuer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (b.rating && b.rating.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (b.category && b.category.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (!matchesSearch) return false;
+      const q = searchQuery.toLowerCase().trim();
+      if (q) {
+        const matchesSearch =
+          b.ticker.toLowerCase().includes(q) ||
+          b.name.toLowerCase().includes(q) ||
+          b.issuer.toLowerCase().includes(q) ||
+          (b.sector && b.sector.toLowerCase().includes(q)) ||
+          (b.brand_category && b.brand_category.toLowerCase().includes(q)) ||
+          (b.rating && b.rating.toLowerCase().includes(q)) ||
+          (b.moodys && b.moodys.toLowerCase().includes(q));
+        if (!matchesSearch) return false;
+      }
 
-      // Filtro por Perfil de Inversor
-      if (usBondProfileFilter !== "all" && b.profile !== usBondProfileFilter) {
+      // Filtro por Bloque de Tranquilidad
+      if (usBondMaturityBlock !== "all" && b.maturity_block !== usBondMaturityBlock) {
         return false;
       }
 
-      // Filtro por Plazo
-      if (usBondTermFilter !== "all" && b.term !== usBondTermFilter) {
+      // Filtro por Marcas Conocidas
+      if (usBondBrandCategory !== "all" && b.brand_category !== usBondBrandCategory) {
+        return false;
+      }
+
+      // Filtro por Nivel de Seguridad
+      if (usBondSafetyFilter !== "all" && b.safety_badge !== usBondSafetyFilter) {
         return false;
       }
 
@@ -155,8 +166,8 @@ export default function ScreenerSection({
       if (usBondSort === "tir") {
         return (b.tir_usd || 0) - (a.tir_usd || 0);
       }
-      if (usBondProfileFilter === "yield") {
-        return (b.tir_usd || 0) - (a.tir_usd || 0);
+      if (usBondSort === "maturity") {
+        return (a.maturity_years || 0) - (b.maturity_years || 0);
       }
       return (b.score || 0) - (a.score || 0);
     });
@@ -608,124 +619,210 @@ export default function ScreenerSection({
           </div>
         )}
 
-        {/* Filtros Especiales para Bonos USA (Perfil de Inversor & Plazo) */}
+        {/* Filtros Especiales para Bonos USA High Grade (Diseñado para Inversores Principiantes) */}
         {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium">
-            {/* 1. Selector de Perfil de Inversor */}
+          <div className="flex flex-col gap-4 mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium">
+            {/* 1. Bloques de Tranquilidad basados en Vencimiento */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50 dark:bg-[#07111e] p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+              <span className="text-slate-600 dark:text-slate-300 font-mono text-xs font-bold uppercase tracking-wider shrink-0 flex items-center gap-1.5">
+                <span>🛡️ Bloques de Tranquilidad:</span>
+              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => { setUsBondMaturityBlock("all"); setVisibleBondCount(30); }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    usBondMaturityBlock === "all"
+                      ? "bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
+                      : "bg-slate-200/70 dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Todos ({us_bonds.length})
+                </button>
+                <button
+                  onClick={() => { setUsBondMaturityBlock("short"); setVisibleBondCount(30); }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
+                    usBondMaturityBlock === "short"
+                      ? "bg-emerald-100 text-emerald-950 border-emerald-400 dark:bg-emerald-950/80 dark:text-[#00F5A0] dark:border-emerald-500/50 shadow-sm"
+                      : "bg-slate-200/70 border-transparent dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  title="Aproximadamente 1 a 3 años. Mínima fluctuación de precio, ideal para principiantes y preservación de capital"
+                >
+                  <span>🟢 Corto Plazo (1-3 años)</span>
+                  <span className="text-[10px] opacity-75 font-normal hidden md:inline">• Riesgo precio mínimo / Conservador</span>
+                </button>
+                <button
+                  onClick={() => { setUsBondMaturityBlock("medium"); setVisibleBondCount(30); }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
+                    usBondMaturityBlock === "medium"
+                      ? "bg-cyan-100 text-cyan-950 border-cyan-400 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-500/50 shadow-sm"
+                      : "bg-slate-200/70 border-transparent dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  title="Aproximadamente 3 a 7 años. Equilibrio recomendado entre tasa alta fija y duración"
+                >
+                  <span>🔵 Mediano Plazo (3-7 años)</span>
+                  <span className="text-[10px] opacity-75 font-normal hidden md:inline">• Riesgo moderado / Recomendado</span>
+                </button>
+                <button
+                  onClick={() => { setUsBondMaturityBlock("long"); setVisibleBondCount(30); }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
+                    usBondMaturityBlock === "long"
+                      ? "bg-purple-100 text-purple-950 border-purple-400 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-500/50 shadow-sm"
+                      : "bg-slate-200/70 border-transparent dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  title="Aproximadamente 7 a 10 años. Asegurar tasas altas por una década completa con devolución íntegra al vencimiento"
+                >
+                  <span>🟣 Largo Plazo (7-10 años)</span>
+                  <span className="text-[10px] opacity-75 font-normal hidden md:inline">• Sensible / Mantener a vencimiento</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 2. Filtro de Marcas Conocidas y Cotidianas */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Perfil:</span>
+              <span className="text-slate-600 dark:text-slate-400 font-mono text-xs font-semibold mr-1">
+                Marcas Cotidianas:
+              </span>
               <button
-                onClick={() => { setUsBondProfileFilter("all"); setVisibleBondCount(30); }}
+                onClick={() => { setUsBondBrandCategory("all"); setVisibleBondCount(30); }}
                 className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondProfileFilter === "all"
+                  usBondBrandCategory === "all"
                     ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
-                Todos ({us_bonds.length})
+                🏢 Todas
               </button>
               <button
-                onClick={() => { setUsBondProfileFilter("conservative"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  usBondProfileFilter === "conservative"
+                onClick={() => { setUsBondBrandCategory("Empresas Tecnológicas Líderes"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondBrandCategory === "Empresas Tecnológicas Líderes"
                     ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
-                title="Bonos AAA y AA (Microsoft, Apple, Johnson & Johnson, Treasuries) para máxima preservación de capital"
               >
-                <span>🛡️ Conservador (AAA / AA)</span>
+                💻 Tech Líderes (Apple, Microsoft, Google)
               </button>
               <button
-                onClick={() => { setUsBondProfileFilter("moderate"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  usBondProfileFilter === "moderate"
-                    ? "bg-cyan-50 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-300 dark:border-cyan-500/40"
+                onClick={() => { setUsBondBrandCategory("Consumo Masivo & Alimentos"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondBrandCategory === "Consumo Masivo & Alimentos"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
-                title="Bonos A+ a A- (JPMorgan, Amazon, Disney, Coca-Cola) para equilibrio entre solidez y tasa"
               >
-                <span>⚖️ Moderado (A+ / A-)</span>
+                🛒 Consumo (Walmart, Coca-Cola, P&amp;G, Nike)
               </button>
               <button
-                onClick={() => { setUsBondProfileFilter("yield"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  usBondProfileFilter === "yield"
-                    ? "bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-500/40"
+                onClick={() => { setUsBondBrandCategory("Salud & Farmacéuticas"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondBrandCategory === "Salud & Farmacéuticas"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
-                title="Bonos BBB+ / BBB (AT&T, Oracle, Netflix, Ford, HYG) para maximizar la tasa en dólares"
               >
-                <span>🔥 Alto Rendimiento (BBB+ / BBB)</span>
+                🏥 Salud (J&amp;J, Eli Lilly, Abbott, Merck)
+              </button>
+              <button
+                onClick={() => { setUsBondBrandCategory("Pagos & Finanzas"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondBrandCategory === "Pagos & Finanzas"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                💳 Pagos (Visa, Mastercard, Berkshire)
+              </button>
+              <button
+                onClick={() => { setUsBondBrandCategory("Energía & Recursos"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondBrandCategory === "Energía & Recursos"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                ⚡ Energía (Exxon, Chevron)
+              </button>
+              <button
+                onClick={() => { setUsBondBrandCategory("Gobierno & Deuda Soberana"); setVisibleBondCount(30); }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                  usBondBrandCategory === "Gobierno & Deuda Soberana"
+                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                🏛️ Deuda Soberana USA (Tesoro)
               </button>
             </div>
 
-            {/* 2. Selector de Plazo y Orden */}
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Plazo:</span>
+            {/* 3. Nivel de Seguridad Traducido y Ordenamiento */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Calidad Crediticia:</span>
                 <button
-                  onClick={() => { setUsBondTermFilter("all"); setVisibleBondCount(30); }}
+                  onClick={() => { setUsBondSafetyFilter("all"); setVisibleBondCount(30); }}
                   className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondTermFilter === "all"
+                    usBondSafetyFilter === "all"
                       ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
-                  Todos
+                  Todas (High Grade)
                 </button>
                 <button
-                  onClick={() => { setUsBondTermFilter("short"); setVisibleBondCount(30); }}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondTermFilter === "short"
-                      ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                  onClick={() => { setUsBondSafetyFilter("Seguridad Máxima"); setVisibleBondCount(30); }}
+                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                    usBondSafetyFilter === "Seguridad Máxima"
+                      ? "bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-[#00F5A0] font-bold border border-emerald-400 dark:border-emerald-500/40"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
-                  Corto (1-3A)
+                  <span>🛡️ Seguridad Máxima (AAA / AA+)</span>
                 </button>
                 <button
-                  onClick={() => { setUsBondTermFilter("medium"); setVisibleBondCount(30); }}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondTermFilter === "medium"
-                      ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
+                  onClick={() => { setUsBondSafetyFilter("Riesgo Ultra Bajo"); setVisibleBondCount(30); }}
+                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
+                    usBondSafetyFilter === "Riesgo Ultra Bajo"
+                      ? "bg-cyan-100 text-cyan-900 dark:bg-cyan-950/80 dark:text-cyan-300 font-bold border border-cyan-400 dark:border-cyan-500/40"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
-                  Mediano (3-7A)
-                </button>
-                <button
-                  onClick={() => { setUsBondTermFilter("long"); setVisibleBondCount(30); }}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondTermFilter === "long"
-                      ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  Largo (+7A)
+                  <span>💎 Riesgo Ultra Bajo (AA / AA-)</span>
                 </button>
               </div>
 
               <div className="flex items-center gap-1.5">
-                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Ordenar:</span>
+                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs font-semibold">Ordenar:</span>
+                <button
+                  onClick={() => setUsBondSort("tir")}
+                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondSort === "tir"
+                      ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                  title="Ordenar por mayor rendimiento anual garantizado al vencimiento"
+                >
+                  Mayor Rendimiento (YTM)
+                </button>
                 <button
                   onClick={() => setUsBondSort("score")}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
                     usBondSort === "score"
                       ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
-                  Score
+                  Solidez Institucional
                 </button>
                 <button
-                  onClick={() => setUsBondSort("tir")}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondSort === "tir"
+                  onClick={() => setUsBondSort("maturity")}
+                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                    usBondSort === "maturity"
                       ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
+                  title="Ordenar por cobro de capital más cercano"
                 >
-                  Mayor TIR
+                  Vencimiento Próximo
                 </button>
               </div>
             </div>
@@ -964,13 +1061,19 @@ export default function ScreenerSection({
           </>
         )}
 
-        {/* 3. WALL STREET -> BONOS USA (CORPORATIVOS & TREASURIES) */}
+        {/* 3. WALL STREET -> BONOS USA HIGH GRADE (DISEÑADO PARA INVERSORES PRINCIPIANTES) */}
         {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
           <>
-            <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-[#0a1424] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <span>
-                🏛️ <strong className="text-slate-900 dark:text-white">Renta Fija en Dólares (USA):</strong> Bonos corporativos de máxima calificación crediticia global (<strong className="text-emerald-700 dark:text-[#00F5A0]">Investment Grade AAA, AA, A</strong>) emitidos por gigantes de Wall Street (Microsoft, Johnson & Johnson, Apple, Amazon, Berkshire Hathaway, JPMorgan) y Bonos del Tesoro estadounidense. Ideales para inversores con cuenta en broker del exterior que buscan cobrar cupones en dólares con mínimo riesgo de crédito.
-              </span>
+            <div className="p-4 sm:p-5 rounded-2xl bg-cyan-50/70 dark:bg-[#071322] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🛡️</span>
+                <strong className="text-slate-900 dark:text-white text-sm sm:text-base font-bold">
+                  Catálogo Curado de Renta Fija en Dólares (High Grade EE.UU. - Riesgo Casi Nulo)
+                </strong>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
+                Selección de <strong>{us_bonds.length} bonos corporativos y del tesoro de EE.UU.</strong> diseñada específicamente para inversores principiantes. Todos los títulos cuentan con <strong>calificación crediticia High Grade (AAA a AA-)</strong>, estructura <strong>100% Bullet (No Rescatable)</strong> para eliminar el riesgo de refinanciación, y emisiones superiores a <strong>$1.000M USD</strong> para máxima liquidez. Si mantienes el bono hasta su vencimiento, tu rendimiento anual (YTM) en dólares billete está asegurado.
+              </p>
             </div>
 
             {filteredUsBonds.slice(0, visibleBondCount).map((bond: UsBondItem, idx: number) => (
@@ -982,74 +1085,96 @@ export default function ScreenerSection({
                     </span>
                     <div>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
-                          {bond.ticker}
+                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono flex items-center gap-1.5">
+                          <span>{bond.brand_icon || "🏢"}</span>
+                          <span>{bond.ticker}</span>
                         </span>
-                        <span className="px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border bg-emerald-100 text-emerald-900 border-emerald-400 dark:bg-emerald-500/20 dark:text-[#00F5A0] dark:border-[#00F5A0]">
-                          Rating: {bond.credit_rating || bond.rating}
-                        </span>
-                        <span className={`px-2 py-1 rounded text-xs font-bold border ${
-                          bond.profile === "conservative"
-                            ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-[#00F5A0] dark:border-emerald-500/40"
-                            : bond.profile === "moderate"
-                            ? "bg-cyan-50 text-cyan-800 border-cyan-300 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-500/40"
-                            : "bg-amber-50 text-amber-800 border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-500/40"
+
+                        {/* Badge de Seguridad Traducido */}
+                        <span className={`px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border flex items-center gap-1.5 shadow-xs ${
+                          bond.rating === "AAA" || bond.rating === "AA+"
+                            ? "bg-emerald-100 text-emerald-950 border-emerald-400 dark:bg-emerald-500/20 dark:text-[#00F5A0] dark:border-[#00F5A0]"
+                            : "bg-cyan-100 text-cyan-950 border-cyan-400 dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-400"
                         }`}>
-                          {bond.profile === "conservative" ? "🛡️ Conservador" : bond.profile === "moderate" ? "⚖️ Moderado" : "🔥 Alto Rendimiento"}
+                          <span>{bond.safety_badge === "Seguridad Máxima" ? "🛡️ Seguridad Máxima" : "💎 Riesgo Ultra Bajo"}</span>
+                          <span className="text-[11px] opacity-75 font-mono">({bond.rating} / {bond.moodys})</span>
                         </span>
-                        <span className="px-2 py-1 rounded bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
-                          {bond.term === "short" ? "⏱️ Corto (1-3A)" : bond.term === "medium" ? "⏱️ Mediano (3-7A)" : "⏱️ Largo (+7A)"}
+
+                        {/* Estructura No Rescatable (Bullet) */}
+                        <span className="px-2 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono" title="Bono no rescatable: la empresa no puede cancelarlo antes de tiempo">
+                          🔒 Bullet (No Rescatable)
                         </span>
-                        <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
-                          Vence: <strong className="text-emerald-700 dark:text-[#00F5A0]">{bond.maturity_date}</strong>
+
+                        {/* Bloque de Tranquilidad */}
+                        <span className={`px-2 py-1 rounded-md text-xs font-mono font-bold border ${
+                          bond.maturity_block === "short"
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-[#00F5A0] dark:border-emerald-500/40"
+                            : bond.maturity_block === "medium"
+                            ? "bg-cyan-50 text-cyan-800 border-cyan-300 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-500/40"
+                            : "bg-purple-50 text-purple-800 border-purple-300 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-500/40"
+                        }`}>
+                          {bond.maturity_block === "short" ? "🟢 Corto Plazo (1-3A)" : bond.maturity_block === "medium" ? "🔵 Mediano Plazo (3-7A)" : "🟣 Largo Plazo (7-10A)"}
+                        </span>
+
+                        {/* Emisión Mínima Garantizada */}
+                        <span className="px-2 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-mono hidden sm:inline" title="Monto de emisión superior a $1.000M USD">
+                          💧 {bond.amount_outstanding_usd}
                         </span>
                       </div>
                       <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                        {bond.name} <span className="text-slate-500 dark:text-slate-400 font-normal">• Emisor: {bond.issuer}</span>
+                        {bond.name}{" "}
+                        <span className="text-slate-500 dark:text-slate-400 font-normal">
+                          • Emisor: {bond.issuer} ({bond.sector})
+                        </span>
                       </div>
                     </div>
                   </div>
 
+                  {/* 4 Métricas Clave (Sin volatilidad de precio diario para principiantes) */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                    {/* 1. Rendimiento al Vencimiento (YTM / TIR) - Métrica Principal */}
                     <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO &amp; PARIDAD
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-emerald-800 dark:text-[#00F5A0] tracking-wider">
+                        RENDIMIENTO SEGURO (YTM)
                       </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          ${bond.price_usd ? bond.price_usd.toFixed(2) : "100.00"}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">USD</span>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-emerald-700 dark:text-[#00F5A0]">
-                        {bond.parity_status} ({bond.parity}%)
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        RENDIMIENTO (YTM / TIR)
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-[#00F5A0] font-mono">
+                      <div className="flex items-baseline gap-1 mt-0.5">
+                        <span className="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono">
                           {bond.tir_usd}%
                         </span>
                       </div>
-                      <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">Tasa neta anual USD</span>
+                      <span className="text-xs font-bold font-mono text-emerald-800 dark:text-[#00F5A0]/90">Tasa neta anual USD</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Fija al vencimiento</span>
                     </div>
 
+                    {/* 2. Cupón Periódico */}
                     <div className="flex flex-col">
                       <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        CUPÓN &amp; FRECUENCIA
+                        CUPÓN &amp; COBRO
                       </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
+                      <div className="flex items-baseline gap-1 mt-0.5">
+                        <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono">
                           {bond.coupon}%
                         </span>
                       </div>
                       <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">{bond.frequency}</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Renta pasiva directa</span>
                     </div>
 
+                    {/* 3. Vencimiento de Capital */}
+                    <div className="flex flex-col">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
+                        COBRO DE CAPITAL
+                      </span>
+                      <div className="flex items-baseline gap-1 mt-0.5">
+                        <span className="text-lg sm:text-xl font-black text-slate-900 dark:text-white font-mono">
+                          {bond.maturity_date}
+                        </span>
+                      </div>
+                      <span className="text-xs font-bold font-mono text-slate-600 dark:text-slate-300">{bond.maturity_years} años restantes</span>
+                      <span className="text-[10px] font-mono text-emerald-700 dark:text-[#00F5A0]">Devolución 100% capital</span>
+                    </div>
+
+                    {/* 4. Solidez y Desglose Cuantitativo */}
                     <div
                       onClick={() => setSelectedScoreItem(bond)}
                       className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
@@ -1078,7 +1203,7 @@ export default function ScreenerSection({
 
                 {bond.thesis && (
                   <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-[#060b13] border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-mono">
-                    <span className="text-emerald-700 dark:text-[#00F5A0] font-bold mr-1">Tesis de Renta Fija:</span>
+                    <span className="text-emerald-700 dark:text-[#00F5A0] font-bold mr-1">Tesis para Principiantes:</span>
                     {bond.thesis}
                   </div>
                 )}

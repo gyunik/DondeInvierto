@@ -138,6 +138,51 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         metricDetail: `Gestor: ${etfItem.manager || "Tier 1"} • Cap: ${etfItem.market_cap || "Alta Liquidez"}`
       }
     ];
+  } else if ("amount_outstanding_usd" in item || "brand_category" in item) {
+    const usBond = item as UsBondItem;
+    const p1 = Math.round(score * 0.35 * 10) / 10;
+    const p2 = Math.round(score * 0.30 * 10) / 10;
+    const p3 = Math.round(score * 0.20 * 10) / 10;
+    const p4 = Math.round((score - p1 - p2 - p3) * 10) / 10;
+
+    pillars = [
+      {
+        title: "Rendimiento Anual Seguro (YTM / TIR)",
+        weight: 35,
+        points: p1,
+        maxPoints: 35,
+        icon: <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-[#00F5A0]" />,
+        desc: "Rendimiento anualizado en dólares billete pactado si se conserva el bono hasta su fecha de vencimiento.",
+        metricDetail: `YTM: ${usBond.tir_usd}% anual en dólares billete`
+      },
+      {
+        title: "Calificación High Grade y Estructura Bullet",
+        weight: 30,
+        points: p2,
+        maxPoints: 30,
+        icon: <ShieldCheck className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />,
+        desc: "Emisión de máxima solvencia internacional (AAA a AA-) y estructura no rescatable sin riesgo de refinanciación imprevista.",
+        metricDetail: `${usBond.safety_badge || "High Grade"} • Rating: ${usBond.rating} (${usBond.moodys}) • Bullet 100%`
+      },
+      {
+        title: "Solvencia y Flujo de Caja Libre del Emisor",
+        weight: 20,
+        points: p3,
+        maxPoints: 20,
+        icon: <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
+        desc: "Compañía multinacional líder con posición dominante de mercado, márgenes sólidos y cobertura holgada del servicio de deuda.",
+        metricDetail: "Caja neta positiva • Cobertura holgada de pasivos"
+      },
+      {
+        title: "Liquidez Institucional y Tamaño de Emisión",
+        weight: 15,
+        points: p4,
+        maxPoints: 15,
+        icon: <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />,
+        desc: "Emisión superior a $1.000M USD que asegura alta liquidez y diferenciales mínimos de compra-venta en el mercado secundario.",
+        metricDetail: `Emisión: ${usBond.amount_outstanding_usd || "+$1.000M USD"} • Vencimiento: ${usBond.maturity_date}`
+      }
+    ];
   } else {
     const onItem = item as OnItem;
     const p1 = Math.round(score * 0.35 * 10) / 10;
