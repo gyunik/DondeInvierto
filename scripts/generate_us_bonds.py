@@ -529,20 +529,20 @@ ISSUERS_DATA = [
 
 # Curva base del Tesoro de EE.UU. (Tasas Libres de Riesgo por Plazo)
 BENCHMARK_RATES = {
-    # Año 2026 a 2028: Corto Plazo (1 a 3 años)
-    2026: 4.45,
+    # Año 2027 a 2029: Corto Plazo (1 a 3 años - mínimo 2 cupones restantes)
     2027: 4.35,
     2028: 4.30,
-    # Año 2029 a 2032: Mediano Plazo (3 a 7 años)
     2029: 4.35,
+    # Año 2030 a 2033: Mediano Plazo (3 a 7 años)
     2030: 4.40,
     2031: 4.45,
     2032: 4.50,
-    # Año 2033 a 2036: Largo Plazo (7 a 10 años)
-    2033: 4.60,
-    2034: 4.65,
-    2035: 4.70,
-    2036: 4.75
+    2033: 4.55,
+    # Año 2034 a 2037: Largo Plazo (7 a 10 años)
+    2034: 4.60,
+    2035: 4.65,
+    2036: 4.70,
+    2037: 4.75
 }
 
 def generate_catalogue(target_count=660):
@@ -552,6 +552,7 @@ def generate_catalogue(target_count=660):
     - High Grade (AAA, AA+, AA, AA-)
     - No rescatables (Bullet Bonds)
     - Emisión > $1.000M USD
+    - Vencimiento mínimo >= 1.0 año (al menos 2 cupones semestrales por cobrar)
     - Distribución ~50% Corto (1-3A), ~40% Mediano (3-7A), ~10% Largo (7-10A)
     - Límites de diversificación por emisor
     """
@@ -572,9 +573,10 @@ def generate_catalogue(target_count=660):
         ("01/06", "01/12")
     ]
 
-    short_years = [2026, 2027, 2028]
-    medium_years = [2029, 2030, 2031, 2032]
-    long_years = [2033, 2034, 2035, 2036]
+    # Vencimientos: Garantizar que NINGÚN bono venza en menos de 1 año (mínimo 2 cupones semestrales por cobrar)
+    short_years = [2027, 2028, 2029]
+    medium_years = [2030, 2031, 2032, 2033]
+    long_years = [2034, 2035, 2036, 2037]
 
     for issuer in ISSUERS_DATA:
         ticker_p = issuer["ticker_prefix"]
@@ -583,14 +585,22 @@ def generate_catalogue(target_count=660):
         for i in range(11):
             yr = short_years[i % len(short_years)]
             month_pair = coupon_months_pairs[(i + hash(ticker_p)) % len(coupon_months_pairs)]
-            maturity_date = f"{month_pair[1]}/{yr}"
+            # Para 2027, asegurar que vence a partir de noviembre/diciembre para superar 1.0 año desde oct 2026
+            if yr == 2027:
+                maturity_date = f"{['15/11', '15/12', '01/12'][i % 3]}/{yr}"
+                maturity_years = round(1.0 + (i % 3) * 0.1, 1)
+            else:
+                maturity_date = f"{month_pair[1]}/{yr}"
+                maturity_years = round(yr - 2026.8, 1)
             
+            remaining_coupons = max(2, int(round(maturity_years * 2)))
+
             base_treasury = BENCHMARK_RATES[yr]
             spread = issuer["base_yield_spread"] + random.uniform(-0.06, 0.06)
             tir_usd = round(base_treasury + spread, 2)
             coupon = round(tir_usd + random.uniform(-0.35, 0.20), 3)
             
-            price_usd = round(100.0 - (tir_usd - coupon) * (yr - 2025.8) * 0.92, 2)
+            price_usd = round(100.0 - (tir_usd - coupon) * maturity_years * 0.92, 2)
             if price_usd > 102.5: price_usd = 101.80
             if price_usd < 94.0: price_usd = 94.80
             parity = price_usd
@@ -617,7 +627,8 @@ def generate_catalogue(target_count=660):
                 "amount_outstanding_usd": f"${amount:,.0f}M USD",
                 "maturity_block": "short",
                 "maturity_block_label": "Riesgo de precio mínimo / Conservador",
-                "maturity_years": round(yr - 2025.8, 1),
+                "maturity_years": maturity_years,
+                "remaining_coupons": remaining_coupons,
                 "maturity": str(yr),
                 "maturity_date": maturity_date,
                 "frequency": "Semestral en Dólares",
@@ -627,7 +638,7 @@ def generate_catalogue(target_count=660):
                 "parity": parity,
                 "parity_status": "Bajo la par (Descuento)" if price_usd < 100 else ("A la par" if price_usd == 100 else "Sobre la par"),
                 "min_investment": "1.000 USD (Broker USA: Schwab, IBKR)",
-                "score": round(98.5 - (0.5 if issuer['rating'] == 'AA+' else (1.2 if issuer['rating'] == 'AA' else 2.0)) - (yr - 2026) * 0.3, 1),
+                "score": round(98.5 - (0.5 if issuer['rating'] == 'AA+' else (1.2 if issuer['rating'] == 'AA' else 2.0)) - (yr - 2027) * 0.3, 1),
                 "thesis": random.choice(issuer["theses"])
             }
             bonds.append(bond)
@@ -637,13 +648,15 @@ def generate_catalogue(target_count=660):
             yr = medium_years[i % len(medium_years)]
             month_pair = coupon_months_pairs[(i + 3 + hash(ticker_p)) % len(coupon_months_pairs)]
             maturity_date = f"{month_pair[1]}/{yr}"
-            
+            maturity_years = round(yr - 2026.8, 1)
+            remaining_coupons = max(6, int(round(maturity_years * 2)))
+
             base_treasury = BENCHMARK_RATES[yr]
             spread = issuer["base_yield_spread"] + random.uniform(-0.05, 0.08)
             tir_usd = round(base_treasury + spread, 2)
             coupon = round(tir_usd + random.uniform(-0.30, 0.25), 3)
             
-            price_usd = round(100.0 - (tir_usd - coupon) * (yr - 2025.8) * 0.88, 2)
+            price_usd = round(100.0 - (tir_usd - coupon) * maturity_years * 0.88, 2)
             if price_usd > 103.0: price_usd = 101.90
             if price_usd < 92.0: price_usd = 93.50
             parity = price_usd
@@ -670,7 +683,8 @@ def generate_catalogue(target_count=660):
                 "amount_outstanding_usd": f"${amount:,.0f}M USD",
                 "maturity_block": "medium",
                 "maturity_block_label": "Riesgo de precio moderado / Recomendado",
-                "maturity_years": round(yr - 2025.8, 1),
+                "maturity_years": maturity_years,
+                "remaining_coupons": remaining_coupons,
                 "maturity": str(yr),
                 "maturity_date": maturity_date,
                 "frequency": "Semestral en Dólares",
@@ -680,7 +694,7 @@ def generate_catalogue(target_count=660):
                 "parity": parity,
                 "parity_status": "Bajo la par (Descuento)" if price_usd < 100 else ("A la par" if price_usd == 100 else "Sobre la par"),
                 "min_investment": "1.000 USD (Broker USA: Schwab, IBKR)",
-                "score": round(96.0 - (0.5 if issuer['rating'] == 'AA+' else (1.2 if issuer['rating'] == 'AA' else 2.0)) - (yr - 2028) * 0.3, 1),
+                "score": round(96.0 - (0.5 if issuer['rating'] == 'AA+' else (1.2 if issuer['rating'] == 'AA' else 2.0)) - (yr - 2029) * 0.3, 1),
                 "thesis": random.choice(issuer["theses"])
             }
             bonds.append(bond)
@@ -690,13 +704,15 @@ def generate_catalogue(target_count=660):
             yr = long_years[i % len(long_years)]
             month_pair = coupon_months_pairs[(i + 7 + hash(ticker_p)) % len(coupon_months_pairs)]
             maturity_date = f"{month_pair[1]}/{yr}"
-            
+            maturity_years = round(yr - 2026.8, 1)
+            remaining_coupons = max(14, int(round(maturity_years * 2)))
+
             base_treasury = BENCHMARK_RATES[yr]
             spread = issuer["base_yield_spread"] + random.uniform(-0.04, 0.10)
             tir_usd = round(base_treasury + spread, 2)
             coupon = round(tir_usd + random.uniform(-0.25, 0.25), 3)
             
-            price_usd = round(100.0 - (tir_usd - coupon) * (yr - 2025.8) * 0.85, 2)
+            price_usd = round(100.0 - (tir_usd - coupon) * maturity_years * 0.85, 2)
             if price_usd > 103.5: price_usd = 102.20
             if price_usd < 90.0: price_usd = 92.10
             parity = price_usd
@@ -723,7 +739,8 @@ def generate_catalogue(target_count=660):
                 "amount_outstanding_usd": f"${amount:,.0f}M USD",
                 "maturity_block": "long",
                 "maturity_block_label": "Riesgo de precio sensible / Mantener hasta vencimiento",
-                "maturity_years": round(yr - 2025.8, 1),
+                "maturity_years": maturity_years,
+                "remaining_coupons": remaining_coupons,
                 "maturity": str(yr),
                 "maturity_date": maturity_date,
                 "frequency": "Semestral en Dólares",
@@ -733,7 +750,7 @@ def generate_catalogue(target_count=660):
                 "parity": parity,
                 "parity_status": "Bajo la par (Descuento)" if price_usd < 100 else ("A la par" if price_usd == 100 else "Sobre la par"),
                 "min_investment": "1.000 USD (Broker USA: Schwab, IBKR)",
-                "score": round(94.0 - (0.5 if issuer['rating'] == 'AA+' else (1.2 if issuer['rating'] == 'AA' else 2.0)) - (yr - 2032) * 0.2, 1),
+                "score": round(94.0 - (0.5 if issuer['rating'] == 'AA+' else (1.2 if issuer['rating'] == 'AA' else 2.0)) - (yr - 2033) * 0.2, 1),
                 "thesis": random.choice(issuer["theses"])
             }
             bonds.append(bond)

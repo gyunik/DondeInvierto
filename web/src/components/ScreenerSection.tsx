@@ -53,6 +53,7 @@ export default function ScreenerSection({
   const [usBondBrandCategory, setUsBondBrandCategory] = useState<string>("all");
   const [usBondSafetyFilter, setUsBondSafetyFilter] = useState<"all" | "Seguridad Máxima" | "Riesgo Ultra Bajo">("all");
   const [usBondSort, setUsBondSort] = useState<"tir" | "score" | "maturity">("tir");
+  const [brokerFeePercent, setBrokerFeePercent] = useState<number>(0.5);
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
@@ -164,7 +165,9 @@ export default function ScreenerSection({
     })
     .sort((a, b) => {
       if (usBondSort === "tir") {
-        return (b.tir_usd || 0) - (a.tir_usd || 0);
+        const netB = (b.tir_usd || 0) - (brokerFeePercent / (b.maturity_years || 1));
+        const netA = (a.tir_usd || 0) - (brokerFeePercent / (a.maturity_years || 1));
+        return netB - netA;
       }
       if (usBondSort === "maturity") {
         return (a.maturity_years || 0) - (b.maturity_years || 0);
@@ -1072,7 +1075,7 @@ export default function ScreenerSection({
                 </strong>
               </div>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                Selección de <strong>{us_bonds.length} bonos corporativos y del tesoro de EE.UU.</strong> diseñada específicamente para inversores principiantes. Todos los títulos cuentan con <strong>calificación crediticia High Grade (AAA a AA-)</strong>, estructura <strong>100% Bullet (No Rescatable)</strong> para eliminar el riesgo de refinanciación, y emisiones superiores a <strong>$1.000M USD</strong> para máxima liquidez. Si mantienes el bono hasta su vencimiento, tu rendimiento anual (YTM) en dólares billete está asegurado.
+                Selección de <strong>{us_bonds.length} bonos corporativos y del tesoro de EE.UU.</strong> diseñada específicamente para inversores principiantes. Todos los títulos cuentan con <strong>calificación crediticia High Grade (AAA a AA-)</strong>, estructura <strong>100% Bullet (No Rescatable)</strong> para eliminar el riesgo de refinanciación, emisiones superiores a <strong>$1.000M USD</strong> para máxima liquidez y un <strong>plazo mínimo de 1 año (al menos 2 cupones semestrales por cobrar)</strong> para asegurar que la rentabilidad supere ampliamente las comisiones del broker.
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-2.5 font-mono flex items-center gap-1.5 border-t border-slate-200 dark:border-slate-800/80 pt-2.5">
                 <span>ℹ️</span>
@@ -1080,7 +1083,72 @@ export default function ScreenerSection({
               </p>
             </div>
 
-            {filteredUsBonds.slice(0, visibleBondCount).map((bond: UsBondItem, idx: number) => (
+            {/* Calculadora Interactiva de Comisión de Broker & TIR Neta */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-slate-100 dark:bg-[#071322] border border-slate-300 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-start sm:items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-[#00F5A0] border border-emerald-500/20 shrink-0">
+                  <CircleDollarSign className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                      Comisión de tu Broker para Cálculo de TIR Neta
+                    </span>
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-[#00F5A0] border border-emerald-300 dark:border-emerald-600/30 font-bold">
+                      {brokerFeePercent > 0 ? `Comisión activa: ${brokerFeePercent}%` : "TIR Bruta (Sin Comisión)"}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Descuenta el costo transaccional de compra distribuido en el plazo del bono para reflejar tu rentabilidad real de bolsillo.
+                  </p>
+                </div>
+              </div>
+
+              {/* Botones Presets + Input Personalizado */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 mr-1 hidden sm:inline">Brokers:</span>
+                {[
+                  { label: "0% (Bruta)", val: 0.0 },
+                  { label: "0.1% (IBKR / Schwab)", val: 0.1 },
+                  { label: "0.5% (Estándar)", val: 0.5 },
+                  { label: "1.0% (Broker Local)", val: 1.0 },
+                ].map((preset) => (
+                  <button
+                    key={preset.label}
+                    onClick={() => setBrokerFeePercent(preset.val)}
+                    className={`px-3 py-1.5 text-xs font-mono font-bold rounded-lg border transition-all ${
+                      brokerFeePercent === preset.val
+                        ? "bg-emerald-600 text-white border-emerald-500 shadow-xs dark:bg-[#00F5A0] dark:text-black dark:border-[#00F5A0]"
+                        : "bg-white dark:bg-[#0d1b2e] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:border-slate-400"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+                
+                <div className="flex items-center gap-1 bg-white dark:bg-[#0d1b2e] border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1" title="Ingresa un porcentaje de comisión manual">
+                  <span className="text-[11px] font-mono text-slate-400">Otro:</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="5"
+                    step="0.05"
+                    value={brokerFeePercent}
+                    onChange={(e) => setBrokerFeePercent(Math.max(0, parseFloat(e.target.value) || 0))}
+                    className="w-12 bg-transparent text-xs font-mono font-bold text-slate-900 dark:text-white outline-none text-right"
+                  />
+                  <span className="text-xs font-mono text-slate-500">%</span>
+                </div>
+              </div>
+            </div>
+
+            {filteredUsBonds.slice(0, visibleBondCount).map((bond: UsBondItem, idx: number) => {
+              const feeDrag = (bond.maturity_years && bond.maturity_years > 0)
+                ? (brokerFeePercent / bond.maturity_years)
+                : brokerFeePercent;
+              const netYtm = Math.max(0, (bond.tir_usd || 0) - feeDrag);
+
+              return (
               <div key={bond.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
@@ -1136,18 +1204,24 @@ export default function ScreenerSection({
 
                   {/* 5 Métricas Clave (Rendimiento YTM, Cotización & Paridad, Cupón, Vencimiento y Solidez) */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-5 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-                    {/* 1. Rendimiento al Vencimiento (YTM / TIR) - Métrica Principal */}
+                    {/* 1. Rendimiento al Vencimiento (YTM / TIR Neta o Bruta) - Métrica Principal */}
                     <div className="flex flex-col">
                       <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-emerald-800 dark:text-[#00F5A0] tracking-wider">
-                        RENDIMIENTO SEGURO (YTM)
+                        {brokerFeePercent > 0 ? "TIR NETA (EN BOLSILLO)" : "RENDIMIENTO SEGURO (YTM)"}
                       </span>
                       <div className="flex items-baseline gap-1 mt-0.5">
                         <span className="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono">
-                          {bond.tir_usd}%
+                          {netYtm.toFixed(2)}%
                         </span>
                       </div>
-                      <span className="text-xs font-bold font-mono text-emerald-800 dark:text-[#00F5A0]/90">Tasa neta anual USD</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Fija al vencimiento</span>
+                      <span className="text-xs font-bold font-mono text-emerald-800 dark:text-[#00F5A0]/90">
+                        {brokerFeePercent > 0 ? "Tasa neta anual estimada" : "Tasa neta anual USD"}
+                      </span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                        {brokerFeePercent > 0
+                          ? `Bruta: ${bond.tir_usd}% (Comisión: -${feeDrag.toFixed(2)}%/año)`
+                          : "Fija al vencimiento"}
+                      </span>
                     </div>
 
                     {/* 2. Precio de Cotización & Paridad */}
@@ -1204,7 +1278,9 @@ export default function ScreenerSection({
                         </span>
                       </div>
                       <span className="text-xs font-bold font-mono text-slate-600 dark:text-slate-300">{bond.maturity_years} años restantes</span>
-                      <span className="text-[10px] font-mono text-emerald-700 dark:text-[#00F5A0]">Devolución 100% capital</span>
+                      <span className="text-[10px] font-mono text-emerald-700 dark:text-[#00F5A0] font-semibold">
+                        📅 {bond.remaining_coupons || Math.max(2, Math.round(bond.maturity_years * 2))} cupones restantes
+                      </span>
                     </div>
 
                     {/* 5. Solidez y Desglose Cuantitativo */}
@@ -1241,7 +1317,8 @@ export default function ScreenerSection({
                   </div>
                 )}
               </div>
-            ))}
+              );
+            })}
 
             {visibleBondCount < filteredUsBonds.length && (
               <div className="pt-4 flex justify-center">
