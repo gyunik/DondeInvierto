@@ -4,6 +4,24 @@ Formato estándar de bitácora: `## [YYYY-MM-DD] acción | detalle`
 
 ---
 
+## [2026-10-31] architecture & fixed-income | Reestructuración Integral de Mercados (Wall Street vs Mercado Local) e Incorporación de Bonos Corporativos USA
+* Reorganización en 2 Grandes Mercados según la cuenta del inversor (`web/src/components/ScreenerSection.tsx`):
+  - **🌎 Wall Street (Cuenta en USA / Broker Exterior):**
+    - 📈 Acciones (450 empresas del S&P 500 y Nasdaq en USD)
+    - 🏛️ Top ETFs (SPY, QQQ, DIA)
+    - 💵 Bonos USA (Corporativos Investment Grade AAA/AA/A y Treasuries)
+  - **🇦🇷 Mercado Local (Cuenta en Argentina / Broker BYMA):**
+    - 🟢 CEDEARs en Pesos (87 empresas internacionales operables en ARS / Dólar MEP)
+    - 🏢 ONs en Dólares (6 emisiones de deuda corporativa privada argentina)
+    - 📊 Acciones Merval (10 empresas nacionales del Panel Líder de BYMA)
+    - 🏛️ Bonos Soberanos (4 títulos de deuda pública: Bonares AL30 y Globales GD30)
+* Incorporación de Bonos Corporativos de USA & Treasuries (`web/src/data/marketData.json`):
+  - Inclusión de Blue Chips de máxima calificación crediticia: Microsoft (AAA), Johnson & Johnson (AAA), Apple (AA+), Amazon (AA), Berkshire Hathaway (AA), JPMorgan Chase (A-), el ETF global LQD y el Bono del Tesoro USA a 10 Años (US10Y).
+  - Métricas completas: TIR anual en USD (5.0% - 5.45%), precio bajo la par, cupón semestral en USD, calificación crediticia y tesis de renta fija.
+* Aumento de Tipografía y Ancho de Pantalla (`web/src/components/ScoreDetailModal.tsx`):
+  - Contenedor ampliado a `max-w-3xl`, Score agrandado a `text-5xl font-black`, y textos de dimensiones/pilares aumentados a `text-sm/text-base` para óptima legibilidad.
+* Actualización de tarjetas de navegación rápida en la Landing Page (`web/src/app/page.tsx`).
+
 ## [2026-10-30] quant & discipline | Techo Institucional Infranqueable: Ningún activo supera el consenso de Wall Street
 * Adopción del Principio de Prudencia y Sentido Común Financiero:
   - Se modificó `scripts/quant_algorithm.js`: el precio objetivo del algoritmo ahora tiene un **techo absoluto fijado en el consenso medio de Wall Street** (`maxTarget = target_analistas_promedio`).

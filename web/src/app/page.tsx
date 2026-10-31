@@ -189,62 +189,62 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link
               href="/screener"
-              className="p-6 rounded-2xl bg-[#091322] border border-slate-700/80 hover:border-[#00F5A0]/60 transition-all group flex flex-col justify-between shadow-lg"
+              className="p-6 rounded-2xl bg-white dark:bg-[#091322] border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500 dark:hover:border-[#00F5A0]/60 transition-all group flex flex-col justify-between shadow-sm dark:shadow-lg"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[#00F5A0] mb-4">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] mb-4">
                   <Globe className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-[#00F5A0] transition-colors">
-                  Wall Street &amp; CEDEARs
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors">
+                  🌎 Wall Street (Cuenta en USA)
                 </h3>
-                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                  Acciones con mayor potencial de suba proyectado por analistas y CEDEARs que pagan dividendos periódicos en dólares.
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                  Acciones del S&amp;P 500, ETFs globales y Bonos Corporativos Investment Grade (AAA/AA) para operar con cuenta en el exterior.
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-xs font-bold text-[#00F5A0]">
-                <span>Explorar CEDEARs</span>
+              <div className="mt-4 flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-[#00F5A0]">
+                <span>Explorar Wall Street</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
 
             <Link
               href="/screener"
-              className="p-6 rounded-2xl bg-[#091322] border border-slate-700/80 hover:border-[#00F5A0]/60 transition-all group flex flex-col justify-between shadow-lg"
+              className="p-6 rounded-2xl bg-white dark:bg-[#091322] border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500 dark:hover:border-[#00F5A0]/60 transition-all group flex flex-col justify-between shadow-sm dark:shadow-lg"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[#00F5A0] mb-4">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] mb-4">
                   <Building2 className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-[#00F5A0] transition-colors">
-                  ONs en Dólares Billete
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors">
+                  🇦🇷 Mercado Local (Argentina)
                 </h3>
-                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                  Deuda de empresas líderes (YPF, Pampa, Pan American) con rentas del 8% al 10% anual en dólares y ley extranjera.
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                  CEDEARs en Pesos, ONs en Dólares billete y Acciones del Merval para operar en la Bolsa de Buenos Aires (BYMA).
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-xs font-bold text-[#00F5A0]">
-                <span>Ver Renta de ONs</span>
+              <div className="mt-4 flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-[#00F5A0]">
+                <span>Ver Mercado Local</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
 
             <Link
               href="/simulador"
-              className="p-6 rounded-2xl bg-[#091322] border border-slate-700/80 hover:border-[#00F5A0]/60 transition-all group flex flex-col justify-between shadow-lg"
+              className="p-6 rounded-2xl bg-white dark:bg-[#091322] border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500 dark:hover:border-[#00F5A0]/60 transition-all group flex flex-col justify-between shadow-sm dark:shadow-lg"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[#00F5A0] mb-4">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] mb-4">
                   <Calculator className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-[#00F5A0] transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-[#00F5A0] transition-colors">
                   Simulador Inteligente
                 </h3>
-                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
                   Ingresá tus Pesos o Dólares y recibí una cartera diversificada a tu medida con su retorno anual proyectado.
                 </p>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-xs font-bold text-[#00F5A0]">
+              <div className="mt-4 flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-[#00F5A0]">
                 <span>Calcular Inversión</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>

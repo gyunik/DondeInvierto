@@ -10,7 +10,8 @@ export type OnItem = (typeof marketData.ons)[0];
 export type MervalItem = (typeof marketData.argentina.merval)[0];
 export type BondItem = (typeof marketData.argentina.sovereign_bonds)[0];
 
-export type ScoreItem = StockItem | EtfItem | OnItem | MervalItem | BondItem;
+export type UsBondItem = (typeof marketData.us_bonds)[0];
+export type ScoreItem = StockItem | EtfItem | OnItem | MervalItem | BondItem | UsBondItem;
 
 interface ScoreDetailModalProps {
   item: ScoreItem | null;
@@ -160,10 +161,8 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         points: p2,
         maxPoints: 30,
         icon: <ShieldCheck className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />,
-        desc: "law" in onItem && typeof onItem.law === "string" && onItem.law.toLowerCase().includes("argentina")
-          ? "Emisión bajo marco regulatorio y tribunales de la República Argentina con calificación crediticia local."
-          : "Protección jurídica internacional bajo legislación de Nueva York y máxima nota de solvencia crediticia.",
-        metricDetail: "law" in onItem ? `Jurisdicción: ${onItem.law}` : "Grado de inversión seguro"
+        desc: "credit_rating" in onItem && typeof onItem.credit_rating === "string" ? `Calificación crediticia de máxima solvencia global (${onItem.credit_rating}) bajo marco regulatorio de EE.UU.` : ("law" in onItem && typeof onItem.law === "string" && onItem.law.toLowerCase().includes("argentina") ? "Emisión bajo marco regulatorio y tribunales de la República Argentina con calificación crediticia local." : "Protección jurídica internacional bajo legislación de Nueva York y máxima nota de solvencia crediticia."),
+        metricDetail: "credit_rating" in onItem && typeof onItem.credit_rating === "string" ? `Rating: ${onItem.credit_rating}` : ("law" in onItem ? `Jurisdicción: ${onItem.law}` : "Grado de inversión seguro")
       },
       {
         title: "Solvencia Operativa del Emisor",
