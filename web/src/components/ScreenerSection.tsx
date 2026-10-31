@@ -1074,6 +1074,10 @@ export default function ScreenerSection({
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                 Selección de <strong>{us_bonds.length} bonos corporativos y del tesoro de EE.UU.</strong> diseñada específicamente para inversores principiantes. Todos los títulos cuentan con <strong>calificación crediticia High Grade (AAA a AA-)</strong>, estructura <strong>100% Bullet (No Rescatable)</strong> para eliminar el riesgo de refinanciación, y emisiones superiores a <strong>$1.000M USD</strong> para máxima liquidez. Si mantienes el bono hasta su vencimiento, tu rendimiento anual (YTM) en dólares billete está asegurado.
               </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2.5 font-mono flex items-center gap-1.5 border-t border-slate-200 dark:border-slate-800/80 pt-2.5">
+                <span>ℹ️</span>
+                <span><strong>Nota de Cotización:</strong> Precios y paridades de referencia de mercado secundario (cierre diario OTC / FINRA TRACE). Al momento de comprar en tu broker internacional (Charles Schwab, Interactive Brokers), el precio final variará centavos según el spread de compra-venta vigente en la mesa de dinero.</span>
+              </p>
             </div>
 
             {filteredUsBonds.slice(0, visibleBondCount).map((bond: UsBondItem, idx: number) => (
@@ -1130,8 +1134,8 @@ export default function ScreenerSection({
                     </div>
                   </div>
 
-                  {/* 4 Métricas Clave (Sin volatilidad de precio diario para principiantes) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                  {/* 5 Métricas Clave (Rendimiento YTM, Cotización & Paridad, Cupón, Vencimiento y Solidez) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-5 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
                     {/* 1. Rendimiento al Vencimiento (YTM / TIR) - Métrica Principal */}
                     <div className="flex flex-col">
                       <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-emerald-800 dark:text-[#00F5A0] tracking-wider">
@@ -1146,7 +1150,36 @@ export default function ScreenerSection({
                       <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Fija al vencimiento</span>
                     </div>
 
-                    {/* 2. Cupón Periódico */}
+                    {/* 2. Precio de Cotización & Paridad */}
+                    <div className="flex flex-col">
+                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
+                        PRECIO &amp; PARIDAD
+                      </span>
+                      <div className="flex items-baseline gap-1 mt-0.5">
+                        <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono">
+                          ${bond.price_usd?.toFixed(2)}
+                        </span>
+                        <span className="text-[10px] text-slate-500 font-mono">USD</span>
+                      </div>
+                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">
+                        Paridad {bond.parity}%
+                      </span>
+                      <span className={`text-[10px] font-mono font-bold mt-0.5 ${
+                        bond.price_usd < 100
+                          ? "text-emerald-700 dark:text-[#00F5A0]"
+                          : bond.price_usd === 100
+                          ? "text-slate-600 dark:text-slate-300"
+                          : "text-blue-600 dark:text-blue-400"
+                      }`}>
+                        {bond.price_usd < 100
+                          ? "🟢 Bajo la par"
+                          : bond.price_usd === 100
+                          ? "⚪ A la par"
+                          : "🔵 Sobre la par"}
+                      </span>
+                    </div>
+
+                    {/* 3. Cupón Periódico */}
                     <div className="flex flex-col">
                       <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         CUPÓN &amp; COBRO
@@ -1160,7 +1193,7 @@ export default function ScreenerSection({
                       <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Renta pasiva directa</span>
                     </div>
 
-                    {/* 3. Vencimiento de Capital */}
+                    {/* 4. Vencimiento de Capital */}
                     <div className="flex flex-col">
                       <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
                         COBRO DE CAPITAL
@@ -1174,7 +1207,7 @@ export default function ScreenerSection({
                       <span className="text-[10px] font-mono text-emerald-700 dark:text-[#00F5A0]">Devolución 100% capital</span>
                     </div>
 
-                    {/* 4. Solidez y Desglose Cuantitativo */}
+                    {/* 5. Solidez y Desglose Cuantitativo */}
                     <div
                       onClick={() => setSelectedScoreItem(bond)}
                       className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
