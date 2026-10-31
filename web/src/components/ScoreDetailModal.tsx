@@ -192,61 +192,61 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-white dark:bg-[#091220] border border-slate-200 dark:border-slate-700/80 rounded-2xl sm:rounded-3xl shadow-2xl p-5 sm:p-7 overflow-hidden my-auto text-slate-900 dark:text-slate-100 transition-colors duration-200"
+        className="relative w-full max-w-3xl bg-white dark:bg-[#091220] border border-slate-200 dark:border-slate-700/80 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 overflow-hidden my-auto text-slate-900 dark:text-slate-100 transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Botón Cerrar */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-colors"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white flex items-center justify-center border border-slate-300 dark:border-slate-700 transition-colors"
           aria-label="Cerrar modal"
         >
-          <X className="w-4 h-4" />
+          <X className="w-5 h-5" />
         </button>
 
         {/* Encabezado del Score */}
-        <div className="flex items-start gap-3 sm:gap-4 pr-10">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-gradient-to-br dark:from-emerald-500/20 dark:to-teal-900/40 border border-emerald-300 dark:border-emerald-500/40 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] font-black font-mono text-lg shadow-sm dark:shadow-[0_0_15px_rgba(0,245,160,0.2)]">
+        <div className="flex items-start gap-3.5 sm:gap-4 pr-12">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-gradient-to-br dark:from-emerald-500/20 dark:to-teal-900/40 border border-emerald-300 dark:border-emerald-500/40 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] font-black font-mono text-xl shadow-sm dark:shadow-[0_0_15px_rgba(0,245,160,0.2)] shrink-0">
             {item.ticker}
           </div>
           <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono">
                 {item.name}
               </h3>
               {categoryLabel && (
-                <span className="px-2 py-0.5 rounded bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs font-semibold">
+                <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-semibold">
                   {categoryLabel}
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-mono mt-1">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-mono mt-1">
               {isStock ? "Desglose Cuantitativo de 3 Capas • Score Total" : "Desglose Metodológico del Algoritmo Cuantitativo"}
             </p>
           </div>
         </div>
 
         {/* Caja de Puntuación Principal */}
-        <div className="mt-5 p-4 rounded-2xl bg-slate-100 dark:bg-[#0d1c2d] border border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-slate-100 dark:bg-[#0d1c2d] border border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Puntuación Cuantitativa Total
             </span>
-            <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="text-3xl sm:text-4xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_12px_rgba(0,245,160,0.4)]">
+            <div className="flex items-baseline gap-2.5 mt-1">
+              <span className="text-4xl sm:text-5xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_12px_rgba(0,245,160,0.4)]">
                 {score}
               </span>
-              <span className="text-sm font-bold font-mono text-slate-600 dark:text-slate-300">/ 100 puntos</span>
+              <span className="text-base sm:text-lg font-bold font-mono text-slate-600 dark:text-slate-300">/ 100 puntos</span>
             </div>
           </div>
-          <div className={`px-3 py-1.5 rounded-xl border text-xs sm:text-sm font-bold font-mono self-start sm:self-auto ${scoreBadgeColor}`}>
+          <div className={`px-4 py-2 rounded-xl border text-sm sm:text-base font-bold font-mono self-start sm:self-auto ${scoreBadgeColor}`}>
             {scoreLabel}
           </div>
         </div>
 
         {/* Explicación de la Lógica del Score */}
-        <div className="mt-4 flex items-start gap-2.5 p-3 rounded-xl bg-cyan-50/70 dark:bg-[#0a1628] border border-cyan-200 dark:border-cyan-500/20 text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-mono">
-          <Info className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
+        <div className="mt-5 flex items-start gap-3 p-3.5 sm:p-4 rounded-xl bg-cyan-50/70 dark:bg-[#0a1628] border border-cyan-200 dark:border-cyan-500/20 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-mono">
+          <Info className="w-5 h-5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
           <p>
             {isStock ? (
               <span>
@@ -261,8 +261,8 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
         </div>
 
         {/* Desglose de los Pilares */}
-        <div className="mt-4 space-y-2.5">
-          <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-slate-500 dark:text-slate-400 px-1">
+        <div className="mt-5 space-y-3">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-mono font-bold uppercase text-slate-500 dark:text-slate-400 px-1">
             <span>Dimensiones Analizadas</span>
             <span>Puntos Obtenidos</span>
           </div>
@@ -272,43 +272,43 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
             return (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#0a1424]/90 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+                className="p-4 sm:p-4.5 rounded-xl bg-slate-50 dark:bg-[#0a1424]/90 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded-lg bg-slate-200/70 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 rounded-lg bg-slate-200/70 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700">
                       {pillar.icon}
                     </div>
                     <div>
-                      <span className="text-sm font-bold text-slate-900 dark:text-white font-mono">
+                      <span className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-mono">
                         {pillar.title}
                       </span>
-                      <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono ml-2">
+                      <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-mono ml-2">
                         (Peso {pillar.weight}%)
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm sm:text-base font-black text-emerald-700 dark:text-[#00F5A0] font-mono">
+                    <span className="text-base sm:text-lg font-black text-emerald-700 dark:text-[#00F5A0] font-mono">
                       {pillar.points.toFixed(1)}
                     </span>
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono">
+                    <span className="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 font-mono">
                       {" "}/ {pillar.maxPoints} pts
                     </span>
                   </div>
                 </div>
 
                 {/* Barra de Progreso */}
-                <div className="mt-2.5 w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div className="mt-3 w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-400 dark:from-emerald-500 dark:via-teal-400 dark:to-[#00F5A0] rounded-full transition-all duration-500"
                     style={{ width: `${pctFill}%` }}
                   ></div>
                 </div>
 
-                <div className="mt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] font-mono text-slate-600 dark:text-slate-300">
-                  <span className="text-slate-500 dark:text-slate-400">{pillar.desc}</span>
-                  <span className="text-emerald-700 dark:text-emerald-300 font-semibold shrink-0">
+                <div className="mt-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-300">
+                  <span className="text-slate-600 dark:text-slate-400 leading-normal">{pillar.desc}</span>
+                  <span className="text-emerald-700 dark:text-emerald-300 font-bold shrink-0 text-xs sm:text-sm">
                     {pillar.metricDetail}
                   </span>
                 </div>
@@ -319,7 +319,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
 
         {/* Resumen de Tesis Cuantitativa */}
         {item.thesis && (
-          <div className="mt-4 p-3 rounded-xl bg-slate-100 dark:bg-[#0c1626] border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300">
+          <div className="mt-5 p-3.5 sm:p-4 rounded-xl bg-slate-100 dark:bg-[#0c1626] border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-mono text-slate-700 dark:text-slate-300 leading-relaxed">
             <span className="text-emerald-700 dark:text-[#00F5A0] font-bold mr-1.5 uppercase">Tesis Institucional:</span>
             {item.thesis}
           </div>
