@@ -468,7 +468,7 @@ export default function ScreenerSection({
               <span>Wall Street</span>
             </button>
             <button
-              onClick={() => { setActiveMarket("argentina"); setVisibleCount(30); }}
+              onClick={() => { setActiveMarket("argentina"); setVisibleCount(30); setStockOpportunityFilter("all"); }}
               className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeMarket === "argentina"
                   ? "bg-[#00F5A0] text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
@@ -1366,7 +1366,7 @@ export default function ScreenerSection({
               </span>
             </div>
 
-            {filteredOns.map((on, idx) => (
+            {filteredOns.slice(0, visibleCount).map((on, idx) => (
               <div key={on.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
@@ -1477,6 +1477,17 @@ export default function ScreenerSection({
                 </div>
               </div>
             ))}
+
+            {visibleCount < filteredOns.length && (
+              <div className="pt-4 flex justify-center">
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 30)}
+                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                >
+                  Cargar más ONs ({visibleCount} de {filteredOns.length}) ↓
+                </button>
+              </div>
+            )}
           </>
         )}
 
@@ -1489,7 +1500,7 @@ export default function ScreenerSection({
               </span>
             </div>
 
-            {filteredMerval.map((m, idx) => (
+            {filteredMerval.slice(0, visibleCount).map((m, idx) => (
               <div key={m.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                   <div className="flex items-start gap-4">
@@ -1587,6 +1598,17 @@ export default function ScreenerSection({
                 </div>
               </div>
             ))}
+
+            {visibleCount < filteredMerval.length && (
+              <div className="pt-4 flex justify-center">
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 30)}
+                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                >
+                  Cargar más Acciones ({visibleCount} de {filteredMerval.length}) ↓
+                </button>
+              </div>
+            )}
           </>
         )}
 
