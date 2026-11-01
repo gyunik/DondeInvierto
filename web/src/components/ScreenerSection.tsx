@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Activity,
   Globe,
@@ -8,6 +9,7 @@ import {
   Search,
   CircleDollarSign,
   Zap,
+  Calculator,
 } from "lucide-react";
 import ArgentinaFlag from "./ArgentinaFlag";
 import marketData from "@/data/marketData.json";
@@ -581,6 +583,15 @@ export default function ScreenerSection({
                 <Zap className="w-3.5 h-3.5" />
                 <span>{stockOpportunityFilter === "opportunities" ? "🔥 Solo Oportunidades (Score ≥ 60)" : "📋 Mostrar Todo el Ranking"}</span>
               </button>
+
+              <Link
+                href="/simulador?preset=growth_cedears"
+                className="px-3 py-1.5 rounded-lg transition-all text-xs font-bold border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] flex items-center gap-1.5 shadow-sm"
+                title="Simular cartera cuantitativa óptima con ponderación Risk Parity y Sector Cap"
+              >
+                <Calculator className="w-3.5 h-3.5" />
+                <span>Simular Cartera Cuantitativa (Risk Parity)</span>
+              </Link>
             </div>
 
             {/* Filtro de Dividendos */}
@@ -1360,10 +1371,17 @@ export default function ScreenerSection({
         {/* 5. MERCADO LOCAL -> ONS EN DÓLARES */}
         {activeMarket === "argentina" && argSubTab === "ons" && (
           <>
-            <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-[#0a1424] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-[#0a1424] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <span>
                 🏢 <strong className="text-slate-900 dark:text-white">Obligaciones Negociables (ONs):</strong> Deuda corporativa privada de empresas líderes (YPF, Pampa Energía, Pan American Energy). Pagan cupones periódicos en <strong className="text-emerald-700 dark:text-[#00F5A0]">Dólares billete (MEP / Cable)</strong> y se operan tanto en Pesos como en Dólares en BYMA.
               </span>
+              <Link
+                href="/simulador?preset=usd_income"
+                className="px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-sm"
+              >
+                <Calculator className="w-3.5 h-3.5" />
+                <span>Simular Cartera Renta USD (7.5%)</span>
+              </Link>
             </div>
 
             {filteredOns.slice(0, visibleCount).map((on, idx) => (
@@ -1494,10 +1512,17 @@ export default function ScreenerSection({
         {/* 6. MERCADO LOCAL -> MERVAL */}
         {activeMarket === "argentina" && argSubTab === "merval" && (
           <>
-            <div className="p-4 rounded-2xl bg-slate-100 dark:bg-[#091522] border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-slate-100 dark:bg-[#091522] border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <span>
                 📊 <strong className="text-slate-900 dark:text-white">Acciones Argentinas (S&P Merval):</strong> Las empresas nacionales más representativas (Galicia, YPF, Pampa Energía, Macro) cotizando en Pesos en el Panel Líder de BYMA.
               </span>
+              <Link
+                href="/simulador?preset=all_weather_arg"
+                className="px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-sm"
+              >
+                <Calculator className="w-3.5 h-3.5" />
+                <span>Simular Cartera Equilibrada All-Weather</span>
+              </Link>
             </div>
 
             {filteredMerval.slice(0, visibleCount).map((m, idx) => (

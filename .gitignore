@@ -12,3 +12,6 @@ __pycache__/
 # Logs
 logs/
 *.log
+
+# Backtest cache
+scripts/backtest_data_cache.json

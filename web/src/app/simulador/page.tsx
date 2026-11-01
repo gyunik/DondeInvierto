@@ -5,13 +5,22 @@ import Footer from "@/components/Footer";
 import PortfolioSimulator from "@/components/PortfolioSimulator";
 import Link from "next/link";
 import { ArrowRight, Globe } from "lucide-react";
+import type { ModelPortfolioId } from "@/utils/portfolioOptimizer";
 
 export const metadata: Metadata = {
-  title: "Simulador de Cartera Inteligente | Donde Invierto",
-  description: "Distribuí tu inversión automáticamente entre CEDEARs, Obligaciones Negociables en dólares y Merval según tu perfil y capital.",
+  title: "Simulador de Cartera Cuantitativa | Donde Invierto",
+  description:
+    "Asignación óptima de capital con Ponderación por Inverso de la Volatilidad (Risk Parity) y Sector Cap. Backtest auditado con +25.96% de retorno acumulado.",
 };
 
-export default function SimuladorPage() {
+export default async function SimuladorPage(props: {
+  searchParams?: Promise<{ preset?: string; currency?: "ARS" | "USD"; amount?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+  const preset = (searchParams?.preset as ModelPortfolioId) || "growth_cedears";
+  const currency = searchParams?.currency === "USD" ? "USD" : "ARS";
+  const amount = searchParams?.amount ? parseInt(searchParams.amount, 10) : undefined;
+
   return (
     <div className="min-h-screen bg-[#050911] text-slate-100 font-sans antialiased selection:bg-[#00F5A0] selection:text-black overflow-x-hidden">
       <Navbar />
@@ -39,8 +48,12 @@ export default function SimuladorPage() {
           </div>
         </div>
 
-        {/* Simulador de Cartera */}
-        <PortfolioSimulator />
+        {/* Simulador de Cartera Cuantitativo Renovado */}
+        <PortfolioSimulator
+          initialPortfolioId={preset}
+          initialCurrency={currency}
+          initialAmount={amount}
+        />
       </main>
 
       <Footer />

@@ -1,43 +1,71 @@
-name: Actualizacion Automatica de Mercado (Donde Invierto)
+name: Actualización Automática de Mercado (Donde Invierto)
 
 on:
   schedule:
-    # 1. Barrido Pre-Market a las 06:15 AM de Buenos Aires (09:15 UTC)
-    # 2. Barrido de alta frecuencia cada 30 min durante rueda bursátil (10:00 a 18:00 hs ART / 13:00 a 21:00 UTC)
-    # 3. Barrido Post-Market a las 19:15 hs de Buenos Aires (22:15 UTC, 1h post-cierre)
-    # NOTA: Se usan los minutos :15 y :45 para evitar la congestión global de GitHub Actions en el minuto :00
-    - cron: '15 9 * * 1-5'
-    - cron: '15,45 13-21 * * 1-5'
-    - cron: '15 22 * * 1-5'
-  workflow_dispatch: # Permite ejecutar la actualización manualmente desde la pestaña Actions en GitHub
+    # 1. Apertura / Pre-Market: 09:30 hs ART (12:30 UTC)
+    - cron: '30 12 * * 1-5'
+    # 2. Mitad de Rueda: 13:30 hs ART (16:30 UTC)
+    - cron: '30 16 * * 1-5'
+    # 3. Cierre Oficial BYMA & Wall Street: 18:15 hs ART (21:15 UTC)
+    - cron: '15 21 * * 1-5'
+    # 4. Post-Market y Liquidación Definitiva: 19:30 hs ART (22:30 UTC)
+    - cron: '30 22 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Motivo de la actualización manual'
+        required: false
+        default: 'Refresco manual de mercado'
 
 permissions:
   contents: write
 
+concurrency:
+  group: update-market-data
+  cancel-in-progress: true
+
 jobs:
   update-market-data:
+    name: Ingesta, Valuación Cuantitativa y Sincronización
     runs-on: ubuntu-latest
+    timeout-minutes: 25
 
     steps:
       - name: Clonar Repositorio
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
 
-      - name: Ejecutar script de actualización de mercado
+      - name: Ejecutar motor de actualización cuantitativa de mercado
         run: node scripts/update_market.js
 
-      - name: Guardar y subir cambios a GitHub
+      - name: Verificar integridad de datos generados
+        run: |
+          node -e "
+            const data = require('./web/src/data/marketData.json');
+            if (!data.stocks || data.stocks.length < 50) {
+              console.error('ERROR: Archivo marketData.json incompleto o corrupto');
+              process.exit(1);
+            }
+            console.log('Validación exitosa: ' + data.stocks.length + ' acciones auditadas, CCL: $' + data.ccl_dollar);
+          "
+
+      - name: Guardar y subir cambios a producción (Vercel Deploy)
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add web/src/data/marketData.json
           if git diff --staged --quiet; then
-            echo "Sin variaciones de precio para commitear."
+            echo "Sin variaciones de precio en esta rueda para commitear."
           else
-            git commit -m "chore(data): auto-update market quotes"
-            git push
+            git commit -m "chore(data): auto-update market quotes & quantitative scores"
+            git push origin main
           fi
