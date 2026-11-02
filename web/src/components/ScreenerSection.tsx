@@ -489,7 +489,7 @@ export default function ScreenerSection({
   return (
     <section className="w-full max-w-[1720px] mx-auto mb-16 scroll-mt-24 px-4 sm:px-6 lg:px-8 space-y-4" id="radar-section">
       {/* 1. SUBHEADER COMPACTO INSTITUCIONAL (Stitch Pattern) */}
-      <div className="bg-[#0D1424] rounded-2xl p-5 lg:p-6 border border-[#1E2D4A] shadow-xl relative overflow-hidden">
+      <div className="bg-white dark:bg-[#0D1424] rounded-2xl p-5 lg:p-6 border border-slate-200 dark:border-[#1E2D4A] shadow-md dark:shadow-xl relative overflow-hidden transition-colors duration-200">
         {/* Glow sutil de fondo */}
         <div className="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -508,10 +508,10 @@ export default function ScreenerSection({
             </div>
             {!hideTitle && (
               <>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-3">
                   Radar Cuantitativo de Activos
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                   Selección objetiva y ranking de Wall Street y Mercado Local auditado por algoritmos de 3 capas y consenso institucional.
                 </p>
               </>
@@ -530,17 +530,17 @@ export default function ScreenerSection({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar ticker, empresa, ON, bono..."
-                className="w-full bg-[#070B12] border border-[#1E2D4A] text-sm sm:text-base rounded-xl pl-10 pr-14 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#00FF88] focus:border-[#00FF88] transition-all font-sans font-medium"
+                className="w-full bg-slate-100 dark:bg-[#070B12] border border-slate-300 dark:border-[#1E2D4A] text-sm sm:text-base rounded-xl pl-10 pr-14 py-2.5 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:focus:ring-[#00FF88] focus:border-emerald-500 dark:focus:border-[#00FF88] transition-all font-sans font-medium"
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                <kbd className="px-1.5 py-0.5 text-[11px] font-mono text-slate-400 bg-slate-800 rounded border border-slate-700">
+                <kbd className="px-1.5 py-0.5 text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-700">
                   ⌘K
                 </kbd>
               </div>
             </div>
 
             {/* Conmutador de Jurisdicción con Banderas Oficiales */}
-            <div className="flex items-center bg-[#070B12] p-1 rounded-xl border border-[#1E2D4A] self-start sm:self-auto shrink-0 shadow-inner">
+            <div className="flex items-center bg-slate-100 dark:bg-[#070B12] p-1 rounded-xl border border-slate-300 dark:border-[#1E2D4A] self-start sm:self-auto shrink-0 shadow-inner">
               <button
                 type="button"
                 onClick={() => {
@@ -549,8 +549,8 @@ export default function ScreenerSection({
                 }}
                 className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm transition-all ${
                   activeMarket === "wall_street"
-                    ? "bg-[#111B30] text-[#00FF88] border border-emerald-500/40 shadow-sm"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-white dark:bg-[#111B30] text-emerald-700 dark:text-[#00FF88] border border-emerald-500/40 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                 }`}
               >
                 <UsaFlag className="w-4 h-3 rounded-[2px]" />
@@ -566,8 +566,8 @@ export default function ScreenerSection({
                 }}
                 className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm transition-all ${
                   activeMarket === "argentina"
-                    ? "bg-[#111B30] text-[#00FF88] border border-emerald-500/40 shadow-sm"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-white dark:bg-[#111B30] text-emerald-700 dark:text-[#00FF88] border border-emerald-500/40 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                 }`}
               >
                 <ArgentinaFlag className="w-4 h-3 rounded-[2px]" />
@@ -578,11 +578,11 @@ export default function ScreenerSection({
         </div>
 
         {/* Barra Inferior del Subheader: Pills de Universo por Activo + Tickers Rápidos */}
-        <div className="mt-5 pt-4 border-t border-[#1E2D4A]/80 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-5 pt-4 border-t border-slate-200 dark:border-[#1E2D4A]/80 flex flex-wrap items-center justify-between gap-3">
           {/* Universos de Wall Street */}
           {activeMarket === "wall_street" ? (
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono uppercase text-slate-400 mr-1 tracking-wider font-semibold">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 mr-1 tracking-wider font-semibold">
                 Universo:
               </span>
               <button
@@ -593,8 +593,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   wallStreetSubTab === "stocks"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {wallStreetSubTab === "stocks" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -610,8 +610,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   wallStreetSubTab === "etfs"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {wallStreetSubTab === "etfs" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -627,8 +627,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   wallStreetSubTab === "bonds"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {wallStreetSubTab === "bonds" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -650,8 +650,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "cedears"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {argSubTab === "cedears" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -667,8 +667,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "ons"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {argSubTab === "ons" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -684,8 +684,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "merval"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {argSubTab === "merval" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -701,8 +701,8 @@ export default function ScreenerSection({
                 }}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "bonds"
-                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
-                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
+                    ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-[#00FF88] border border-emerald-400 dark:border-emerald-500/40 shadow-sm font-bold"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]"
                 }`}
               >
                 {argSubTab === "bonds" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
@@ -717,11 +717,11 @@ export default function ScreenerSection({
             <div>
               Dólar CCL: <strong className="text-white">${ccl_dollar} ARS</strong>
             </div>
-            <div className="h-3 w-[1px] bg-[#1E2D4A]" />
+            <div className="h-3 w-[1px] bg-slate-300 dark:bg-[#1E2D4A]" />
             <div>
               Tasa FED: <strong className="text-[#00FF88]">{macro?.tasa_actual_fed ?? 3.88}%</strong>
             </div>
-            <div className="h-3 w-[1px] bg-[#1E2D4A]" />
+            <div className="h-3 w-[1px] bg-slate-300 dark:bg-[#1E2D4A]" />
             <div>
               Auditados: <strong className="text-white font-bold">{stocks.length + us_bonds.length + ons.length}</strong>
             </div>
@@ -730,7 +730,7 @@ export default function ScreenerSection({
       </div>
 
       {/* 2. BARRA DE FILTROS COMPACTA HORIZONTAL (Stitch Filter Toolbar) */}
-      <div className="bg-[#0D1424] border border-[#1E2D4A] rounded-xl p-2.5 shadow-md flex flex-wrap items-center justify-between gap-3 relative z-30" ref={dropdownRef}>
+      <div className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] rounded-xl p-2.5 shadow-sm dark:shadow-md flex flex-wrap items-center justify-between gap-3 relative z-30 transition-colors duration-200" ref={dropdownRef}>
         {/* Controles de la Izquierda */}
         <div className="flex flex-wrap items-center gap-2">
           {/* A) Filtros para Bonos USA High Grade */}
@@ -744,7 +744,7 @@ export default function ScreenerSection({
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
                     usBondMaturityBlock !== "all"
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50 shadow-sm"
-                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                      : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
                   <span className={`w-2 h-2 rounded-full ${usBondMaturityBlock !== "all" ? "bg-blue-400" : "bg-slate-400"}`} />
@@ -845,7 +845,7 @@ export default function ScreenerSection({
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
                     usBondBrandCategory !== "all"
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
-                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                      : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
                   <span className="text-slate-400">Sector:</span>
@@ -894,7 +894,7 @@ export default function ScreenerSection({
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
                     usBondSafetyFilter !== "all"
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
-                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                      : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
                   <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
@@ -956,7 +956,7 @@ export default function ScreenerSection({
                 className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs sm:text-sm font-bold rounded-lg border transition-all ${
                   stockOpportunityFilter === "opportunities"
                     ? "bg-emerald-950/70 text-[#00FF88] border-emerald-500/40 shadow-sm"
-                    : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                    : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                 }`}
               >
                 <Zap className="w-3.5 h-3.5 text-[#00FF88]" />
@@ -971,7 +971,7 @@ export default function ScreenerSection({
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
                     stockDivFilter !== "all"
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
-                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                      : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
                   <CircleDollarSign className="w-3.5 h-3.5 text-emerald-400" />
@@ -1026,7 +1026,7 @@ export default function ScreenerSection({
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
                     stockSectorFilter !== "all"
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
-                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                      : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
                   <span className="text-slate-400">Sector:</span>
@@ -1107,7 +1107,7 @@ export default function ScreenerSection({
               type="button"
               onClick={() => setViewMode("table")}
               className={`p-1.5 rounded transition-all ${
-                viewMode === "table" ? "bg-[#111B30] text-[#00FF88]" : "text-slate-400 hover:text-white"
+                viewMode === "table" ? "bg-white dark:bg-[#111B30] text-emerald-700 dark:text-[#00FF88] shadow-sm" : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
               }`}
               title="Vista Compacta (Tabla Institucional)"
             >
@@ -1117,7 +1117,7 @@ export default function ScreenerSection({
               type="button"
               onClick={() => setViewMode("cards")}
               className={`p-1.5 rounded transition-all ${
-                viewMode === "cards" ? "bg-[#111B30] text-[#00FF88]" : "text-slate-400 hover:text-white"
+                viewMode === "cards" ? "bg-white dark:bg-[#111B30] text-emerald-700 dark:text-[#00FF88] shadow-sm" : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
               }`}
               title="Vista Detallada (Tarjetas)"
             >
@@ -1129,7 +1129,7 @@ export default function ScreenerSection({
           <button
             type="button"
             onClick={handleExportCsv}
-            className="px-2.5 py-1.5 rounded-lg text-xs sm:text-sm bg-[#111B30] hover:bg-slate-800 text-slate-300 hover:text-white border border-[#1E2D4A] flex items-center space-x-1.5 transition-colors font-medium"
+            className="px-2.5 py-1.5 rounded-lg text-xs sm:text-sm bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] dark:hover:bg-slate-800 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white border border-slate-300 dark:border-[#1E2D4A] flex items-center space-x-1.5 transition-colors font-medium"
             title="Descargar datos filtrados en formato CSV"
           >
             <Download className="w-3.5 h-3.5 text-slate-400" />
@@ -1139,11 +1139,11 @@ export default function ScreenerSection({
       </div>
 
       {/* 3. TABLA DE DATOS INSTITUCIONAL COMPACTA (Stitch Data Table) */}
-      <div className="bg-[#0D1424] rounded-2xl border border-[#1E2D4A] shadow-2xl overflow-hidden">
+      <div className="bg-white dark:bg-[#0D1424] rounded-2xl border border-slate-200 dark:border-[#1E2D4A] shadow-lg dark:shadow-2xl overflow-hidden transition-colors duration-200">
         {/* Banner de Resumen de Resultados */}
-        <div className="px-5 py-3 border-b border-[#1E2D4A] bg-[#0A101D] flex items-center justify-between text-xs sm:text-sm font-mono">
+        <div className="px-5 py-3 border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-50 dark:bg-[#0A101D] flex items-center justify-between text-xs sm:text-sm font-mono">
           <div className="flex items-center space-x-3">
-            <span className="font-bold text-white uppercase tracking-wider text-xs">Resultados Filtrados</span>
+            <span className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs">Resultados Filtrados</span>
             <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-[#00FF88] text-xs font-bold border border-emerald-500/30">
               {activeMarket === "wall_street"
                 ? wallStreetSubTab === "stocks"
@@ -1177,7 +1177,7 @@ export default function ScreenerSection({
             {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
                     <th className="py-3.5 px-4 font-semibold">Ticker / Activo</th>
                     <th className="py-3.5 px-4 font-semibold">Emisor & Industria</th>
                     <th className="py-3.5 px-3 font-semibold text-center">Rating</th>
@@ -1189,25 +1189,25 @@ export default function ScreenerSection({
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#1E2D4A]/50 font-mono">
                   {filteredUsBonds.slice(0, visibleBondCount).map((b) => (
-                    <tr key={b.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                    <tr key={b.ticker} className="hover:bg-slate-50 dark:hover:bg-[#111B30]/60 transition-colors group">
                       <td className="py-3.5 px-4">
                         <div className="flex items-center space-x-2.5">
                           <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-500/40 flex items-center justify-center text-xs font-bold text-blue-200">
                             {b.ticker.split(" ")[0]}
                           </div>
                           <div>
-                            <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                            <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                               {b.ticker}
                             </div>
-                            <div className="text-xs text-slate-400 font-sans">{(b as { isin?: string }).isin || "US TRACE"}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{(b as { isin?: string }).isin || "US TRACE"}</div>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-3.5 px-4 font-sans">
-                        <div className="font-semibold text-white text-xs sm:text-sm">{b.name}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{b.name}</div>
                         <div className="text-xs text-slate-400">{b.sector}</div>
                       </td>
 
@@ -1232,7 +1232,7 @@ export default function ScreenerSection({
                         {b.coupon}%
                       </td>
 
-                      <td className="py-3.5 px-4 text-right font-bold text-white text-sm sm:text-base">
+                      <td className="py-3.5 px-4 text-right font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                         ${b.price_usd?.toFixed(2)}
                       </td>
 
@@ -1249,7 +1249,7 @@ export default function ScreenerSection({
                         <button
                           type="button"
                           onClick={() => setSelectedScoreItem(b)}
-                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
                         >
                           Analizar
                         </button>
@@ -1265,7 +1265,7 @@ export default function ScreenerSection({
               (activeMarket === "argentina" && argSubTab === "cedears")) && (
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
                     <th className="py-3.5 px-4 font-semibold">Ticker / Activo</th>
                     <th className="py-3.5 px-4 font-semibold">Empresa & Industria</th>
                     <th className="py-3.5 px-3 font-semibold text-center">Recomendación</th>
@@ -1277,7 +1277,7 @@ export default function ScreenerSection({
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#1E2D4A]/50 font-mono">
                   {(activeMarket === "wall_street" ? filteredStocks : filteredCedears)
                     .slice(0, visibleCount)
                     .map((stock, idx) => {
@@ -1287,7 +1287,7 @@ export default function ScreenerSection({
                       const isPositive = stock.day_change >= 0;
 
                       return (
-                        <tr key={stock.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                        <tr key={stock.ticker} className="hover:bg-slate-50 dark:hover:bg-[#111B30]/60 transition-colors group">
                           {/* Ticker */}
                           <td className="py-3.5 px-4">
                             <div className="flex items-center space-x-2.5">
@@ -1295,10 +1295,10 @@ export default function ScreenerSection({
                                 #{idx + 1}
                               </span>
                               <div>
-                                <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                                <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                                   {stock.ticker}
                                 </div>
-                                <div className="text-xs text-slate-400 font-sans">
+                                <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">
                                   {stock.has_cedear ? `Ratio ${stock.cedear_ratio}` : "NYSE / NASDAQ"}
                                 </div>
                               </div>
@@ -1307,7 +1307,7 @@ export default function ScreenerSection({
 
                           {/* Empresa & Sector */}
                           <td className="py-3.5 px-4 font-sans">
-                            <div className="font-semibold text-white text-xs sm:text-sm">{stock.name}</div>
+                            <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{stock.name}</div>
                             <div className="text-xs text-slate-400">{stock.sector}</div>
                           </td>
 
@@ -1322,7 +1322,7 @@ export default function ScreenerSection({
                           {activeMarket === "argentina" && (
                             <td className="py-3.5 px-4 text-right">
                               {stock.cedear_price_ars ? (
-                                <span className="font-bold text-white text-sm sm:text-base">
+                                <span className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                                   ${stock.cedear_price_ars.toLocaleString("es-AR")}
                                 </span>
                               ) : (
@@ -1333,7 +1333,7 @@ export default function ScreenerSection({
 
                           {/* Precio USD */}
                           <td className="py-3.5 px-4 text-right">
-                            <div className="font-bold text-white text-sm sm:text-base">
+                            <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                               ${stock.price?.toFixed(2)}
                             </div>
                             <div className={`text-xs font-bold ${isPositive ? "text-[#00FF88]" : "text-rose-400"}`}>
@@ -1376,7 +1376,7 @@ export default function ScreenerSection({
                             <button
                               type="button"
                               onClick={() => setSelectedStockForModal(stock)}
-                              className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
                             >
                               Analizar
                             </button>
@@ -1392,7 +1392,7 @@ export default function ScreenerSection({
             {activeMarket === "wall_street" && wallStreetSubTab === "etfs" && (
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
                     <th className="py-3.5 px-4 font-semibold">Ticker / ETF</th>
                     <th className="py-3.5 px-4 font-semibold">Categoría & Manager</th>
                     <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
@@ -1403,22 +1403,22 @@ export default function ScreenerSection({
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#1E2D4A]/50 font-mono">
                   {filteredEtfs.slice(0, visibleCount).map((e) => (
-                    <tr key={e.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                    <tr key={e.ticker} className="hover:bg-slate-50 dark:hover:bg-[#111B30]/60 transition-colors group">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                        <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                           {e.ticker}
                         </div>
-                        <div className="text-xs text-slate-400 font-sans">{e.name}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{e.name}</div>
                       </td>
 
                       <td className="py-3.5 px-4 font-sans">
-                        <div className="font-semibold text-white text-xs sm:text-sm">{e.category}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{e.category}</div>
                         <div className="text-xs text-slate-400">{e.manager || "Gestión Pasiva"}</div>
                       </td>
 
-                      <td className="py-3.5 px-4 text-right font-bold text-white text-sm sm:text-base">
+                      <td className="py-3.5 px-4 text-right font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                         ${e.price?.toFixed(2)}
                       </td>
 
@@ -1449,7 +1449,7 @@ export default function ScreenerSection({
                         <button
                           type="button"
                           onClick={() => setSelectedScoreItem(e as unknown as ScoreItem)}
-                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
                         >
                           Analizar
                         </button>
@@ -1464,7 +1464,7 @@ export default function ScreenerSection({
             {activeMarket === "argentina" && argSubTab === "ons" && (
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
                     <th className="py-3.5 px-4 font-semibold">Ticker / Instrumento</th>
                     <th className="py-3.5 px-4 font-semibold">Emisor & Industria</th>
                     <th className="py-3.5 px-3 font-semibold text-center">Rating</th>
@@ -1476,18 +1476,18 @@ export default function ScreenerSection({
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#1E2D4A]/50 font-mono">
                   {filteredOns.slice(0, visibleCount).map((o) => (
-                    <tr key={o.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                    <tr key={o.ticker} className="hover:bg-slate-50 dark:hover:bg-[#111B30]/60 transition-colors group">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                        <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                           {o.ticker}
                         </div>
-                        <div className="text-xs text-slate-400 font-sans">{o.name}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{o.name}</div>
                       </td>
 
                       <td className="py-3.5 px-4 font-sans">
-                        <div className="font-semibold text-white text-xs sm:text-sm">{o.issuer}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{o.issuer}</div>
                         <div className="text-xs text-slate-400">Renta Fija Corporativa</div>
                       </td>
 
@@ -1528,7 +1528,7 @@ export default function ScreenerSection({
                         <button
                           type="button"
                           onClick={() => setSelectedScoreItem(o)}
-                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
                         >
                           Analizar
                         </button>
@@ -1543,7 +1543,7 @@ export default function ScreenerSection({
             {activeMarket === "argentina" && argSubTab === "merval" && (
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
                     <th className="py-3.5 px-4 font-semibold">Ticker / Empresa</th>
                     <th className="py-3.5 px-4 font-semibold">Sector</th>
                     <th className="py-3.5 px-4 font-semibold text-right">Precio (ARS)</th>
@@ -1553,23 +1553,23 @@ export default function ScreenerSection({
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#1E2D4A]/50 font-mono">
                   {filteredMerval.slice(0, visibleCount).map((m) => {
                     const isPositive = m.day_change >= 0;
                     return (
-                      <tr key={m.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                      <tr key={m.ticker} className="hover:bg-slate-50 dark:hover:bg-[#111B30]/60 transition-colors group">
                         <td className="py-3.5 px-4">
-                          <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                          <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                             {m.ticker}
                           </div>
-                          <div className="text-xs text-slate-400 font-sans">{m.name}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{m.name}</div>
                         </td>
 
                         <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-300">
                           {m.sector}
                         </td>
 
-                        <td className="py-3.5 px-4 text-right font-bold text-white text-sm sm:text-base">
+                        <td className="py-3.5 px-4 text-right font-bold text-slate-900 dark:text-white text-sm sm:text-base">
                           ${m.price_ars?.toLocaleString("es-AR")} ARS
                         </td>
 
@@ -1594,7 +1594,7 @@ export default function ScreenerSection({
                           <button
                             type="button"
                             onClick={() => setSelectedScoreItem(m)}
-                            className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                            className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
                           >
                             Analizar
                           </button>
@@ -1610,7 +1610,7 @@ export default function ScreenerSection({
             {activeMarket === "argentina" && argSubTab === "bonds" && (
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
                     <th className="py-3.5 px-4 font-semibold">Ticker / Bono</th>
                     <th className="py-3.5 px-4 font-semibold">Descripción</th>
                     <th className="py-3.5 px-4 font-semibold text-center">Ley</th>
@@ -1621,14 +1621,14 @@ export default function ScreenerSection({
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#1E2D4A]/50 font-mono">
                   {filteredSovereign.slice(0, visibleCount).map((b) => (
-                    <tr key={b.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                    <tr key={b.ticker} className="hover:bg-slate-50 dark:hover:bg-[#111B30]/60 transition-colors group">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                        <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                           {b.ticker}
                         </div>
-                        <div className="text-xs text-slate-400 font-sans">{b.name}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{b.name}</div>
                       </td>
 
                       <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-300">
@@ -1666,7 +1666,7 @@ export default function ScreenerSection({
                         <button
                           type="button"
                           onClick={() => setSelectedScoreItem(b)}
-                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
                         >
                           Analizar
                         </button>
@@ -1694,7 +1694,7 @@ export default function ScreenerSection({
         )}
 
         {/* Footer Institucional de la Tabla: Paginación y Carga Progresiva */}
-        <div className="px-5 py-3.5 border-t border-[#1E2D4A] bg-[#0A101D] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-mono">
+        <div className="px-5 py-3.5 border-t border-slate-200 dark:border-[#1E2D4A] bg-slate-50 dark:bg-[#0A101D] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-mono">
           <div className="flex items-center space-x-2 text-slate-400">
             <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono bg-emerald-950/80 text-[#00FF88] border border-emerald-500/30 font-bold">
               ⚡ ALTA DENSIDAD VISUAL
@@ -1710,7 +1710,7 @@ export default function ScreenerSection({
                 <button
                   type="button"
                   onClick={() => setVisibleBondCount((prev) => Math.min(prev + 40, filteredUsBonds.length))}
-                  className="px-4 py-2 rounded-lg bg-[#111B30] hover:bg-slate-800 text-[#00FF88] font-bold border border-emerald-500/30 transition-all text-xs sm:text-sm"
+                  className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] dark:hover:bg-slate-800 text-emerald-700 dark:text-[#00FF88] font-bold border border-slate-300 dark:border-emerald-500/30 transition-all text-xs sm:text-sm"
                 >
                   Cargar más bonos (+40)
                 </button>
@@ -1731,7 +1731,7 @@ export default function ScreenerSection({
                 <button
                   type="button"
                   onClick={() => setVisibleCount((prev) => prev + 30)}
-                  className="px-4 py-2 rounded-lg bg-[#111B30] hover:bg-slate-800 text-[#00FF88] font-bold border border-emerald-500/30 transition-all text-xs sm:text-sm"
+                  className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] dark:hover:bg-slate-800 text-emerald-700 dark:text-[#00FF88] font-bold border border-slate-300 dark:border-emerald-500/30 transition-all text-xs sm:text-sm"
                 >
                   Mostrar más activos (+30)
                 </button>
