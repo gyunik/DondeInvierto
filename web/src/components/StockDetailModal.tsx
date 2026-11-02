@@ -49,8 +49,14 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
 
         {/* Encabezado del Activo */}
         <div className="flex items-start gap-3 sm:gap-4 pr-10">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-gradient-to-br dark:from-emerald-500/20 dark:to-teal-900/40 border border-emerald-300 dark:border-emerald-500/40 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] font-black font-mono text-lg shadow-sm dark:shadow-[0_0_15px_rgba(0,245,160,0.2)]">
-            {stock.ticker}
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#070D18] border-2 border-[#00FF88]/50 shadow-[0_0_20px_rgba(0,255,136,0.25)] flex items-center justify-center shrink-0">
+            <span
+              className={`font-black font-mono text-white tracking-wider ${
+                stock.ticker.length > 4 ? "text-xs" : stock.ticker.length > 3 ? "text-sm" : "text-base sm:text-lg"
+              }`}
+            >
+              {stock.ticker}
+            </span>
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
@@ -175,7 +181,15 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
 
             <div className="col-span-2 sm:col-span-1 bg-slate-100/90 dark:bg-[#0e1b2f] p-3 rounded-xl border border-slate-200 dark:border-slate-700/80">
               <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase">Recomendación General</span>
-              <div className="text-lg font-black text-slate-900 dark:text-white font-mono mt-0.5">
+              <div
+                className={`text-lg font-black font-mono mt-0.5 ${
+                  /sobreponderar|fuerte compra|compra|buy|outperform/i.test(stock.recommendation || "")
+                    ? "text-[#00FF88]"
+                    : /mantener|neutral|hold/i.test(stock.recommendation || "")
+                    ? "text-amber-400"
+                    : "text-rose-400"
+                }`}
+              >
                 {stock.recommendation || "Sobreponderar"}
               </div>
               <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">

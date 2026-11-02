@@ -164,6 +164,29 @@ async function main() {
       s.scoreTotal = quant.score_total;
       s.quant_breakdown = quant.score_breakdown;
 
+      // Actualizar recomendación institucional sincronizada
+      const sc = quant.score_total;
+      const ret = quant.retorno_estimado_pct;
+      let bankRating = null;
+      if (s.analyst_consensus && s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
+        const buyCount = s.analyst_consensus.banks.filter((b) => /sobreponderar|compra|buy|outperform/i.test(b.rating)).length;
+        if (buyCount / s.analyst_consensus.banks.length >= 0.5) {
+          bankRating = 'Sobreponderar';
+        } else {
+          bankRating = 'Neutral';
+        }
+      }
+
+      if (sc >= 85 && ret >= 25) {
+        s.recommendation = 'Fuerte Compra';
+      } else if (sc >= 60 && ret > 0) {
+        s.recommendation = bankRating === 'Sobreponderar' ? 'Sobreponderar' : 'Compra';
+      } else if (sc >= 40 && ret >= 0) {
+        s.recommendation = 'Mantener';
+      } else {
+        s.recommendation = 'Precaución';
+      }
+
       console.log(`  ✓ ${s.ticker}: $${q.price} USD | ${q.change >= 0 ? '+' : ''}${q.change}% | Target Algoritmo: $${quant.precio_objetivo_estimado} (+${quant.retorno_estimado_pct}%) | SCORE: ${quant.score_total}`);
     }
   }

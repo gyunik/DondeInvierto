@@ -250,8 +250,14 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
 
         {/* Encabezado del Score */}
         <div className="flex items-start gap-3.5 sm:gap-4 pr-12">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-gradient-to-br dark:from-emerald-500/20 dark:to-teal-900/40 border border-emerald-300 dark:border-emerald-500/40 flex items-center justify-center text-emerald-700 dark:text-[#00F5A0] font-black font-mono text-xl shadow-sm dark:shadow-[0_0_15px_rgba(0,245,160,0.2)] shrink-0">
-            {item.ticker}
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#070D18] border-2 border-[#00FF88]/50 shadow-[0_0_20px_rgba(0,255,136,0.25)] flex items-center justify-center shrink-0">
+            <span
+              className={`font-black font-mono text-white tracking-wider ${
+                item.ticker.length > 4 ? "text-xs" : item.ticker.length > 3 ? "text-sm" : "text-base sm:text-lg"
+              }`}
+            >
+              {item.ticker}
+            </span>
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2.5">
