@@ -15,6 +15,8 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  SlidersHorizontal,
+  TrendingUp,
 } from "lucide-react";
 import ArgentinaFlag from "./ArgentinaFlag";
 import UsaFlag from "./UsaFlag";
@@ -70,18 +72,25 @@ export default function ScreenerSection({
   const [visibleCount, setVisibleCount] = useState<number>(30);
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [stockSectorFilter, setStockSectorFilter] = useState<string>("all");
+  const [selectedStockSectors, setSelectedStockSectors] = useState<string[]>([]);
   const [etfDivFilter] = useState<"all" | "dividend" | "growth">("all");
   const [etfManagerFilter] = useState<string>("all");
   const [usBondMaturityBlock, setUsBondMaturityBlock] = useState<"all" | "short" | "medium" | "long">("all");
+  const [bondHorizonMin, setBondHorizonMin] = useState<string>("");
+  const [bondHorizonMax, setBondHorizonMax] = useState<string>("");
   const [usBondBrandCategory, setUsBondBrandCategory] = useState<string>("all");
+  const [selectedBondSectors, setSelectedBondSectors] = useState<string[]>([]);
+  const [bondYtmMin, setBondYtmMin] = useState<string>("");
+  const [bondYtmMax, setBondYtmMax] = useState<string>("");
+  const [bondYtmPreset, setBondYtmPreset] = useState<string>("all");
   const [usBondSafetyFilter, setUsBondSafetyFilter] = useState<"all" | "Seguridad Máxima" | "Riesgo Ultra Bajo">("all");
 
   // Tipos y estados de ordenamiento interactivo por columna
-  type UsBondSortKey = "ticker" | "name" | "rating" | "maturity" | "tir" | "coupon" | "price" | "score";
+  type UsBondSortKey = "ticker" | "name" | "sector" | "rating" | "maturity" | "tir" | "coupon" | "price" | "score";
   const [usBondSortKey, setUsBondSortKey] = useState<UsBondSortKey>("score");
   const [usBondSortDir, setUsBondSortDir] = useState<"asc" | "desc">("desc");
 
-  type StockSortKey = "ticker" | "name" | "rec" | "cedear_price" | "price" | "upside" | "dividend" | "score";
+  type StockSortKey = "ticker" | "name" | "sector" | "rec" | "cedear_price" | "price" | "upside" | "dividend" | "score";
   const [stockSortKey, setStockSortKey] = useState<StockSortKey>("score");
   const [stockSortDir, setStockSortDir] = useState<"asc" | "desc">("desc");
 
@@ -106,7 +115,7 @@ export default function ScreenerSection({
       setUsBondSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setUsBondSortKey(key);
-      setUsBondSortDir(key === "ticker" || key === "name" || key === "maturity" ? "asc" : "desc");
+      setUsBondSortDir(key === "ticker" || key === "name" || key === "maturity" || key === "sector" ? "asc" : "desc");
     }
   };
 
@@ -115,7 +124,7 @@ export default function ScreenerSection({
       setStockSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setStockSortKey(key);
-      setStockSortDir(key === "ticker" || key === "name" ? "asc" : "desc");
+      setStockSortDir(key === "ticker" || key === "name" || key === "sector" ? "asc" : "desc");
     }
   };
 
@@ -218,7 +227,11 @@ export default function ScreenerSection({
 
       if (stockDivFilter === "dividend") return s.pays_dividend;
       if (stockDivFilter === "growth") return !s.pays_dividend;
-      if (stockSectorFilter !== "all" && s.sector !== stockSectorFilter) return false;
+      if (selectedStockSectors.length > 0) {
+        if (!selectedStockSectors.includes(s.sector)) return false;
+      } else if (stockSectorFilter !== "all" && s.sector !== stockSectorFilter) {
+        return false;
+      }
       return true;
     })
     .sort((a, b) => {
@@ -229,6 +242,9 @@ export default function ScreenerSection({
           break;
         case "name":
           comp = a.name.localeCompare(b.name);
+          break;
+        case "sector":
+          comp = (a.sector || "").localeCompare(b.sector || "");
           break;
         case "rec":
           comp = (a.recommendation || "").localeCompare(b.recommendation || "");
@@ -277,7 +293,11 @@ export default function ScreenerSection({
 
       if (stockDivFilter === "dividend") return s.pays_dividend;
       if (stockDivFilter === "growth") return !s.pays_dividend;
-      if (stockSectorFilter !== "all" && s.sector !== stockSectorFilter) return false;
+      if (selectedStockSectors.length > 0) {
+        if (!selectedStockSectors.includes(s.sector)) return false;
+      } else if (stockSectorFilter !== "all" && s.sector !== stockSectorFilter) {
+        return false;
+      }
       return true;
     })
     .sort((a, b) => {
@@ -288,6 +308,9 @@ export default function ScreenerSection({
           break;
         case "name":
           comp = a.name.localeCompare(b.name);
+          break;
+        case "sector":
+          comp = (a.sector || "").localeCompare(b.sector || "");
           break;
         case "rec":
           comp = (a.recommendation || "").localeCompare(b.recommendation || "");
@@ -377,14 +400,40 @@ export default function ScreenerSection({
         if (!matchesSearch) return false;
       }
 
-      // Filtro por Bloque de Tranquilidad
-      if (usBondMaturityBlock !== "all" && b.maturity_block !== usBondMaturityBlock) {
+      // Filtro por Bloque de Tranquilidad o Rango Personalizado de Años
+      if (bondHorizonMin !== "" || bondHorizonMax !== "") {
+        const minYears = bondHorizonMin !== "" ? parseFloat(bondHorizonMin) : 0;
+        const maxYears = bondHorizonMax !== "" ? parseFloat(bondHorizonMax) : Infinity;
+        const bondYears = typeof b.maturity_years === "number" ? b.maturity_years : 0;
+        if (bondYears < minYears || bondYears > maxYears) {
+          return false;
+        }
+      } else if (usBondMaturityBlock !== "all" && b.maturity_block !== usBondMaturityBlock) {
         return false;
       }
 
-      // Filtro por Marcas Conocidas
-      if (usBondBrandCategory !== "all" && b.brand_category !== usBondBrandCategory) {
+      // Filtro por Marcas / Sectores (Múltiples o Único)
+      if (selectedBondSectors.length > 0) {
+        if (!selectedBondSectors.includes(b.brand_category)) {
+          return false;
+        }
+      } else if (usBondBrandCategory !== "all" && b.brand_category !== usBondBrandCategory) {
         return false;
+      }
+
+      // Filtro por Rendimiento Personalizado (YTM %)
+      if (bondYtmMin !== "" || bondYtmMax !== "") {
+        const minY = bondYtmMin !== "" ? parseFloat(bondYtmMin) : 0;
+        const maxY = bondYtmMax !== "" ? parseFloat(bondYtmMax) : Infinity;
+        const bondYtm = typeof b.tir_usd === "number" ? b.tir_usd : 0;
+        if (bondYtm < minY || bondYtm > maxY) {
+          return false;
+        }
+      } else if (bondYtmPreset !== "all") {
+        const minPreset = parseFloat(bondYtmPreset);
+        if ((b.tir_usd || 0) < minPreset) {
+          return false;
+        }
       }
 
       // Filtro por Nivel de Seguridad
@@ -402,6 +451,9 @@ export default function ScreenerSection({
           break;
         case "name":
           comp = (a.name || "").localeCompare(b.name || "");
+          break;
+        case "sector":
+          comp = (a.brand_category || a.sector || "").localeCompare(b.brand_category || b.sector || "");
           break;
         case "rating":
           comp = (RATING_WEIGHTS[a.rating] || 0) - (RATING_WEIGHTS[b.rating] || 0);
@@ -1362,21 +1414,23 @@ export default function ScreenerSection({
           {/* A) Filtros para Bonos USA High Grade */}
           {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
             <>
-              {/* Dropdown 1: Plazo / Horizonte Temporal */}
+              {/* Dropdown 1: Plazo / Horizonte Temporal con Rango Personalizado */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setOpenDropdown(openDropdown === "plazo" ? null : "plazo")}
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
-                    usBondMaturityBlock !== "all"
+                    usBondMaturityBlock !== "all" || bondHorizonMin !== "" || bondHorizonMax !== ""
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50 shadow-sm"
                       : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${usBondMaturityBlock !== "all" ? "bg-blue-400" : "bg-slate-400"}`} />
+                  <span className={`w-2 h-2 rounded-full ${usBondMaturityBlock !== "all" || bondHorizonMin !== "" || bondHorizonMax !== "" ? "bg-blue-400" : "bg-slate-400"}`} />
                   <span className="font-bold text-white">Plazo:</span>
                   <span>
-                    {usBondMaturityBlock === "all"
+                    {bondHorizonMin !== "" || bondHorizonMax !== ""
+                      ? `${bondHorizonMin || 0} - ${bondHorizonMax || "30+"} años`
+                      : usBondMaturityBlock === "all"
                       ? "Todos los plazos"
                       : usBondMaturityBlock === "short"
                       ? "Corto (1-3 años)"
@@ -1388,20 +1442,38 @@ export default function ScreenerSection({
                 </button>
 
                 {openDropdown === "plazo" && (
-                  <div className="absolute left-0 mt-2 w-80 rounded-xl bg-[#0B1220] border border-blue-500/40 shadow-2xl p-2 z-50 animate-in fade-in duration-100">
-                    <div className="px-2.5 py-1.5 text-[11px] font-mono text-slate-400 uppercase tracking-wider border-b border-[#1E2D4A] flex items-center justify-between">
-                      <span>Bloques de Tranquilidad</span>
-                      <span className="text-blue-400 font-bold">Horizonte temporal</span>
+                  <div className="absolute left-0 mt-2 w-80 rounded-xl bg-[#0B1220] border border-blue-500/40 shadow-2xl p-3 z-50 animate-in fade-in duration-100 text-slate-200">
+                    <div className="px-1 pb-2 text-[11px] font-mono text-slate-400 uppercase tracking-wider border-b border-[#1E2D4A] flex items-center justify-between">
+                      <span>Horizonte de Vencimiento</span>
+                      {(bondHorizonMin !== "" || bondHorizonMax !== "" || usBondMaturityBlock !== "all") && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUsBondMaturityBlock("all");
+                            setBondHorizonMin("");
+                            setBondHorizonMax("");
+                          }}
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 transition-colors"
+                        >
+                          Restablecer
+                        </button>
+                      )}
                     </div>
-                    <div className="space-y-1 mt-1.5 font-sans">
+                    
+                    {/* Presets tradicionales */}
+                    <div className="space-y-1 mt-2 mb-3 font-sans">
                       <button
                         type="button"
                         onClick={() => {
                           setUsBondMaturityBlock("all");
+                          setBondHorizonMin("");
+                          setBondHorizonMax("");
                           setOpenDropdown(null);
                         }}
-                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
-                          usBondMaturityBlock === "all" ? "bg-blue-950/70 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left ${
+                          usBondMaturityBlock === "all" && bondHorizonMin === "" && bondHorizonMax === ""
+                            ? "bg-blue-950/70 text-blue-200 font-bold border border-blue-500/30"
+                            : "hover:bg-[#111B30] text-slate-300"
                         }`}
                       >
                         <span>Todos los plazos</span>
@@ -1412,15 +1484,17 @@ export default function ScreenerSection({
                         type="button"
                         onClick={() => {
                           setUsBondMaturityBlock("short");
+                          setBondHorizonMin("");
+                          setBondHorizonMax("");
                           setOpenDropdown(null);
                         }}
-                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
-                          usBondMaturityBlock === "short" ? "bg-emerald-950/70 text-emerald-300 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left ${
+                          usBondMaturityBlock === "short" ? "bg-emerald-950/70 text-emerald-300 font-bold border border-emerald-500/30" : "hover:bg-[#111B30] text-slate-300"
                         }`}
                       >
                         <div>
                           <div className="font-semibold text-white">Corto Plazo (1-3 años)</div>
-                          <p className="text-[11px] text-slate-400">Riesgo precio mínimo • Máxima liquidez</p>
+                          <p className="text-[10px] text-slate-400">Riesgo precio mínimo • Máxima liquidez</p>
                         </div>
                       </button>
 
@@ -1428,10 +1502,12 @@ export default function ScreenerSection({
                         type="button"
                         onClick={() => {
                           setUsBondMaturityBlock("medium");
+                          setBondHorizonMin("");
+                          setBondHorizonMax("");
                           setOpenDropdown(null);
                         }}
-                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
-                          usBondMaturityBlock === "medium" ? "bg-blue-950/70 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left ${
+                          usBondMaturityBlock === "medium" ? "bg-blue-950/70 text-blue-200 font-bold border border-blue-500/30" : "hover:bg-[#111B30] text-slate-300"
                         }`}
                       >
                         <div>
@@ -1439,7 +1515,7 @@ export default function ScreenerSection({
                             <span>Mediano Plazo (3-7 años)</span>
                             <span className="text-[9px] bg-blue-500/30 text-blue-300 px-1 rounded font-mono">RECOMENDADO</span>
                           </div>
-                          <p className="text-[11px] text-slate-400">Riesgo moderado • Alta certidumbre</p>
+                          <p className="text-[10px] text-slate-400">Riesgo moderado • Alta certidumbre</p>
                         </div>
                       </button>
 
@@ -1447,67 +1523,334 @@ export default function ScreenerSection({
                         type="button"
                         onClick={() => {
                           setUsBondMaturityBlock("long");
+                          setBondHorizonMin("");
+                          setBondHorizonMax("");
                           setOpenDropdown(null);
                         }}
-                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
-                          usBondMaturityBlock === "long" ? "bg-purple-950/70 text-purple-300 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left ${
+                          usBondMaturityBlock === "long" ? "bg-purple-950/70 text-purple-300 font-bold border border-purple-500/30" : "hover:bg-[#111B30] text-slate-300"
                         }`}
                       >
                         <div>
                           <div className="font-semibold text-white">Largo Plazo (7-10+ años)</div>
-                          <p className="text-[11px] text-slate-400">Sensible a tasas • Mantener a vencimiento</p>
+                          <p className="text-[10px] text-slate-400">Mayor cupón • Mantener a vencimiento</p>
                         </div>
+                      </button>
+                    </div>
+
+                    {/* Rango Personalizado en Años */}
+                    <div className="pt-2 border-t border-slate-800 font-sans">
+                      <div className="text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
+                        Rango Personalizado en Años
+                      </div>
+                      
+                      {/* Atajos Rápidos */}
+                      <div className="grid grid-cols-4 gap-1 mb-2">
+                        {[
+                          { label: "1-3a", min: "1", max: "3" },
+                          { label: "3-5a", min: "3", max: "5" },
+                          { label: "5-8a", min: "5", max: "8" },
+                          { label: "8+a", min: "8", max: "30" },
+                        ].map((preset) => {
+                          const isActive = bondHorizonMin === preset.min && bondHorizonMax === preset.max;
+                          return (
+                            <button
+                              key={preset.label}
+                              type="button"
+                              onClick={() => {
+                                setBondHorizonMin(preset.min);
+                                setBondHorizonMax(preset.max);
+                                setUsBondMaturityBlock("all");
+                              }}
+                              className={`py-1 px-1 rounded text-[11px] font-semibold text-center transition-all ${
+                                isActive
+                                  ? "bg-emerald-500/20 text-[#00FF88] border border-emerald-500/50"
+                                  : "bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60"
+                              }`}
+                            >
+                              {preset.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex-1">
+                          <label className="text-[10px] text-slate-400 block mb-0.5">Mín. años</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="30"
+                            step="0.5"
+                            placeholder="Ej: 3"
+                            value={bondHorizonMin}
+                            onChange={(e) => {
+                              setBondHorizonMin(e.target.value);
+                              setUsBondMaturityBlock("all");
+                            }}
+                            className="w-full bg-[#111B30] border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                          />
+                        </div>
+                        <div className="text-slate-500 mt-3">—</div>
+                        <div className="flex-1">
+                          <label className="text-[10px] text-slate-400 block mb-0.5">Máx. años</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="30"
+                            step="0.5"
+                            placeholder="Ej: 5"
+                            value={bondHorizonMax}
+                            onChange={(e) => {
+                              setBondHorizonMax(e.target.value);
+                              setUsBondMaturityBlock("all");
+                            }}
+                            className="w-full bg-[#111B30] border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setOpenDropdown(null)}
+                          className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-xs rounded-lg transition-colors"
+                        >
+                          Aplicar ({filteredUsBonds.length})
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Dropdown 2: Sectores de Bonos (Selección Múltiple) */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "brand" ? null : "brand")}
+                  className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
+                    selectedBondSectors.length > 0 || usBondBrandCategory !== "all"
+                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
+                      : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
+                  }`}
+                >
+                  <span className="text-slate-400">Sector:</span>
+                  <span className="text-white font-medium truncate max-w-[130px]">
+                    {selectedBondSectors.length === 0
+                      ? usBondBrandCategory === "all"
+                        ? "Todos"
+                        : usBondBrandCategory
+                      : selectedBondSectors.length === 1
+                      ? selectedBondSectors[0]
+                      : `Sectores (${selectedBondSectors.length})`}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                </button>
+
+                {openDropdown === "brand" && (
+                  <div className="absolute left-0 mt-2 w-72 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-3 z-50 text-slate-200">
+                    <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                      <span className="text-xs font-bold text-slate-300">
+                        Sectores de Bonos ({selectedBondSectors.length || "Todos"})
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedBondSectors([]);
+                            setUsBondBrandCategory("all");
+                          }}
+                          className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+                        >
+                          Todos
+                        </button>
+                        {selectedBondSectors.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedBondSectors([]);
+                              setUsBondBrandCategory("all");
+                            }}
+                            className="text-[10px] px-2 py-0.5 rounded bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 transition-colors"
+                          >
+                            Limpiar
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 max-h-60 overflow-y-auto pr-1 font-sans">
+                      {bondBrandCategories.map((c) => {
+                        const isSelected = selectedBondSectors.includes(c);
+                        const count = us_bonds.filter((b) => b.brand_category === c).length;
+                        const icon = us_bonds.find((b) => b.brand_category === c)?.brand_icon || "🏷️";
+                        return (
+                          <button
+                            key={c}
+                            type="button"
+                            onClick={() => {
+                              setSelectedBondSectors((prev) =>
+                                prev.includes(c) ? prev.filter((item) => item !== c) : [...prev, c]
+                              );
+                              setUsBondBrandCategory("all");
+                            }}
+                            className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+                              isSelected
+                                ? "bg-blue-950 text-blue-200 font-semibold border border-blue-500/40"
+                                : "hover:bg-[#111B30] text-slate-300"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 truncate">
+                              <span className={`w-3.5 h-3.5 rounded border flex items-center justify-center text-[10px] ${
+                                isSelected ? "bg-blue-600 border-blue-400 text-white" : "border-slate-600 bg-slate-800"
+                              }`}>
+                                {isSelected && "✓"}
+                              </span>
+                              <span>{icon}</span>
+                              <span className="truncate">{c}</span>
+                            </div>
+                            <span className="text-[11px] font-mono text-slate-500 ml-1.5">{count}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2.5 mt-2 border-t border-slate-800 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setOpenDropdown(null)}
+                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-xs rounded-lg transition-colors"
+                      >
+                        Aplicar ({filteredUsBonds.length})
                       </button>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Dropdown 2: Industria / Marcas */}
+              {/* Dropdown 3: Rendimiento Anual (YTM en USD) con Rango Personalizado */}
               <div className="relative">
                 <button
                   type="button"
-                  onClick={() => setOpenDropdown(openDropdown === "brand" ? null : "brand")}
+                  onClick={() => setOpenDropdown(openDropdown === "ytm" ? null : "ytm")}
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
-                    usBondBrandCategory !== "all"
-                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
+                    bondYtmMin !== "" || bondYtmMax !== "" || bondYtmPreset !== "all"
+                      ? "bg-emerald-950/80 text-[#00FF88] border-emerald-500/50"
                       : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
-                  <span className="text-slate-400">Sector:</span>
+                  <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-slate-400">YTM:</span>
                   <span className="text-white font-medium">
-                    {usBondBrandCategory === "all" ? "Todos" : usBondBrandCategory}
+                    {bondYtmMin !== "" || bondYtmMax !== ""
+                      ? `${bondYtmMin || "0"}% - ${bondYtmMax || "Max"}%`
+                      : bondYtmPreset !== "all"
+                      ? `> ${bondYtmPreset}%`
+                      : "Todos"}
                   </span>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
-                {openDropdown === "brand" && (
-                  <div className="absolute left-0 mt-2 w-64 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-2 z-50">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setUsBondBrandCategory("all");
-                        setOpenDropdown(null);
-                      }}
-                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-slate-200"
-                    >
-                      Todos los sectores
-                    </button>
-                    {bondBrandCategories.map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => {
-                          setUsBondBrandCategory(c);
-                          setOpenDropdown(null);
-                        }}
-                        className={`w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg transition-colors ${
-                          usBondBrandCategory === c ? "bg-blue-950 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
-                        }`}
-                      >
-                        {c}
-                      </button>
-                    ))}
+                {openDropdown === "ytm" && (
+                  <div className="absolute left-0 mt-2 w-72 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-3 z-50 text-slate-200">
+                    <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                      <span className="text-xs font-bold text-slate-300">Rendimiento (YTM en USD)</span>
+                      {(bondYtmMin !== "" || bondYtmMax !== "" || bondYtmPreset !== "all") && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBondYtmPreset("all");
+                            setBondYtmMin("");
+                            setBondYtmMax("");
+                          }}
+                          className="text-[10px] px-1.5 py-0.5 rounded bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 transition-colors"
+                        >
+                          Restablecer
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="space-y-1 mb-2 font-sans">
+                      {[
+                        { label: "Todos los rendimientos", val: "all" },
+                        { label: "Mayor a 5.0% YTM", val: "5.0" },
+                        { label: "Mayor a 5.2% YTM", val: "5.2" },
+                        { label: "Mayor a 5.4% YTM", val: "5.4" },
+                      ].map((p) => {
+                        const isActive = bondYtmPreset === p.val && bondYtmMin === "" && bondYtmMax === "";
+                        return (
+                          <button
+                            key={p.val}
+                            type="button"
+                            onClick={() => {
+                              setBondYtmPreset(p.val);
+                              setBondYtmMin("");
+                              setBondYtmMax("");
+                              setOpenDropdown(null);
+                            }}
+                            className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+                              isActive
+                                ? "bg-emerald-950/80 text-emerald-300 font-bold border border-emerald-500/40"
+                                : "hover:bg-[#111B30] text-slate-300"
+                            }`}
+                          >
+                            {p.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-800 font-sans">
+                      <div className="text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
+                        Rango Personalizado (% YTM)
+                      </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex-1">
+                          <label className="text-[10px] text-slate-400 block mb-0.5">Mín. %</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="20"
+                            step="0.1"
+                            placeholder="Ej: 5.0"
+                            value={bondYtmMin}
+                            onChange={(e) => {
+                              setBondYtmMin(e.target.value);
+                              setBondYtmPreset("all");
+                            }}
+                            className="w-full bg-[#111B30] border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                          />
+                        </div>
+                        <div className="text-slate-500 mt-3">—</div>
+                        <div className="flex-1">
+                          <label className="text-[10px] text-slate-400 block mb-0.5">Máx. %</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="20"
+                            step="0.1"
+                            placeholder="Ej: 5.5"
+                            value={bondYtmMax}
+                            onChange={(e) => {
+                              setBondYtmMax(e.target.value);
+                              setBondYtmPreset("all");
+                            }}
+                            className="w-full bg-[#111B30] border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setOpenDropdown(null)}
+                          className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-xs rounded-lg transition-colors"
+                        >
+                          Aplicar ({filteredUsBonds.length})
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -1644,51 +1987,107 @@ export default function ScreenerSection({
                 )}
               </div>
 
-              {/* Filtro Sector */}
+              {/* Filtro Sector (Selección Múltiple) */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setOpenDropdown(openDropdown === "stockSector" ? null : "stockSector")}
                   className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
-                    stockSectorFilter !== "all"
+                    selectedStockSectors.length > 0 || stockSectorFilter !== "all"
                       ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
                       : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-[#1E2D4A] hover:border-slate-400 dark:hover:border-slate-600"
                   }`}
                 >
                   <span className="text-slate-400">Sector:</span>
-                  <span className="text-white font-medium truncate max-w-[120px]">
-                    {stockSectorFilter === "all" ? "Todos" : stockSectorFilter}
+                  <span className="text-white font-medium truncate max-w-[140px]">
+                    {selectedStockSectors.length === 0
+                      ? stockSectorFilter === "all"
+                        ? "Todos"
+                        : stockSectorFilter
+                      : selectedStockSectors.length === 1
+                      ? selectedStockSectors[0]
+                      : `Sectores (${selectedStockSectors.length})`}
                   </span>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
                 {openDropdown === "stockSector" && (
-                  <div className="absolute left-0 mt-2 w-64 max-h-72 overflow-y-auto rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-2 z-50">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setStockSectorFilter("all");
-                        setOpenDropdown(null);
-                      }}
-                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-slate-200"
-                    >
-                      Todos los sectores
-                    </button>
-                    {stockSectors.map((sec) => (
+                  <div className="absolute left-0 mt-2 w-72 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-3 z-50 text-slate-200">
+                    <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                      <span className="text-xs font-bold text-slate-300">
+                        Sectores ({selectedStockSectors.length || "Todos"})
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedStockSectors([]);
+                            setStockSectorFilter("all");
+                          }}
+                          className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+                        >
+                          Todos
+                        </button>
+                        {selectedStockSectors.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedStockSectors([]);
+                              setStockSectorFilter("all");
+                            }}
+                            className="text-[10px] px-2 py-0.5 rounded bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 transition-colors"
+                          >
+                            Limpiar
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 max-h-64 overflow-y-auto pr-1 font-sans">
+                      {stockSectors.map((sec) => {
+                        const isSelected = selectedStockSectors.includes(sec);
+                        const count = (activeMarket === "wall_street" ? stocks : stocks.filter((s) => s.has_cedear)).filter(
+                          (s) => s.sector === sec
+                        ).length;
+                        return (
+                          <button
+                            key={sec}
+                            type="button"
+                            onClick={() => {
+                              setSelectedStockSectors((prev) =>
+                                prev.includes(sec) ? prev.filter((item) => item !== sec) : [...prev, sec]
+                              );
+                              setStockSectorFilter("all");
+                            }}
+                            className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+                              isSelected
+                                ? "bg-blue-950 text-blue-200 font-semibold border border-blue-500/40"
+                                : "hover:bg-[#111B30] text-slate-300"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 truncate">
+                              <span className={`w-3.5 h-3.5 rounded border flex items-center justify-center text-[10px] ${
+                                isSelected ? "bg-blue-600 border-blue-400 text-white" : "border-slate-600 bg-slate-800"
+                              }`}>
+                                {isSelected && "✓"}
+                              </span>
+                              <span className="truncate">{sec}</span>
+                            </div>
+                            <span className="text-[11px] font-mono text-slate-500 ml-1.5">{count}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2.5 mt-2 border-t border-slate-800 flex justify-end">
                       <button
-                        key={sec}
                         type="button"
-                        onClick={() => {
-                          setStockSectorFilter(sec);
-                          setOpenDropdown(null);
-                        }}
-                        className={`w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg transition-colors truncate ${
-                          stockSectorFilter === sec ? "bg-blue-950 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
-                        }`}
+                        onClick={() => setOpenDropdown(null)}
+                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-xs rounded-lg transition-colors"
                       >
-                        {sec}
+                        Aplicar ({activeMarket === "wall_street" ? filteredStocks.length : filteredCedears.length})
                       </button>
-                    ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -1728,6 +2127,7 @@ export default function ScreenerSection({
                 <option value="tir">Rendimiento (YTM más alto)</option>
                 <option value="rating">Rating Crediticio (Calidad AAA/AA)</option>
                 <option value="maturity">Horizonte / Vencimiento</option>
+                <option value="sector">Sector / Categoría</option>
                 <option value="coupon">Tasa de Cupón</option>
                 <option value="price">Precio USD</option>
                 <option value="ticker">Ticker (A - Z)</option>
@@ -1773,6 +2173,118 @@ export default function ScreenerSection({
         </div>
       </div>
 
+      {/* Barra de Filtros Activos (Chips Desactivables) */}
+      {(selectedBondSectors.length > 0 ||
+        bondHorizonMin !== "" ||
+        bondHorizonMax !== "" ||
+        bondYtmMin !== "" ||
+        bondYtmMax !== "" ||
+        bondYtmPreset !== "all" ||
+        selectedStockSectors.length > 0) && (
+        <div className="flex flex-wrap items-center gap-2 px-1 py-1 text-xs">
+          <span className="text-slate-400 font-bold uppercase tracking-wider text-[11px] mr-1 flex items-center gap-1">
+            <SlidersHorizontal className="w-3 h-3 text-emerald-400" />
+            Filtros Activos:
+          </span>
+
+          {/* Chips de Sectores de Bonos */}
+          {selectedBondSectors.map((sec) => (
+            <span
+              key={sec}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-950/80 border border-blue-500/40 text-blue-200 text-xs font-medium"
+            >
+              <span>{sec}</span>
+              <button
+                type="button"
+                onClick={() => setSelectedBondSectors((prev) => prev.filter((s) => s !== sec))}
+                className="hover:text-white text-blue-400 ml-0.5"
+                title="Quitar este sector"
+              >
+                ✕
+              </button>
+            </span>
+          ))}
+
+          {/* Chip de Rango de Plazo en Bonos */}
+          {(bondHorizonMin !== "" || bondHorizonMax !== "") && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-950/80 border border-blue-500/40 text-blue-200 text-xs font-medium">
+              <span>Plazo: {bondHorizonMin || 0} a {bondHorizonMax || "30+"} años</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setBondHorizonMin("");
+                  setBondHorizonMax("");
+                }}
+                className="hover:text-white text-blue-400 ml-0.5"
+                title="Quitar filtro de plazo"
+              >
+                ✕
+              </button>
+            </span>
+          )}
+
+          {/* Chip de Rendimiento YTM en Bonos */}
+          {(bondYtmMin !== "" || bondYtmMax !== "" || bondYtmPreset !== "all") && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-[#00FF88] text-xs font-medium">
+              <span>
+                YTM:{" "}
+                {bondYtmMin !== "" || bondYtmMax !== ""
+                  ? `${bondYtmMin || 0}% a ${bondYtmMax || "Max"}%`
+                  : `> ${bondYtmPreset}%`}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setBondYtmMin("");
+                  setBondYtmMax("");
+                  setBondYtmPreset("all");
+                }}
+                className="hover:text-white text-emerald-400 ml-0.5"
+                title="Quitar filtro de rendimiento"
+              >
+                ✕
+              </button>
+            </span>
+          )}
+
+          {/* Chips de Sectores de Acciones */}
+          {selectedStockSectors.map((sec) => (
+            <span
+              key={sec}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-950/80 border border-blue-500/40 text-blue-200 text-xs font-medium"
+            >
+              <span>{sec}</span>
+              <button
+                type="button"
+                onClick={() => setSelectedStockSectors((prev) => prev.filter((s) => s !== sec))}
+                className="hover:text-white text-blue-400 ml-0.5"
+                title="Quitar este sector"
+              >
+                ✕
+              </button>
+            </span>
+          ))}
+
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedBondSectors([]);
+              setBondHorizonMin("");
+              setBondHorizonMax("");
+              setBondYtmMin("");
+              setBondYtmMax("");
+              setBondYtmPreset("all");
+              setSelectedStockSectors([]);
+              setUsBondMaturityBlock("all");
+              setStockSectorFilter("all");
+            }}
+            className="text-xs text-rose-400 hover:text-rose-300 font-bold underline ml-1 cursor-pointer transition-colors"
+          >
+            Limpiar todos
+          </button>
+        </div>
+      )}
+
       {/* 3. TABLA DE DATOS INSTITUCIONAL COMPACTA (Stitch Data Table) */}
       <div className="bg-white dark:bg-[#0D1424] rounded-2xl border border-slate-200 dark:border-[#1E2D4A] shadow-lg dark:shadow-2xl overflow-hidden transition-colors duration-200">
         {/* Banner de Resumen de Resultados */}
@@ -1803,6 +2315,8 @@ export default function ScreenerSection({
                       ? "Rendimiento (YTM)"
                       : usBondSortKey === "rating"
                       ? "Rating"
+                      : usBondSortKey === "sector"
+                      ? "Sector"
                       : usBondSortKey === "maturity"
                       ? "Vencimiento"
                       : usBondSortKey === "coupon"
@@ -1822,6 +2336,8 @@ export default function ScreenerSection({
                       ? "Potencial (1A)"
                       : stockSortKey === "price"
                       ? "Precio USD"
+                      : stockSortKey === "sector"
+                      ? "Sector"
                       : stockSortKey === "dividend"
                       ? "Dividendo"
                       : stockSortKey === "rec"
@@ -1888,7 +2404,25 @@ export default function ScreenerSection({
                       </div>
                     </th>
 
-                    {/* 3. Rating */}
+                    {/* 3. Sector / Categoría */}
+                    <th
+                      onClick={() => handleUsBondSort("sector")}
+                      className={`py-3.5 px-3 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "sector" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Sector de Negocio"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Sector</span>
+                        {usBondSortKey === "sector" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 4. Rating */}
                     <th
                       onClick={() => handleUsBondSort("rating")}
                       className={`py-3.5 px-3 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
@@ -2021,6 +2555,13 @@ export default function ScreenerSection({
                         <div className="text-xs text-slate-400">{b.sector}</div>
                       </td>
 
+                      <td className="py-3.5 px-3 font-sans">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A] whitespace-nowrap max-w-[145px] truncate" title={b.brand_category}>
+                          <span className="text-xs">{b.brand_icon}</span>
+                          <span className="truncate">{b.brand_category}</span>
+                        </span>
+                      </td>
+
                       <td className="py-3.5 px-3 text-center">
                         <span className="inline-block px-2.5 py-0.5 rounded text-xs font-bold bg-blue-950 text-blue-200 border border-blue-500/30">
                           {b.rating}
@@ -2103,6 +2644,24 @@ export default function ScreenerSection({
                       <div className="flex items-center gap-1.5">
                         <span>Empresa & Industria</span>
                         {stockSortKey === "name" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* Sector */}
+                    <th
+                      onClick={() => handleStockSort("sector")}
+                      className={`py-3.5 px-3 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "sector" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Sector de la Empresa"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Sector</span>
+                        {stockSortKey === "sector" ? (
                           stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
                         ) : (
                           <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
@@ -2248,7 +2807,14 @@ export default function ScreenerSection({
                           {/* Empresa & Sector */}
                           <td className="py-3.5 px-4 font-sans">
                             <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{stock.name}</div>
-                            <div className="text-xs text-slate-700 dark:text-slate-300 font-medium">{stock.sector}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">{stock.has_cedear ? "CEDEAR BYMA" : "S&P 500"}</div>
+                          </td>
+
+                          {/* Sector */}
+                          <td className="py-3.5 px-3 font-sans">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A] whitespace-nowrap max-w-[130px] truncate" title={stock.sector}>
+                              {stock.sector}
+                            </span>
                           </td>
 
                           {/* Recomendación */}
