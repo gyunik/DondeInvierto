@@ -145,15 +145,15 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           </div>
         )}
 
-        {/* 2. Métricas Fundamentales Clave (PER y Market Cap / AUM) */}
+        {/* 2. Métricas Fundamentales Clave (PER, Market Cap, Último Balance, Recomendación) */}
         <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
           <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             {isEtf ? "Métricas Clave del Fondo / ETF" : "Métricas Fundamentales de Mercado"}
           </span>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 mt-2">
             <div className="bg-slate-100/90 dark:bg-[#0e1b2f] p-3 rounded-xl border border-slate-200 dark:border-slate-700/80">
               <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase">
-                {isEtf ? (stock.pe_ratio ? "P/E Ponderado (PER)" : "Costo Anual (Expense)") : "P/E Ratio (PER)"}
+                {isEtf ? (stock.pe_ratio ? "P/E Ponderado" : "Costo Anual") : "P/E Ratio (PER)"}
               </span>
               <div className="text-lg font-black text-slate-900 dark:text-white font-mono mt-0.5">
                 {isEtf
@@ -162,8 +162,8 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                     : `${(stock as EtfItem).expense_ratio}%`
                   : stock.pe_ratio ? `${stock.pe_ratio}x` : "N/D"}
               </div>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
-                {isEtf ? (stock.pe_ratio ? "Valuación de cartera" : "Comisión de administración") : "Múltiplo precio/ganancia"}
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate block">
+                {isEtf ? (stock.pe_ratio ? "Valuación de cartera" : "Comisión de gestión") : "Múltiplo precio/ganancia"}
               </span>
             </div>
 
@@ -171,33 +171,66 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
               <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase">
                 {isEtf ? "Patrimonio (AUM)" : "Capitalización (Market Cap)"}
               </span>
-              <div className="text-lg font-black text-emerald-700 dark:text-[#00F5A0] font-mono mt-0.5">
+              <div className="text-lg font-black text-emerald-700 dark:text-[#00F5A0] font-mono mt-0.5 truncate">
                 {isEtf ? (stock as EtfItem).aum || "N/D" : (stock as StockItem).market_cap || "N/D"}
               </div>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate block">
                 {isEtf ? "Activos bajo gestión" : "Valuación bursátil"}
               </span>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 bg-slate-100/90 dark:bg-[#0e1b2f] p-3 rounded-xl border border-slate-200 dark:border-slate-700/80">
+            <div className="bg-slate-100/90 dark:bg-[#0e1b2f] p-3 rounded-xl border border-slate-200 dark:border-slate-700/80">
+              <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase">
+                {isEtf ? "Rebalanceo" : "Último Balance"}
+              </span>
+              <div className="text-lg font-black text-cyan-700 dark:text-cyan-300 font-mono mt-0.5 truncate">
+                {isEtf
+                  ? "Trimestral"
+                  : (stock as StockItem).last_earnings_date || "Auditado 2026"}
+              </div>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate block">
+                {isEtf
+                  ? "Ajuste de cartera"
+                  : (stock as StockItem).next_earnings_date
+                    ? `Próx: ${(stock as StockItem).next_earnings_date}`
+                    : (stock as StockItem).earnings_quarter || "Resultados trimestrales"}
+              </span>
+            </div>
+
+            <div className="bg-slate-100/90 dark:bg-[#0e1b2f] p-3 rounded-xl border border-slate-200 dark:border-slate-700/80">
               <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase">Recomendación General</span>
               <div
-                className={`text-lg font-black font-mono mt-0.5 ${
-                  /sobreponderar|fuerte compra|compra|buy|outperform/i.test(stock.recommendation || "")
-                    ? "text-[#00FF88]"
+                className={`text-lg font-black font-mono mt-0.5 truncate ${
+                  (stock as StockItem).is_under_review || /revisión|revision/i.test(stock.recommendation || "")
+                    ? "text-purple-600 dark:text-purple-400"
+                    : /sobreponderar|fuerte compra|compra|buy|outperform/i.test(stock.recommendation || "")
+                    ? "text-emerald-700 dark:text-[#00FF88]"
                     : /mantener|neutral|hold/i.test(stock.recommendation || "")
-                    ? "text-amber-400"
-                    : "text-rose-400"
+                    ? "text-amber-500 dark:text-amber-400"
+                    : "text-rose-600 dark:text-rose-400"
                 }`}
               >
-                {stock.recommendation || "Sobreponderar"}
+                {(stock as StockItem).is_under_review ? "En Revisión" : (stock.recommendation || "Sobreponderar")}
               </div>
-              <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">
-                {isEtf ? "Estrategas & Consenso" : "Bancos de Inversión Tier-1"}
+              <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono truncate block">
+                {(stock as StockItem).is_under_review ? "⚠️ Ajuste pendiente" : (isEtf ? "Estrategas & Consenso" : "Consenso Bancos Tier-1")}
               </span>
             </div>
           </div>
         </div>
+
+        {/* Banner de Advertencia de Volatilidad / Revisión Post-Balance */}
+        {Boolean((stock as StockItem).is_under_review || qb?.earnings_lock || (qb?.crash_penalty && qb.crash_penalty > 0)) && (
+          <div className="mt-3.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs font-mono flex items-start gap-2.5">
+            <span className="text-base leading-none">⚠️</span>
+            <div className="space-y-0.5">
+              <span className="font-bold block">Activo en Observación / Descuento Cuantitativo por Volatilidad</span>
+              <p className="text-[11px] leading-relaxed text-amber-900/90 dark:text-amber-200/90">
+                Este activo experimentó una corrección reciente o presenta pronósticos previos al último guidance de resultados. El algoritmo de 3 capas aplicó el candado institucional con un descuento de {qb?.crash_penalty || 35} pts y degradó la recomendación para proteger el capital contra falsas gangas.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* 3. Desglose por Banco de Inversión con Fecha de Publicación */}
         {stock.analyst_consensus?.banks && (
@@ -228,6 +261,11 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                       {"date" in bank && bank.date && (
                         <span className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-mono">
                           • {bank.date}
+                        </span>
+                      )}
+                      {(bank.is_pre_earnings || ((stock as StockItem).is_under_review && !isEtf)) && (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 font-semibold font-mono">
+                          Pre-Balance / En Revisión
                         </span>
                       )}
                     </div>

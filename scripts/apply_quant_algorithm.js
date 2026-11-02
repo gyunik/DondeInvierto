@@ -53,6 +53,12 @@ async function run() {
     stock.score_total = result.score_total;
     stock.scoreTotal = result.score_total;
     stock.quant_breakdown = result.score_breakdown;
+    if (result.is_under_review) {
+      stock.recommendation = "En Revisión";
+      stock.is_under_review = true;
+    } else if (result.is_crashing || result.score_total < 50) {
+      stock.recommendation = "Evitar";
+    }
 
     console.log(`[${stock.ticker.padEnd(5)}] Precio: $${stock.price.toFixed(2).padStart(8)} | Target Algoritmo: $${result.precio_objetivo_estimado.toFixed(2).padStart(8)} | Retorno: ${result.retorno_estimado_pct >= 0 ? '+' : ''}${result.retorno_estimado_pct.toFixed(1)}% | SCORE: ${result.score_total} (Retorno: ${result.score_breakdown.score_retorno}pts, Margen: ${result.score_breakdown.score_margen}pts, Técnico: ${result.score_breakdown.score_tecnico}pts)`);
   });

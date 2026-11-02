@@ -177,7 +177,12 @@ async function main() {
         }
       }
 
-      if (sc >= 85 && ret >= 25) {
+      if (quant.is_under_review) {
+        s.recommendation = 'En Revisión';
+        s.is_under_review = true;
+      } else if (quant.is_crashing || sc < 50) {
+        s.recommendation = 'Evitar';
+      } else if (sc >= 85 && ret >= 25) {
         s.recommendation = 'Fuerte Compra';
       } else if (sc >= 60 && ret > 0) {
         s.recommendation = bankRating === 'Sobreponderar' ? 'Sobreponderar' : 'Compra';

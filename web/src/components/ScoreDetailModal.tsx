@@ -25,6 +25,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
   const isEtf = "expense_ratio" in item && item.expense_ratio !== undefined;
   const isOn = "tir_usd" in item && item.tir_usd !== undefined;
   const isStock = !isEtf && !isOn && "ticker" in item && ("sector" in item || "quant_breakdown" in item);
+  const qb = "quant_breakdown" in item ? (item as StockItem).quant_breakdown : null;
 
   // Subtítulo de categoría
   let categoryLabel: string = "";
@@ -68,7 +69,6 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
 
   if (isStock) {
     const stockItem = item as StockItem;
-    const qb = "quant_breakdown" in stockItem ? stockItem.quant_breakdown : null;
 
     const p1 = qb?.score_retorno ?? Math.round(score * 0.6 * 10) / 10;
     const p2 = qb?.score_margen ?? Math.round(score * 0.25 * 10) / 10;
@@ -365,6 +365,20 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
               </div>
             );
           })}
+          {/* Deducción por Crash Guard / Revisión Post-Balance si aplica */}
+          {Boolean(qb?.crash_penalty && qb.crash_penalty > 0) && (
+            <div className="p-3.5 sm:p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-between font-mono text-xs sm:text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-base">⚠️</span>
+                <span>
+                  <strong>Candado Institucional (Crash Guard / Post-Balance):</strong> Se deducen puntos por volatilidad reciente o pronósticos previos a resultados.
+                </span>
+              </div>
+              <span className="font-bold text-rose-600 dark:text-rose-400 shrink-0 ml-2">
+                -{qb?.crash_penalty} pts
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Resumen de Tesis Cuantitativa */}

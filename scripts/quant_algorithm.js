@@ -115,35 +115,76 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
     }
   }
 
-  // CANDADO CRÍTICO: CRASH GUARD (Protección contra cuchillos cayendo)
-  // Si una acción cae fuertemente en la rueda de hoy:
+  // CANDADO CRÍTICO: CRASH GUARD & POST-EARNINGS LOCK (Protección contra cuchillos cayendo)
+  // 1. Detección de caída intradiaria
   const day_change = typeof stock.day_change === 'number' ? stock.day_change : 0;
+  // 2. Detección de caída semanal / multi-sesión (ej: desplome en la rueda previa o últimos 5 días)
+  const perf_5d = typeof stock.perf_5d === 'number' ? stock.perf_5d : (typeof stock.week_change === 'number' ? stock.week_change : (day_change * 1.5));
+  // 3. Flag de revisión pendiente por balance o quiebre de guidance
+  const is_under_review = Boolean(stock.is_under_review);
+
   let crash_penalty = 0;
   let is_crashing = false;
+  let earnings_lock = false;
 
-  if (day_change <= -10.0) {
-    // Desplome masivo (-10% o peor, ej. balance fallido)
+  if (day_change <= -10.0 || perf_5d <= -18.0) {
+    // Desplome masivo (-10% en el día o -18% semanal)
     crash_penalty = 50;
     is_crashing = true;
-  } else if (day_change <= -4.0) {
-    // Caída severa intradiaria (-4% a -10%)
+  } else if (day_change <= -4.0 || perf_5d <= -9.0) {
+    // Caída severa (-4% en el día o -9% semanal)
     crash_penalty = 25;
     is_crashing = true;
   }
 
+  // Si el activo está bajo revisión post-balance o por advertencia de resultados:
+  if (is_under_review) {
+    earnings_lock = true;
+    crash_penalty = Math.max(crash_penalty, 35);
+  }
+
+  // Si está cayendo o en revisión, el algoritmo no permite inflar el precio objetivo por consenso previo
+  let precio_final = precio_objetivo_estimado;
+  let retorno_final = retorno_estimado_pct;
+
+  if (is_under_review || is_crashing) {
+    // Descuenta el precio objetivo un 20% adicional por riesgo de recorte de analistas
+    precio_final = Math.round(Math.min(precio_objetivo_estimado, precio_actual * 1.08) * 100) / 100;
+    retorno_final = Math.round(((precio_final - precio_actual) / precio_actual) * 1000) / 10;
+  }
+
   const score_total = Math.min(100, Math.max(0, Math.round((score_retorno + score_margen + score_tecnico - crash_penalty) * 10) / 10));
 
+  // Clasificación de Recomendación según disciplina cuantitativa
+  let recomendacion_cuantitativa = "Mantener";
+  if (is_under_review) {
+    recomendacion_cuantitativa = "En Revisión";
+  } else if (is_crashing || score_total < 50) {
+    recomendacion_cuantitativa = "Evitar";
+  } else if (score_total >= 85) {
+    recomendacion_cuantitativa = "Fuerte Compra";
+  } else if (score_total >= 60) {
+    recomendacion_cuantitativa = "Compra";
+  } else {
+    recomendacion_cuantitativa = "Mantener";
+  }
+
   return {
-    precio_objetivo_estimado,
-    retorno_estimado_pct,
+    precio_objetivo_estimado: precio_final,
+    retorno_estimado_pct: retorno_final,
     score_total,
     is_crashing,
     crash_penalty,
+    earnings_lock,
+    is_under_review,
+    recomendacion_cuantitativa,
     score_breakdown: {
       score_retorno,
       score_margen,
       score_tecnico,
       crash_penalty,
+      earnings_lock,
+      is_under_review,
       per_bancos: Math.round(per_bancos * 100) / 100,
       per_base: Math.round(per_base * 100) / 100,
       per_ajustado: Math.round(per_ajustado * 100) / 100,

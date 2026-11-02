@@ -15,6 +15,9 @@ export interface QuantBreakdown {
   tasa_actual_fed?: number;
   tasa_proyectada_fed_1a?: number;
   cambio_tasas?: number;
+  crash_penalty?: number;
+  earnings_lock?: boolean;
+  is_under_review?: boolean;
 }
 
 export interface BankConsensusItem {
@@ -22,6 +25,7 @@ export interface BankConsensusItem {
   target: number;
   rating: string;
   date?: string;
+  is_pre_earnings?: boolean;
 }
 
 export interface AnalystConsensus {
@@ -57,6 +61,11 @@ export interface StockItem {
   sma_200?: number;
   eps_fwd?: number | null;
   per_mediana_5a?: number;
+  // Métricas y Fechas de Balance
+  last_earnings_date?: string;
+  next_earnings_date?: string;
+  earnings_quarter?: string;
+  is_under_review?: boolean;
   // Campos del Algoritmo Cuantitativo de 3 Capas
   precio_objetivo_algoritmo?: number;
   precioObjetivoAlgoritmo?: number;
