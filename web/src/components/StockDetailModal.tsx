@@ -112,7 +112,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                 </span>
               </div>
               <div className="text-xs font-mono text-slate-600 dark:text-slate-300">
-                Consenso Wall Street: <strong className="text-slate-900 dark:text-white">${stock.target_price?.toFixed(2)} USD</strong>
+                Consenso Wall Street: <strong className="text-slate-900 dark:text-white">${(stock.analyst_consensus?.target_mean ?? stock.target_price ?? stock.price)?.toFixed(2)} USD</strong>
               </div>
             </div>
 

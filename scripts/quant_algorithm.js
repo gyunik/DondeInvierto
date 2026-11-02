@@ -31,7 +31,7 @@ function hasValidQuantData(stock) {
  */
 function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   const precio_actual = stock.price || 100;
-  const target_analistas_promedio = stock.target_price || precio_actual;
+  const target_analistas_promedio = stock.analyst_consensus?.target_mean || stock.target_price || precio_actual;
   const eps_fwd = stock.eps_fwd;
 
   // Si no tiene datos suficientes, devolver null para descarte
