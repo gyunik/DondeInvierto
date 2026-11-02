@@ -9,6 +9,9 @@ import { ArrowRight, Calculator } from "lucide-react";
 export const metadata: Metadata = {
   title: "Mercado & Screener de Activos | Donde Invierto",
   description: "Explora rankings cuantitativos de CEDEARs con dividendos o crecimiento, Obligaciones Negociables en dólares y acciones del Merval.",
+  alternates: {
+    canonical: "/screener",
+  },
 };
 
 export default function ScreenerPage() {

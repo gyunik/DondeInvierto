@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: "Simulador de Cartera Cuantitativa | Donde Invierto",
   description:
     "Asignación óptima de capital con Ponderación por Inverso de la Volatilidad (Risk Parity) y Sector Cap. Backtest auditado con +25.96% de retorno acumulado.",
+  alternates: {
+    canonical: "/simulador",
+  },
 };
 
 export default async function SimuladorPage(props: {

@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   creator: "Donde Invierto",
   publisher: "Donde Invierto",
   alternates: {
-    canonical: siteUrl,
+    canonical: "/",
   },
   openGraph: {
     type: "website",

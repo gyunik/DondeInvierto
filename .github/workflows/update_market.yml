@@ -2,17 +2,13 @@ name: Actualización Automática de Mercado (Donde Invierto)
 
 on:
   schedule:
-    # 1. Apertura / Pre-Market: 09:30 hs ART (12:30 UTC) - Lunes a Viernes
-    - cron: '30 12 * * 1-5'
-    # 2. Mitad de Rueda: 13:30 hs ART (16:30 UTC) - Lunes a Viernes
-    - cron: '30 16 * * 1-5'
-    # 3. Cierre Oficial BYMA & Wall Street: 18:15 hs ART (21:15 UTC) - Lunes a Viernes
-    - cron: '15 21 * * 1-5'
-    # 4. Post-Market y Liquidación Definitiva: 19:30 hs ART (22:30 UTC) - Lunes a Viernes
+    # Rueda bursátil activa (Lunes a Viernes): Cada 1 hora entre las 10:15 y las 18:15 hs ART (13:15 a 21:15 UTC)
+    - cron: '15 13-21 * * 1-5'
+    # Cierre definitivo y Post-Market: 19:30 hs ART (22:30 UTC) - Lunes a Viernes
     - cron: '30 22 * * 1-5'
-    # 5. Sincronización de Fin de Semana: Sábados y Domingos 13:00 hs ART (16:00 UTC)
+    # Sincronización de Fin de Semana: Sábados y Domingos 13:00 hs ART (16:00 UTC)
     - cron: '0 16 * * 0,6'
-    # 6. Previa de Apertura Semanal: Domingos 21:30 hs ART (00:30 UTC del Lunes)
+    # Previa de Apertura Semanal: Domingos 21:30 hs ART (00:30 UTC del Lunes)
     - cron: '30 0 * * 1'
   workflow_dispatch:
     inputs:
