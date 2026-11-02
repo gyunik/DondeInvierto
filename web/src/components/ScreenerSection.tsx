@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   LayoutGrid,
   List,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 import ArgentinaFlag from "./ArgentinaFlag";
 import UsaFlag from "./UsaFlag";
@@ -22,6 +25,20 @@ import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
 export type UsBondItem = (typeof marketData.us_bonds)[0];
 export type StockItem = (typeof marketData.stocks)[0];
 export type EtfItem = (typeof marketData.etfs)[0];
+
+const RATING_WEIGHTS: Record<string, number> = {
+  AAA: 100,
+  "AA+": 90,
+  AA: 80,
+  "AA-": 70,
+  "A+": 60,
+  A: 50,
+  "A-": 40,
+  "BBB+": 30,
+  BBB: 20,
+  "BBB-": 10,
+  "BB+": 5,
+};
 
 interface ScreenerSectionProps {
   initialTab?: string;
@@ -58,8 +75,85 @@ export default function ScreenerSection({
   const [usBondMaturityBlock, setUsBondMaturityBlock] = useState<"all" | "short" | "medium" | "long">("all");
   const [usBondBrandCategory, setUsBondBrandCategory] = useState<string>("all");
   const [usBondSafetyFilter, setUsBondSafetyFilter] = useState<"all" | "Seguridad Máxima" | "Riesgo Ultra Bajo">("all");
-  const [usBondSort, setUsBondSort] = useState<"tir" | "score" | "maturity">("tir");
-  const brokerFeePercent = 0.5;
+
+  // Tipos y estados de ordenamiento interactivo por columna
+  type UsBondSortKey = "ticker" | "name" | "rating" | "maturity" | "tir" | "coupon" | "price" | "score";
+  const [usBondSortKey, setUsBondSortKey] = useState<UsBondSortKey>("score");
+  const [usBondSortDir, setUsBondSortDir] = useState<"asc" | "desc">("desc");
+
+  type StockSortKey = "ticker" | "name" | "rec" | "cedear_price" | "price" | "upside" | "dividend" | "score";
+  const [stockSortKey, setStockSortKey] = useState<StockSortKey>("score");
+  const [stockSortDir, setStockSortDir] = useState<"asc" | "desc">("desc");
+
+  type EtfSortKey = "ticker" | "name" | "price" | "upside" | "dividend" | "expense" | "score";
+  const [etfSortKey, setEtfSortKey] = useState<EtfSortKey>("score");
+  const [etfSortDir, setEtfSortDir] = useState<"asc" | "desc">("desc");
+
+  type OnSortKey = "ticker" | "issuer" | "rating" | "law" | "tir" | "coupon" | "maturity" | "score";
+  const [onSortKey, setOnSortKey] = useState<OnSortKey>("tir");
+  const [onSortDir, setOnSortDir] = useState<"asc" | "desc">("desc");
+
+  type MervalSortKey = "ticker" | "sector" | "price" | "change" | "pe" | "score";
+  const [mervalSortKey, setMervalSortKey] = useState<MervalSortKey>("score");
+  const [mervalSortDir, setMervalSortDir] = useState<"asc" | "desc">("desc");
+
+  type SovSortKey = "ticker" | "name" | "law" | "tir" | "parity" | "maturity" | "score";
+  const [sovSortKey, setSovSortKey] = useState<SovSortKey>("tir");
+  const [sovSortDir, setSovSortDir] = useState<"asc" | "desc">("desc");
+
+  const handleUsBondSort = (key: UsBondSortKey) => {
+    if (usBondSortKey === key) {
+      setUsBondSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setUsBondSortKey(key);
+      setUsBondSortDir(key === "ticker" || key === "name" || key === "maturity" ? "asc" : "desc");
+    }
+  };
+
+  const handleStockSort = (key: StockSortKey) => {
+    if (stockSortKey === key) {
+      setStockSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setStockSortKey(key);
+      setStockSortDir(key === "ticker" || key === "name" ? "asc" : "desc");
+    }
+  };
+
+  const handleEtfSort = (key: EtfSortKey) => {
+    if (etfSortKey === key) {
+      setEtfSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setEtfSortKey(key);
+      setEtfSortDir(key === "ticker" || key === "name" ? "asc" : "desc");
+    }
+  };
+
+  const handleOnSort = (key: OnSortKey) => {
+    if (onSortKey === key) {
+      setOnSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setOnSortKey(key);
+      setOnSortDir(key === "ticker" || key === "issuer" || key === "maturity" ? "asc" : "desc");
+    }
+  };
+
+  const handleMervalSort = (key: MervalSortKey) => {
+    if (mervalSortKey === key) {
+      setMervalSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setMervalSortKey(key);
+      setMervalSortDir(key === "ticker" || key === "sector" ? "asc" : "desc");
+    }
+  };
+
+  const handleSovSort = (key: SovSortKey) => {
+    if (sovSortKey === key) {
+      setSovSortDir((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSovSortKey(key);
+      setSovSortDir(key === "ticker" || key === "name" || key === "maturity" ? "asc" : "desc");
+    }
+  };
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
@@ -128,9 +222,39 @@ export default function ScreenerSection({
       return true;
     })
     .sort((a, b) => {
-      const scoreB = b.score_total ?? b.scoreTotal ?? b.score ?? 0;
-      const scoreA = a.score_total ?? a.scoreTotal ?? a.score ?? 0;
-      return scoreB - scoreA;
+      let comp = 0;
+      switch (stockSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "name":
+          comp = a.name.localeCompare(b.name);
+          break;
+        case "rec":
+          comp = (a.recommendation || "").localeCompare(b.recommendation || "");
+          break;
+        case "cedear_price":
+          comp = (a.cedear_price_ars || 0) - (b.cedear_price_ars || 0);
+          break;
+        case "price":
+          comp = (a.price || 0) - (b.price || 0);
+          break;
+        case "upside":
+          const retA = a.retorno_estimado_pct ?? a.retornoEstimadoPct ?? a.upside ?? 0;
+          const retB = b.retorno_estimado_pct ?? b.retornoEstimadoPct ?? b.upside ?? 0;
+          comp = retA - retB;
+          break;
+        case "dividend":
+          comp = (a.dividend_yield || 0) - (b.dividend_yield || 0);
+          break;
+        case "score":
+        default:
+          const scoreA = a.score_total ?? a.scoreTotal ?? a.score ?? 0;
+          const scoreB = b.score_total ?? b.scoreTotal ?? b.score ?? 0;
+          comp = scoreA - scoreB;
+          break;
+      }
+      return stockSortDir === "asc" ? comp : -comp;
     });
 
   // 2. Filtrado de CEDEARs (Solo acciones con CEDEAR en Argentina)
@@ -157,9 +281,39 @@ export default function ScreenerSection({
       return true;
     })
     .sort((a, b) => {
-      const scoreB = b.score_total ?? b.scoreTotal ?? b.score ?? 0;
-      const scoreA = a.score_total ?? a.scoreTotal ?? a.score ?? 0;
-      return scoreB - scoreA;
+      let comp = 0;
+      switch (stockSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "name":
+          comp = a.name.localeCompare(b.name);
+          break;
+        case "rec":
+          comp = (a.recommendation || "").localeCompare(b.recommendation || "");
+          break;
+        case "cedear_price":
+          comp = (a.cedear_price_ars || 0) - (b.cedear_price_ars || 0);
+          break;
+        case "price":
+          comp = (a.price || 0) - (b.price || 0);
+          break;
+        case "upside":
+          const retA = a.retorno_estimado_pct ?? a.retornoEstimadoPct ?? a.upside ?? 0;
+          const retB = b.retorno_estimado_pct ?? b.retornoEstimadoPct ?? b.upside ?? 0;
+          comp = retA - retB;
+          break;
+        case "dividend":
+          comp = (a.dividend_yield || 0) - (b.dividend_yield || 0);
+          break;
+        case "score":
+        default:
+          const scoreA = a.score_total ?? a.scoreTotal ?? a.score ?? 0;
+          const scoreB = b.score_total ?? b.scoreTotal ?? b.score ?? 0;
+          comp = scoreA - scoreB;
+          break;
+      }
+      return stockSortDir === "asc" ? comp : -comp;
     });
 
   // 3. Filtrado de ETFs de Wall Street
@@ -178,7 +332,34 @@ export default function ScreenerSection({
       if (etfManagerFilter !== "all" && e.manager !== etfManagerFilter) return false;
       return true;
     })
-    .sort((a, b) => (b.score || 0) - (a.score || 0));
+    .sort((a, b) => {
+      let comp = 0;
+      switch (etfSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "name":
+          comp = a.name.localeCompare(b.name);
+          break;
+        case "price":
+          comp = (a.price || 0) - (b.price || 0);
+          break;
+        case "upside":
+          comp = (a.upside || 0) - (b.upside || 0);
+          break;
+        case "dividend":
+          comp = (a.dividend_yield || 0) - (b.dividend_yield || 0);
+          break;
+        case "expense":
+          comp = (a.expense_ratio || 0) - (b.expense_ratio || 0);
+          break;
+        case "score":
+        default:
+          comp = (a.score || 0) - (b.score || 0);
+          break;
+      }
+      return etfSortDir === "asc" ? comp : -comp;
+    });
 
   // 4. Filtrado de Bonos Corporativos & Treasuries USA High Grade
   let filteredUsBonds = us_bonds
@@ -214,47 +395,154 @@ export default function ScreenerSection({
       return true;
     })
     .sort((a, b) => {
-      if (usBondSort === "tir") {
-        const netB = (b.tir_usd || 0) - brokerFeePercent / (b.maturity_years || 1);
-        const netA = (a.tir_usd || 0) - brokerFeePercent / (a.maturity_years || 1);
-        return netB - netA;
+      let comp = 0;
+      switch (usBondSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "name":
+          comp = (a.name || "").localeCompare(b.name || "");
+          break;
+        case "rating":
+          comp = (RATING_WEIGHTS[a.rating] || 0) - (RATING_WEIGHTS[b.rating] || 0);
+          break;
+        case "maturity":
+          comp = (a.maturity_years || 0) - (b.maturity_years || 0);
+          break;
+        case "tir":
+          comp = (a.tir_usd || 0) - (b.tir_usd || 0);
+          break;
+        case "coupon":
+          comp = (a.coupon || 0) - (b.coupon || 0);
+          break;
+        case "price":
+          comp = (a.price_usd || 0) - (b.price_usd || 0);
+          break;
+        case "score":
+        default:
+          comp = (a.score || 0) - (b.score || 0);
+          break;
       }
-      if (usBondSort === "maturity") {
-        return (a.maturity_years || 0) - (b.maturity_years || 0);
-      }
-      return (b.score || 0) - (a.score || 0);
+      return usBondSortDir === "asc" ? comp : -comp;
     });
 
   // 5. Filtrado de ONs en Dólares (Argentina)
-  let filteredOns = ons.filter((o) => {
-    const q = searchQuery.toLowerCase().trim();
-    return (
-      !q ||
-      o.ticker.toLowerCase().includes(q) ||
-      o.name.toLowerCase().includes(q) ||
-      o.issuer.toLowerCase().includes(q)
-    );
-  });
+  let filteredOns = ons
+    .filter((o) => {
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        !q ||
+        o.ticker.toLowerCase().includes(q) ||
+        o.name.toLowerCase().includes(q) ||
+        o.issuer.toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      let comp = 0;
+      switch (onSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "issuer":
+          comp = (a.issuer || a.name || "").localeCompare(b.issuer || b.name || "");
+          break;
+        case "rating":
+          comp = (RATING_WEIGHTS[a.rating] || 0) - (RATING_WEIGHTS[b.rating] || 0);
+          break;
+        case "law":
+          comp = (a.law || "").localeCompare(b.law || "");
+          break;
+        case "tir":
+          comp = (a.tir_usd || 0) - (b.tir_usd || 0);
+          break;
+        case "coupon":
+          comp = (a.coupon || 0) - (b.coupon || 0);
+          break;
+        case "maturity":
+          comp = (parseInt(a.maturity) || 0) - (parseInt(b.maturity) || 0);
+          break;
+        case "score":
+        default:
+          comp = (a.score || 0) - (b.score || 0);
+          break;
+      }
+      return onSortDir === "asc" ? comp : -comp;
+    });
 
   // 6. Filtrado de Merval (Acciones Locales)
-  let filteredMerval = argentina.merval.filter((m) => {
-    const q = searchQuery.toLowerCase().trim();
-    return (
-      !q ||
-      m.ticker.toLowerCase().includes(q) ||
-      m.name.toLowerCase().includes(q)
-    );
-  });
+  let filteredMerval = argentina.merval
+    .filter((m) => {
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        !q ||
+        m.ticker.toLowerCase().includes(q) ||
+        m.name.toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      let comp = 0;
+      switch (mervalSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "sector":
+          comp = (a.sector || "").localeCompare(b.sector || "");
+          break;
+        case "price":
+          comp = (a.price_ars || 0) - (b.price_ars || 0);
+          break;
+        case "change":
+          comp = (a.day_change || 0) - (b.day_change || 0);
+          break;
+        case "pe":
+          comp = (a.pe_ratio || 0) - (b.pe_ratio || 0);
+          break;
+        case "score":
+        default:
+          comp = (a.score || 0) - (b.score || 0);
+          break;
+      }
+      return mervalSortDir === "asc" ? comp : -comp;
+    });
 
   // 7. Filtrado de Bonos Soberanos (Argentina)
-  let filteredSovereign = argentina.sovereign_bonds.filter((b) => {
-    const q = searchQuery.toLowerCase().trim();
-    return (
-      !q ||
-      b.ticker.toLowerCase().includes(q) ||
-      b.name.toLowerCase().includes(q)
-    );
-  });
+  let filteredSovereign = argentina.sovereign_bonds
+    .filter((b) => {
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        !q ||
+        b.ticker.toLowerCase().includes(q) ||
+        b.name.toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      let comp = 0;
+      switch (sovSortKey) {
+        case "ticker":
+          comp = a.ticker.localeCompare(b.ticker);
+          break;
+        case "name":
+          comp = (a.name || "").localeCompare(b.name || "");
+          break;
+        case "law":
+          comp = (a.law || "").localeCompare(b.law || "");
+          break;
+        case "tir":
+          comp = (a.tir_usd || 0) - (b.tir_usd || 0);
+          break;
+        case "parity":
+          comp = (a.parity || 0) - (b.parity || 0);
+          break;
+        case "maturity":
+          comp = (parseInt(a.maturity_date?.slice(-4) || "0")) - (parseInt(b.maturity_date?.slice(-4) || "0"));
+          break;
+        case "score":
+        default:
+          comp = (a.score || 0) - (b.score || 0);
+          break;
+      }
+      return sovSortDir === "asc" ? comp : -comp;
+    });
 
   if (maxItems) {
     filteredStocks = filteredStocks.slice(0, maxItems);
@@ -1422,13 +1710,22 @@ export default function ScreenerSection({
               </label>
               <select
                 id="order-bonds"
-                value={usBondSort}
-                onChange={(e) => setUsBondSort(e.target.value as "tir" | "score" | "maturity")}
-                className="bg-[#111B30] border border-[#1E2D4A] rounded-lg text-xs sm:text-sm py-1.5 pl-2.5 pr-8 text-white focus:outline-none focus:ring-1 focus:ring-[#00FF88] font-medium cursor-pointer"
+                value={usBondSortKey}
+                onChange={(e) => {
+                  const val = e.target.value as UsBondSortKey;
+                  setUsBondSortKey(val);
+                  setUsBondSortDir(val === "ticker" || val === "name" || val === "maturity" ? "asc" : "desc");
+                }}
+                className="bg-slate-100 dark:bg-[#111B30] border border-slate-300 dark:border-[#1E2D4A] rounded-lg text-xs sm:text-sm py-1.5 pl-2.5 pr-8 text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500 font-medium cursor-pointer"
               >
-                <option value="tir">Mayor Rendimiento (YTM)</option>
-                <option value="score">Solidez Institucional (Score)</option>
-                <option value="maturity">Vencimiento Próximo</option>
+                <option value="score">Quant Score (Mayor solidez)</option>
+                <option value="tir">Rendimiento (YTM más alto)</option>
+                <option value="rating">Rating Crediticio (Calidad AAA/AA)</option>
+                <option value="maturity">Horizonte / Vencimiento</option>
+                <option value="coupon">Tasa de Cupón</option>
+                <option value="price">Precio USD</option>
+                <option value="ticker">Ticker (A - Z)</option>
+                <option value="name">Emisor (A - Z)</option>
               </select>
             </div>
           )}
@@ -1491,7 +1788,46 @@ export default function ScreenerSection({
                 ? `${filteredMerval.length} Acciones Merval`
                 : `${filteredSovereign.length} Bonos Soberanos`}
             </span>
-            <span className="text-slate-600 dark:text-slate-400 hidden sm:inline font-medium">• Ordenado por modelo cuantitativo institucional</span>
+            <span className="text-slate-600 dark:text-slate-400 hidden sm:inline font-medium">
+              • {activeMarket === "wall_street" && wallStreetSubTab === "bonds"
+                ? `Ordenado por ${
+                    usBondSortKey === "score"
+                      ? "Quant Score"
+                      : usBondSortKey === "tir"
+                      ? "Rendimiento (YTM)"
+                      : usBondSortKey === "rating"
+                      ? "Rating"
+                      : usBondSortKey === "maturity"
+                      ? "Vencimiento"
+                      : usBondSortKey === "coupon"
+                      ? "Cupón"
+                      : usBondSortKey === "price"
+                      ? "Precio"
+                      : usBondSortKey === "ticker"
+                      ? "Ticker"
+                      : "Emisor"
+                  } (${usBondSortDir === "asc" ? "Menor a Mayor ▲" : "Mayor a Menor ▼"})`
+                : (activeMarket === "wall_street" && wallStreetSubTab === "stocks") ||
+                  (activeMarket === "argentina" && argSubTab === "cedears")
+                ? `Ordenado por ${
+                    stockSortKey === "score"
+                      ? "Quant Score"
+                      : stockSortKey === "upside"
+                      ? "Potencial (1A)"
+                      : stockSortKey === "price"
+                      ? "Precio USD"
+                      : stockSortKey === "dividend"
+                      ? "Dividendo"
+                      : stockSortKey === "rec"
+                      ? "Recomendación"
+                      : stockSortKey === "cedear_price"
+                      ? "Precio CEDEAR"
+                      : stockSortKey === "ticker"
+                      ? "Ticker"
+                      : "Empresa"
+                  } (${stockSortDir === "asc" ? "Menor a Mayor ▲" : "Mayor a Menor ▼"})`
+                : "Ordenado por modelo cuantitativo institucional"}
+            </span>
           </div>
 
           <div className="flex items-center space-x-3 text-slate-600 dark:text-slate-400 text-xs font-medium">
@@ -1510,14 +1846,150 @@ export default function ScreenerSection({
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
-                    <th className="py-3.5 px-4 font-semibold">Ticker / Activo</th>
-                    <th className="py-3.5 px-4 font-semibold">Emisor & Industria</th>
-                    <th className="py-3.5 px-3 font-semibold text-center">Rating</th>
-                    <th className="py-3.5 px-4 font-semibold">Horizonte / Venc.</th>
-                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">YTM (Rendimiento)</th>
-                    <th className="py-3.5 px-3 font-semibold text-right">Cupón</th>
-                    <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    {/* 1. Ticker / Activo */}
+                    <th
+                      onClick={() => handleUsBondSort("ticker")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "ticker" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ticker"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Ticker / Activo</span>
+                        {usBondSortKey === "ticker" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 2. Emisor & Industria */}
+                    <th
+                      onClick={() => handleUsBondSort("name")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "name" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Emisor & Industria"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Emisor & Industria</span>
+                        {usBondSortKey === "name" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 3. Rating */}
+                    <th
+                      onClick={() => handleUsBondSort("rating")}
+                      className={`py-3.5 px-3 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "rating" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Calificación Crediticia (Rating)"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Rating</span>
+                        {usBondSortKey === "rating" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 4. Horizonte / Venc. */}
+                    <th
+                      onClick={() => handleUsBondSort("maturity")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "maturity" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Plazo / Vencimiento"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Horizonte / Venc.</span>
+                        {usBondSortKey === "maturity" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 5. YTM (Rendimiento) */}
+                    <th
+                      onClick={() => handleUsBondSort("tir")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "tir" ? "text-emerald-700 dark:text-[#00FF88]" : "text-emerald-600 dark:text-[#00FF88]"
+                      }`}
+                      title="Ordenar por Rendimiento Anual (YTM)"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>YTM (Rendimiento)</span>
+                        {usBondSortKey === "tir" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 6. Cupón */}
+                    <th
+                      onClick={() => handleUsBondSort("coupon")}
+                      className={`py-3.5 px-3 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "coupon" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Tasa de Cupón"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Cupón</span>
+                        {usBondSortKey === "coupon" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 7. Precio USD */}
+                    <th
+                      onClick={() => handleUsBondSort("price")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "price" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Precio USD"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Precio USD</span>
+                        {usBondSortKey === "price" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 8. Quant Score */}
+                    <th
+                      onClick={() => handleUsBondSort("score")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "score" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Quant Score Institucional"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Quant Score</span>
+                        {usBondSortKey === "score" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
@@ -1598,14 +2070,144 @@ export default function ScreenerSection({
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
-                    <th className="py-3.5 px-4 font-semibold">Ticker / Activo</th>
-                    <th className="py-3.5 px-4 font-semibold">Empresa & Industria</th>
-                    <th className="py-3.5 px-3 font-semibold text-center">Recomendación</th>
-                    {activeMarket === "argentina" && <th className="py-3.5 px-4 font-semibold text-right">Precio CEDEAR (ARS)</th>}
-                    <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
-                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">Potencial (1A)</th>
-                    <th className="py-3.5 px-3 font-semibold text-right">Dividendo</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th
+                      onClick={() => handleStockSort("ticker")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "ticker" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ticker"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Ticker / Activo</span>
+                        {stockSortKey === "ticker" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleStockSort("name")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "name" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Empresa & Industria"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Empresa & Industria</span>
+                        {stockSortKey === "name" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleStockSort("rec")}
+                      className={`py-3.5 px-3 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "rec" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Recomendación"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Recomendación</span>
+                        {stockSortKey === "rec" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {activeMarket === "argentina" && (
+                      <th
+                        onClick={() => handleStockSort("cedear_price")}
+                        className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                          stockSortKey === "cedear_price" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                        }`}
+                        title="Ordenar por Precio CEDEAR (ARS)"
+                      >
+                        <div className="inline-flex items-center justify-end gap-1.5">
+                          <span>Precio CEDEAR (ARS)</span>
+                          {stockSortKey === "cedear_price" ? (
+                            stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                          ) : (
+                            <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                          )}
+                        </div>
+                      </th>
+                    )}
+
+                    <th
+                      onClick={() => handleStockSort("price")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "price" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Precio USD"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Precio USD</span>
+                        {stockSortKey === "price" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleStockSort("upside")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "upside" ? "text-emerald-700 dark:text-[#00FF88]" : "text-emerald-600 dark:text-[#00FF88]"
+                      }`}
+                      title="Ordenar por Potencial a 1 Año"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Potencial (1A)</span>
+                        {stockSortKey === "upside" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleStockSort("dividend")}
+                      className={`py-3.5 px-3 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "dividend" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Dividendo Anual"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Dividendo</span>
+                        {stockSortKey === "dividend" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleStockSort("score")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        stockSortKey === "score" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Quant Score"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Quant Score</span>
+                        {stockSortKey === "score" ? (
+                          stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
@@ -1733,13 +2335,125 @@ export default function ScreenerSection({
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
-                    <th className="py-3.5 px-4 font-semibold">Ticker / ETF</th>
-                    <th className="py-3.5 px-4 font-semibold">Categoría & Manager</th>
-                    <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
-                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">Upside (1A)</th>
-                    <th className="py-3.5 px-3 font-semibold text-right">Dividendo</th>
-                    <th className="py-3.5 px-3 font-semibold text-right">Costo Anual</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th
+                      onClick={() => handleEtfSort("ticker")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "ticker" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ticker"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Ticker / ETF</span>
+                        {etfSortKey === "ticker" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleEtfSort("name")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "name" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Categoría & Manager"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Categoría & Manager</span>
+                        {etfSortKey === "name" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleEtfSort("price")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "price" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Precio USD"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Precio USD</span>
+                        {etfSortKey === "price" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleEtfSort("upside")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "upside" ? "text-emerald-700 dark:text-[#00FF88]" : "text-emerald-600 dark:text-[#00FF88]"
+                      }`}
+                      title="Ordenar por Upside (1A)"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Upside (1A)</span>
+                        {etfSortKey === "upside" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleEtfSort("dividend")}
+                      className={`py-3.5 px-3 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "dividend" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Dividendo"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Dividendo</span>
+                        {etfSortKey === "dividend" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleEtfSort("expense")}
+                      className={`py-3.5 px-3 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "expense" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Costo Anual (Expense Ratio)"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Costo Anual</span>
+                        {etfSortKey === "expense" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleEtfSort("score")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        etfSortKey === "score" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Quant Score"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Quant Score</span>
+                        {etfSortKey === "score" ? (
+                          etfSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
@@ -1805,14 +2519,142 @@ export default function ScreenerSection({
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
-                    <th className="py-3.5 px-4 font-semibold">Ticker / Instrumento</th>
-                    <th className="py-3.5 px-4 font-semibold">Emisor & Industria</th>
-                    <th className="py-3.5 px-3 font-semibold text-center">Rating</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Ley</th>
-                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">TIR Anual (USD)</th>
-                    <th className="py-3.5 px-3 font-semibold text-right">Cupón</th>
-                    <th className="py-3.5 px-4 font-semibold">Vencimiento</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th
+                      onClick={() => handleOnSort("ticker")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "ticker" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ticker"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Ticker / Instrumento</span>
+                        {onSortKey === "ticker" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("issuer")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "issuer" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Emisor & Industria"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Emisor & Industria</span>
+                        {onSortKey === "issuer" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("rating")}
+                      className={`py-3.5 px-3 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "rating" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Rating"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Rating</span>
+                        {onSortKey === "rating" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("law")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "law" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Jurisdicción / Ley"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Ley</span>
+                        {onSortKey === "law" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("tir")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "tir" ? "text-emerald-700 dark:text-[#00FF88]" : "text-emerald-600 dark:text-[#00FF88]"
+                      }`}
+                      title="Ordenar por TIR Anual en Dólares"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>TIR Anual (USD)</span>
+                        {onSortKey === "tir" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("coupon")}
+                      className={`py-3.5 px-3 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "coupon" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Tasa de Cupón"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Cupón</span>
+                        {onSortKey === "coupon" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("maturity")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "maturity" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Año de Vencimiento"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Vencimiento</span>
+                        {onSortKey === "maturity" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleOnSort("score")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        onSortKey === "score" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Quant Score"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Quant Score</span>
+                        {onSortKey === "score" ? (
+                          onSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
@@ -1884,12 +2726,108 @@ export default function ScreenerSection({
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
-                    <th className="py-3.5 px-4 font-semibold">Ticker / Empresa</th>
-                    <th className="py-3.5 px-4 font-semibold">Sector</th>
-                    <th className="py-3.5 px-4 font-semibold text-right">Precio (ARS)</th>
-                    <th className="py-3.5 px-4 font-semibold text-right">Variación Día</th>
-                    <th className="py-3.5 px-3 font-semibold text-center">P/E Ratio</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th
+                      onClick={() => handleMervalSort("ticker")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        mervalSortKey === "ticker" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ticker"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Ticker / Empresa</span>
+                        {mervalSortKey === "ticker" ? (
+                          mervalSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleMervalSort("sector")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        mervalSortKey === "sector" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Sector"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Sector</span>
+                        {mervalSortKey === "sector" ? (
+                          mervalSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleMervalSort("price")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        mervalSortKey === "price" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Precio en Pesos (ARS)"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Precio (ARS)</span>
+                        {mervalSortKey === "price" ? (
+                          mervalSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleMervalSort("change")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        mervalSortKey === "change" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Variación Diaria"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Variación Día</span>
+                        {mervalSortKey === "change" ? (
+                          mervalSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleMervalSort("pe")}
+                      className={`py-3.5 px-3 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        mervalSortKey === "pe" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ratio P/E"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>P/E Ratio</span>
+                        {mervalSortKey === "pe" ? (
+                          mervalSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleMervalSort("score")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        mervalSortKey === "score" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Quant Score"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Quant Score</span>
+                        {mervalSortKey === "score" ? (
+                          mervalSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
@@ -1951,13 +2889,125 @@ export default function ScreenerSection({
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-[#1E2D4A] bg-slate-100 dark:bg-[#070B12] text-xs font-mono uppercase text-slate-600 dark:text-slate-400 tracking-wider">
-                    <th className="py-3.5 px-4 font-semibold">Ticker / Bono</th>
-                    <th className="py-3.5 px-4 font-semibold">Descripción</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Ley</th>
-                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">TIR (USD)</th>
-                    <th className="py-3.5 px-4 font-semibold text-right">Paridad</th>
-                    <th className="py-3.5 px-4 font-semibold">Vencimiento</th>
-                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th
+                      onClick={() => handleSovSort("ticker")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "ticker" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ticker"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Ticker / Bono</span>
+                        {sovSortKey === "ticker" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSovSort("name")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "name" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Descripción"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Descripción</span>
+                        {sovSortKey === "name" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSovSort("law")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "law" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Ley / Jurisdicción"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Ley</span>
+                        {sovSortKey === "law" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSovSort("tir")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "tir" ? "text-emerald-700 dark:text-[#00FF88]" : "text-emerald-600 dark:text-[#00FF88]"
+                      }`}
+                      title="Ordenar por TIR Anual (USD)"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>TIR (USD)</span>
+                        {sovSortKey === "tir" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSovSort("parity")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "parity" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Paridad"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Paridad</span>
+                        {sovSortKey === "parity" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSovSort("maturity")}
+                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "maturity" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Vencimiento"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>Vencimiento</span>
+                        {sovSortKey === "maturity" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    <th
+                      onClick={() => handleSovSort("score")}
+                      className={`py-3.5 px-4 font-semibold text-center cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        sovSortKey === "score" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Quant Score"
+                    >
+                      <div className="inline-flex items-center justify-center gap-1.5">
+                        <span>Quant Score</span>
+                        {sovSortKey === "score" ? (
+                          sovSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
                     <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
                   </tr>
                 </thead>
