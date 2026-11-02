@@ -389,7 +389,7 @@ export default function ScreenerSection({
     };
   };
 
-  // Helper para renderizar tarjetas clásicas detalladas (si el usuario elige "Vista Detallada")
+  // Helper para renderizar tarjetas clásicas detalladas (con soporte total Light & Dark Mode)
   const renderStockCard = (stock: StockItem, idx: number, isCedearView: boolean = false) => {
     const isPositive = stock.day_change >= 0;
     const ret = stock.retorno_estimado_pct ?? stock.retornoEstimadoPct ?? stock.upside ?? 0;
@@ -397,87 +397,419 @@ export default function ScreenerSection({
     const recBadge = getRecommendationBadge(sc, ret);
 
     return (
-      <div key={stock.ticker} className="bg-[#0D1424] border border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-lg">
+      <div key={stock.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
-            <span className="text-xl sm:text-2xl font-black text-[#00FF88] font-mono tracking-tight pt-0.5">
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00FF88] font-mono tracking-tight pt-0.5">
               #{idx + 1}
             </span>
             <div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
                   {stock.ticker}
                 </span>
                 {isCedearView && (
-                  <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/10 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300 border border-amber-500/30">
                     CEDEAR
                   </span>
                 )}
-                <span className="px-2.5 py-1 rounded-md bg-[#111B30] border border-[#1E2D4A] text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#111B30] border border-slate-200 dark:border-[#1E2D4A] text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                   {stock.sector}
                 </span>
                 <span className={`px-2.5 py-1 rounded-md border text-xs font-black tracking-wider uppercase ${recBadge.className}`}>
                   {recBadge.text}
                 </span>
               </div>
-              <h3 className="text-sm sm:text-base font-medium text-slate-300 mt-1">
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mt-1">
                 {stock.name}
               </h3>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#1E2D4A]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200 dark:border-[#1E2D4A]">
             <div className="flex flex-col">
-              <span className="text-xs font-mono uppercase text-slate-400">PRECIO USA</span>
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">PRECIO USA</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-lg sm:text-xl font-bold text-white font-mono">
+                <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono">
                   ${stock.price?.toFixed(2)}
                 </span>
-                <span className={`text-xs font-bold font-mono ${isPositive ? "text-[#00FF88]" : "text-rose-400"}`}>
+                <span className={`text-xs font-bold font-mono ${isPositive ? "text-emerald-600 dark:text-[#00FF88]" : "text-rose-500 dark:text-rose-400"}`}>
                   {isPositive ? `+${stock.day_change}%` : `${stock.day_change}%`}
                 </span>
               </div>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xs font-mono uppercase text-slate-400">OPERATORIA</span>
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">OPERATORIA</span>
               {stock.has_cedear && stock.cedear_price_ars ? (
                 <>
                   <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-lg sm:text-xl font-extrabold text-[#00FF88] font-mono">
+                    <span className="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-[#00FF88] font-mono">
                       ${stock.cedear_price_ars.toLocaleString("es-AR")}
                     </span>
-                    <span className="text-xs font-bold font-mono text-slate-400">ARS</span>
+                    <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-400">ARS</span>
                   </div>
-                  <span className="text-xs font-mono font-medium text-slate-300">
+                  <span className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300">
                     Ratio {stock.cedear_ratio}
                   </span>
                 </>
               ) : (
-                <div className="text-sm font-mono text-slate-300 mt-1">NYSE / NASDAQ</div>
+                <div className="text-sm font-mono text-slate-600 dark:text-slate-300 mt-1">NYSE / NASDAQ</div>
               )}
             </div>
 
             <div
               onClick={() => setSelectedStockForModal(stock)}
-              className="flex flex-col cursor-pointer bg-[#111B30]/60 hover:bg-[#111B30] p-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+              className="flex flex-col cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
             >
-              <span className="text-xs font-bold font-mono uppercase text-slate-400">POTENCIAL (1A)</span>
-              <span className="text-lg sm:text-xl font-extrabold text-[#00FF88] font-mono mt-0.5">
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">POTENCIAL (1A)</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
                 {ret >= 0 ? `+${ret}%` : `${ret}%`}
               </span>
-              <span className="text-xs text-slate-400 font-mono truncate">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
                 Target: ${stock.precio_objetivo_algoritmo ?? stock.target_price} USD
               </span>
             </div>
 
             <div
               onClick={() => setSelectedScoreItem(stock)}
-              className="flex flex-col sm:items-end justify-center cursor-pointer bg-[#111B30]/60 hover:bg-[#111B30] p-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
             >
-              <span className="text-xs font-bold font-mono uppercase text-slate-400">SCORE TOTAL</span>
-              <span className="text-2xl sm:text-3xl font-black text-[#00FF88] font-mono mt-0.5">
-                {sc} <span className="text-sm text-slate-400">/ 100</span>
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">SCORE TOTAL</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {sc} <span className="text-sm text-slate-500 dark:text-slate-400">/ 100</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Helper para tarjetas de ETFs
+  const renderEtfCard = (e: EtfItem, idx: number) => {
+    return (
+      <div key={e.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00FF88] font-mono tracking-tight pt-0.5">
+              #{idx + 1}
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
+                  {e.ticker}
+                </span>
+                <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#111B30] border border-slate-200 dark:border-[#1E2D4A] text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                  {e.category}
+                </span>
+                <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-500/30">
+                  {e.manager}
+                </span>
+              </div>
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mt-1">
+                {e.name}
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200 dark:border-[#1E2D4A]">
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">PRECIO USD</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono mt-0.5">
+                ${e.price?.toFixed(2)}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">CEDEAR (ARS)</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-[#00FF88] font-mono mt-0.5">
+                {e.cedear_price_ars ? `$${e.cedear_price_ars.toLocaleString("es-AR")}` : "Exterior"}
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedStockForModal(e)}
+              className="flex flex-col cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">UPSIDE EST.</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                +{e.upside}%
+              </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
+                Target: ${e.target_price} USD
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedScoreItem(e)}
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">QUANT SCORE</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {e.score} <span className="text-sm text-slate-500 dark:text-slate-400">/ 100</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Helper para tarjetas de Bonos USA
+  const renderUsBondCard = (b: UsBondItem, idx: number) => {
+    return (
+      <div key={b.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00FF88] font-mono tracking-tight pt-0.5">
+              #{idx + 1}
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
+                  {b.ticker}
+                </span>
+                <span className="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-200 border border-blue-300 dark:border-blue-500/30">
+                  {b.rating}
+                </span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]">
+                  {b.maturity_years} años • {b.maturity}
+                </span>
+              </div>
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mt-1">
+                {b.name} ({b.sector})
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200 dark:border-[#1E2D4A]">
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">PRECIO USD</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono mt-0.5">
+                ${b.price_usd?.toFixed(2)}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">CUPÓN</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono mt-0.5">
+                {b.coupon}%
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">YTM (RENDIMIENTO)</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {b.tir_usd}%
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedScoreItem(b)}
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">SCORE TOTAL</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {b.score} <span className="text-sm text-slate-500 dark:text-slate-400">/ 100</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Helper para tarjetas de Acciones Merval
+  const renderMervalCard = (m: (typeof marketData.argentina.merval)[0], idx: number) => {
+    const isPositive = m.day_change >= 0;
+    return (
+      <div key={m.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00FF88] font-mono tracking-tight pt-0.5">
+              #{idx + 1}
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
+                  {m.ticker}
+                </span>
+                <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#111B30] border border-slate-200 dark:border-[#1E2D4A] text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                  {m.sector}
+                </span>
+                <span className="px-2 py-0.5 rounded text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30">
+                  BYMA
+                </span>
+              </div>
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mt-1">
+                {m.name}
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200 dark:border-[#1E2D4A]">
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">PRECIO ARS</span>
+              <div className="flex items-baseline gap-1.5 mt-0.5">
+                <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono">
+                  ${m.price_ars?.toLocaleString("es-AR")}
+                </span>
+                <span className={`text-xs font-bold font-mono ${isPositive ? "text-emerald-600 dark:text-[#00FF88]" : "text-rose-500 dark:text-rose-400"}`}>
+                  {isPositive ? `+${m.day_change}%` : `${m.day_change}%`}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">P/E RATIO</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono mt-0.5">
+                {m.pe_ratio ? `${m.pe_ratio}x` : "-"}
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedScoreItem(m)}
+              className="flex flex-col cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">TESIS CUANTITATIVA</span>
+              <p className="text-xs text-slate-600 dark:text-slate-300 font-sans line-clamp-2 mt-0.5">
+                {m.thesis}
+              </p>
+            </div>
+
+            <div
+              onClick={() => setSelectedScoreItem(m)}
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">QUANT SCORE</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {m.score} <span className="text-sm text-slate-500 dark:text-slate-400">/ 100</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Helper para tarjetas de Obligaciones Negociables (ONs)
+  const renderOnCard = (o: (typeof marketData.ons)[0], idx: number) => {
+    return (
+      <div key={o.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00FF88] font-mono tracking-tight pt-0.5">
+              #{idx + 1}
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
+                  {o.ticker}
+                </span>
+                <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-200 border border-blue-300 dark:border-blue-500/30">
+                  {o.rating}
+                </span>
+                <span className="px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A]">
+                  Ley {o.law}
+                </span>
+              </div>
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mt-1">
+                {o.name} ({o.issuer})
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200 dark:border-[#1E2D4A]">
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">TIR (USD)</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {o.tir_usd}%
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">PARIDAD</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono mt-0.5">
+                {o.parity}%
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">VENCIMIENTO</span>
+              <span className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">
+                {o.maturity}
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedScoreItem(o)}
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">QUANT SCORE</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {o.score} <span className="text-sm text-slate-500 dark:text-slate-400">/ 100</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Helper para tarjetas de Bonos Soberanos
+  const renderSovereignBondCard = (b: (typeof marketData.argentina.sovereign_bonds)[0], idx: number) => {
+    return (
+      <div key={b.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00FF88] font-mono tracking-tight pt-0.5">
+              #{idx + 1}
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
+                  {b.ticker}
+                </span>
+                <span className="px-2 py-0.5 rounded text-xs font-bold bg-cyan-100 dark:bg-[#132840] text-cyan-800 dark:text-cyan-200 border border-cyan-300 dark:border-cyan-500/40">
+                  Ley {b.law}
+                </span>
+              </div>
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mt-1">
+                {b.name}
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-200 dark:border-[#1E2D4A]">
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">TIR (USD)</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {b.tir_usd}%
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">PARIDAD</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-mono mt-0.5">
+                {b.parity}%
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">VENCIMIENTO</span>
+              <span className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">
+                {b.maturity_date}
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedScoreItem(b)}
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">QUANT SCORE</span>
+              <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                {b.score} <span className="text-sm text-slate-500 dark:text-slate-400">/ 100</span>
               </span>
             </div>
           </div>
@@ -1102,7 +1434,7 @@ export default function ScreenerSection({
           )}
 
           {/* Toggle de Densidad de Vista (Tabla compacta vs Tarjetas) */}
-          <div className="hidden sm:flex items-center bg-[#070B12] p-0.5 rounded-lg border border-[#1E2D4A]">
+          <div className="hidden sm:flex items-center bg-slate-100 dark:bg-[#070B12] p-0.5 rounded-lg border border-slate-300 dark:border-[#1E2D4A]">
             <button
               type="button"
               onClick={() => setViewMode("table")}
@@ -1159,10 +1491,10 @@ export default function ScreenerSection({
                 ? `${filteredMerval.length} Acciones Merval`
                 : `${filteredSovereign.length} Bonos Soberanos`}
             </span>
-            <span className="text-slate-400 hidden sm:inline">• Ordenado por modelo cuantitativo institucional</span>
+            <span className="text-slate-600 dark:text-slate-400 hidden sm:inline font-medium">• Ordenado por modelo cuantitativo institucional</span>
           </div>
 
-          <div className="flex items-center space-x-3 text-slate-400 text-xs">
+          <div className="flex items-center space-x-3 text-slate-600 dark:text-slate-400 text-xs font-medium">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#00FF88]" />
               Cotizaciones auditadas en tiempo real
@@ -1298,7 +1630,7 @@ export default function ScreenerSection({
                                 <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                                   {stock.ticker}
                                 </div>
-                                <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+                                <div className="text-xs text-slate-600 dark:text-slate-400 font-sans font-medium">
                                   {stock.has_cedear ? `Ratio ${stock.cedear_ratio}` : "NYSE / NASDAQ"}
                                 </div>
                               </div>
@@ -1308,7 +1640,7 @@ export default function ScreenerSection({
                           {/* Empresa & Sector */}
                           <td className="py-3.5 px-4 font-sans">
                             <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{stock.name}</div>
-                            <div className="text-xs text-slate-400">{stock.sector}</div>
+                            <div className="text-xs text-slate-700 dark:text-slate-300 font-medium">{stock.sector}</div>
                           </td>
 
                           {/* Recomendación */}
@@ -1351,14 +1683,22 @@ export default function ScreenerSection({
                             >
                               {ret >= 0 ? `+${ret}%` : `${ret}%`}
                             </button>
-                            <span className="text-[11px] text-slate-400 block mt-0.5">
+                            <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium block mt-0.5">
                               Target: ${stock.precio_objetivo_algoritmo ?? stock.target_price} USD
                             </span>
                           </td>
 
                           {/* Dividendo */}
-                          <td className="py-3.5 px-3 text-right text-slate-200 text-xs sm:text-sm">
-                            {stock.pays_dividend ? `${stock.dividend_yield}%` : "—"}
+                          <td className="py-3.5 px-3 text-right text-xs sm:text-sm font-mono">
+                            {stock.pays_dividend && stock.dividend_yield ? (
+                              <span className="font-bold text-slate-900 dark:text-slate-100">
+                                {stock.dividend_yield}%
+                              </span>
+                            ) : (
+                              <span className="font-bold text-slate-400 dark:text-slate-500">
+                                —
+                              </span>
+                            )}
                           </td>
 
                           {/* Quant Score */}
@@ -1562,10 +1902,10 @@ export default function ScreenerSection({
                           <div className="font-bold text-slate-900 dark:text-white text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-[#00FF88] transition-colors">
                             {m.ticker}
                           </div>
-                          <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{m.name}</div>
+                          <div className="text-xs text-slate-600 dark:text-slate-400 font-sans font-medium">{m.name}</div>
                         </td>
 
-                        <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-300">
+                        <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium">
                           {m.sector}
                         </td>
 
@@ -1577,7 +1917,7 @@ export default function ScreenerSection({
                           {isPositive ? `+${m.day_change}%` : `${m.day_change}%`}
                         </td>
 
-                        <td className="py-3.5 px-3 text-center text-slate-300 text-xs sm:text-sm">
+                        <td className="py-3.5 px-3 text-center text-xs sm:text-sm font-mono font-bold text-slate-900 dark:text-slate-100">
                           {m.pe_ratio ? `${m.pe_ratio}x` : "-"}
                         </td>
 
@@ -1631,11 +1971,11 @@ export default function ScreenerSection({
                         <div className="text-xs text-slate-500 dark:text-slate-400 font-sans">{b.name}</div>
                       </td>
 
-                      <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-300">
+                      <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-700 dark:text-slate-300">
                         {b.thesis}
                       </td>
 
-                      <td className="py-3.5 px-4 text-center text-xs sm:text-sm text-slate-300 font-sans">
+                      <td className="py-3.5 px-4 text-center text-xs sm:text-sm font-sans font-bold text-slate-900 dark:text-slate-100">
                         {b.law}
                       </td>
 
@@ -1649,7 +1989,7 @@ export default function ScreenerSection({
                         {b.parity}%
                       </td>
 
-                      <td className="py-3.5 px-4 text-slate-300 text-xs sm:text-sm">
+                      <td className="py-3.5 px-4 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-mono font-medium">
                         {b.maturity_date}
                       </td>
 
@@ -1685,9 +2025,34 @@ export default function ScreenerSection({
                 {filteredStocks.slice(0, visibleCount).map((s, idx) => renderStockCard(s, idx, false))}
               </div>
             )}
+            {activeMarket === "wall_street" && wallStreetSubTab === "etfs" && (
+              <div className="space-y-4">
+                {filteredEtfs.slice(0, visibleCount).map((e, idx) => renderEtfCard(e, idx))}
+              </div>
+            )}
+            {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
+              <div className="space-y-4">
+                {filteredUsBonds.slice(0, visibleBondCount).map((b, idx) => renderUsBondCard(b, idx))}
+              </div>
+            )}
             {activeMarket === "argentina" && argSubTab === "cedears" && (
               <div className="space-y-4">
                 {filteredCedears.slice(0, visibleCount).map((s, idx) => renderStockCard(s, idx, true))}
+              </div>
+            )}
+            {activeMarket === "argentina" && argSubTab === "ons" && (
+              <div className="space-y-4">
+                {filteredOns.slice(0, visibleCount).map((o, idx) => renderOnCard(o, idx))}
+              </div>
+            )}
+            {activeMarket === "argentina" && argSubTab === "merval" && (
+              <div className="space-y-4">
+                {filteredMerval.slice(0, visibleCount).map((m, idx) => renderMervalCard(m, idx))}
+              </div>
+            )}
+            {activeMarket === "argentina" && argSubTab === "bonds" && (
+              <div className="space-y-4">
+                {filteredSovereign.slice(0, visibleCount).map((b, idx) => renderSovereignBondCard(b, idx))}
               </div>
             )}
           </div>
@@ -1695,8 +2060,8 @@ export default function ScreenerSection({
 
         {/* Footer Institucional de la Tabla: Paginación y Carga Progresiva */}
         <div className="px-5 py-3.5 border-t border-slate-200 dark:border-[#1E2D4A] bg-slate-50 dark:bg-[#0A101D] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-mono">
-          <div className="flex items-center space-x-2 text-slate-400">
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono bg-emerald-950/80 text-[#00FF88] border border-emerald-500/30 font-bold">
+          <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 font-medium">
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-[#00FF88] border border-emerald-300 dark:border-emerald-500/30 font-bold">
               ⚡ ALTA DENSIDAD VISUAL
             </span>
             <span className="text-xs hidden md:inline">
