@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
-  Activity,
-  Globe,
-  Building2,
   Search,
   CircleDollarSign,
   Zap,
   Calculator,
+  Download,
+  ChevronDown,
+  ShieldCheck,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import ArgentinaFlag from "./ArgentinaFlag";
+import UsaFlag from "./UsaFlag";
 import marketData from "@/data/marketData.json";
 import StockDetailModal, { ModalItem } from "./StockDetailModal";
 import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
@@ -29,7 +32,7 @@ interface ScreenerSectionProps {
 
 export default function ScreenerSection({
   initialTab = "wall_street",
-    maxItems,
+  maxItems,
   hideTitle = false,
 }: ScreenerSectionProps) {
   // Nivel 1: Mercado Principal (Wall Street vs Mercado Local)
@@ -49,44 +52,84 @@ export default function ScreenerSection({
   const [stockOpportunityFilter, setStockOpportunityFilter] = useState<"opportunities" | "all">("opportunities");
   const [visibleCount, setVisibleCount] = useState<number>(30);
   const [stockDivFilter, setStockDivFilter] = useState<"all" | "dividend" | "growth">("all");
-  const [etfDivFilter, setEtfDivFilter] = useState<"all" | "dividend" | "growth">("all");
-  const [etfManagerFilter, setEtfManagerFilter] = useState<string>("all");
+  const [stockSectorFilter, setStockSectorFilter] = useState<string>("all");
+  const [etfDivFilter] = useState<"all" | "dividend" | "growth">("all");
+  const [etfManagerFilter] = useState<string>("all");
   const [usBondMaturityBlock, setUsBondMaturityBlock] = useState<"all" | "short" | "medium" | "long">("all");
   const [usBondBrandCategory, setUsBondBrandCategory] = useState<string>("all");
   const [usBondSafetyFilter, setUsBondSafetyFilter] = useState<"all" | "Seguridad Máxima" | "Riesgo Ultra Bajo">("all");
   const [usBondSort, setUsBondSort] = useState<"tir" | "score" | "maturity">("tir");
-  const [brokerFeePercent, setBrokerFeePercent] = useState<number>(0.5);
+  const brokerFeePercent = 0.5;
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
+  // Modo de vista: tabla institucional compacta (por defecto) o tarjetas detalladas
+  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
+
+  // Dropdown popovers en barra compacta
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const { stocks, etfs, ons, argentina, last_updated, ccl_dollar } = marketData;
-  const us_bonds: UsBondItem[] = marketData.us_bonds || [];
+  const us_bonds: UsBondItem[] = useMemo(() => marketData.us_bonds || [], []);
   const macro = (marketData as { macro?: import("@/types/market").MacroData }).macro;
   const formattedLastUpdated = last_updated.replace(/\s*\(Hora Buenos Aires,?\s*UTC-3\)/i, "");
+
+  // Lista única de sectores para filtros
+  const stockSectors = useMemo(() => {
+    const set = new Set<string>();
+    stocks.forEach((s) => {
+      if (s.sector) set.add(s.sector);
+    });
+    return Array.from(set).sort();
+  }, [stocks]);
+
+  // Lista única de marcas/sectores de Bonos USA
+  const bondBrandCategories = useMemo(() => {
+    const set = new Set<string>();
+    us_bonds.forEach((b: UsBondItem) => {
+      if (b.brand_category) set.add(b.brand_category);
+    });
+    return Array.from(set).sort();
+  }, [us_bonds]);
 
   // 1. Filtrado de Acciones de Wall Street (Todas)
   let filteredStocks = stocks
     .filter((s) => {
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        s.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.sector.toLowerCase().includes(searchQuery.toLowerCase());
+        !q ||
+        s.ticker.toLowerCase().includes(q) ||
+        s.name.toLowerCase().includes(q) ||
+        s.sector.toLowerCase().includes(q);
       if (!matchesSearch) return false;
 
-      const ret = s.retorno_estimado_pct ?? s.retorno_estimado_pct ?? s.upside ?? 0;
-      const sc = s.score_total ?? s.score_total ?? s.score ?? 0;
-      if (stockOpportunityFilter === "opportunities" && !searchQuery.trim()) {
+      const ret = s.retorno_estimado_pct ?? s.retornoEstimadoPct ?? s.upside ?? 0;
+      const sc = s.score_total ?? s.scoreTotal ?? s.score ?? 0;
+      if (stockOpportunityFilter === "opportunities" && !q) {
         if (sc < 60 || ret <= 0) return false;
       }
 
       if (stockDivFilter === "dividend") return s.pays_dividend;
       if (stockDivFilter === "growth") return !s.pays_dividend;
+      if (stockSectorFilter !== "all" && s.sector !== stockSectorFilter) return false;
       return true;
     })
     .sort((a, b) => {
-      const scoreB = b.score_total ?? b.score_total ?? b.score ?? 0;
-      const scoreA = a.score_total ?? a.score_total ?? a.score ?? 0;
+      const scoreB = b.score_total ?? b.scoreTotal ?? b.score ?? 0;
+      const scoreA = a.score_total ?? a.scoreTotal ?? a.score ?? 0;
       return scoreB - scoreA;
     });
 
@@ -94,36 +137,41 @@ export default function ScreenerSection({
   let filteredCedears = stocks
     .filter((s) => s.has_cedear)
     .filter((s) => {
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        s.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        s.sector.toLowerCase().includes(searchQuery.toLowerCase());
+        !q ||
+        s.ticker.toLowerCase().includes(q) ||
+        s.name.toLowerCase().includes(q) ||
+        s.sector.toLowerCase().includes(q);
       if (!matchesSearch) return false;
 
-      const ret = s.retorno_estimado_pct ?? s.retorno_estimado_pct ?? s.upside ?? 0;
-      const sc = s.score_total ?? s.score_total ?? s.score ?? 0;
-      if (stockOpportunityFilter === "opportunities" && !searchQuery.trim()) {
+      const ret = s.retorno_estimado_pct ?? s.retornoEstimadoPct ?? s.upside ?? 0;
+      const sc = s.score_total ?? s.scoreTotal ?? s.score ?? 0;
+      if (stockOpportunityFilter === "opportunities" && !q) {
         if (sc < 60 || ret <= 0) return false;
       }
 
       if (stockDivFilter === "dividend") return s.pays_dividend;
       if (stockDivFilter === "growth") return !s.pays_dividend;
+      if (stockSectorFilter !== "all" && s.sector !== stockSectorFilter) return false;
       return true;
     })
     .sort((a, b) => {
-      const scoreB = b.score_total ?? b.score_total ?? b.score ?? 0;
-      const scoreA = a.score_total ?? a.score_total ?? a.score ?? 0;
+      const scoreB = b.score_total ?? b.scoreTotal ?? b.score ?? 0;
+      const scoreA = a.score_total ?? a.scoreTotal ?? a.score ?? 0;
       return scoreB - scoreA;
     });
 
   // 3. Filtrado de ETFs de Wall Street
   let filteredEtfs = etfs
     .filter((e) => {
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        e.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        e.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (e.manager && e.manager.toLowerCase().includes(searchQuery.toLowerCase()));
+        !q ||
+        e.ticker.toLowerCase().includes(q) ||
+        e.name.toLowerCase().includes(q) ||
+        e.category.toLowerCase().includes(q) ||
+        (e.manager && e.manager.toLowerCase().includes(q));
       if (!matchesSearch) return false;
       if (etfDivFilter === "dividend") return e.pays_dividend;
       if (etfDivFilter === "growth") return !e.pays_dividend;
@@ -167,8 +215,8 @@ export default function ScreenerSection({
     })
     .sort((a, b) => {
       if (usBondSort === "tir") {
-        const netB = (b.tir_usd || 0) - (brokerFeePercent / (b.maturity_years || 1));
-        const netA = (a.tir_usd || 0) - (brokerFeePercent / (a.maturity_years || 1));
+        const netB = (b.tir_usd || 0) - brokerFeePercent / (b.maturity_years || 1);
+        const netA = (a.tir_usd || 0) - brokerFeePercent / (a.maturity_years || 1);
         return netB - netA;
       }
       if (usBondSort === "maturity") {
@@ -178,26 +226,35 @@ export default function ScreenerSection({
     });
 
   // 5. Filtrado de ONs en Dólares (Argentina)
-  let filteredOns = ons.filter(
-    (o) =>
-      o.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      o.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      o.issuer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  let filteredOns = ons.filter((o) => {
+    const q = searchQuery.toLowerCase().trim();
+    return (
+      !q ||
+      o.ticker.toLowerCase().includes(q) ||
+      o.name.toLowerCase().includes(q) ||
+      o.issuer.toLowerCase().includes(q)
+    );
+  });
 
   // 6. Filtrado de Merval (Acciones Locales)
-  let filteredMerval = argentina.merval.filter(
-    (m) =>
-      m.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  let filteredMerval = argentina.merval.filter((m) => {
+    const q = searchQuery.toLowerCase().trim();
+    return (
+      !q ||
+      m.ticker.toLowerCase().includes(q) ||
+      m.name.toLowerCase().includes(q)
+    );
+  });
 
   // 7. Filtrado de Bonos Soberanos (Argentina)
-  let filteredSovereign = argentina.sovereign_bonds.filter(
-    (b) =>
-      b.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  let filteredSovereign = argentina.sovereign_bonds.filter((b) => {
+    const q = searchQuery.toLowerCase().trim();
+    return (
+      !q ||
+      b.ticker.toLowerCase().includes(q) ||
+      b.name.toLowerCase().includes(q)
+    );
+  });
 
   if (maxItems) {
     filteredStocks = filteredStocks.slice(0, maxItems);
@@ -209,1549 +266,1482 @@ export default function ScreenerSection({
     filteredSovereign = filteredSovereign.slice(0, maxItems);
   }
 
-  // Helper para renderizar tarjetas de acciones / cedears
+  // Exportar a CSV funcional
+  const handleExportCsv = () => {
+    let headers: string[] = [];
+    let rows: string[][] = [];
+
+    if (activeMarket === "wall_street" && wallStreetSubTab === "bonds") {
+      headers = ["Ticker", "Emisor", "Sector", "Rating", "Vencimiento", "YTM %", "Cupon %", "Precio USD", "Score"];
+      rows = filteredUsBonds.map((b) => [
+        b.ticker,
+        `"${b.issuer}"`,
+        `"${b.sector}"`,
+        b.rating,
+        b.maturity,
+        `${b.tir_usd}`,
+        `${b.coupon}`,
+        `${b.price_usd}`,
+        `${b.score}`,
+      ]);
+    } else if (
+      (activeMarket === "wall_street" && wallStreetSubTab === "stocks") ||
+      (activeMarket === "argentina" && argSubTab === "cedears")
+    ) {
+      const list = activeMarket === "wall_street" ? filteredStocks : filteredCedears;
+      headers = ["Ticker", "Nombre", "Sector", "Precio USD", "Target USD", "Potencial %", "Score", "Dividendo %", "PER"];
+      rows = list.map((s) => [
+        s.ticker,
+        `"${s.name}"`,
+        `"${s.sector}"`,
+        `${s.price}`,
+        `${s.precio_objetivo_algoritmo ?? s.target_price}`,
+        `${s.retorno_estimado_pct ?? s.upside}%`,
+        `${s.score_total ?? s.score}`,
+        `${s.dividend_yield ?? 0}%`,
+        `${s.pe_ratio}`,
+      ]);
+    } else if (activeMarket === "argentina" && argSubTab === "ons") {
+      headers = ["Ticker", "Nombre", "Emisor", "Rating", "TIR USD %", "Cupon %", "Vencimiento", "Ley", "Score"];
+      rows = filteredOns.map((o) => [
+        o.ticker,
+        `"${o.name}"`,
+        `"${o.issuer}"`,
+        o.rating,
+        `${o.tir_usd}%`,
+        `${o.coupon}%`,
+        o.maturity,
+        o.law,
+        `${o.score}`,
+      ]);
+    } else if (activeMarket === "argentina" && argSubTab === "merval") {
+      headers = ["Ticker", "Nombre", "Sector", "Precio ARS", "Variacion %", "Score", "P/E"];
+      rows = filteredMerval.map((m) => [
+        m.ticker,
+        `"${m.name}"`,
+        `"${m.sector}"`,
+        `${m.price_ars}`,
+        `${m.day_change}%`,
+        `${m.score}`,
+        `${m.pe_ratio}`,
+      ]);
+    } else if (activeMarket === "argentina" && argSubTab === "bonds") {
+      headers = ["Ticker", "Nombre", "TIR USD %", "Paridad %", "Vencimiento", "Ley", "Score"];
+      rows = filteredSovereign.map((b) => [
+        b.ticker,
+        `"${b.name}"`,
+        `${b.tir_usd}%`,
+        `${b.parity}%`,
+        b.maturity_date,
+        b.law,
+        `${b.score}`,
+      ]);
+    } else {
+      headers = ["Ticker", "Nombre", "Categoria", "Precio USD", "Upside %", "Score"];
+      rows = filteredEtfs.map((e) => [
+        e.ticker,
+        `"${e.name}"`,
+        `"${e.category}"`,
+        `${e.price}`,
+        `${e.upside}%`,
+        `${e.score}`,
+      ]);
+    }
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const linkElement = document.createElement("a");
+    linkElement.setAttribute("href", encodedUri);
+    linkElement.setAttribute(
+      "download",
+      `dondeinvierto_${activeMarket}_${new Date().toISOString().slice(0, 10)}.csv`
+    );
+    document.body.appendChild(linkElement);
+    linkElement.click();
+    document.body.removeChild(linkElement);
+  };
+
+  // Helper de badges de recomendación institucional
+  const getRecommendationBadge = (sc: number, ret: number) => {
+    if (sc >= 85 && ret >= 25) {
+      return {
+        text: "FUERTE COMPRA",
+        className: "bg-emerald-500/20 text-[#00FF88] border-emerald-500/40 font-bold",
+      };
+    }
+    if (sc >= 60 && ret > 0) {
+      return {
+        text: "COMPRA",
+        className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 font-semibold",
+      };
+    }
+    if (sc >= 40 && ret >= 0) {
+      return {
+        text: "MANTENER",
+        className: "bg-amber-500/10 text-amber-300 border-amber-500/30 font-medium",
+      };
+    }
+    return {
+      text: "PRECAUCIÓN",
+      className: "bg-rose-500/15 text-rose-300 border-rose-500/30 font-medium",
+    };
+  };
+
+  // Helper para renderizar tarjetas clásicas detalladas (si el usuario elige "Vista Detallada")
   const renderStockCard = (stock: StockItem, idx: number, isCedearView: boolean = false) => {
     const isPositive = stock.day_change >= 0;
     const ret = stock.retorno_estimado_pct ?? stock.retornoEstimadoPct ?? stock.upside ?? 0;
     const sc = stock.score_total ?? stock.scoreTotal ?? stock.score ?? 0;
-
-    let recBadge = {
-      text: "COMPRA",
-      className: "bg-emerald-500/20 border-emerald-400 text-emerald-800 dark:text-[#00F5A0] shadow-[0_0_10px_rgba(0,245,160,0.25)]"
-    };
-    if (sc >= 85 && ret >= 30) {
-      recBadge = {
-        text: "FUERTE COMPRA",
-        className: "bg-emerald-500/25 border-emerald-400 text-emerald-800 dark:text-[#00F5A0] shadow-[0_0_14px_rgba(0,245,160,0.35)]"
-      };
-    } else if (sc >= 60 && ret > 0) {
-      recBadge = {
-        text: "COMPRA",
-        className: "bg-emerald-500/15 border-emerald-500/50 text-emerald-700 dark:text-emerald-300"
-      };
-    } else if (sc >= 40 && ret > 0) {
-      recBadge = {
-        text: "MANTENER",
-        className: "bg-amber-500/20 border-amber-500/50 text-amber-800 dark:text-amber-300"
-      };
-    } else {
-      recBadge = {
-        text: "EVITAR / PRECAUCIÓN",
-        className: "bg-rose-500/20 border-rose-500/50 text-rose-800 dark:text-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.2)]"
-      };
-    }
+    const recBadge = getRecommendationBadge(sc, ret);
 
     return (
-      <div key={stock.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
+      <div key={stock.ticker} className="bg-[#0D1424] border border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-lg">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          {/* Izquierda: Rank + Ticker + Empresa */}
           <div className="flex items-start gap-4">
-            <span className="text-xl sm:text-2xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
+            <span className="text-xl sm:text-2xl font-black text-[#00FF88] font-mono tracking-tight pt-0.5">
               #{idx + 1}
             </span>
             <div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
+                <span className="text-2xl sm:text-3xl font-black text-white tracking-wide font-mono">
                   {stock.ticker}
                 </span>
-                <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
+                {isCedearView && (
+                  <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                    CEDEAR
+                  </span>
+                )}
+                <span className="px-2.5 py-1 rounded-md bg-[#111B30] border border-[#1E2D4A] text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
                   {stock.sector}
                 </span>
                 <span className={`px-2.5 py-1 rounded-md border text-xs font-black tracking-wider uppercase ${recBadge.className}`}>
                   {recBadge.text}
                 </span>
               </div>
-              <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                {stock.name}{" "}
-                <span className="text-slate-600 dark:text-slate-400 font-medium">
-                  • {stock.pays_dividend ? `Div. ${stock.dividend_yield}% anual` : "Sin dividendo (Reinvierte)"}
-                </span>
-              </div>
+              <h3 className="text-sm sm:text-base font-medium text-slate-300 mt-1">
+                {stock.name}
+              </h3>
             </div>
           </div>
 
-          {/* Derecha: Grid de 4 Métricas Clave */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-            {/* 1. Precio USA */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#1E2D4A]">
             <div className="flex flex-col">
-              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                PRECIO USA (USD)
-              </span>
+              <span className="text-xs font-mono uppercase text-slate-400">PRECIO USA</span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                  ${stock.price.toFixed(2)}
+                <span className="text-lg sm:text-xl font-bold text-white font-mono">
+                  ${stock.price?.toFixed(2)}
                 </span>
-                <span
-                  className={`text-xs sm:text-sm font-bold font-mono ${
-                    isPositive ? "text-emerald-600 dark:text-[#00F5A0]" : "text-rose-500 dark:text-rose-400"
-                  }`}
-                  title="Variación porcentual de la rueda de hoy"
-                >
+                <span className={`text-xs font-bold font-mono ${isPositive ? "text-[#00FF88]" : "text-rose-400"}`}>
                   {isPositive ? `+${stock.day_change}%` : `${stock.day_change}%`}
                 </span>
               </div>
             </div>
 
-            {/* 2. Operatoria Local (CEDEAR o Broker Exterior) */}
             <div className="flex flex-col">
-              <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                {isCedearView ? "PRECIO CEDEAR (ARS)" : "OPERATORIA"}
-              </span>
+              <span className="text-xs font-mono uppercase text-slate-400">OPERATORIA</span>
               {stock.has_cedear && stock.cedear_price_ars ? (
                 <>
                   <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-[#00F5A0] font-mono">
+                    <span className="text-lg sm:text-xl font-extrabold text-[#00FF88] font-mono">
                       ${stock.cedear_price_ars.toLocaleString("es-AR")}
                     </span>
-                    <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-400">ARS</span>
+                    <span className="text-xs font-bold font-mono text-slate-400">ARS</span>
                   </div>
-                  <span className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300">
+                  <span className="text-xs font-mono font-medium text-slate-300">
                     Ratio {stock.cedear_ratio}
                   </span>
                 </>
               ) : (
-                <>
-                  <div className="flex items-baseline gap-1.5 mt-0.5">
-                    <span className="text-sm sm:text-base font-bold text-slate-700 dark:text-slate-300 font-mono">
-                      Broker Exterior
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
-                    NYSE / NASDAQ
-                  </span>
-                </>
+                <div className="text-sm font-mono text-slate-300 mt-1">NYSE / NASDAQ</div>
               )}
             </div>
 
-            {/* 3. Potencial Estimado (1A) con enlace al Modal */}
             <div
               onClick={() => setSelectedStockForModal(stock)}
-              className="flex flex-col cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-              title="Click para ver la fórmula del Algoritmo Cuantitativo y el consenso de bancos"
+              className="flex flex-col cursor-pointer bg-[#111B30]/60 hover:bg-[#111B30] p-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
             >
-              <div className="flex items-center justify-between gap-1">
-                <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                  POTENCIAL (1A)
-                </span>
-                <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                  Desglose ↗
-                </span>
-              </div>
-              <div className="flex items-baseline gap-1.5 mt-0.5">
-                <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00F5A0] font-mono">
-                  {ret >= 0 ? `+${ret}%` : `${ret}%`}
-                </span>
-              </div>
-              <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
+              <span className="text-xs font-bold font-mono uppercase text-slate-400">POTENCIAL (1A)</span>
+              <span className="text-lg sm:text-xl font-extrabold text-[#00FF88] font-mono mt-0.5">
+                {ret >= 0 ? `+${ret}%` : `${ret}%`}
+              </span>
+              <span className="text-xs text-slate-400 font-mono truncate">
                 Target: ${stock.precio_objetivo_algoritmo ?? stock.target_price} USD
               </span>
             </div>
 
-            {/* 4. Score Cuantitativo con enlace a ScoreDetailModal */}
             <div
               onClick={() => setSelectedScoreItem(stock)}
-              className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-              title="Click para ver el desglose detallado de los 3 pilares del Score"
+              className="flex flex-col sm:items-end justify-center cursor-pointer bg-[#111B30]/60 hover:bg-[#111B30] p-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
             >
-              <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                  SCORE TOTAL
-                </span>
-                <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                  Desglose ↗
-                </span>
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
-                  {sc}
-                </span>
-                <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
-                <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
-                  <Zap className="w-4 h-4" />
-                </div>
-              </div>
+              <span className="text-xs font-bold font-mono uppercase text-slate-400">SCORE TOTAL</span>
+              <span className="text-2xl sm:text-3xl font-black text-[#00FF88] font-mono mt-0.5">
+                {sc} <span className="text-sm text-slate-400">/ 100</span>
+              </span>
             </div>
           </div>
-        </div>
-
-        {/* Tesis de Inversión Institucional */}
-        <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-50 dark:bg-[#060b13] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
-          <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
-            TESIS:
-          </span>
-          <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-200 leading-relaxed font-sans">
-            {stock.thesis}
-          </p>
         </div>
       </div>
     );
   };
 
   return (
-    <section className="w-full max-w-7xl mx-auto mb-16 scroll-mt-24 px-4 sm:px-6 lg:px-8" id="radar-section">
-      {/* Header del Radar y Controles */}
-      <div className="bg-white dark:bg-[#09111e]/90 border border-slate-200 dark:border-slate-700/80 rounded-3xl p-5 sm:p-7 shadow-sm dark:shadow-2xl backdrop-blur-xl transition-colors duration-200">
-        {/* Fila Superior: Subtítulo + Título + Buscador */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-6 border-b border-slate-200 dark:border-slate-800">
-          <div>
+    <section className="w-full max-w-[1720px] mx-auto mb-16 scroll-mt-24 px-4 sm:px-6 lg:px-8 space-y-4" id="radar-section">
+      {/* 1. SUBHEADER COMPACTO INSTITUCIONAL (Stitch Pattern) */}
+      <div className="bg-[#0D1424] rounded-2xl p-5 lg:p-6 border border-[#1E2D4A] shadow-xl relative overflow-hidden">
+        {/* Glow sutil de fondo */}
+        <div className="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          {/* Lado Izquierdo: Badge + Título + Subtítulo */}
+          <div className="space-y-1.5 max-w-2xl">
+            <div className="flex items-center space-x-2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold tracking-wider text-[#00FF88] uppercase bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                <Zap className="w-3.5 h-3.5 text-[#00FF88] animate-pulse" />
+                Terminal Cuantitativa Institucional
+              </span>
+              <span className="text-xs text-slate-400 font-mono font-semibold">v4.2</span>
+              <span className="text-xs text-slate-400 font-mono hidden md:inline">
+                • {formattedLastUpdated}
+              </span>
+            </div>
             {!hideTitle && (
               <>
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-600 dark:text-[#00F5A0] tracking-wider uppercase mb-2">
-                  <Activity className="w-4 h-4 text-emerald-600 dark:text-[#00F5A0]" />
-                  <span>TERMINAL CUANTITATIVA INSTITUCIONAL</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
                   Radar Cuantitativo de Activos
-                </h2>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-xl">
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
                   Selección objetiva y ranking de Wall Street y Mercado Local auditado por algoritmos de 3 capas y consenso institucional.
                 </p>
               </>
             )}
-
-            {/* Barra de Datos Clave en Tiempo Real */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-3 text-xs sm:text-sm font-mono">
-              <span className="text-slate-600 dark:text-slate-300">
-                Dólar CCL:{" "}
-                <strong className="text-slate-900 dark:text-white font-bold bg-slate-100 dark:bg-[#142338] px-2 py-0.5 rounded border border-slate-300 dark:border-slate-600/60">
-                  ${ccl_dollar} ARS
-                </strong>
-              </span>
-              <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">|</span>
-              <span
-                className="text-slate-600 dark:text-slate-300 font-medium flex items-center gap-1.5 cursor-help"
-                title={macro?.source || "Tasa oficial de referencia de la Reserva Federal (EFFR)"}
-              >
-                <span>Tasa FED:</span>
-                <strong className="text-emerald-700 dark:text-[#00F5A0] font-bold bg-emerald-50 dark:bg-[#0a1e1b] px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/40">
-                  {macro?.tasa_actual_fed ?? 3.88}%
-                </strong>
-                <span className="text-slate-500 dark:text-slate-400 text-xs hidden md:inline">
-                  (Proy. 1A: <span className="text-slate-900 dark:text-white font-semibold">{macro?.tasa_proyectada_fed_1a ?? 3.16}%</span>)
-                </span>
-              </span>
-              <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">|</span>
-              <span className="text-slate-600 dark:text-slate-300">
-                Actualizado: <span className="text-slate-900 dark:text-white font-semibold">{formattedLastUpdated}</span>{" "}
-                <span className="text-slate-500 dark:text-slate-400">(Hora Buenos Aires, UTC-3)</span>
-              </span>
-            </div>
           </div>
 
-          {/* Buscador de Alta Visibilidad */}
-          <div className="w-full lg:w-96">
-            <div className="relative">
+          {/* Lado Derecho: Buscador Omnibox + Switcher con Banderas USA y ARGENTINA */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Buscador Omnibox */}
+            <div className="relative min-w-[260px] md:min-w-[340px]">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <Search className="h-4 w-4 text-[#00FF88]" />
               </div>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar ticker, empresa, ON, bono..."
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-[#0e1b2f] border border-slate-300 dark:border-slate-600 focus:border-emerald-500 dark:focus:border-[#00F5A0] focus:ring-1 focus:ring-emerald-500 dark:focus:ring-[#00F5A0] rounded-xl text-slate-900 dark:text-white text-sm placeholder-slate-500 dark:placeholder-slate-400 transition-all font-sans font-medium"
+                className="w-full bg-[#070B12] border border-[#1E2D4A] text-sm sm:text-base rounded-xl pl-10 pr-14 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#00FF88] focus:border-[#00FF88] transition-all font-sans font-medium"
               />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <kbd className="px-1.5 py-0.5 text-[11px] font-mono text-slate-400 bg-slate-800 rounded border border-slate-700">
+                  ⌘K
+                </kbd>
+              </div>
+            </div>
+
+            {/* Conmutador de Jurisdicción con Banderas Oficiales */}
+            <div className="flex items-center bg-[#070B12] p-1 rounded-xl border border-[#1E2D4A] self-start sm:self-auto shrink-0 shadow-inner">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveMarket("wall_street");
+                  setVisibleCount(30);
+                }}
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm transition-all ${
+                  activeMarket === "wall_street"
+                    ? "bg-[#111B30] text-[#00FF88] border border-emerald-500/40 shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <UsaFlag className="w-4 h-3 rounded-[2px]" />
+                <span>Wall Street</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveMarket("argentina");
+                  setVisibleCount(30);
+                  setStockOpportunityFilter("all");
+                }}
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg font-bold text-xs sm:text-sm transition-all ${
+                  activeMarket === "argentina"
+                    ? "bg-[#111B30] text-[#00FF88] border border-emerald-500/40 shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <ArgentinaFlag className="w-4 h-3 rounded-[2px]" />
+                <span>Mercado Local</span>
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Nivel 1: Selector de Mercado Principal */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6">
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => { setActiveMarket("wall_street"); setVisibleCount(30); }}
-              className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeMarket === "wall_street"
-                  ? "bg-[#00F5A0] text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
-                  : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 font-semibold"
-              }`}
-            >
-              <Globe className="w-4 h-4" />
-              <span>Wall Street</span>
-            </button>
-            <button
-              onClick={() => { setActiveMarket("argentina"); setVisibleCount(30); setStockOpportunityFilter("all"); }}
-              className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeMarket === "argentina"
-                  ? "bg-[#00F5A0] text-black shadow-[0_0_15px_rgba(0,245,160,0.3)]"
-                  : "bg-slate-100 hover:bg-slate-200 dark:bg-[#111e33] dark:hover:bg-[#162742] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 font-semibold"
-              }`}
-            >
-              <ArgentinaFlag className="w-5 h-3.5 rounded-[2px] shadow-sm" />
-              <span>Mercado Local</span>
-            </button>
-          </div>
-
-          {/* Nivel 2: Sub-selector de vista según el mercado activo */}
-          {activeMarket === "wall_street" && (
-            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0e1b2f] p-1 rounded-xl border border-slate-300 dark:border-slate-700 self-start sm:self-auto text-xs font-medium">
-              <span className="text-slate-500 dark:text-slate-400 px-2 font-mono">Ver:</span>
+        {/* Barra Inferior del Subheader: Pills de Universo por Activo + Tickers Rápidos */}
+        <div className="mt-5 pt-4 border-t border-[#1E2D4A]/80 flex flex-wrap items-center justify-between gap-3">
+          {/* Universos de Wall Street */}
+          {activeMarket === "wall_street" ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-mono uppercase text-slate-400 mr-1 tracking-wider font-semibold">
+                Universo:
+              </span>
               <button
-                onClick={() => setWallStreetSubTab("stocks")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setWallStreetSubTab("stocks");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   wallStreetSubTab === "stocks"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                Acciones ({filteredStocks.length})
+                {wallStreetSubTab === "stocks" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>Acciones S&P 500</span>
+                <span className="font-mono text-xs opacity-75">({filteredStocks.length})</span>
               </button>
+
               <button
-                onClick={() => setWallStreetSubTab("etfs")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setWallStreetSubTab("etfs");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   wallStreetSubTab === "etfs"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                Top ETFs ({filteredEtfs.length})
+                {wallStreetSubTab === "etfs" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>Top ETFs</span>
+                <span className="font-mono text-xs opacity-75">({filteredEtfs.length})</span>
               </button>
+
               <button
-                onClick={() => setWallStreetSubTab("bonds")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setWallStreetSubTab("bonds");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   wallStreetSubTab === "bonds"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                Bonos USA ({filteredUsBonds.length})
+                {wallStreetSubTab === "bonds" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>Bonos USA High Grade</span>
+                <span className="font-mono text-xs opacity-75">({filteredUsBonds.length})</span>
               </button>
             </div>
-          )}
-
-          {activeMarket === "argentina" && (
-            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0e1b2f] p-1 rounded-xl border border-slate-300 dark:border-slate-700 self-start sm:self-auto text-xs font-medium">
-              <span className="text-slate-500 dark:text-slate-400 px-2 font-mono">Ver:</span>
+          ) : (
+            /* Universos de Mercado Local */
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-mono uppercase text-slate-400 mr-1 tracking-wider font-semibold">
+                Universo:
+              </span>
               <button
-                onClick={() => setArgSubTab("cedears")}
-                className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setArgSubTab("cedears");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "cedears"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                CEDEARs ({filteredCedears.length})
+                {argSubTab === "cedears" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>CEDEARs</span>
+                <span className="font-mono text-xs opacity-75">({filteredCedears.length})</span>
               </button>
+
               <button
-                onClick={() => setArgSubTab("ons")}
-                className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setArgSubTab("ons");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "ons"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                ONs en Dólares ({filteredOns.length})
+                {argSubTab === "ons" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>ONs en Dólares</span>
+                <span className="font-mono text-xs opacity-75">({filteredOns.length})</span>
               </button>
+
               <button
-                onClick={() => setArgSubTab("merval")}
-                className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setArgSubTab("merval");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "merval"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                Acciones Merval ({filteredMerval.length})
+                {argSubTab === "merval" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>Acciones Merval</span>
+                <span className="font-mono text-xs opacity-75">({filteredMerval.length})</span>
               </button>
+
               <button
-                onClick={() => setArgSubTab("bonds")}
-                className={`px-2.5 py-1.5 rounded-lg transition-all ${
+                type="button"
+                onClick={() => {
+                  setArgSubTab("bonds");
+                  setVisibleCount(30);
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-lg font-semibold transition-all flex items-center space-x-1.5 ${
                   argSubTab === "bonds"
-                    ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-950/70 text-[#00FF88] border border-emerald-500/40 shadow-[0_0_12px_rgba(0,255,136,0.2)] font-bold"
+                    : "bg-[#111B30]/60 hover:bg-[#111B30] text-slate-300 border border-[#1E2D4A]"
                 }`}
               >
-                Bonos Soberanos ({filteredSovereign.length})
+                {argSubTab === "bonds" && <span className="w-1.5 h-1.5 rounded-full bg-[#00FF88]" />}
+                <span>Bonos Soberanos</span>
+                <span className="font-mono text-xs opacity-75">({filteredSovereign.length})</span>
               </button>
             </div>
           )}
+
+          {/* Estadísticas rápidas en el margen derecho */}
+          <div className="hidden sm:flex items-center space-x-4 text-xs font-mono text-slate-400">
+            <div>
+              Dólar CCL: <strong className="text-white">${ccl_dollar} ARS</strong>
+            </div>
+            <div className="h-3 w-[1px] bg-[#1E2D4A]" />
+            <div>
+              Tasa FED: <strong className="text-[#00FF88]">{macro?.tasa_actual_fed ?? 3.88}%</strong>
+            </div>
+            <div className="h-3 w-[1px] bg-[#1E2D4A]" />
+            <div>
+              Auditados: <strong className="text-white font-bold">{stocks.length + us_bonds.length + ons.length}</strong>
+            </div>
+          </div>
         </div>
-
-        {/* Fila de Filtros de Oportunidad y Dividendos */}
-        {((activeMarket === "wall_street" && wallStreetSubTab === "stocks") ||
-          (activeMarket === "argentina" && argSubTab === "cedears")) && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium">
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                onClick={() => setStockOpportunityFilter(stockOpportunityFilter === "opportunities" ? "all" : "opportunities")}
-                className={`px-3 py-1.5 rounded-lg transition-all text-xs font-bold border flex items-center gap-1.5 ${
-                  stockOpportunityFilter === "opportunities"
-                    ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-[#00F5A0] dark:border-emerald-500/40 shadow-sm"
-                    : "bg-slate-100 text-slate-600 border-slate-300 hover:text-slate-900 dark:bg-[#0b1626] dark:text-slate-400 dark:border-slate-700 dark:hover:text-white"
-                }`}
-                title="Alternar entre solo acciones con Score >= 60 o el ranking completo"
-              >
-                <Zap className="w-3.5 h-3.5" />
-                <span>{stockOpportunityFilter === "opportunities" ? "🔥 Solo Oportunidades (Score ≥ 60)" : "📋 Mostrar Todo el Ranking"}</span>
-              </button>
-
-              <Link
-                href="/simulador?preset=growth_cedears"
-                className="px-3 py-1.5 rounded-lg transition-all text-xs font-bold border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] flex items-center gap-1.5 shadow-sm"
-                title="Simular cartera cuantitativa óptima con ponderación Risk Parity y Sector Cap"
-              >
-                <Calculator className="w-3.5 h-3.5" />
-                <span>Simular Cartera Cuantitativa (Risk Parity)</span>
-              </Link>
-            </div>
-
-            {/* Filtro de Dividendos */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-slate-600 dark:text-slate-400 text-xs font-mono">Dividendos:</span>
-              <button
-                onClick={() => setStockDivFilter("all")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  stockDivFilter === "all"
-                    ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                Todos
-              </button>
-              <button
-                onClick={() => setStockDivFilter("dividend")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  stockDivFilter === "dividend"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                <CircleDollarSign className="w-3 h-3 text-emerald-600 dark:text-[#00F5A0]" />
-                <span>Con Div.</span>
-              </button>
-              <button
-                onClick={() => setStockDivFilter("growth")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  stockDivFilter === "growth"
-                    ? "bg-cyan-50 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-300 dark:border-cyan-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                <Zap className="w-3 h-3 text-cyan-600 dark:text-cyan-300" />
-                <span>Crecimiento</span>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Filtros Especiales para Bonos USA High Grade (Diseñado para Inversores Principiantes) */}
-        {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
-          <div className="flex flex-col gap-4 mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium">
-            {/* 1. Bloques de Tranquilidad basados en Vencimiento */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50 dark:bg-[#07111e] p-3 rounded-xl border border-slate-200 dark:border-slate-800">
-              <span className="text-slate-600 dark:text-slate-300 font-mono text-xs font-bold uppercase tracking-wider shrink-0 flex items-center gap-1.5">
-                <span>🛡️ Bloques de Tranquilidad:</span>
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => { setUsBondMaturityBlock("all"); setVisibleBondCount(30); }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    usBondMaturityBlock === "all"
-                      ? "bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs"
-                      : "bg-slate-200/70 dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  Todos ({us_bonds.length})
-                </button>
-                <button
-                  onClick={() => { setUsBondMaturityBlock("short"); setVisibleBondCount(30); }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                    usBondMaturityBlock === "short"
-                      ? "bg-emerald-100 text-emerald-950 border-emerald-400 dark:bg-emerald-950/80 dark:text-[#00F5A0] dark:border-emerald-500/50 shadow-sm"
-                      : "bg-slate-200/70 border-transparent dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                  title="Aproximadamente 1 a 3 años. Mínima fluctuación de precio, ideal para principiantes y preservación de capital"
-                >
-                  <span>🟢 Corto Plazo (1-3 años)</span>
-                  <span className="text-[10px] opacity-75 font-normal hidden md:inline">• Riesgo precio mínimo / Conservador</span>
-                </button>
-                <button
-                  onClick={() => { setUsBondMaturityBlock("medium"); setVisibleBondCount(30); }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                    usBondMaturityBlock === "medium"
-                      ? "bg-cyan-100 text-cyan-950 border-cyan-400 dark:bg-cyan-950/80 dark:text-cyan-300 dark:border-cyan-500/50 shadow-sm"
-                      : "bg-slate-200/70 border-transparent dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                  title="Aproximadamente 3 a 7 años. Equilibrio recomendado entre tasa alta fija y duración"
-                >
-                  <span>🔵 Mediano Plazo (3-7 años)</span>
-                  <span className="text-[10px] opacity-75 font-normal hidden md:inline">• Riesgo moderado / Recomendado</span>
-                </button>
-                <button
-                  onClick={() => { setUsBondMaturityBlock("long"); setVisibleBondCount(30); }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
-                    usBondMaturityBlock === "long"
-                      ? "bg-purple-100 text-purple-950 border-purple-400 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-500/50 shadow-sm"
-                      : "bg-slate-200/70 border-transparent dark:bg-[#0e1a2c] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                  title="Aproximadamente 7 a 10 años. Asegurar tasas altas por una década completa con devolución íntegra al vencimiento"
-                >
-                  <span>🟣 Largo Plazo (7-10 años)</span>
-                  <span className="text-[10px] opacity-75 font-normal hidden md:inline">• Sensible / Mantener a vencimiento</span>
-                </button>
-              </div>
-            </div>
-
-            {/* 2. Filtro de Marcas Conocidas y Cotidianas */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-600 dark:text-slate-400 font-mono text-xs font-semibold mr-1">
-                Marcas Cotidianas:
-              </span>
-              <button
-                onClick={() => { setUsBondBrandCategory("all"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "all"
-                    ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                🏢 Todas
-              </button>
-              <button
-                onClick={() => { setUsBondBrandCategory("Empresas Tecnológicas Líderes"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "Empresas Tecnológicas Líderes"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                💻 Tech Líderes (Apple, Microsoft, Google)
-              </button>
-              <button
-                onClick={() => { setUsBondBrandCategory("Consumo Masivo & Alimentos"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "Consumo Masivo & Alimentos"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                🛒 Consumo (Walmart, Coca-Cola, P&amp;G, Nike)
-              </button>
-              <button
-                onClick={() => { setUsBondBrandCategory("Salud & Farmacéuticas"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "Salud & Farmacéuticas"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                🏥 Salud (J&amp;J, Eli Lilly, Abbott, Merck)
-              </button>
-              <button
-                onClick={() => { setUsBondBrandCategory("Pagos & Finanzas"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "Pagos & Finanzas"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                💳 Pagos (Visa, Mastercard, Berkshire)
-              </button>
-              <button
-                onClick={() => { setUsBondBrandCategory("Energía & Recursos"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "Energía & Recursos"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                ⚡ Energía (Exxon, Chevron)
-              </button>
-              <button
-                onClick={() => { setUsBondBrandCategory("Gobierno & Deuda Soberana"); setVisibleBondCount(30); }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  usBondBrandCategory === "Gobierno & Deuda Soberana"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                🏛️ Deuda Soberana USA (Tesoro)
-              </button>
-            </div>
-
-            {/* 3. Nivel de Seguridad Traducido y Ordenamiento */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Calidad Crediticia:</span>
-                <button
-                  onClick={() => { setUsBondSafetyFilter("all"); setVisibleBondCount(30); }}
-                  className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondSafetyFilter === "all"
-                      ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  Todas (High Grade)
-                </button>
-                <button
-                  onClick={() => { setUsBondSafetyFilter("Seguridad Máxima"); setVisibleBondCount(30); }}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                    usBondSafetyFilter === "Seguridad Máxima"
-                      ? "bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-[#00F5A0] font-bold border border-emerald-400 dark:border-emerald-500/40"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  <span>🛡️ Seguridad Máxima (AAA / AA+)</span>
-                </button>
-                <button
-                  onClick={() => { setUsBondSafetyFilter("Riesgo Ultra Bajo"); setVisibleBondCount(30); }}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                    usBondSafetyFilter === "Riesgo Ultra Bajo"
-                      ? "bg-cyan-100 text-cyan-900 dark:bg-cyan-950/80 dark:text-cyan-300 font-bold border border-cyan-400 dark:border-cyan-500/40"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  <span>💎 Riesgo Ultra Bajo (AA / AA-)</span>
-                </button>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-600 dark:text-slate-400 font-mono text-xs font-semibold">Ordenar:</span>
-                <button
-                  onClick={() => setUsBondSort("tir")}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondSort === "tir"
-                      ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                  title="Ordenar por mayor rendimiento anual garantizado al vencimiento"
-                >
-                  Mayor Rendimiento (YTM)
-                </button>
-                <button
-                  onClick={() => setUsBondSort("score")}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondSort === "score"
-                      ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  Solidez Institucional
-                </button>
-                <button
-                  onClick={() => setUsBondSort("maturity")}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                    usBondSort === "maturity"
-                      ? "bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-500/30"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                  title="Ordenar por cobro de capital más cercano"
-                >
-                  Vencimiento Próximo
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Filtros para ETFs */}
-        {activeMarket === "wall_street" && wallStreetSubTab === "etfs" && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-medium">
-            <div className="flex items-center gap-2">
-              <span className="text-slate-600 dark:text-slate-400 font-mono text-xs">Gestor:</span>
-              <button
-                onClick={() => setEtfManagerFilter("all")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  etfManagerFilter === "all"
-                    ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                Todos
-              </button>
-              <button
-                onClick={() => setEtfManagerFilter("State Street")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  etfManagerFilter === "State Street"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                State Street (SPY)
-              </button>
-              <button
-                onClick={() => setEtfManagerFilter("Invesco")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  etfManagerFilter === "Invesco"
-                    ? "bg-cyan-50 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-300 dark:border-cyan-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                Invesco (QQQ)
-              </button>
-            </div>
-
-            {/* Filtro de Dividendos en ETFs */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-slate-600 dark:text-slate-400 text-xs font-mono">Dividendos:</span>
-              <button
-                onClick={() => setEtfDivFilter("all")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  etfDivFilter === "all"
-                    ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                Todos
-              </button>
-              <button
-                onClick={() => setEtfDivFilter("dividend")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  etfDivFilter === "dividend"
-                    ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-[#00F5A0] font-bold border border-emerald-300 dark:border-emerald-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                <CircleDollarSign className="w-3 h-3 text-emerald-600 dark:text-[#00F5A0]" />
-                <span>Con Div.</span>
-              </button>
-              <button
-                onClick={() => setEtfDivFilter("growth")}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${
-                  etfDivFilter === "growth"
-                    ? "bg-cyan-50 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300 font-bold border border-cyan-300 dark:border-cyan-500/40"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                }`}
-              >
-                <Zap className="w-3 h-3 text-cyan-600 dark:text-cyan-300" />
-                <span>Crecimiento</span>
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* LISTA DE TARJETAS */}
-      <div className="mt-6 space-y-4">
-        {/* 1. WALL STREET -> ACCIONES */}
-        {activeMarket === "wall_street" && wallStreetSubTab === "stocks" && (
-          <>
-            <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-[#0a1628] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <span>
-                🌐 <strong className="text-slate-900 dark:text-white">Wall Street (Acciones Directas en USD):</strong> Universo auditado de 450 empresas del S&P 500 y Nasdaq para inversores con cuenta en broker de Estados Unidos (Interactive Brokers, Charles Schwab, Ameritrade). Cotizan en dólares billete.
-              </span>
-            </div>
-
-            {filteredStocks.slice(0, visibleCount).map((stock, idx) => renderStockCard(stock, idx, false))}
-
-            {visibleCount < filteredStocks.length && (
-              <div className="pt-4 flex justify-center">
+      {/* 2. BARRA DE FILTROS COMPACTA HORIZONTAL (Stitch Filter Toolbar) */}
+      <div className="bg-[#0D1424] border border-[#1E2D4A] rounded-xl p-2.5 shadow-md flex flex-wrap items-center justify-between gap-3 relative z-30" ref={dropdownRef}>
+        {/* Controles de la Izquierda */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* A) Filtros para Bonos USA High Grade */}
+          {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
+            <>
+              {/* Dropdown 1: Plazo / Horizonte Temporal */}
+              <div className="relative">
                 <button
-                  onClick={() => setVisibleCount((prev) => prev + 30)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "plazo" ? null : "plazo")}
+                  className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
+                    usBondMaturityBlock !== "all"
+                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50 shadow-sm"
+                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                  }`}
                 >
-                  Cargar más acciones ({visibleCount} de {filteredStocks.length}) ↓
-                </button>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* 2. WALL STREET -> ETFS */}
-        {activeMarket === "wall_street" && wallStreetSubTab === "etfs" && (
-          <>
-            <div className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-[#091522] border border-emerald-200 dark:border-emerald-500/30 text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex items-center justify-between">
-              <span>
-                🏛️ <strong className="text-slate-900 dark:text-white">Fondos Cotizados Globales (ETFs):</strong> Carteras diversificadas de gestión pasiva que replican los índices más prestigiosos del planeta (S&P 500, Nasdaq 100, Dow Jones).
-              </span>
-            </div>
-
-            {filteredEtfs.map((etf, idx) => (
-              <div key={etf.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex items-start gap-4">
-                    <span className="text-xl sm:text-2xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
-                      #{idx + 1}
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
-                          {etf.ticker}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
-                          {etf.category}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-[#0a1e1b] border border-emerald-200 dark:border-emerald-500/40 text-emerald-800 dark:text-[#00F5A0] text-xs font-black uppercase tracking-wider">
-                          ETF TOP TIER
-                        </span>
-                      </div>
-                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                        {etf.name}{" "}
-                        <span className="text-slate-600 dark:text-slate-400 font-medium">
-                          • Gestor: {etf.manager} • Comisión: {etf.expense_ratio}% anual
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO USA (USD)
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          ${etf.price.toFixed(2)}
-                        </span>
-                        <span className="text-xs sm:text-sm font-bold font-mono text-emerald-600 dark:text-[#00F5A0]">
-                          +{etf.day_change}%
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO CEDEAR (ARS)
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-[#00F5A0] font-mono">
-                          ${etf.cedear_price_ars.toLocaleString("es-AR")}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-400">ARS</span>
-                      </div>
-                      <span className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300">
-                        Ratio {etf.cedear_ratio}
-                      </span>
-                    </div>
-
-                    <div
-                      onClick={() => setSelectedStockForModal(etf as unknown as ModalItem)}
-                      className="flex flex-col cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-                      title="Click para ver el potencial de cartera y consenso"
-                    >
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                          POTENCIAL (1A)
-                        </span>
-                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                          Desglose ↗
-                        </span>
-                      </div>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00F5A0] font-mono">
-                          +{etf.upside}%
-                        </span>
-                      </div>
-                      <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
-                        Target: ${etf.target_price} USD
-                      </span>
-                    </div>
-
-                    <div
-                      onClick={() => setSelectedScoreItem(etf as unknown as ScoreItem)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-                      title="Click para ver el desglose del Score"
-                    >
-                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                          SCORE TOTAL
-                        </span>
-                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                          Desglose ↗
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
-                          {etf.score}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
-                          <Zap className="w-4 h-4" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-50 dark:bg-[#060b13] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
-                  <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
-                    TESIS:
+                  <span className={`w-2 h-2 rounded-full ${usBondMaturityBlock !== "all" ? "bg-blue-400" : "bg-slate-400"}`} />
+                  <span className="font-bold text-white">Plazo:</span>
+                  <span>
+                    {usBondMaturityBlock === "all"
+                      ? "Todos los plazos"
+                      : usBondMaturityBlock === "short"
+                      ? "Corto (1-3 años)"
+                      : usBondMaturityBlock === "medium"
+                      ? "Mediano (3-7 años)"
+                      : "Largo (7-10+ años)"}
                   </span>
-                  <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-200 leading-relaxed font-sans">
-                    {etf.thesis}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                </button>
 
-        {/* 3. WALL STREET -> BONOS USA HIGH GRADE (DISEÑADO PARA INVERSORES PRINCIPIANTES) */}
-        {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
-          <>
-            <div className="p-4 sm:p-5 rounded-2xl bg-cyan-50/70 dark:bg-[#071322] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🛡️</span>
-                <strong className="text-slate-900 dark:text-white text-sm sm:text-base font-bold">
-                  Catálogo Curado de Renta Fija en Dólares (High Grade EE.UU. - Riesgo Casi Nulo)
-                </strong>
-              </div>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
-                Selección de <strong>{us_bonds.length} bonos corporativos y del tesoro de EE.UU.</strong> diseñada específicamente para inversores principiantes. Todos los títulos cuentan con <strong>calificación crediticia High Grade (AAA a AA-)</strong>, estructura <strong>100% Bullet (No Rescatable)</strong> para eliminar el riesgo de refinanciación, emisiones superiores a <strong>$1.000M USD</strong> para máxima liquidez y un <strong>plazo mínimo de 1 año (al menos 2 cupones semestrales por cobrar)</strong> para asegurar que la rentabilidad supere ampliamente las comisiones del broker.
-              </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2.5 font-mono flex items-center gap-1.5 border-t border-slate-200 dark:border-slate-800/80 pt-2.5">
-                <span>ℹ️</span>
-                <span><strong>Nota de Cotización:</strong> Precios y paridades de referencia de mercado secundario (cierre diario OTC / FINRA TRACE). Al momento de comprar en tu broker internacional (Charles Schwab, Interactive Brokers), el precio final variará centavos según el spread de compra-venta vigente en la mesa de dinero.</span>
-              </p>
-            </div>
-
-            {/* Calculadora Interactiva de Comisión de Broker & TIR Neta */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-slate-100 dark:bg-[#071322] border border-slate-300 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex items-start sm:items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-[#00F5A0] border border-emerald-500/20 shrink-0">
-                  <CircleDollarSign className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
-                      Comisión de tu Broker para Cálculo de TIR Neta
-                    </span>
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-[#00F5A0] border border-emerald-300 dark:border-emerald-600/30 font-bold">
-                      {brokerFeePercent > 0 ? `Comisión activa: ${brokerFeePercent}%` : "TIR Bruta (Sin Comisión)"}
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Descuenta el costo transaccional de compra distribuido en el plazo del bono para reflejar tu rentabilidad real de bolsillo.
-                  </p>
-                </div>
-              </div>
-
-              {/* Botones Presets + Input Personalizado */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 mr-1 hidden sm:inline">Brokers:</span>
-                {[
-                  { label: "0% (Bruta)", val: 0.0 },
-                  { label: "0.1% (IBKR / Schwab)", val: 0.1 },
-                  { label: "0.5% (Estándar)", val: 0.5 },
-                  { label: "1.0% (Broker Local)", val: 1.0 },
-                ].map((preset) => (
-                  <button
-                    key={preset.label}
-                    onClick={() => setBrokerFeePercent(preset.val)}
-                    className={`px-3 py-1.5 text-xs font-mono font-bold rounded-lg border transition-all ${
-                      brokerFeePercent === preset.val
-                        ? "bg-emerald-600 text-white border-emerald-500 shadow-xs dark:bg-[#00F5A0] dark:text-black dark:border-[#00F5A0]"
-                        : "bg-white dark:bg-[#0d1b2e] text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:border-slate-400"
-                    }`}
-                  >
-                    {preset.label}
-                  </button>
-                ))}
-                
-                <div className="flex items-center gap-1 bg-white dark:bg-[#0d1b2e] border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1" title="Ingresa un porcentaje de comisión manual">
-                  <span className="text-[11px] font-mono text-slate-400">Otro:</span>
-                  <input
-                    type="number"
-                    min="0"
-                    max="5"
-                    step="0.05"
-                    value={brokerFeePercent}
-                    onChange={(e) => setBrokerFeePercent(Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-12 bg-transparent text-xs font-mono font-bold text-slate-900 dark:text-white outline-none text-right"
-                  />
-                  <span className="text-xs font-mono text-slate-500">%</span>
-                </div>
-              </div>
-            </div>
-
-            {filteredUsBonds.slice(0, visibleBondCount).map((bond: UsBondItem, idx: number) => {
-              const feeDrag = (bond.maturity_years && bond.maturity_years > 0)
-                ? (brokerFeePercent / bond.maturity_years)
-                : brokerFeePercent;
-              const netYtm = Math.max(0, (bond.tir_usd || 0) - feeDrag);
-
-              return (
-              <div key={bond.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex items-start gap-4">
-                    <span className="text-xl sm:text-2xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
-                      #{idx + 1}
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono flex items-center gap-1.5">
-                          <span>{bond.brand_icon || "🏢"}</span>
-                          <span>{bond.ticker}</span>
-                        </span>
-
-                        {/* Badge de Seguridad Traducido */}
-                        <span className={`px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border flex items-center gap-1.5 shadow-xs ${
-                          bond.rating === "AAA" || bond.rating === "AA+"
-                            ? "bg-emerald-100 text-emerald-950 border-emerald-400 dark:bg-emerald-500/20 dark:text-[#00F5A0] dark:border-[#00F5A0]"
-                            : "bg-cyan-100 text-cyan-950 border-cyan-400 dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-400"
-                        }`}>
-                          <span>{bond.safety_badge === "Seguridad Máxima" ? "🛡️ Seguridad Máxima" : "💎 Riesgo Ultra Bajo"}</span>
-                          <span className="text-[11px] opacity-75 font-mono">({bond.rating} / {bond.moodys})</span>
-                        </span>
-
-                        {/* Estructura No Rescatable (Bullet) */}
-                        <span className="px-2 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono" title="Bono no rescatable: la empresa no puede cancelarlo antes de tiempo">
-                          🔒 Bullet (No Rescatable)
-                        </span>
-
-                        {/* Bloque de Tranquilidad */}
-                        <span className={`px-2 py-1 rounded-md text-xs font-mono font-bold border ${
-                          bond.maturity_block === "short"
-                            ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-[#00F5A0] dark:border-emerald-500/40"
-                            : bond.maturity_block === "medium"
-                            ? "bg-cyan-50 text-cyan-800 border-cyan-300 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-500/40"
-                            : "bg-purple-50 text-purple-800 border-purple-300 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-500/40"
-                        }`}>
-                          {bond.maturity_block === "short" ? "🟢 Corto Plazo (1-3A)" : bond.maturity_block === "medium" ? "🔵 Mediano Plazo (3-7A)" : "🟣 Largo Plazo (7-10A)"}
-                        </span>
-
-                        {/* Emisión Mínima Garantizada */}
-                        <span className="px-2 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-mono hidden sm:inline" title="Monto de emisión superior a $1.000M USD">
-                          💧 {bond.amount_outstanding_usd}
-                        </span>
-                      </div>
-                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                        {bond.name}{" "}
-                        <span className="text-slate-500 dark:text-slate-400 font-normal">
-                          • Emisor: {bond.issuer} ({bond.sector})
-                        </span>
-                      </div>
+                {openDropdown === "plazo" && (
+                  <div className="absolute left-0 mt-2 w-80 rounded-xl bg-[#0B1220] border border-blue-500/40 shadow-2xl p-2 z-50 animate-in fade-in duration-100">
+                    <div className="px-2.5 py-1.5 text-[11px] font-mono text-slate-400 uppercase tracking-wider border-b border-[#1E2D4A] flex items-center justify-between">
+                      <span>Bloques de Tranquilidad</span>
+                      <span className="text-blue-400 font-bold">Horizonte temporal</span>
                     </div>
-                  </div>
+                    <div className="space-y-1 mt-1.5 font-sans">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUsBondMaturityBlock("all");
+                          setOpenDropdown(null);
+                        }}
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
+                          usBondMaturityBlock === "all" ? "bg-blue-950/70 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        }`}
+                      >
+                        <span>Todos los plazos</span>
+                        <span className="font-mono text-xs text-slate-400">{us_bonds.length}</span>
+                      </button>
 
-                  {/* 5 Métricas Clave (Rendimiento YTM, Cotización & Paridad, Cupón, Vencimiento y Solidez) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-5 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-                    {/* 1. Rendimiento al Vencimiento (YTM / TIR Neta o Bruta) - Métrica Principal */}
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-emerald-800 dark:text-[#00F5A0] tracking-wider">
-                        {brokerFeePercent > 0 ? "TIR NETA (EN BOLSILLO)" : "RENDIMIENTO SEGURO (YTM)"}
-                      </span>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono">
-                          {netYtm.toFixed(2)}%
-                        </span>
-                      </div>
-                      <span className="text-xs font-bold font-mono text-emerald-800 dark:text-[#00F5A0]/90">
-                        {brokerFeePercent > 0 ? "Tasa neta anual estimada" : "Tasa neta anual USD"}
-                      </span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
-                        {brokerFeePercent > 0
-                          ? `Bruta: ${bond.tir_usd}% (Comisión: -${feeDrag.toFixed(2)}%/año)`
-                          : "Fija al vencimiento"}
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUsBondMaturityBlock("short");
+                          setOpenDropdown(null);
+                        }}
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
+                          usBondMaturityBlock === "short" ? "bg-emerald-950/70 text-emerald-300 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        }`}
+                      >
+                        <div>
+                          <div className="font-semibold text-white">Corto Plazo (1-3 años)</div>
+                          <p className="text-[11px] text-slate-400">Riesgo precio mínimo • Máxima liquidez</p>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUsBondMaturityBlock("medium");
+                          setOpenDropdown(null);
+                        }}
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
+                          usBondMaturityBlock === "medium" ? "bg-blue-950/70 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        }`}
+                      >
+                        <div>
+                          <div className="font-semibold text-white flex items-center gap-1.5">
+                            <span>Mediano Plazo (3-7 años)</span>
+                            <span className="text-[9px] bg-blue-500/30 text-blue-300 px-1 rounded font-mono">RECOMENDADO</span>
+                          </div>
+                          <p className="text-[11px] text-slate-400">Riesgo moderado • Alta certidumbre</p>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUsBondMaturityBlock("long");
+                          setOpenDropdown(null);
+                        }}
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors text-left ${
+                          usBondMaturityBlock === "long" ? "bg-purple-950/70 text-purple-300 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        }`}
+                      >
+                        <div>
+                          <div className="font-semibold text-white">Largo Plazo (7-10+ años)</div>
+                          <p className="text-[11px] text-slate-400">Sensible a tasas • Mantener a vencimiento</p>
+                        </div>
+                      </button>
                     </div>
-
-                    {/* 2. Precio de Cotización & Paridad */}
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO &amp; PARIDAD
-                      </span>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono">
-                          ${bond.price_usd?.toFixed(2)}
-                        </span>
-                        <span className="text-[10px] text-slate-500 font-mono">USD</span>
-                      </div>
-                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">
-                        Paridad {bond.parity}%
-                      </span>
-                      <span className={`text-[10px] font-mono font-bold mt-0.5 ${
-                        bond.price_usd < 100
-                          ? "text-emerald-700 dark:text-[#00F5A0]"
-                          : bond.price_usd === 100
-                          ? "text-slate-600 dark:text-slate-300"
-                          : "text-blue-600 dark:text-blue-400"
-                      }`}>
-                        {bond.price_usd < 100
-                          ? "🟢 Bajo la par"
-                          : bond.price_usd === 100
-                          ? "⚪ A la par"
-                          : "🔵 Sobre la par"}
-                      </span>
-                    </div>
-
-                    {/* 3. Cupón Periódico */}
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        CUPÓN &amp; COBRO
-                      </span>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono">
-                          {bond.coupon}%
-                        </span>
-                      </div>
-                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">{bond.frequency}</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Renta pasiva directa</span>
-                    </div>
-
-                    {/* 4. Vencimiento de Capital */}
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        COBRO DE CAPITAL
-                      </span>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-lg sm:text-xl font-black text-slate-900 dark:text-white font-mono">
-                          {bond.maturity_date}
-                        </span>
-                      </div>
-                      <span className="text-xs font-bold font-mono text-slate-600 dark:text-slate-300">{bond.maturity_years} años restantes</span>
-                      <span className="text-[10px] font-mono text-emerald-700 dark:text-[#00F5A0] font-semibold">
-                        📅 {bond.remaining_coupons || Math.max(2, Math.round(bond.maturity_years * 2))} cupones restantes
-                      </span>
-                    </div>
-
-                    {/* 5. Solidez y Desglose Cuantitativo */}
-                    <div
-                      onClick={() => setSelectedScoreItem(bond)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-                      title="Ver desglose detallado de solvencia y calificación crediticia"
-                    >
-                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                          SOLIDEZ
-                        </span>
-                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                          Desglose ↗
-                        </span>
-                      </div>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-[#00F5A0] font-mono">
-                          {bond.score}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-400">/ 100</span>
-                      </div>
-                      <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-mono">
-                        {bond.min_investment}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {bond.thesis && (
-                  <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-[#060b13] border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-mono">
-                    <span className="text-emerald-700 dark:text-[#00F5A0] font-bold mr-1">Tesis para Principiantes:</span>
-                    {bond.thesis}
                   </div>
                 )}
               </div>
-              );
-            })}
 
-            {visibleBondCount < filteredUsBonds.length && (
-              <div className="pt-4 flex justify-center">
+              {/* Dropdown 2: Industria / Marcas */}
+              <div className="relative">
                 <button
-                  onClick={() => setVisibleBondCount((prev) => prev + 30)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "brand" ? null : "brand")}
+                  className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
+                    usBondBrandCategory !== "all"
+                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
+                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                  }`}
                 >
-                  Cargar más bonos ({visibleBondCount} de {filteredUsBonds.length}) ↓
+                  <span className="text-slate-400">Sector:</span>
+                  <span className="text-white font-medium">
+                    {usBondBrandCategory === "all" ? "Todos" : usBondBrandCategory}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                 </button>
-              </div>
-            )}
-          </>
-        )}
 
-        {/* 4. MERCADO LOCAL -> CEDEARS EN PESOS */}
-        {activeMarket === "argentina" && argSubTab === "cedears" && (
-          <>
-            <div className="p-4 rounded-2xl bg-emerald-50/70 dark:bg-[#091522] border border-emerald-200 dark:border-emerald-500/30 text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <span>
-                🟢 <strong className="text-slate-900 dark:text-white">CEDEARs (Certificados de Depósito Argentinos):</strong> Acciones y ETFs de empresas internacionales (Apple, Nvidia, Microsoft, etc.) que se compran y venden directamente en la Bolsa de Buenos Aires (BYMA) en <strong className="text-emerald-700 dark:text-[#00F5A0]">Pesos (ARS) o Dólar MEP</strong>, vinculadas a la cotización del Dólar CCL oficial.
-              </span>
-            </div>
-
-            {filteredCedears.slice(0, visibleCount).map((stock, idx) => renderStockCard(stock, idx, true))}
-
-            {visibleCount < filteredCedears.length && (
-              <div className="pt-4 flex justify-center">
-                <button
-                  onClick={() => setVisibleCount((prev) => prev + 30)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
-                >
-                  Cargar más CEDEARs ({visibleCount} de {filteredCedears.length}) ↓
-                </button>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* 5. MERCADO LOCAL -> ONS EN DÓLARES */}
-        {activeMarket === "argentina" && argSubTab === "ons" && (
-          <>
-            <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-[#0a1424] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <span>
-                🏢 <strong className="text-slate-900 dark:text-white">Obligaciones Negociables (ONs):</strong> Deuda corporativa privada de empresas líderes (YPF, Pampa Energía, Pan American Energy). Pagan cupones periódicos en <strong className="text-emerald-700 dark:text-[#00F5A0]">Dólares billete (MEP / Cable)</strong> y se operan tanto en Pesos como en Dólares en BYMA.
-              </span>
-              <Link
-                href="/simulador?preset=usd_income"
-                className="px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-sm"
-              >
-                <Calculator className="w-3.5 h-3.5" />
-                <span>Simular Cartera Renta USD (7.5%)</span>
-              </Link>
-            </div>
-
-            {filteredOns.slice(0, visibleCount).map((on, idx) => (
-              <div key={on.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex items-start gap-4">
-                    <span className="text-xl sm:text-2xl font-black text-emerald-700 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
-                      #{idx + 1}
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
-                          {on.ticker}
-                        </span>
-                        <span
-                          className={`px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold tracking-wide border ${
-                            on.law.includes("Nueva York")
-                              ? "bg-cyan-50 dark:bg-[#132840] border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200"
-                              : "bg-amber-50 dark:bg-[#291e10] border-amber-200 dark:border-amber-500/40 text-amber-800 dark:text-amber-300"
-                          }`}
-                        >
-                          {on.law}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
-                          Vence: <strong className="text-emerald-700 dark:text-[#00F5A0]">{on.maturity_date}</strong>
-                        </span>
-                      </div>
-                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                        {on.name} <span className="text-slate-500 dark:text-slate-400 font-normal">• Emisor: {on.issuer}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO &amp; PARIDAD
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          ${on.price_usd ? on.price_usd.toFixed(2) : "100.00"}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">USD</span>
-                      </div>
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          on.parity > 100 ? "text-cyan-600 dark:text-cyan-300" : on.parity < 100 ? "text-amber-600 dark:text-amber-300" : "text-emerald-600 dark:text-[#00F5A0]"
+                {openDropdown === "brand" && (
+                  <div className="absolute left-0 mt-2 w-64 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-2 z-50">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUsBondBrandCategory("all");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-slate-200"
+                    >
+                      Todos los sectores
+                    </button>
+                    {bondBrandCategories.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => {
+                          setUsBondBrandCategory(c);
+                          setOpenDropdown(null);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg transition-colors ${
+                          usBondBrandCategory === c ? "bg-blue-950 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
                         }`}
                       >
-                        {on.parity_status || (on.parity > 100 ? "Sobre par" : "Bajo par")} ({on.parity}%)
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        RENDIMIENTO (TIR)
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00F5A0] font-mono">
-                          {on.tir_usd}%
-                        </span>
-                      </div>
-                      <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">Tasa neta anual USD</span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        CUPÓN &amp; FRECUENCIA
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          {on.coupon}%
-                        </span>
-                      </div>
-                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">{on.frequency}</span>
-                    </div>
-
-                    <div
-                      onClick={() => setSelectedScoreItem(on)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-                      title="Ver desglose detallado de cómo se compone esta calificación de Solvencia"
-                    >
-                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                          SOLIDEZ
-                        </span>
-                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                          Desglose ↗
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
-                          {on.score}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
-                          <Building2 className="w-4 h-4" />
-                        </div>
-                      </div>
-                    </div>
+                        {c}
+                      </button>
+                    ))}
                   </div>
-                </div>
-
-                <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-50 dark:bg-[#060b13] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
-                  <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
-                    TESIS:
-                  </span>
-                  <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-200 leading-relaxed font-sans">
-                    {on.thesis}
-                  </p>
-                </div>
+                )}
               </div>
-            ))}
 
-            {visibleCount < filteredOns.length && (
-              <div className="pt-4 flex justify-center">
+              {/* Dropdown 3: Calidad Crediticia */}
+              <div className="relative">
                 <button
-                  onClick={() => setVisibleCount((prev) => prev + 30)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "safety" ? null : "safety")}
+                  className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
+                    usBondSafetyFilter !== "all"
+                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
+                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                  }`}
                 >
-                  Cargar más ONs ({visibleCount} de {filteredOns.length}) ↓
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                  <span className="text-slate-400">Rating:</span>
+                  <span className="text-white font-medium">
+                    {usBondSafetyFilter === "all" ? "High Grade (AAA / AA+)" : usBondSafetyFilter}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                 </button>
-              </div>
-            )}
-          </>
-        )}
 
-        {/* 6. MERCADO LOCAL -> MERVAL */}
-        {activeMarket === "argentina" && argSubTab === "merval" && (
-          <>
-            <div className="p-4 rounded-2xl bg-slate-100 dark:bg-[#091522] border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <span>
-                📊 <strong className="text-slate-900 dark:text-white">Acciones Argentinas (S&P Merval):</strong> Las empresas nacionales más representativas (Galicia, YPF, Pampa Energía, Macro) cotizando en Pesos en el Panel Líder de BYMA.
-              </span>
-              <Link
-                href="/simulador?preset=all_weather_arg"
-                className="px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-[#00F5A0] flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-sm"
+                {openDropdown === "safety" && (
+                  <div className="absolute left-0 mt-2 w-64 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-2 z-50">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUsBondSafetyFilter("all");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-slate-200"
+                    >
+                      Todos (AAA / AA+ / AA / A)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUsBondSafetyFilter("Seguridad Máxima");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-emerald-300 font-medium"
+                    >
+                      Seguridad Máxima (AAA / Tesoro)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUsBondSafetyFilter("Riesgo Ultra Bajo");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-blue-300 font-medium"
+                    >
+                      Riesgo Ultra Bajo (AA+ / AA)
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* B) Filtros para Acciones S&P 500 y CEDEARs */}
+          {((activeMarket === "wall_street" && wallStreetSubTab === "stocks") ||
+            (activeMarket === "argentina" && argSubTab === "cedears")) && (
+            <>
+              {/* Filtro Oportunidades (Score >= 60) */}
+              <button
+                type="button"
+                onClick={() =>
+                  setStockOpportunityFilter(stockOpportunityFilter === "opportunities" ? "all" : "opportunities")
+                }
+                className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs sm:text-sm font-bold rounded-lg border transition-all ${
+                  stockOpportunityFilter === "opportunities"
+                    ? "bg-emerald-950/70 text-[#00FF88] border-emerald-500/40 shadow-sm"
+                    : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                }`}
               >
-                <Calculator className="w-3.5 h-3.5" />
-                <span>Simular Cartera Equilibrada All-Weather</span>
-              </Link>
-            </div>
+                <Zap className="w-3.5 h-3.5 text-[#00FF88]" />
+                <span>{stockOpportunityFilter === "opportunities" ? "Solo Oportunidades (Score ≥ 60)" : "Todo el Ranking"}</span>
+              </button>
 
-            {filteredMerval.slice(0, visibleCount).map((m, idx) => (
-              <div key={m.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex items-start gap-4">
-                    <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
-                      #{idx + 1}
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
-                          {m.ticker}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
-                          {m.sector}
-                        </span>
-                      </div>
-                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                        {m.name}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO EN PESOS
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          ${m.price_ars.toLocaleString("es-AR")}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">ARS</span>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-emerald-600 dark:text-[#00F5A0]">
-                        +{m.day_change}% hoy
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        VALUACIÓN (P/E)
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          {m.pe_ratio}x
-                        </span>
-                      </div>
-                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">Ganancias anuales</span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        MERCADO
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          BYMA
-                        </span>
-                      </div>
-                      <span className="text-xs font-medium font-mono text-emerald-600 dark:text-emerald-400">Panel Líder</span>
-                    </div>
-
-                    <div
-                      onClick={() => setSelectedScoreItem(m)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-                      title="Ver desglose detallado de cómo se compone este Score"
-                    >
-                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                          SCORE TOTAL
-                        </span>
-                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                          Desglose ↗
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
-                          {m.score}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
-                          <Zap className="w-4 h-4" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-50 dark:bg-[#060b13] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
-                  <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
-                    TESIS:
-                  </span>
-                  <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-200 leading-relaxed font-sans">
-                    {m.thesis}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            {visibleCount < filteredMerval.length && (
-              <div className="pt-4 flex justify-center">
+              {/* Filtro Dividendos */}
+              <div className="relative">
                 <button
-                  onClick={() => setVisibleCount((prev) => prev + 30)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0e1b2f] dark:hover:bg-[#142642] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm font-bold font-mono transition-all"
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "dividend" ? null : "dividend")}
+                  className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
+                    stockDivFilter !== "all"
+                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
+                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                  }`}
                 >
-                  Cargar más Acciones ({visibleCount} de {filteredMerval.length}) ↓
-                </button>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* 7. MERCADO LOCAL -> BONOS SOBERANOS */}
-        {activeMarket === "argentina" && argSubTab === "bonds" && (
-          <>
-            <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-[#0a1424] border border-cyan-200 dark:border-cyan-500/30 text-xs sm:text-sm text-slate-700 dark:text-slate-200 flex items-center justify-between">
-              <span>
-                🏛️ <strong className="text-slate-900 dark:text-white">Bonos Soberanos de la República Argentina:</strong> Deuda pública nacional (Bonares y Globales). Instrumentos para inversores que buscan altos rendimientos en dólares con perfil de riesgo soberano.
-              </span>
-            </div>
-
-            {filteredSovereign.map((b, idx) => (
-              <div key={b.ticker} className="instrument-card rounded-2xl p-5 sm:p-6 transition-all duration-200">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex items-start gap-4">
-                    <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono tracking-tight pt-0.5">
-                      #{idx + 1}
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-wide font-mono">
-                          {b.ticker}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-cyan-50 dark:bg-[#132840] border border-cyan-200 dark:border-cyan-500/40 text-cyan-800 dark:text-cyan-200 text-xs sm:text-sm font-bold tracking-wide">
-                          {b.parity_status || (b.law.includes("Nueva York") ? "Bono Global" : "Bonar")}
-                        </span>
-                        <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[#142338] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-mono">
-                          Ley: {b.law}
-                        </span>
-                      </div>
-                      <div className="text-sm sm:text-base text-slate-700 dark:text-slate-200 font-semibold mt-1 tracking-normal">
-                        {b.name}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 bg-slate-100/90 dark:bg-[#091220]/90 p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700/80">
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        PRECIO USD
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          ${b.price_usd.toFixed(2)}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">USD</span>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-emerald-600 dark:text-[#00F5A0]">
-                        Paridad {b.parity}%
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        RENDIMIENTO (TIR)
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00F5A0] font-mono">
-                          {b.tir_usd}%
-                        </span>
-                      </div>
-                      <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">Tasa anual en USD</span>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                        VENCIMIENTO
-                      </span>
-                      <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white font-mono">
-                          {b.maturity_date}
-                        </span>
-                      </div>
-                      <span className="text-xs font-medium font-mono text-slate-600 dark:text-slate-300">Amortizable</span>
-                    </div>
-
-                    <div
-                      onClick={() => setSelectedScoreItem(b)}
-                      className="flex flex-col sm:items-end justify-center cursor-pointer group/modal bg-slate-200/60 hover:bg-slate-200 dark:bg-[#0e1a2c]/60 dark:hover:bg-[#12243d] p-2 -m-2 rounded-xl border border-transparent hover:border-emerald-500/40 transition-all"
-                      title="Ver desglose detallado de cómo se compone este Score"
-                    >
-                      <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full">
-                        <span className="text-[11px] sm:text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-300 tracking-wider">
-                          SCORE TOTAL
-                        </span>
-                        <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-mono group-hover/modal:underline flex items-center">
-                          Desglose ↗
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-[#00F5A0] font-mono drop-shadow-sm dark:drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]">
-                          {b.score}
-                        </span>
-                        <span className="text-xs font-bold font-mono text-slate-500 dark:text-slate-300">/100</span>
-                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-[#00F5A0] group-hover/modal:scale-110 transition-transform">
-                          <Zap className="w-4 h-4" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-3.5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2 bg-slate-50 dark:bg-[#060b13] p-3 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-800/80">
-                  <span className="text-xs sm:text-sm font-extrabold font-mono text-emerald-700 dark:text-[#00F5A0] tracking-wide uppercase whitespace-nowrap bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30 self-start">
-                    TESIS:
+                  <CircleDollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-slate-400">Dividendo:</span>
+                  <span className="text-white font-medium">
+                    {stockDivFilter === "all" ? "Todos" : stockDivFilter === "dividend" ? "Con Dividendo" : "Crecimiento Puro"}
                   </span>
-                  <p className="text-sm sm:text-[15px] font-normal text-slate-700 dark:text-slate-200 leading-relaxed font-sans">
-                    {b.thesis}
-                  </p>
-                </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                </button>
+
+                {openDropdown === "dividend" && (
+                  <div className="absolute left-0 mt-2 w-56 rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-2 z-50">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStockDivFilter("all");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-slate-200"
+                    >
+                      Todos
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStockDivFilter("dividend");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-emerald-300 font-semibold"
+                    >
+                      Con Dividendos
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStockDivFilter("growth");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-cyan-300 font-semibold"
+                    >
+                      Crecimiento (Sin Div)
+                    </button>
+                  </div>
+                )}
               </div>
-            ))}
-          </>
-        )}
+
+              {/* Filtro Sector */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === "stockSector" ? null : "stockSector")}
+                  className={`flex items-center space-x-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg border transition-all ${
+                    stockSectorFilter !== "all"
+                      ? "bg-blue-950/80 text-blue-200 border-blue-500/50"
+                      : "bg-[#111B30] text-slate-300 border-[#1E2D4A] hover:border-slate-600"
+                  }`}
+                >
+                  <span className="text-slate-400">Sector:</span>
+                  <span className="text-white font-medium truncate max-w-[120px]">
+                    {stockSectorFilter === "all" ? "Todos" : stockSectorFilter}
+                  </span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                </button>
+
+                {openDropdown === "stockSector" && (
+                  <div className="absolute left-0 mt-2 w-64 max-h-72 overflow-y-auto rounded-xl bg-[#0B1220] border border-[#1E2D4A] shadow-2xl p-2 z-50">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStockSectorFilter("all");
+                        setOpenDropdown(null);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg hover:bg-[#111B30] text-slate-200"
+                    >
+                      Todos los sectores
+                    </button>
+                    {stockSectors.map((sec) => (
+                      <button
+                        key={sec}
+                        type="button"
+                        onClick={() => {
+                          setStockSectorFilter(sec);
+                          setOpenDropdown(null);
+                        }}
+                        className={`w-full text-left px-2.5 py-1.5 text-xs sm:text-sm rounded-lg transition-colors truncate ${
+                          stockSectorFilter === sec ? "bg-blue-950 text-blue-200 font-bold" : "hover:bg-[#111B30] text-slate-300"
+                        }`}
+                      >
+                        {sec}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* C) Filtro directo para simular cartera cuantitativa */}
+          <Link
+            href={`/simulador?preset=${activeMarket === "argentina" && argSubTab === "ons" ? "usd_income" : "growth_cedears"}`}
+            className="flex items-center space-x-1.5 px-3 py-1.5 text-xs sm:text-sm font-bold rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-[#00FF88] border border-emerald-500/40 shadow-sm transition-all"
+            title="Optimizar asignación por Inverso de la Volatilidad y Sector Cap"
+          >
+            <Calculator className="w-3.5 h-3.5" />
+            <span>Simular Cartera (Risk Parity)</span>
+          </Link>
+        </div>
+
+        {/* Controles de la Derecha: Selector de Ordenamiento, Toggle de Vista y Exportar CSV */}
+        <div className="flex items-center space-x-2.5 ml-auto">
+          {/* Ordenar en Bonos USA */}
+          {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
+            <div className="flex items-center space-x-1.5 text-xs sm:text-sm">
+              <label className="text-slate-400 hidden sm:inline" htmlFor="order-bonds">
+                Ordenar:
+              </label>
+              <select
+                id="order-bonds"
+                value={usBondSort}
+                onChange={(e) => setUsBondSort(e.target.value as "tir" | "score" | "maturity")}
+                className="bg-[#111B30] border border-[#1E2D4A] rounded-lg text-xs sm:text-sm py-1.5 pl-2.5 pr-8 text-white focus:outline-none focus:ring-1 focus:ring-[#00FF88] font-medium cursor-pointer"
+              >
+                <option value="tir">Mayor Rendimiento (YTM)</option>
+                <option value="score">Solidez Institucional (Score)</option>
+                <option value="maturity">Vencimiento Próximo</option>
+              </select>
+            </div>
+          )}
+
+          {/* Toggle de Densidad de Vista (Tabla compacta vs Tarjetas) */}
+          <div className="hidden sm:flex items-center bg-[#070B12] p-0.5 rounded-lg border border-[#1E2D4A]">
+            <button
+              type="button"
+              onClick={() => setViewMode("table")}
+              className={`p-1.5 rounded transition-all ${
+                viewMode === "table" ? "bg-[#111B30] text-[#00FF88]" : "text-slate-400 hover:text-white"
+              }`}
+              title="Vista Compacta (Tabla Institucional)"
+            >
+              <List className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("cards")}
+              className={`p-1.5 rounded transition-all ${
+                viewMode === "cards" ? "bg-[#111B30] text-[#00FF88]" : "text-slate-400 hover:text-white"
+              }`}
+              title="Vista Detallada (Tarjetas)"
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Botón de Exportar a CSV Funcional */}
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            className="px-2.5 py-1.5 rounded-lg text-xs sm:text-sm bg-[#111B30] hover:bg-slate-800 text-slate-300 hover:text-white border border-[#1E2D4A] flex items-center space-x-1.5 transition-colors font-medium"
+            title="Descargar datos filtrados en formato CSV"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-400" />
+            <span>CSV</span>
+          </button>
+        </div>
       </div>
 
-      {/* Modales Detallados */}
+      {/* 3. TABLA DE DATOS INSTITUCIONAL COMPACTA (Stitch Data Table) */}
+      <div className="bg-[#0D1424] rounded-2xl border border-[#1E2D4A] shadow-2xl overflow-hidden">
+        {/* Banner de Resumen de Resultados */}
+        <div className="px-5 py-3 border-b border-[#1E2D4A] bg-[#0A101D] flex items-center justify-between text-xs sm:text-sm font-mono">
+          <div className="flex items-center space-x-3">
+            <span className="font-bold text-white uppercase tracking-wider text-xs">Resultados Filtrados</span>
+            <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-[#00FF88] text-xs font-bold border border-emerald-500/30">
+              {activeMarket === "wall_street"
+                ? wallStreetSubTab === "stocks"
+                  ? `${filteredStocks.length} Acciones`
+                  : wallStreetSubTab === "etfs"
+                  ? `${filteredEtfs.length} ETFs`
+                  : `${filteredUsBonds.length} Bonos USA`
+                : argSubTab === "cedears"
+                ? `${filteredCedears.length} CEDEARs`
+                : argSubTab === "ons"
+                ? `${filteredOns.length} ONs`
+                : argSubTab === "merval"
+                ? `${filteredMerval.length} Acciones Merval`
+                : `${filteredSovereign.length} Bonos Soberanos`}
+            </span>
+            <span className="text-slate-400 hidden sm:inline">• Ordenado por modelo cuantitativo institucional</span>
+          </div>
+
+          <div className="flex items-center space-x-3 text-slate-400 text-xs">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#00FF88]" />
+              Cotizaciones auditadas en tiempo real
+            </span>
+          </div>
+        </div>
+
+        {/* --- VISTA: TABLA INSTITUCIONAL --- */}
+        {viewMode === "table" ? (
+          <div className="overflow-x-auto">
+            {/* A) Tabla para Bonos USA High Grade */}
+            {activeMarket === "wall_street" && wallStreetSubTab === "bonds" && (
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                    <th className="py-3.5 px-4 font-semibold">Ticker / Activo</th>
+                    <th className="py-3.5 px-4 font-semibold">Emisor & Industria</th>
+                    <th className="py-3.5 px-3 font-semibold text-center">Rating</th>
+                    <th className="py-3.5 px-4 font-semibold">Horizonte / Venc.</th>
+                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">YTM (Rendimiento)</th>
+                    <th className="py-3.5 px-3 font-semibold text-right">Cupón</th>
+                    <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                  {filteredUsBonds.slice(0, visibleBondCount).map((b) => (
+                    <tr key={b.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center space-x-2.5">
+                          <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-500/40 flex items-center justify-center text-xs font-bold text-blue-200">
+                            {b.ticker.split(" ")[0]}
+                          </div>
+                          <div>
+                            <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                              {b.ticker}
+                            </div>
+                            <div className="text-xs text-slate-400 font-sans">{(b as { isin?: string }).isin || "US TRACE"}</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4 font-sans">
+                        <div className="font-semibold text-white text-xs sm:text-sm">{b.name}</div>
+                        <div className="text-xs text-slate-400">{b.sector}</div>
+                      </td>
+
+                      <td className="py-3.5 px-3 text-center">
+                        <span className="inline-block px-2.5 py-0.5 rounded text-xs font-bold bg-blue-950 text-blue-200 border border-blue-500/30">
+                          {b.rating}
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-4 font-sans">
+                        <div className="text-slate-100 font-medium text-xs sm:text-sm">{b.maturity_years} años</div>
+                        <div className="text-xs text-slate-400 font-mono">{b.maturity}</div>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right">
+                        <span className="text-[#00FF88] font-bold text-sm sm:text-base tracking-tight bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                          {b.tir_usd}%
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-3 text-right text-slate-300 text-xs sm:text-sm">
+                        {b.coupon}%
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right font-bold text-white text-sm sm:text-base">
+                        ${b.price_usd?.toFixed(2)}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <div className="inline-flex items-center space-x-2">
+                          <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${b.score}%` }} />
+                          </div>
+                          <span className="text-[#00FF88] font-bold text-xs sm:text-sm">{b.score}</span>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedScoreItem(b)}
+                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                        >
+                          Analizar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {/* B) Tabla para Acciones S&P 500 y CEDEARs */}
+            {((activeMarket === "wall_street" && wallStreetSubTab === "stocks") ||
+              (activeMarket === "argentina" && argSubTab === "cedears")) && (
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                    <th className="py-3.5 px-4 font-semibold">Ticker / Activo</th>
+                    <th className="py-3.5 px-4 font-semibold">Empresa & Industria</th>
+                    <th className="py-3.5 px-3 font-semibold text-center">Recomendación</th>
+                    {activeMarket === "argentina" && <th className="py-3.5 px-4 font-semibold text-right">Precio CEDEAR (ARS)</th>}
+                    <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
+                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">Potencial (1A)</th>
+                    <th className="py-3.5 px-3 font-semibold text-right">Dividendo</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                  {(activeMarket === "wall_street" ? filteredStocks : filteredCedears)
+                    .slice(0, visibleCount)
+                    .map((stock, idx) => {
+                      const ret = stock.retorno_estimado_pct ?? stock.retornoEstimadoPct ?? stock.upside ?? 0;
+                      const sc = stock.score_total ?? stock.scoreTotal ?? stock.score ?? 0;
+                      const recBadge = getRecommendationBadge(sc, ret);
+                      const isPositive = stock.day_change >= 0;
+
+                      return (
+                        <tr key={stock.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                          {/* Ticker */}
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center space-x-2.5">
+                              <span className="font-mono text-xs text-slate-400 font-bold w-6">
+                                #{idx + 1}
+                              </span>
+                              <div>
+                                <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                                  {stock.ticker}
+                                </div>
+                                <div className="text-xs text-slate-400 font-sans">
+                                  {stock.has_cedear ? `Ratio ${stock.cedear_ratio}` : "NYSE / NASDAQ"}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Empresa & Sector */}
+                          <td className="py-3.5 px-4 font-sans">
+                            <div className="font-semibold text-white text-xs sm:text-sm">{stock.name}</div>
+                            <div className="text-xs text-slate-400">{stock.sector}</div>
+                          </td>
+
+                          {/* Recomendación */}
+                          <td className="py-3.5 px-3 text-center">
+                            <span className={`inline-block px-2.5 py-1 rounded text-xs font-bold border uppercase tracking-wider ${recBadge.className}`}>
+                              {recBadge.text}
+                            </span>
+                          </td>
+
+                          {/* Precio en Pesos (si es vista CEDEAR) */}
+                          {activeMarket === "argentina" && (
+                            <td className="py-3.5 px-4 text-right">
+                              {stock.cedear_price_ars ? (
+                                <span className="font-bold text-white text-sm sm:text-base">
+                                  ${stock.cedear_price_ars.toLocaleString("es-AR")}
+                                </span>
+                              ) : (
+                                <span className="text-slate-500 text-xs">Exterior</span>
+                              )}
+                            </td>
+                          )}
+
+                          {/* Precio USD */}
+                          <td className="py-3.5 px-4 text-right">
+                            <div className="font-bold text-white text-sm sm:text-base">
+                              ${stock.price?.toFixed(2)}
+                            </div>
+                            <div className={`text-xs font-bold ${isPositive ? "text-[#00FF88]" : "text-rose-400"}`}>
+                              {isPositive ? `+${stock.day_change}%` : `${stock.day_change}%`}
+                            </div>
+                          </td>
+
+                          {/* Potencial 1A */}
+                          <td className="py-3.5 px-4 text-right">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedStockForModal(stock)}
+                              className="text-[#00FF88] font-bold text-sm sm:text-base tracking-tight bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30 hover:border-emerald-400 transition-all text-right block ml-auto"
+                              title="Ver fórmula y consenso de bancos"
+                            >
+                              {ret >= 0 ? `+${ret}%` : `${ret}%`}
+                            </button>
+                            <span className="text-[11px] text-slate-400 block mt-0.5">
+                              Target: ${stock.precio_objetivo_algoritmo ?? stock.target_price} USD
+                            </span>
+                          </td>
+
+                          {/* Dividendo */}
+                          <td className="py-3.5 px-3 text-right text-slate-200 text-xs sm:text-sm">
+                            {stock.pays_dividend ? `${stock.dividend_yield}%` : "—"}
+                          </td>
+
+                          {/* Quant Score */}
+                          <td className="py-3.5 px-4 text-center">
+                            <div className="inline-flex items-center space-x-2 cursor-pointer" onClick={() => setSelectedScoreItem(stock)}>
+                              <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${sc}%` }} />
+                              </div>
+                              <span className="text-[#00FF88] font-bold text-xs sm:text-sm">{sc}</span>
+                            </div>
+                          </td>
+
+                          {/* Acción */}
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedStockForModal(stock)}
+                              className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                            >
+                              Analizar
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            )}
+
+            {/* C) Tabla para ETFs de Wall Street */}
+            {activeMarket === "wall_street" && wallStreetSubTab === "etfs" && (
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                    <th className="py-3.5 px-4 font-semibold">Ticker / ETF</th>
+                    <th className="py-3.5 px-4 font-semibold">Categoría & Manager</th>
+                    <th className="py-3.5 px-4 font-semibold text-right">Precio USD</th>
+                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">Upside (1A)</th>
+                    <th className="py-3.5 px-3 font-semibold text-right">Dividendo</th>
+                    <th className="py-3.5 px-3 font-semibold text-right">Costo Anual</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                  {filteredEtfs.slice(0, visibleCount).map((e) => (
+                    <tr key={e.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                          {e.ticker}
+                        </div>
+                        <div className="text-xs text-slate-400 font-sans">{e.name}</div>
+                      </td>
+
+                      <td className="py-3.5 px-4 font-sans">
+                        <div className="font-semibold text-white text-xs sm:text-sm">{e.category}</div>
+                        <div className="text-xs text-slate-400">{e.manager || "Gestión Pasiva"}</div>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right font-bold text-white text-sm sm:text-base">
+                        ${e.price?.toFixed(2)}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right">
+                        <span className="text-[#00FF88] font-bold text-sm sm:text-base bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                          +{e.upside}%
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-3 text-right text-slate-200 text-xs sm:text-sm">
+                        {e.pays_dividend ? `${e.dividend_yield}%` : "—"}
+                      </td>
+
+                      <td className="py-3.5 px-3 text-right text-slate-300 text-xs sm:text-sm">
+                        {e.expense_ratio}%
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <div className="inline-flex items-center space-x-2">
+                          <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${e.score}%` }} />
+                          </div>
+                          <span className="text-[#00FF88] font-bold text-xs sm:text-sm">{e.score}</span>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedScoreItem(e as unknown as ScoreItem)}
+                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                        >
+                          Analizar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {/* D) Tabla para ONs en Dólares (Argentina) */}
+            {activeMarket === "argentina" && argSubTab === "ons" && (
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                    <th className="py-3.5 px-4 font-semibold">Ticker / Instrumento</th>
+                    <th className="py-3.5 px-4 font-semibold">Emisor & Industria</th>
+                    <th className="py-3.5 px-3 font-semibold text-center">Rating</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Ley</th>
+                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">TIR Anual (USD)</th>
+                    <th className="py-3.5 px-3 font-semibold text-right">Cupón</th>
+                    <th className="py-3.5 px-4 font-semibold">Vencimiento</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                  {filteredOns.slice(0, visibleCount).map((o) => (
+                    <tr key={o.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                          {o.ticker}
+                        </div>
+                        <div className="text-xs text-slate-400 font-sans">{o.name}</div>
+                      </td>
+
+                      <td className="py-3.5 px-4 font-sans">
+                        <div className="font-semibold text-white text-xs sm:text-sm">{o.issuer}</div>
+                        <div className="text-xs text-slate-400">Renta Fija Corporativa</div>
+                      </td>
+
+                      <td className="py-3.5 px-3 text-center">
+                        <span className="inline-block px-2.5 py-0.5 rounded text-xs font-bold bg-blue-950 text-blue-200 border border-blue-500/30">
+                          {o.rating}
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center font-sans text-xs sm:text-sm text-slate-300">
+                        {o.law}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right">
+                        <span className="text-[#00FF88] font-bold text-sm sm:text-base bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                          {o.tir_usd}%
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-3 text-right text-slate-200 text-xs sm:text-sm">
+                        {o.coupon}%
+                      </td>
+
+                      <td className="py-3.5 px-4 text-slate-300 font-mono text-xs sm:text-sm">
+                        {o.maturity}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <div className="inline-flex items-center space-x-2">
+                          <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${o.score}%` }} />
+                          </div>
+                          <span className="text-[#00FF88] font-bold text-xs sm:text-sm">{o.score}</span>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedScoreItem(o)}
+                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                        >
+                          Analizar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {/* E) Tabla para Acciones Merval */}
+            {activeMarket === "argentina" && argSubTab === "merval" && (
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                    <th className="py-3.5 px-4 font-semibold">Ticker / Empresa</th>
+                    <th className="py-3.5 px-4 font-semibold">Sector</th>
+                    <th className="py-3.5 px-4 font-semibold text-right">Precio (ARS)</th>
+                    <th className="py-3.5 px-4 font-semibold text-right">Variación Día</th>
+                    <th className="py-3.5 px-3 font-semibold text-center">P/E Ratio</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                  {filteredMerval.slice(0, visibleCount).map((m) => {
+                    const isPositive = m.day_change >= 0;
+                    return (
+                      <tr key={m.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                        <td className="py-3.5 px-4">
+                          <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                            {m.ticker}
+                          </div>
+                          <div className="text-xs text-slate-400 font-sans">{m.name}</div>
+                        </td>
+
+                        <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-300">
+                          {m.sector}
+                        </td>
+
+                        <td className="py-3.5 px-4 text-right font-bold text-white text-sm sm:text-base">
+                          ${m.price_ars?.toLocaleString("es-AR")} ARS
+                        </td>
+
+                        <td className={`py-3.5 px-4 text-right font-bold text-sm sm:text-base ${isPositive ? "text-[#00FF88]" : "text-rose-400"}`}>
+                          {isPositive ? `+${m.day_change}%` : `${m.day_change}%`}
+                        </td>
+
+                        <td className="py-3.5 px-3 text-center text-slate-300 text-xs sm:text-sm">
+                          {m.pe_ratio ? `${m.pe_ratio}x` : "-"}
+                        </td>
+
+                        <td className="py-3.5 px-4 text-center">
+                          <div className="inline-flex items-center space-x-2">
+                            <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
+                              <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${m.score}%` }} />
+                            </div>
+                            <span className="text-[#00FF88] font-bold text-xs sm:text-sm">{m.score}</span>
+                          </div>
+                        </td>
+
+                        <td className="py-3.5 px-4 text-center">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedScoreItem(m)}
+                            className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                          >
+                            Analizar
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+
+            {/* F) Tabla para Bonos Soberanos */}
+            {activeMarket === "argentina" && argSubTab === "bonds" && (
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[#1E2D4A] bg-[#070B12] text-xs font-mono uppercase text-slate-400 tracking-wider">
+                    <th className="py-3.5 px-4 font-semibold">Ticker / Bono</th>
+                    <th className="py-3.5 px-4 font-semibold">Descripción</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Ley</th>
+                    <th className="py-3.5 px-4 font-semibold text-right text-[#00FF88]">TIR (USD)</th>
+                    <th className="py-3.5 px-4 font-semibold text-right">Paridad</th>
+                    <th className="py-3.5 px-4 font-semibold">Vencimiento</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Quant Score</th>
+                    <th className="py-3.5 px-4 font-semibold text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1E2D4A]/50 font-mono">
+                  {filteredSovereign.slice(0, visibleCount).map((b) => (
+                    <tr key={b.ticker} className="hover:bg-[#111B30]/60 transition-colors group">
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-white text-sm sm:text-base group-hover:text-[#00FF88] transition-colors">
+                          {b.ticker}
+                        </div>
+                        <div className="text-xs text-slate-400 font-sans">{b.name}</div>
+                      </td>
+
+                      <td className="py-3.5 px-4 font-sans text-xs sm:text-sm text-slate-300">
+                        {b.thesis}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center text-xs sm:text-sm text-slate-300 font-sans">
+                        {b.law}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right">
+                        <span className="text-[#00FF88] font-bold text-sm sm:text-base bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                          {b.tir_usd}%
+                        </span>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-right font-bold text-white text-xs sm:text-sm">
+                        {b.parity}%
+                      </td>
+
+                      <td className="py-3.5 px-4 text-slate-300 text-xs sm:text-sm">
+                        {b.maturity_date}
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <div className="inline-flex items-center space-x-2">
+                          <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${b.score}%` }} />
+                          </div>
+                          <span className="text-[#00FF88] font-bold text-xs sm:text-sm">{b.score}</span>
+                        </div>
+                      </td>
+
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedScoreItem(b)}
+                          className="px-3 py-1.5 rounded-lg bg-[#111B30] hover:bg-[#00FF88] hover:text-black text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-[#1E2D4A] transition-all"
+                        >
+                          Analizar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        ) : (
+          /* --- VISTA: TARJETAS DETALLADAS --- */
+          <div className="p-4 sm:p-6 space-y-4">
+            {activeMarket === "wall_street" && wallStreetSubTab === "stocks" && (
+              <div className="space-y-4">
+                {filteredStocks.slice(0, visibleCount).map((s, idx) => renderStockCard(s, idx, false))}
+              </div>
+            )}
+            {activeMarket === "argentina" && argSubTab === "cedears" && (
+              <div className="space-y-4">
+                {filteredCedears.slice(0, visibleCount).map((s, idx) => renderStockCard(s, idx, true))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Footer Institucional de la Tabla: Paginación y Carga Progresiva */}
+        <div className="px-5 py-3.5 border-t border-[#1E2D4A] bg-[#0A101D] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-mono">
+          <div className="flex items-center space-x-2 text-slate-400">
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono bg-emerald-950/80 text-[#00FF88] border border-emerald-500/30 font-bold">
+              ⚡ ALTA DENSIDAD VISUAL
+            </span>
+            <span className="text-xs hidden md:inline">
+              Diseño institucional condensado: visualiza más activos por pantalla con tipografía optimizada.
+            </span>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            {activeMarket === "wall_street" && wallStreetSubTab === "bonds" ? (
+              visibleBondCount < filteredUsBonds.length && (
+                <button
+                  type="button"
+                  onClick={() => setVisibleBondCount((prev) => Math.min(prev + 40, filteredUsBonds.length))}
+                  className="px-4 py-2 rounded-lg bg-[#111B30] hover:bg-slate-800 text-[#00FF88] font-bold border border-emerald-500/30 transition-all text-xs sm:text-sm"
+                >
+                  Cargar más bonos (+40)
+                </button>
+              )
+            ) : (
+              visibleCount <
+                (activeMarket === "wall_street"
+                  ? wallStreetSubTab === "stocks"
+                    ? filteredStocks.length
+                    : filteredEtfs.length
+                  : argSubTab === "cedears"
+                  ? filteredCedears.length
+                  : argSubTab === "ons"
+                  ? filteredOns.length
+                  : argSubTab === "merval"
+                  ? filteredMerval.length
+                  : filteredSovereign.length) && (
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((prev) => prev + 30)}
+                  className="px-4 py-2 rounded-lg bg-[#111B30] hover:bg-slate-800 text-[#00FF88] font-bold border border-emerald-500/30 transition-all text-xs sm:text-sm"
+                >
+                  Mostrar más activos (+30)
+                </button>
+              )
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* MODALES INSTITUCIONALES */}
       <StockDetailModal
         stock={selectedStockForModal}
         onClose={() => setSelectedStockForModal(null)}

@@ -15,9 +15,14 @@ export default {
         brand: {
           emerald: '#00F5A0',
           neon: '#10B981',
+          mint: '#00FF88',
+          cyan: '#00E5FF',
           dark: '#050911',
-          card: '#0A121F',
-          border: '#162338',
+          bg: '#070B12',
+          card: '#0D1424',
+          surface: '#111B30',
+          border: '#1E2D4A',
+          borderLight: '#2A3F66',
           muted: '#94A3B8'
         }
       },
