@@ -34,17 +34,84 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   const target_analistas_promedio = stock.analyst_consensus?.target_mean || stock.target_price || precio_actual;
   const eps_fwd = stock.eps_fwd;
 
+  const tasaActual = typeof macro?.tasa_actual_fed === 'number' ? macro.tasa_actual_fed : MACRO_DEFAULTS.tasa_actual_fed;
+  const tasaProy = typeof macro?.tasa_proyectada_fed_1a === 'number' ? macro.tasa_proyectada_fed_1a : MACRO_DEFAULTS.tasa_proyectada_fed_1a;
+
+  // CANDADO CRÍTICO 1: FILTRO PENNY STOCK / DISTRESS (Precio menor a $3.00 USD)
+  // Las empresas que cotizan a centavos (como BIOX a $0.22) no tienen cobertura institucional
+  // confiable y cualquier spread de centavos genera distorsiones matemáticas absurdas (+5000%).
+  if (precio_actual < 3.0) {
+    return {
+      precio_objetivo_estimado: Math.round(precio_actual * 1.05 * 100) / 100,
+      retorno_estimado_pct: 5.0,
+      score_total: 18.0,
+      is_crashing: true,
+      crash_penalty: 50,
+      is_penny_stock: true,
+      is_under_review: true,
+      recomendacion_cuantitativa: "Evitar",
+      score_breakdown: {
+        score_retorno: 3,
+        score_margen: 5,
+        score_tecnico: 0,
+        crash_penalty: 50,
+        earnings_lock: true,
+        is_under_review: true,
+        is_penny_stock: true,
+        per_bancos: 0,
+        per_base: 0,
+        per_ajustado: 0,
+        factor_macro: 1.0,
+        tasa_actual_fed: tasaActual,
+        tasa_proyectada_fed_1a: tasaProy,
+        cambio_tasas: 0,
+        desvio_tecnico: -50.0,
+        sma_200: precio_actual
+      }
+    };
+  }
+
   // Si no tiene datos suficientes, devolver null para descarte
   if (!eps_fwd || eps_fwd <= 0 || !target_analistas_promedio || target_analistas_promedio <= 0) {
     return null;
   }
 
-  // 1. Capa A (Consenso Fundamental):
-  // PER implícito que le asigna el consenso de bancos a este activo
-  const per_bancos = target_analistas_promedio / eps_fwd;
+  // CANDADO CRÍTICO 2: DETECCIÓN DE SPLITS NO AJUSTADOS Y TARGETS OBSOLETOS (SANITY CAP)
+  // En Wall Street, un retorno institucional a 12 meses superior al +80% es señal unívoca de:
+  // a) Stock split no ajustado en el target histórico (ej. SONY dividió 5 a 1 pero el target quedó en $105)
+  // b) Desplome severo donde los bancos aún no recortaron sus proyecciones (stale targets como GLOB o NVO).
+  let target_normalizado = target_analistas_promedio;
+  let is_stale_target = false;
+  const raw_upside = (target_analistas_promedio - precio_actual) / precio_actual;
+
+  if (raw_upside > 0.80) {
+    is_stale_target = true;
+    if (raw_upside > 3.0) {
+      // Split 4:1 o 5:1 no ajustado (ej. SONY: de $105 pasa a ~$23-$28)
+      target_normalizado = Math.round((target_analistas_promedio / 4.8) * 100) / 100;
+    } else if (raw_upside > 2.0) {
+      // Split o colapso 3:1 a 4:1 (ej. GLOB: de $262 pasa a ~$58)
+      target_normalizado = Math.round((target_analistas_promedio / 3.8) * 100) / 100;
+    } else if (raw_upside > 1.2) {
+      // Split o colapso 2:1 a 3:1 (ej. NVO: de $135 pasa a ~$54)
+      target_normalizado = Math.round((target_analistas_promedio / 2.5) * 100) / 100;
+    } else {
+      // Upside entre 80% y 120%: normalizar al techo institucional
+      target_normalizado = Math.round(precio_actual * 1.45 * 100) / 100;
+    }
+  }
+
+  // Techo institucional absoluto de prudencia cuantitativa (+48% máximo a 12 meses):
+  const max_realistic_target = Math.round(precio_actual * 1.48 * 100) / 100;
+  if (target_normalizado > max_realistic_target) {
+    target_normalizado = max_realistic_target;
+    is_stale_target = true;
+  }
+
+  // 1. Capa A (Consenso Fundamental Normalizado):
+  const per_bancos = target_normalizado / eps_fwd;
 
   // PER ancla histórica: Si tiene mediana de 5 años auditada la usa; si no, usa el PER real actual de la empresa
-  // (NUNCA un PER inflado de sector que no corresponde a su modelo de negocio)
   const per_ancla = (stock.per_mediana_5a && stock.per_mediana_5a > 0)
     ? stock.per_mediana_5a
     : (stock.pe_ratio && stock.pe_ratio > 0 ? stock.pe_ratio : per_bancos);
@@ -53,8 +120,6 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   const per_base = (0.65 * per_ancla) + (0.35 * per_bancos);
 
   // 2. Capa B (Ajuste Macroeconómico de la FED):
-  const tasaActual = typeof macro?.tasa_actual_fed === 'number' ? macro.tasa_actual_fed : MACRO_DEFAULTS.tasa_actual_fed;
-  const tasaProy = typeof macro?.tasa_proyectada_fed_1a === 'number' ? macro.tasa_proyectada_fed_1a : MACRO_DEFAULTS.tasa_proyectada_fed_1a;
   const cambio_tasas = tasaProy - tasaActual;
   const factor_macro = 1 - (0.025 * cambio_tasas);
   const per_ajustado = per_base * factor_macro;
@@ -62,12 +127,9 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   // 3. Capa C (Precio Objetivo Teórico con Candado de Seguridad):
   let precio_teorico = eps_fwd * per_ajustado;
 
-  // CANDADO DE SEGURIDAD ESTRICTO (PRUDENCIA INSTITUCIONAL):
-  // 1. Techo Infranqueable: El algoritmo NUNCA puede estimar un precio mayor al consenso de Wall Street.
-  //    (La función de la plataforma es aplicar disciplina cuantitativa y descuentos de riesgo, NUNCA inflar expectativas por encima del consenso profesional).
-  // 2. Piso de tolerancia: No menor al 70% del consenso.
-  const maxTarget = target_analistas_promedio;
-  const minTarget = target_analistas_promedio * 0.70;
+  // Candado de Seguridad Estricto:
+  const maxTarget = target_normalizado;
+  const minTarget = target_normalizado * 0.70;
   const precio_objetivo_estimado = Math.round(Math.min(maxTarget, Math.max(minTarget, precio_teorico)) * 100) / 100;
 
   // Retorno estimado porcentual
@@ -137,8 +199,8 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
     is_crashing = true;
   }
 
-  // Si el activo está bajo revisión post-balance o por advertencia de resultados:
-  if (is_under_review) {
+  // Si el activo está bajo revisión post-balance o por advertencia de resultados o target desfasado:
+  if (is_under_review || is_stale_target) {
     earnings_lock = true;
     crash_penalty = Math.max(crash_penalty, 35);
   }

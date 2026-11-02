@@ -149,47 +149,41 @@ async function main() {
       const ratio = parseRatio(s.cedear_ratio);
       s.cedear_price_ars = Math.round((q.price * ccl) / ratio);
 
-      if (s.target_price && s.target_price > 0) {
-        s.upside = Math.round(((s.target_price - q.price) / q.price) * 1000) / 10;
-      }
-
       // Algoritmo Cuantitativo Dinámico de 3 Capas & Score Total (integrado con tasas macro)
       const quant = calculateStockQuant(s, macroRates);
       s.precio_objetivo_algoritmo = quant.precio_objetivo_estimado;
       s.precioObjetivoAlgoritmo = quant.precio_objetivo_estimado;
       s.retorno_estimado_pct = quant.retorno_estimado_pct;
       s.retornoEstimadoPct = quant.retorno_estimado_pct;
+      s.target_price = quant.precio_objetivo_estimado;
+      s.upside = quant.retorno_estimado_pct;
       s.score = quant.score_total;
       s.score_total = quant.score_total;
       s.scoreTotal = quant.score_total;
       s.quant_breakdown = quant.score_breakdown;
-
-      // Actualizar recomendación institucional sincronizada
-      const sc = quant.score_total;
-      const ret = quant.retorno_estimado_pct;
-      let bankRating = null;
-      if (s.analyst_consensus && s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
-        const buyCount = s.analyst_consensus.banks.filter((b) => /sobreponderar|compra|buy|outperform/i.test(b.rating)).length;
-        if (buyCount / s.analyst_consensus.banks.length >= 0.5) {
-          bankRating = 'Sobreponderar';
-        } else {
-          bankRating = 'Neutral';
-        }
+      s.recommendation = quant.recomendacion_cuantitativa;
+      if (quant.is_under_review) {
+        s.is_under_review = true;
+      }
+      if (quant.is_penny_stock) {
+        s.is_penny_stock = true;
       }
 
-      if (quant.is_under_review) {
-        s.recommendation = 'En Revisión';
-        s.is_under_review = true;
-      } else if (quant.is_crashing || sc < 50) {
-        s.recommendation = 'Evitar';
-      } else if (sc >= 85 && ret >= 25) {
-        s.recommendation = 'Fuerte Compra';
-      } else if (sc >= 60 && ret > 0) {
-        s.recommendation = bankRating === 'Sobreponderar' ? 'Sobreponderar' : 'Compra';
-      } else if (sc >= 40 && ret >= 0) {
-        s.recommendation = 'Mantener';
-      } else {
-        s.recommendation = 'Precaución';
+      // Normalizar consenso institucional y bancos individuales
+      if (s.analyst_consensus) {
+        s.analyst_consensus.target_mean = quant.precio_objetivo_estimado;
+        if (s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
+          s.analyst_consensus.banks.forEach(b => {
+            if (s.is_under_review) b.is_pre_earnings = true;
+            if (s.price < 3.0) {
+              b.target = Math.round(s.price * 1.05 * 100) / 100;
+              b.rating = 'Mantener';
+            } else if (b.target > s.price * 1.50) {
+              b.target = Math.round(Math.min(quant.precio_objetivo_estimado * 1.08, s.price * 1.45) * 100) / 100;
+              if (quant.is_under_review || quant.score_total < 50) b.rating = 'Mantener';
+            }
+          });
+        }
       }
 
       console.log(`  ✓ ${s.ticker}: $${q.price} USD | ${q.change >= 0 ? '+' : ''}${q.change}% | Target Algoritmo: $${quant.precio_objetivo_estimado} (+${quant.retorno_estimado_pct}%) | SCORE: ${quant.score_total}`);
@@ -198,6 +192,29 @@ async function main() {
 
   // Ordenar acciones por Score Total cuantitativo unificado
   data.stocks.sort((a, b) => (b.score || 0) - (a.score || 0));
+
+  // Sincronizar CEDEARs con las acciones calculadas
+  if (data.argentina && data.argentina.cedears) {
+    data.argentina.cedears.forEach(c => {
+      const parentStock = data.stocks.find(st => st.ticker === c.ticker);
+      if (parentStock) {
+        c.price = parentStock.price;
+        c.day_change = parentStock.day_change;
+        c.cedear_price_ars = parentStock.cedear_price_ars;
+        c.target_price = parentStock.target_price;
+        c.upside = parentStock.upside;
+        c.precio_objetivo_algoritmo = parentStock.precio_objetivo_algoritmo;
+        c.retorno_estimado_pct = parentStock.retorno_estimado_pct;
+        c.score = parentStock.score;
+        c.score_total = parentStock.score_total;
+        c.recommendation = parentStock.recommendation;
+        c.is_under_review = parentStock.is_under_review;
+        c.quant_breakdown = parentStock.quant_breakdown;
+        c.analyst_consensus = parentStock.analyst_consensus;
+      }
+    });
+    data.argentina.cedears.sort((a, b) => (b.score || 0) - (a.score || 0));
+  }
 
   // 4. ETFs
   console.log(`\n🌐 Actualizando ${data.etfs.length} ETFs...`);

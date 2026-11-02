@@ -652,7 +652,19 @@ export default function ScreenerSection({
   };
 
   // Helper de badges de recomendación institucional
-  const getRecommendationBadge = (sc: number, ret: number) => {
+  const getRecommendationBadge = (sc: number, ret: number, stockRec?: string, isUnderReview?: boolean) => {
+    if (isUnderReview || /revisi[oó]n/i.test(stockRec || "")) {
+      return {
+        text: "EN REVISIÓN",
+        className: "bg-amber-500/20 text-amber-300 border-amber-500/40 font-bold",
+      };
+    }
+    if (stockRec === "Evitar" || sc < 45 || ret < -5) {
+      return {
+        text: "EVITAR",
+        className: "bg-rose-500/15 text-rose-400 border-rose-500/30 font-bold",
+      };
+    }
     if (sc >= 85 && ret >= 25) {
       return {
         text: "FUERTE COMPRA",
@@ -665,15 +677,9 @@ export default function ScreenerSection({
         className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 font-semibold",
       };
     }
-    if (sc >= 40 && ret >= 0) {
-      return {
-        text: "MANTENER",
-        className: "bg-amber-500/10 text-amber-300 border-amber-500/30 font-medium",
-      };
-    }
     return {
-      text: "PRECAUCIÓN",
-      className: "bg-rose-500/15 text-rose-300 border-rose-500/30 font-medium",
+      text: "MANTENER",
+      className: "bg-slate-500/20 text-slate-300 border-slate-500/30 font-medium",
     };
   };
 
@@ -682,7 +688,7 @@ export default function ScreenerSection({
     const isPositive = stock.day_change >= 0;
     const ret = stock.retorno_estimado_pct ?? stock.retornoEstimadoPct ?? stock.upside ?? 0;
     const sc = stock.score_total ?? stock.scoreTotal ?? stock.score ?? 0;
-    const recBadge = getRecommendationBadge(sc, ret);
+    const recBadge = getRecommendationBadge(sc, ret, stock.recommendation, stock.is_under_review);
 
     return (
       <div key={stock.ticker} className="bg-white dark:bg-[#0D1424] border border-slate-200 dark:border-[#1E2D4A] hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 transition-all duration-200 shadow-sm dark:shadow-lg">
@@ -2217,7 +2223,7 @@ export default function ScreenerSection({
                     .map((stock, idx) => {
                       const ret = stock.retorno_estimado_pct ?? stock.retornoEstimadoPct ?? stock.upside ?? 0;
                       const sc = stock.score_total ?? stock.scoreTotal ?? stock.score ?? 0;
-                      const recBadge = getRecommendationBadge(sc, ret);
+                      const recBadge = getRecommendationBadge(sc, ret, stock.recommendation, stock.is_under_review);
                       const isPositive = stock.day_change >= 0;
 
                       return (
