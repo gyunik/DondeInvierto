@@ -10,9 +10,12 @@ export const metadata: Metadata = {
     template: "%s | Donde Invierto",
   },
   description:
-    "Terminal cuantitativa institucional para inversores de Wall Street y el Mercado Local. Monitoreo diario de CEDEARs, Obligaciones Negociables (ONs en dólares), ETFs y S&P Merval con paridad CCL y algoritmos de optimización de cartera.",
+    "Terminal cuantitativa institucional para inversores de Wall Street y el Mercado Local. Monitoreo diario de más de 1.200 activos: Acciones del S&P 500, ETFs globales, Bonos USA High Grade, CEDEARs, Obligaciones Negociables (ONs en dólares) y S&P Merval con paridad CCL y optimización de cartera.",
   keywords: [
     "donde invierto",
+    "acciones wall street",
+    "etfs globales",
+    "bonos usa treasuries",
     "cedears argentina",
     "obligaciones negociables en dolares",
     "ons recomendadas",
@@ -36,13 +39,13 @@ export const metadata: Metadata = {
     siteName: "Donde Invierto",
     title: "Donde Invierto | Decisiones Financieras con Datos Cuantitativos",
     description:
-      "Descubrí en qué invertir hoy: CEDEARs de Wall Street, Obligaciones Negociables en dólares y Merval auditados con modelos cuantitativos y consenso de bancos Tier-1.",
+      "Descubrí en qué invertir hoy: más de 1.200 activos de Wall Street (S&P 500, ETFs, Bonos USA) y Mercado Local (CEDEARs, ONs en USD, Merval) auditados con modelos cuantitativos y consenso Tier-1.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Donde Invierto | Terminal Cuantitativa",
     description:
-      "Monitoreo diario de CEDEARs, ONs en USD y Merval con simulador de carteras y modelos cuantitativos de 3 capas.",
+      "Monitoreo diario de Wall Street (S&P 500, ETFs, Bonos USA) y Mercado Local (CEDEARs, ONs en USD, Merval) con simulador de carteras y algoritmos cuantitativos.",
   },
   robots: {
     index: true,

@@ -32,7 +32,7 @@ export default function HomePage() {
             {/* Market Scope Capsule Pill */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-[#0D182A]/90 border border-slate-300 dark:border-slate-700/60 shadow-sm dark:shadow-lg text-[11px] sm:text-xs tracking-wider uppercase font-semibold text-slate-700 dark:text-slate-300 mb-6">
               <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-[#00F5A0]" />
-              <span>WALL STREET, CEDEARS, OBLIGACIONES NEGOCIABLES Y MERVAL</span>
+              <span>WALL STREET • ETFS • BONOS USA • CEDEARS • ONS EN DÓLARES • MERVAL</span>
             </div>
 
             {/* Hero Heading */}
@@ -46,18 +46,27 @@ export default function HomePage() {
             {/* Detailed Description Box */}
             <div className="mt-7 max-w-3xl px-2">
               <p className="text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-100 font-normal leading-relaxed tracking-wide">
-                Monitoreamos diariamente los mejores{" "}
+                Monitoreamos diariamente más de{" "}
                 <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
-                  CEDEARs de Wall Street
-                </strong>{" "}
-                (con precio en pesos y dividendos), las{" "}
+                  1.200 activos
+                </strong>
+                :{" "}
+                <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
+                  Acciones del S&amp;P 500, ETFs globales y Bonos USA
+                </strong>
+                , junto con los mejores{" "}
+                <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
+                  CEDEARs
+                </strong>
+                ,{" "}
                 <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
                   Obligaciones Negociables (ONs en dólares)
-                </strong>{" "}
-                más rentables y las oportunidades del{" "}
+                </strong>
+                ,{" "}
                 <strong className="text-slate-900 dark:text-white font-bold underline decoration-emerald-500/50 underline-offset-4">
-                  Merval y Bonos soberanos
-                </strong>.
+                  Acciones del Merval y Bonos soberanos
+                </strong>{" "}
+                auditados con modelos cuantitativos y consenso institucional.
               </p>
             </div>
 
