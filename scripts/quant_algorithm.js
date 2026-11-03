@@ -109,28 +109,48 @@ function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
   }
 
   // 1. Capa A (Consenso Fundamental Normalizado):
-  const per_bancos = target_normalizado / eps_fwd;
+  // Extraer consenso real y banda de tolerancia de los bancos de inversión Tier-1
+  let bank_mean = target_normalizado;
+  let bank_max = null;
+  let bank_min = null;
+
+  if (stock.analyst_consensus?.banks && Array.isArray(stock.analyst_consensus.banks)) {
+    const validBanks = stock.analyst_consensus.banks.map(b => b.target).filter(t => typeof t === 'number' && t > 0);
+    if (validBanks.length > 0) {
+      bank_mean = validBanks.reduce((a, b) => a + b, 0) / validBanks.length;
+      bank_max = Math.max(...validBanks);
+      bank_min = Math.min(...validBanks);
+    }
+  }
+
+  const per_bancos = bank_mean / eps_fwd;
 
   // PER ancla histórica: Si tiene mediana de 5 años auditada la usa; si no, usa el PER real actual de la empresa
   const per_ancla = (stock.per_mediana_5a && stock.per_mediana_5a > 0)
     ? stock.per_mediana_5a
     : (stock.pe_ratio && stock.pe_ratio > 0 ? stock.pe_ratio : per_bancos);
 
-  // Fusión de Capa A (65% ancla de la empresa + 35% expectativa de analistas)
-  const per_base = (0.65 * per_ancla) + (0.35 * per_bancos);
+  // Fusión de Capa A (60% ancla de la empresa + 40% expectativa de analistas)
+  const per_base = (0.60 * per_ancla) + (0.40 * per_bancos);
 
   // 2. Capa B (Ajuste Macroeconómico de la FED):
   const cambio_tasas = tasaProy - tasaActual;
   const factor_macro = 1 - (0.025 * cambio_tasas);
   const per_ajustado = per_base * factor_macro;
 
-  // 3. Capa C (Precio Objetivo Teórico con Candado de Seguridad):
+  // 3. Capa C (Precio Objetivo Teórico con Candado de Seguridad Institucional):
   let precio_teorico = eps_fwd * per_ajustado;
 
-  // Candado de Seguridad Estricto:
-  const maxTarget = target_normalizado;
-  const minTarget = target_normalizado * 0.70;
-  const precio_objetivo_estimado = Math.round(Math.min(maxTarget, Math.max(minTarget, precio_teorico)) * 100) / 100;
+  // Fusión balanceada (50% modelo teórico de PER ajustado + 50% consenso bancario)
+  const blended_target = (0.50 * precio_teorico) + (0.50 * bank_mean);
+
+  // CANDADO INSTITUCIONAL ESTRICTO:
+  // El precio objetivo cuantitativo NUNCA puede superar el techo fijado por el banco más alcista (bank_max),
+  // ni desfasarse más de un 4% sobre el promedio de consenso de Wall Street.
+  const absolute_ceiling = bank_max ? Math.min(bank_max, bank_mean * 1.04) : target_normalizado;
+  const absolute_floor = bank_min ? Math.max(bank_min * 0.95, bank_mean * 0.75) : target_normalizado * 0.70;
+
+  const precio_objetivo_estimado = Math.round(Math.min(absolute_ceiling, Math.max(absolute_floor, blended_target)) * 100) / 100;
 
   // Retorno estimado porcentual
   const retorno_estimado_pct = Math.round(((precio_objetivo_estimado - precio_actual) / precio_actual) * 1000) / 10;

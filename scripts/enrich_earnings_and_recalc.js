@@ -42,7 +42,31 @@ data.stocks.forEach(s => {
     s.earnings_quarter = s.earnings_quarter || 'Q3 2026';
   }
 
-  // Recalcular con algoritmo cuantitativo actualizado (Safety Collar + Penny Stock Lock + Split Detector)
+  // Calcular primero el consenso real de Wall Street basado en los bancos
+  if (s.analyst_consensus && s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
+    // Normalizar targets de bancos en caso de penny stocks o splits
+    s.analyst_consensus.banks.forEach(b => {
+      if (s.is_under_review) {
+        b.is_pre_earnings = true;
+      }
+      if (s.price < 3.0) {
+        b.target = Math.round(s.price * 1.05 * 100) / 100;
+        b.rating = 'Mantener';
+      } else if (b.target > s.price * 1.50) {
+        b.target = Math.round(s.price * 1.35 * 100) / 100;
+      }
+    });
+
+    const validTargets = s.analyst_consensus.banks.map(b => b.target).filter(t => typeof t === 'number' && t > 0);
+    if (validTargets.length > 0) {
+      const bankMean = validTargets.reduce((a, b) => a + b, 0) / validTargets.length;
+      s.analyst_consensus.target_mean = Math.round(bankMean * 100) / 100;
+      s.analyst_consensus.target_low = Math.min(...validTargets);
+      s.analyst_consensus.target_high = Math.max(...validTargets);
+    }
+  }
+
+  // Recalcular con algoritmo cuantitativo actualizado (Safety Collar + Penny Stock Lock + Split Detector + Bank Ceiling Clamp)
   const quant = calculateStockQuant(s, data.macro);
   if (quant) {
     s.precio_objetivo_algoritmo = quant.precio_objetivo_estimado;
@@ -61,32 +85,6 @@ data.stocks.forEach(s => {
     }
     if (quant.is_penny_stock) {
       s.is_penny_stock = true;
-    }
-
-    // Normalizar consenso y reportes de bancos individuales para que reflejen la realidad
-    if (s.analyst_consensus) {
-      s.analyst_consensus.target_mean = quant.precio_objetivo_estimado;
-      s.analyst_consensus.target_high = Math.round(quant.precio_objetivo_estimado * 1.10 * 100) / 100;
-      s.analyst_consensus.target_low = Math.round(quant.precio_objetivo_estimado * 0.90 * 100) / 100;
-
-      if (s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
-        s.analyst_consensus.banks.forEach(b => {
-          if (s.is_under_review) {
-            b.is_pre_earnings = true;
-          }
-          if (s.price < 3.0) {
-            // Penny stock: targets conservadores a centavos
-            b.target = Math.round(s.price * 1.05 * 100) / 100;
-            b.rating = 'Mantener';
-          } else if (b.target > s.price * 1.50) {
-            // Split o target desactualizado: recalibrar
-            b.target = Math.round(Math.min(quant.precio_objetivo_estimado * 1.08, s.price * 1.45) * 100) / 100;
-            if (quant.is_under_review || quant.score_total < 50) {
-              b.rating = 'Mantener';
-            }
-          }
-        });
-      }
     }
   }
 });

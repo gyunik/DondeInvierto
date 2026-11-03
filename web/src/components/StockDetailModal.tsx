@@ -118,7 +118,24 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
                 </span>
               </div>
               <div className="text-xs font-mono text-slate-600 dark:text-slate-300">
-                Consenso Wall Street: <strong className="text-slate-900 dark:text-white">${(stock.analyst_consensus?.target_mean ?? stock.target_price ?? stock.price)?.toFixed(2)} USD</strong>
+                Consenso Wall Street:{" "}
+                <strong className="text-slate-900 dark:text-white">
+                  {(() => {
+                    const bTargets = stock.analyst_consensus?.banks?.map((b) => b.target).filter((t) => typeof t === "number" && t > 0) || [];
+                    const meanVal = bTargets.length > 0
+                      ? bTargets.reduce((a, b) => a + b, 0) / bTargets.length
+                      : (stock.analyst_consensus?.target_mean ?? stock.target_price ?? stock.price);
+                    const pctVal = stock.price ? Math.round(((meanVal - stock.price) / stock.price) * 1000) / 10 : 0;
+                    return (
+                      <>
+                        ${meanVal.toFixed(2)} USD{" "}
+                        <span className="text-emerald-600 dark:text-[#00FF88] font-bold">
+                          ({pctVal >= 0 ? `+${pctVal}%` : `${pctVal}%`})
+                        </span>
+                      </>
+                    );
+                  })()}
+                </strong>
               </div>
             </div>
 

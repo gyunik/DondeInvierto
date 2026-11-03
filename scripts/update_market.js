@@ -149,6 +149,27 @@ async function main() {
       const ratio = parseRatio(s.cedear_ratio);
       s.cedear_price_ars = Math.round((q.price * ccl) / ratio);
 
+      // Calcular consenso real de los bancos antes de ejecutar el algoritmo
+      if (s.analyst_consensus && s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
+        s.analyst_consensus.banks.forEach(b => {
+          if (s.is_under_review) b.is_pre_earnings = true;
+          if (s.price < 3.0) {
+            b.target = Math.round(s.price * 1.05 * 100) / 100;
+            b.rating = 'Mantener';
+          } else if (b.target > s.price * 1.50) {
+            b.target = Math.round(s.price * 1.35 * 100) / 100;
+          }
+        });
+
+        const validTargets = s.analyst_consensus.banks.map(b => b.target).filter(t => typeof t === 'number' && t > 0);
+        if (validTargets.length > 0) {
+          const bankMean = validTargets.reduce((a, b) => a + b, 0) / validTargets.length;
+          s.analyst_consensus.target_mean = Math.round(bankMean * 100) / 100;
+          s.analyst_consensus.target_low = Math.min(...validTargets);
+          s.analyst_consensus.target_high = Math.max(...validTargets);
+        }
+      }
+
       // Algoritmo Cuantitativo Dinámico de 3 Capas & Score Total (integrado con tasas macro)
       const quant = calculateStockQuant(s, macroRates);
       s.precio_objetivo_algoritmo = quant.precio_objetivo_estimado;
@@ -167,23 +188,6 @@ async function main() {
       }
       if (quant.is_penny_stock) {
         s.is_penny_stock = true;
-      }
-
-      // Normalizar consenso institucional y bancos individuales
-      if (s.analyst_consensus) {
-        s.analyst_consensus.target_mean = quant.precio_objetivo_estimado;
-        if (s.analyst_consensus.banks && s.analyst_consensus.banks.length > 0) {
-          s.analyst_consensus.banks.forEach(b => {
-            if (s.is_under_review) b.is_pre_earnings = true;
-            if (s.price < 3.0) {
-              b.target = Math.round(s.price * 1.05 * 100) / 100;
-              b.rating = 'Mantener';
-            } else if (b.target > s.price * 1.50) {
-              b.target = Math.round(Math.min(quant.precio_objetivo_estimado * 1.08, s.price * 1.45) * 100) / 100;
-              if (quant.is_under_review || quant.score_total < 50) b.rating = 'Mantener';
-            }
-          });
-        }
       }
 
       console.log(`  ✓ ${s.ticker}: $${q.price} USD | ${q.change >= 0 ? '+' : ''}${q.change}% | Target Algoritmo: $${quant.precio_objetivo_estimado} (+${quant.retorno_estimado_pct}%) | SCORE: ${quant.score_total}`);

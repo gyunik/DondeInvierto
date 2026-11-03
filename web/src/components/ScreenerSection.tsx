@@ -2386,16 +2386,16 @@ export default function ScreenerSection({
                       </div>
                     </th>
 
-                    {/* 2. Emisor & Industria */}
+                    {/* 2. Emisor */}
                     <th
                       onClick={() => handleUsBondSort("name")}
-                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                      className={`py-3.5 pl-3 pr-2 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
                         usBondSortKey === "name" ? "text-emerald-700 dark:text-[#00FF88]" : ""
                       }`}
-                      title="Ordenar por Emisor & Industria"
+                      title="Ordenar por Emisor"
                     >
                       <div className="flex items-center gap-1.5">
-                        <span>Emisor & Industria</span>
+                        <span>Emisor</span>
                         {usBondSortKey === "name" ? (
                           usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
                         ) : (
@@ -2407,7 +2407,7 @@ export default function ScreenerSection({
                     {/* 3. Sector / Categoría */}
                     <th
                       onClick={() => handleUsBondSort("sector")}
-                      className={`py-3.5 px-3 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                      className={`py-3.5 px-3 font-semibold cursor-pointer select-none group transition-colors whitespace-nowrap hover:text-emerald-600 dark:hover:text-[#00FF88] ${
                         usBondSortKey === "sector" ? "text-emerald-700 dark:text-[#00FF88]" : ""
                       }`}
                       title="Ordenar por Sector de Negocio"
@@ -2550,15 +2550,15 @@ export default function ScreenerSection({
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-4 font-sans">
+                      <td className="py-3.5 pl-3 pr-2 font-sans">
                         <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{b.name}</div>
                         <div className="text-xs text-slate-400">{b.sector}</div>
                       </td>
 
-                      <td className="py-3.5 px-3 font-sans">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A] whitespace-nowrap max-w-[145px] truncate" title={b.brand_category}>
+                      <td className="py-3.5 px-3 font-sans whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A] whitespace-nowrap" title={b.brand_category}>
                           <span className="text-xs">{b.brand_icon}</span>
-                          <span className="truncate">{b.brand_category}</span>
+                          <span>{b.brand_category}</span>
                         </span>
                       </td>
 
@@ -2636,13 +2636,13 @@ export default function ScreenerSection({
 
                     <th
                       onClick={() => handleStockSort("name")}
-                      className={`py-3.5 px-4 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                      className={`py-3.5 pl-3 pr-2 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
                         stockSortKey === "name" ? "text-emerald-700 dark:text-[#00FF88]" : ""
                       }`}
-                      title="Ordenar por Empresa & Industria"
+                      title="Ordenar por Empresa"
                     >
                       <div className="flex items-center gap-1.5">
-                        <span>Empresa & Industria</span>
+                        <span>Empresa</span>
                         {stockSortKey === "name" ? (
                           stockSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
                         ) : (
@@ -2654,7 +2654,7 @@ export default function ScreenerSection({
                     {/* Sector */}
                     <th
                       onClick={() => handleStockSort("sector")}
-                      className={`py-3.5 px-3 font-semibold cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                      className={`py-3.5 px-3 font-semibold cursor-pointer select-none group transition-colors whitespace-nowrap hover:text-emerald-600 dark:hover:text-[#00FF88] ${
                         stockSortKey === "sector" ? "text-emerald-700 dark:text-[#00FF88]" : ""
                       }`}
                       title="Ordenar por Sector de la Empresa"
@@ -2804,15 +2804,15 @@ export default function ScreenerSection({
                             </div>
                           </td>
 
-                          {/* Empresa & Sector */}
-                          <td className="py-3.5 px-4 font-sans">
+                          {/* Empresa */}
+                          <td className="py-3.5 pl-3 pr-2 font-sans whitespace-nowrap">
                             <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">{stock.name}</div>
                             <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">{stock.has_cedear ? "CEDEAR BYMA" : "S&P 500"}</div>
                           </td>
 
                           {/* Sector */}
-                          <td className="py-3.5 px-3 font-sans">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A] whitespace-nowrap max-w-[130px] truncate" title={stock.sector}>
+                          <td className="py-3.5 px-3 font-sans whitespace-nowrap">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-[#111B30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#1E2D4A] whitespace-nowrap" title={stock.sector}>
                               {stock.sector}
                             </span>
                           </td>
