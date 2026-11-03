@@ -3,15 +3,25 @@
  */
 
 export interface QuantBreakdown {
-  score_retorno: number;
-  score_margen: number;
-  score_tecnico: number;
-  per_bancos: number;
-  per_base: number;
-  per_ajustado: number;
-  factor_macro: number;
-  desvio_tecnico: number;
-  sma_200: number;
+  score_valuacion?: number;
+  score_rentabilidad?: number;
+  score_crecimiento?: number;
+  score_momentum?: number;
+  score_revisiones?: number;
+  consenso_bancos_media?: number;
+  consenso_bancos_min?: number;
+  consenso_bancos_max?: number;
+  cantidad_bancos?: number;
+  desvio_tecnico_pct?: number;
+  score_retorno?: number;
+  score_margen?: number;
+  score_tecnico?: number;
+  per_bancos?: number;
+  per_base?: number;
+  per_ajustado?: number;
+  factor_macro?: number;
+  desvio_tecnico?: number;
+  sma_200?: number;
   tasa_actual_fed?: number;
   tasa_proyectada_fed_1a?: number;
   cambio_tasas?: number;

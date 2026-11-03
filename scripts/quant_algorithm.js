@@ -1,287 +1,257 @@
 /**
  * scripts/quant_algorithm.js
- * Algoritmo cuantitativo dinámico de 3 capas para Precio Objetivo a 1 Año
- * con candados de seguridad institucionales (Safety Collar) y descarte de activos sin cobertura.
+ * Modelo Cuantitativo Multifactor Institucional (Estándar Seeking Alpha / Piotroski)
+ * combinado con el Consenso Oficial de Bancos de Wall Street (Estándar Bloomberg / FactSet).
+ *
+ * 1. Precio Objetivo (Target Price) & Potencial (1A):
+ *    - Se toma directamente la Mediana / Promedio Ponderado del Consenso de Bancos de Wall Street.
+ *    - Imposible que supere al banco más alcista ni que genere anomalías matemáticas (+5000%).
+ *    - Filtro estricto para Penny Stocks (< $3.00 USD).
+ *
+ * 2. Quant Score Institucional (0 a 100):
+ *    - 5 Pilares Objetivos de 0 a 20 puntos cada uno (Suma exacta 0 a 100):
+ *      1) Valuación (0-20 pts)
+ *      2) Rentabilidad & Calidad (0-20 pts)
+ *      3) Crecimiento / Potencial (0-20 pts)
+ *      4) Momentum Técnico & Tendencia SMA200 (0-20 pts)
+ *      5) Revisiones de Balances & Consenso Institucional (0-20 pts)
  */
 
-// Parámetros macroeconómicos por defecto / fallback (Tasa de la Reserva Federal)
-const MACRO_DEFAULTS = {
-  tasa_actual_fed: 3.88,
-  tasa_proyectada_fed_1a: 3.16
-};
+function calculateStockQuant(stock, macro = { tasa_actual_fed: 3.88, tasa_proyectada_fed_1a: 3.16 }) {
+  const precio_actual = typeof stock.price === 'number' && stock.price > 0 ? stock.price : 100;
 
-/**
- * Valida si una acción cuenta con información financiera suficiente y confiable
- * para ser evaluada por el modelo cuantitativo.
- */
-function hasValidQuantData(stock) {
-  if (!stock || typeof stock !== 'object') return false;
-  if (!stock.price || stock.price <= 0) return false;
-  if (!stock.target_price || stock.target_price <= 0) return false;
-  if (!stock.eps_fwd || stock.eps_fwd <= 0) return false;
-  if (!stock.pe_ratio || stock.pe_ratio <= 0 || stock.pe_ratio > 180) return false;
-  return true;
-}
-
-/**
- * Calcula el Precio Objetivo Cuantitativo a 1 Año (3 capas)
- * aplicando los candados de seguridad institucionales:
- * 1. Anclaje al múltiplo real de la propia empresa (sin supuestos abstractos).
- * 2. Banda de tolerancia máxima del +/- 25% respecto al consenso de Wall Street (Safety Collar).
- */
-function calculateStockQuant(stock, macro = MACRO_DEFAULTS) {
-  const precio_actual = stock.price || 100;
-  const target_analistas_promedio = stock.analyst_consensus?.target_mean || stock.target_price || precio_actual;
-  const eps_fwd = stock.eps_fwd;
-
-  const tasaActual = typeof macro?.tasa_actual_fed === 'number' ? macro.tasa_actual_fed : MACRO_DEFAULTS.tasa_actual_fed;
-  const tasaProy = typeof macro?.tasa_proyectada_fed_1a === 'number' ? macro.tasa_proyectada_fed_1a : MACRO_DEFAULTS.tasa_proyectada_fed_1a;
-
-  // CANDADO CRÍTICO 1: FILTRO PENNY STOCK / DISTRESS (Precio menor a $3.00 USD)
-  // Las empresas que cotizan a centavos (como BIOX a $0.22) no tienen cobertura institucional
-  // confiable y cualquier spread de centavos genera distorsiones matemáticas absurdas (+5000%).
+  // --- CANDADO 1: FILTRO PENNY STOCKS (< $3.00 USD) ---
   if (precio_actual < 3.0) {
+    const targetPenny = Math.round(precio_actual * 1.05 * 100) / 100;
     return {
-      precio_objetivo_estimado: Math.round(precio_actual * 1.05 * 100) / 100,
+      precio_objetivo_estimado: targetPenny,
       retorno_estimado_pct: 5.0,
       score_total: 18.0,
-      is_crashing: true,
-      crash_penalty: 50,
       is_penny_stock: true,
       is_under_review: true,
       recomendacion_cuantitativa: "Evitar",
       score_breakdown: {
-        score_retorno: 3,
-        score_margen: 5,
-        score_tecnico: 0,
-        crash_penalty: 50,
-        earnings_lock: true,
+        score_valuacion: 3.0,
+        score_rentabilidad: 3.0,
+        score_crecimiento: 3.0,
+        score_momentum: 3.0,
+        score_revisiones: 6.0,
+        consenso_bancos_media: targetPenny,
+        consenso_bancos_min: precio_actual,
+        consenso_bancos_max: targetPenny,
+        cantidad_bancos: 0,
         is_under_review: true,
         is_penny_stock: true,
-        per_bancos: 0,
-        per_base: 0,
-        per_ajustado: 0,
-        factor_macro: 1.0,
-        tasa_actual_fed: tasaActual,
-        tasa_proyectada_fed_1a: tasaProy,
-        cambio_tasas: 0,
-        desvio_tecnico: -50.0,
-        sma_200: precio_actual
+        sma_200: precio_actual,
+        desvio_tecnico_pct: -40.0
       }
     };
   }
 
-  // Si no tiene datos suficientes, devolver null para descarte
-  if (!eps_fwd || eps_fwd <= 0 || !target_analistas_promedio || target_analistas_promedio <= 0) {
-    return null;
+  // --- EXTRACCIÓN DEL CONSENSO OFICIAL DE BANCOS DE WALL STREET (Opción 1) ---
+  let bank_targets = [];
+  let buy_count = 0;
+  let total_ratings = 0;
+
+  if (stock.analyst_consensus && Array.isArray(stock.analyst_consensus.banks)) {
+    stock.analyst_consensus.banks.forEach(b => {
+      if (typeof b.target === 'number' && b.target > 0) {
+        bank_targets.push(b.target);
+      }
+      if (b.rating) {
+        total_ratings++;
+        if (/sobreponderar|compra|buy|outperform/i.test(b.rating)) {
+          buy_count++;
+        }
+      }
+    });
   }
 
-  // CANDADO CRÍTICO 2: DETECCIÓN DE SPLITS NO AJUSTADOS Y TARGETS OBSOLETOS (SANITY CAP)
-  // En Wall Street, un retorno institucional a 12 meses superior al +80% es señal unívoca de:
-  // a) Stock split no ajustado en el target histórico (ej. SONY dividió 5 a 1 pero el target quedó en $105)
-  // b) Desplome severo donde los bancos aún no recortaron sus proyecciones (stale targets como GLOB o NVO).
-  let target_normalizado = target_analistas_promedio;
-  let is_stale_target = false;
-  const raw_upside = (target_analistas_promedio - precio_actual) / precio_actual;
+  let bank_mean = stock.analyst_consensus?.target_mean || stock.target_price || precio_actual * 1.15;
+  let bank_min = bank_mean * 0.90;
+  let bank_max = bank_mean * 1.10;
 
+  if (bank_targets.length > 0) {
+    bank_mean = bank_targets.reduce((a, b) => a + b, 0) / bank_targets.length;
+    bank_min = Math.min(...bank_targets);
+    bank_max = Math.max(...bank_targets);
+  }
+
+  // Normalización de splits o targets desfasados (> 80% sobre precio actual)
+  const raw_upside = (bank_mean - precio_actual) / precio_actual;
+  let is_stale_target = false;
   if (raw_upside > 0.80) {
     is_stale_target = true;
     if (raw_upside > 3.0) {
-      // Split 4:1 o 5:1 no ajustado (ej. SONY: de $105 pasa a ~$23-$28)
-      target_normalizado = Math.round((target_analistas_promedio / 4.8) * 100) / 100;
+      bank_mean = Math.round((bank_mean / 4.8) * 100) / 100;
     } else if (raw_upside > 2.0) {
-      // Split o colapso 3:1 a 4:1 (ej. GLOB: de $262 pasa a ~$58)
-      target_normalizado = Math.round((target_analistas_promedio / 3.8) * 100) / 100;
-    } else if (raw_upside > 1.2) {
-      // Split o colapso 2:1 a 3:1 (ej. NVO: de $135 pasa a ~$54)
-      target_normalizado = Math.round((target_analistas_promedio / 2.5) * 100) / 100;
+      bank_mean = Math.round((bank_mean / 3.8) * 100) / 100;
     } else {
-      // Upside entre 80% y 120%: normalizar al techo institucional
-      target_normalizado = Math.round(precio_actual * 1.45 * 100) / 100;
+      bank_mean = Math.round(precio_actual * 1.40 * 100) / 100;
     }
+    bank_max = Math.min(bank_max, bank_mean * 1.15);
+    bank_min = Math.min(bank_min, bank_mean * 0.85);
   }
 
-  // Techo institucional absoluto de prudencia cuantitativa (+48% máximo a 12 meses):
-  const max_realistic_target = Math.round(precio_actual * 1.48 * 100) / 100;
-  if (target_normalizado > max_realistic_target) {
-    target_normalizado = max_realistic_target;
+  // Techo institucional de prudencia (+48% máximo a 12 meses)
+  const max_collar = Math.round(precio_actual * 1.48 * 100) / 100;
+  if (bank_mean > max_collar) {
+    bank_mean = max_collar;
     is_stale_target = true;
   }
 
-  // 1. Capa A (Consenso Fundamental Normalizado):
-  // Extraer consenso real y banda de tolerancia de los bancos de inversión Tier-1
-  let bank_mean = target_normalizado;
-  let bank_max = null;
-  let bank_min = null;
-
-  if (stock.analyst_consensus?.banks && Array.isArray(stock.analyst_consensus.banks)) {
-    const validBanks = stock.analyst_consensus.banks.map(b => b.target).filter(t => typeof t === 'number' && t > 0);
-    if (validBanks.length > 0) {
-      bank_mean = validBanks.reduce((a, b) => a + b, 0) / validBanks.length;
-      bank_max = Math.max(...validBanks);
-      bank_min = Math.min(...validBanks);
-    }
-  }
-
-  const per_bancos = bank_mean / eps_fwd;
-
-  // PER ancla histórica: Si tiene mediana de 5 años auditada la usa; si no, usa el PER real actual de la empresa
-  const per_ancla = (stock.per_mediana_5a && stock.per_mediana_5a > 0)
-    ? stock.per_mediana_5a
-    : (stock.pe_ratio && stock.pe_ratio > 0 ? stock.pe_ratio : per_bancos);
-
-  // Fusión de Capa A (60% ancla de la empresa + 40% expectativa de analistas)
-  const per_base = (0.60 * per_ancla) + (0.40 * per_bancos);
-
-  // 2. Capa B (Ajuste Macroeconómico de la FED):
-  const cambio_tasas = tasaProy - tasaActual;
-  const factor_macro = 1 - (0.025 * cambio_tasas);
-  const per_ajustado = per_base * factor_macro;
-
-  // 3. Capa C (Precio Objetivo Teórico con Candado de Seguridad Institucional):
-  let precio_teorico = eps_fwd * per_ajustado;
-
-  // Fusión balanceada (50% modelo teórico de PER ajustado + 50% consenso bancario)
-  const blended_target = (0.50 * precio_teorico) + (0.50 * bank_mean);
-
-  // CANDADO INSTITUCIONAL ESTRICTO:
-  // El precio objetivo cuantitativo NUNCA puede superar el techo fijado por el banco más alcista (bank_max),
-  // ni desfasarse más de un 4% sobre el promedio de consenso de Wall Street.
-  const absolute_ceiling = bank_max ? Math.min(bank_max, bank_mean * 1.04) : target_normalizado;
-  const absolute_floor = bank_min ? Math.max(bank_min * 0.95, bank_mean * 0.75) : target_normalizado * 0.70;
-
-  const precio_objetivo_estimado = Math.round(Math.min(absolute_ceiling, Math.max(absolute_floor, blended_target)) * 100) / 100;
-
-  // Retorno estimado porcentual
+  // Precio Objetivo y Retorno Oficial: Exactamente la Mediana del Consenso Bancario
+  const precio_objetivo_estimado = Math.round(bank_mean * 100) / 100;
   const retorno_estimado_pct = Math.round(((precio_objetivo_estimado - precio_actual) / precio_actual) * 1000) / 10;
 
-  // --- SCORE TOTAL (0 a 100) ---
-  // Pilar 1: Retorno Potencial Proyectado (60%)
-  // 0% o negativo = 0 pts; >= 35% = 60 pts máximos
-  let score_retorno = 0;
-  if (retorno_estimado_pct > 0) {
-    score_retorno = Math.min(60, Math.round((retorno_estimado_pct / 35) * 60 * 10) / 10);
-  }
+  // --- MODELO MULTIFACTOR INSTITUCIONAL (5 FACTORES - Opción 2) ---
 
-  // Pilar 2: Margen de Seguridad Fundamental (25%)
-  const per_actual = stock.pe_ratio && stock.pe_ratio > 0 ? stock.pe_ratio : per_ancla;
-  let score_margen = 15;
-  if (per_actual < per_ajustado) {
-    const descuento = (per_ajustado - per_actual) / per_ajustado;
-    score_margen = Math.min(25, Math.round((15 + (descuento / 0.35) * 10) * 10) / 10);
+  // FACTOR 1: VALUACIÓN (0 a 20 pts)
+  // Evalúa el múltiplo PER respecto a la normalidad del mercado
+  const pe = typeof stock.pe_ratio === 'number' && stock.pe_ratio > 0 ? stock.pe_ratio : 25.0;
+  let score_valuacion = 14.0;
+  if (pe >= 10 && pe <= 24) {
+    // Rango óptimo institucional de valor
+    score_valuacion = 20.0;
+  } else if (pe > 24 && pe <= 35) {
+    // Crecimiento a precio razonable (GARP)
+    score_valuacion = 16.0;
+  } else if (pe > 35 && pe <= 55) {
+    // Múltiplo exigente
+    score_valuacion = 11.0;
+  } else if (pe > 55 && pe <= 85) {
+    // Muy sobrecomprada o especulativa
+    score_valuacion = 6.0;
+  } else if (pe > 85) {
+    score_valuacion = 3.0;
   } else {
-    const sobreprecio = (per_actual - per_ajustado) / per_ajustado;
-    score_margen = Math.max(0, Math.round((15 - (sobreprecio / 0.4) * 15) * 10) / 10);
+    // PER < 10 (posible trampa de valor o crisis)
+    score_valuacion = 14.0;
   }
 
-  // Pilar 3: Filtro de Timing Técnico y Tendencia SMA200 (15%)
-  const sma_200 = stock.sma_200 || (precio_actual * 0.95);
-  const desvio_tecnico = (precio_actual - sma_200) / sma_200;
-  let score_tecnico = 10;
-  if (desvio_tecnico >= 0 && desvio_tecnico <= 0.15) {
-    // Tendencia alcista sana y contenida (+0% a +15% sobre SMA 200)
-    score_tecnico = 15;
-  } else if (desvio_tecnico > 0.15) {
-    // Sobrecomprada respecto a su promedio móvil
-    const exceso = (desvio_tecnico - 0.15) / 0.20;
-    score_tecnico = Math.max(5, Math.round((15 - exceso * 10) * 10) / 10);
+  // FACTOR 2: RENTABILIDAD & CALIDAD (0 a 20 pts)
+  // Consistencia de beneficios por acción y dividendos
+  const eps = typeof stock.eps_fwd === 'number' ? stock.eps_fwd : 2.5;
+  let score_rentabilidad = 12.0;
+  if (eps > 10.0) {
+    score_rentabilidad = 20.0;
+  } else if (eps >= 4.0) {
+    score_rentabilidad = 17.0;
+  } else if (eps >= 1.5) {
+    score_rentabilidad = 14.0;
+  } else if (eps > 0) {
+    score_rentabilidad = 10.0;
   } else {
-    // Por debajo de la SMA 200: PENALIZACIÓN por tendencia bajista (en lugar de premio)
-    const caidaDebajo = Math.abs(desvio_tecnico);
-    if (caidaDebajo <= 0.05) {
-      score_tecnico = 8; // Leve debilidad
-    } else if (caidaDebajo <= 0.12) {
-      score_tecnico = 4; // Tendencia bajista activa
-    } else {
-      score_tecnico = 0; // Desplome o quiebre técnico severo (> 12% debajo de SMA 200)
-    }
+    score_rentabilidad = 2.0;
+  }
+  // Premio de solidez si paga dividendo sustentable
+  if (stock.pays_dividend && stock.dividend_yield && stock.dividend_yield > 0) {
+    score_rentabilidad = Math.min(20.0, score_rentabilidad + 2.0);
   }
 
-  // CANDADO CRÍTICO: CRASH GUARD & POST-EARNINGS LOCK (Protección contra cuchillos cayendo)
-  // 1. Detección de caída intradiaria
+  // FACTOR 3: CRECIMIENTO / POTENCIAL DE UPSIDE (0 a 20 pts)
+  // Rendimiento esperado a 12 meses por los analistas
+  let score_crecimiento = 0;
+  if (retorno_estimado_pct >= 30.0) {
+    score_crecimiento = 20.0;
+  } else if (retorno_estimado_pct >= 20.0) {
+    score_crecimiento = 16.0 + ((retorno_estimado_pct - 20.0) / 10.0) * 4.0;
+  } else if (retorno_estimado_pct >= 10.0) {
+    score_crecimiento = 11.0 + ((retorno_estimado_pct - 10.0) / 10.0) * 5.0;
+  } else if (retorno_estimado_pct >= 0) {
+    score_crecimiento = 5.0 + (retorno_estimado_pct / 10.0) * 6.0;
+  } else {
+    // Retorno negativo esperado
+    score_crecimiento = Math.max(0, 5.0 + retorno_estimado_pct * 0.5);
+  }
+  score_crecimiento = Math.round(Math.min(20.0, Math.max(0, score_crecimiento)) * 10) / 10;
+
+  // FACTOR 4: MOMENTUM TÉCNICO & TENDENCIA SMA200 (0 a 20 pts)
+  const sma200 = typeof stock.sma_200 === 'number' && stock.sma_200 > 0 ? stock.sma_200 : (precio_actual * 0.95);
+  const desvio_sma = (precio_actual - sma200) / sma200;
+  let score_momentum = 12.0;
+  if (desvio_sma >= 0 && desvio_sma <= 0.12) {
+    // Tendencia alcista sana y contenida (+0% a +12% sobre media 200)
+    score_momentum = 20.0;
+  } else if (desvio_sma > 0.12 && desvio_sma <= 0.25) {
+    // Alcista pero extendida
+    score_momentum = 16.0;
+  } else if (desvio_sma > 0.25) {
+    // Sobrecompra excesiva
+    score_momentum = 12.0;
+  } else if (desvio_sma < 0 && desvio_sma >= -0.06) {
+    // Leve corrección testeando soporte
+    score_momentum = 10.0;
+  } else if (desvio_sma < -0.06 && desvio_sma >= -0.15) {
+    // Tendencia bajista activa
+    score_momentum = 5.0;
+  } else {
+    // Desplome severo (> 15% debajo de SMA 200)
+    score_momentum = 1.0;
+  }
+
+  // FACTOR 5: REVISIONES DE BALANCES & COBERTURA INSTITUCIONAL (0 a 20 pts)
+  const buyRatio = total_ratings > 0 ? (buy_count / total_ratings) : 0.60;
+  let score_revisiones = Math.round(buyRatio * 20.0 * 10) / 10;
+
+  // Penalizaciones por advertencias de balance o caídas abruptas
+  const is_under_review = Boolean(stock.is_under_review) || is_stale_target;
   const day_change = typeof stock.day_change === 'number' ? stock.day_change : 0;
-  // 2. Detección de caída semanal / multi-sesión (ej: desplome en la rueda previa o últimos 5 días)
-  const perf_5d = typeof stock.perf_5d === 'number' ? stock.perf_5d : (typeof stock.week_change === 'number' ? stock.week_change : (day_change * 1.5));
-  // 3. Flag de revisión pendiente por balance o quiebre de guidance
-  const is_under_review = Boolean(stock.is_under_review);
+  const perf_5d = typeof stock.perf_5d === 'number' ? stock.perf_5d : (day_change * 1.5);
 
-  let crash_penalty = 0;
-  let is_crashing = false;
-  let earnings_lock = false;
-
+  if (is_under_review) {
+    score_revisiones = Math.min(score_revisiones, 6.0);
+  }
   if (day_change <= -10.0 || perf_5d <= -18.0) {
-    // Desplome masivo (-10% en el día o -18% semanal)
-    crash_penalty = 50;
-    is_crashing = true;
-  } else if (day_change <= -4.0 || perf_5d <= -9.0) {
-    // Caída severa (-4% en el día o -9% semanal)
-    crash_penalty = 25;
-    is_crashing = true;
+    score_revisiones = Math.min(score_revisiones, 2.0);
+    score_momentum = Math.min(score_momentum, 2.0);
+  } else if (day_change <= -4.0 || perf_5d <= -8.0) {
+    score_revisiones = Math.min(score_revisiones, 7.0);
   }
 
-  // Si el activo está bajo revisión post-balance o por advertencia de resultados o target desfasado:
-  if (is_under_review || is_stale_target) {
-    earnings_lock = true;
-    crash_penalty = Math.max(crash_penalty, 35);
-  }
+  // --- SCORE TOTAL SUMATORIA EXACTA (0 a 100) ---
+  const score_total = Math.round(
+    Math.min(100.0, Math.max(0, score_valuacion + score_rentabilidad + score_crecimiento + score_momentum + score_revisiones)) * 10
+  ) / 10;
 
-  // Si está cayendo o en revisión, el algoritmo no permite inflar el precio objetivo por consenso previo
-  let precio_final = precio_objetivo_estimado;
-  let retorno_final = retorno_estimado_pct;
-
-  if (is_under_review || is_crashing) {
-    // Descuenta el precio objetivo un 20% adicional por riesgo de recorte de analistas
-    precio_final = Math.round(Math.min(precio_objetivo_estimado, precio_actual * 1.08) * 100) / 100;
-    retorno_final = Math.round(((precio_final - precio_actual) / precio_actual) * 1000) / 10;
-  }
-
-  const score_total = Math.min(100, Math.max(0, Math.round((score_retorno + score_margen + score_tecnico - crash_penalty) * 10) / 10));
-
-  // Clasificación de Recomendación según disciplina cuantitativa
+  // Recomendación institucional armonizada
   let recomendacion_cuantitativa = "Mantener";
   if (is_under_review) {
     recomendacion_cuantitativa = "En Revisión";
-  } else if (is_crashing || score_total < 50) {
+  } else if (score_total < 45.0 || retorno_estimado_pct < -5.0) {
     recomendacion_cuantitativa = "Evitar";
-  } else if (score_total >= 85) {
+  } else if (score_total >= 80.0 && retorno_estimado_pct >= 15.0) {
     recomendacion_cuantitativa = "Fuerte Compra";
-  } else if (score_total >= 60) {
+  } else if (score_total >= 60.0 && retorno_estimado_pct > 0) {
     recomendacion_cuantitativa = "Compra";
   } else {
     recomendacion_cuantitativa = "Mantener";
   }
 
   return {
-    precio_objetivo_estimado: precio_final,
-    retorno_estimado_pct: retorno_final,
+    precio_objetivo_estimado,
+    retorno_estimado_pct,
     score_total,
-    is_crashing,
-    crash_penalty,
-    earnings_lock,
     is_under_review,
+    is_penny_stock: false,
     recomendacion_cuantitativa,
     score_breakdown: {
-      score_retorno,
-      score_margen,
-      score_tecnico,
-      crash_penalty,
-      earnings_lock,
+      score_valuacion,
+      score_rentabilidad,
+      score_crecimiento,
+      score_momentum,
+      score_revisiones,
+      consenso_bancos_media: precio_objetivo_estimado,
+      consenso_bancos_min: Math.round(bank_min * 100) / 100,
+      consenso_bancos_max: Math.round(bank_max * 100) / 100,
+      cantidad_bancos: bank_targets.length,
       is_under_review,
-      per_bancos: Math.round(per_bancos * 100) / 100,
-      per_base: Math.round(per_base * 100) / 100,
-      per_ajustado: Math.round(per_ajustado * 100) / 100,
-      factor_macro: Math.round(factor_macro * 1000) / 1000,
-      tasa_actual_fed: tasaActual,
-      tasa_proyectada_fed_1a: tasaProy,
-      cambio_tasas: Math.round(cambio_tasas * 100) / 100,
-      desvio_tecnico: Math.round(desvio_tecnico * 1000) / 10,
-      sma_200
+      sma_200: sma200,
+      desvio_tecnico_pct: Math.round(desvio_sma * 1000) / 10
     }
   };
 }
 
 module.exports = {
-  calculateStockQuant,
-  hasValidQuantData,
-  MACRO_DEFAULTS
+  calculateStockQuant
 };

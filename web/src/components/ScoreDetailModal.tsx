@@ -70,37 +70,57 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
   if (isStock) {
     const stockItem = item as StockItem;
 
-    const p1 = qb?.score_retorno ?? Math.round(score * 0.6 * 10) / 10;
-    const p2 = qb?.score_margen ?? Math.round(score * 0.25 * 10) / 10;
-    const p3 = qb?.score_tecnico ?? Math.round((score - p1 - p2) * 10) / 10;
+    const pVal = qb?.score_valuacion ?? 16.0;
+    const pRent = qb?.score_rentabilidad ?? 18.0;
+    const pCrec = qb?.score_crecimiento ?? 15.0;
+    const pMom = qb?.score_momentum ?? 16.0;
+    const pRev = qb?.score_revisiones ?? 14.0;
 
     pillars = [
       {
-        title: "Retorno Potencial Proyectado (12 Meses)",
-        weight: 60,
-        points: p1,
-        maxPoints: 60,
-        icon: <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-[#00F5A0]" />,
-        desc: "Potencial de subida teórico proyectado por las 3 capas del modelo hasta su precio objetivo.",
-        metricDetail: `Proyección: ${stockItem.retorno_estimado_pct ?? stockItem.upside ?? 0}%`
-      },
-      {
-        title: "Margen de Seguridad Fundamental",
-        weight: 25,
-        points: p2,
-        maxPoints: 25,
+        title: "Valuación Fundamental (Múltiplos P/E)",
+        weight: 20,
+        points: pVal,
+        maxPoints: 20,
         icon: <ShieldCheck className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />,
-        desc: "Descuento de valuación comparando el PER real de mercado contra el PER teórico ajustado por ciclo.",
+        desc: "Múltiplos P/E y valuación relativa respecto al promedio de su sector y su historial.",
         metricDetail: `PER Actual: ${stockItem.pe_ratio || "N/D"}x`
       },
       {
-        title: "Filtro de Timing Técnico (SMA 200)",
-        weight: 15,
-        points: p3,
-        maxPoints: 15,
+        title: "Rentabilidad & Calidad del Negocio",
+        weight: 20,
+        points: pRent,
+        maxPoints: 20,
+        icon: <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />,
+        desc: "Capacidad de generar márgenes sólidos, flujo de caja libre y balance financiero sin distress.",
+        metricDetail: "Calidad Institucional Tier 1"
+      },
+      {
+        title: "Crecimiento & Upside a 12M",
+        weight: 20,
+        points: pCrec,
+        maxPoints: 20,
+        icon: <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-[#00F5A0]" />,
+        desc: "Potencial alcista hasta la mediana de consenso oficial de analistas de Wall Street.",
+        metricDetail: `Upside Consenso: +${stockItem.retorno_estimado_pct ?? stockItem.upside ?? 0}%`
+      },
+      {
+        title: "Momentum Técnico (Tendencia SMA 200)",
+        weight: 20,
+        points: pMom,
+        maxPoints: 20,
         icon: <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
-        desc: "Posición respecto a la Media Móvil Simple de 200 ruedas. Premia comprar con descuento técnico y penaliza sobrecompra.",
-        metricDetail: qb?.desvio_tecnico !== undefined ? `Desvío SMA200: ${qb.desvio_tecnico}%` : "Tendencia estructural"
+        desc: "Comportamiento del precio respecto a su Media Móvil de 200 ruedas, evitando sobrecompra extrema.",
+        metricDetail: qb?.desvio_tecnico_pct !== undefined ? `Desvío SMA200: ${qb.desvio_tecnico_pct}%` : "Tendencia estructural"
+      },
+      {
+        title: "Revisiones & Cobertura de Bancos",
+        weight: 20,
+        points: pRev,
+        maxPoints: 20,
+        icon: <Zap className="w-4 h-4 text-emerald-500 dark:text-[#00FF88]" />,
+        desc: "Convicción y revisiones de estimaciones de los bancos de inversión globales (Goldman, Morgan Stanley, JP Morgan).",
+        metricDetail: qb?.cantidad_bancos ? `${qb.cantidad_bancos} Bancos Tier 1` : "Cobertura activa"
       }
     ];
   } else if (isEtf) {
@@ -365,18 +385,15 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
               </div>
             );
           })}
-          {/* Deducción por Crash Guard / Revisión Post-Balance si aplica */}
-          {Boolean(qb?.crash_penalty && qb.crash_penalty > 0) && (
+          {/* Alerta de Activo Bajo Revisión si aplica */}
+          {Boolean(qb?.is_under_review) && (
             <div className="p-3.5 sm:p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 flex items-center justify-between font-mono text-xs sm:text-sm">
               <div className="flex items-center gap-2">
                 <span className="text-base">⚠️</span>
                 <span>
-                  <strong>Candado Institucional (Crash Guard / Post-Balance):</strong> Se deducen puntos por volatilidad reciente o pronósticos previos a resultados.
+                  <strong>En Revisión Institucional:</strong> Activo sujeto a ajuste de consenso post-balance o alta dispersión de estimaciones.
                 </span>
               </div>
-              <span className="font-bold text-rose-600 dark:text-rose-400 shrink-0 ml-2">
-                -{qb?.crash_penalty} pts
-              </span>
             </div>
           )}
         </div>

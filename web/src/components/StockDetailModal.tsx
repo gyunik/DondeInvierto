@@ -2,7 +2,6 @@
 
 import React from "react";
 import { X, Layers } from "lucide-react";
-import marketData from "@/data/marketData.json";
 
 import { StockItem, EtfItem } from "@/types/market";
 export type ModalItem = StockItem | EtfItem;
@@ -15,7 +14,6 @@ interface StockDetailModalProps {
 export default function StockDetailModal({ stock, onClose }: StockDetailModalProps) {
   if (!stock) return null;
 
-  const macro = (marketData as { macro?: import("@/types/market").MacroData }).macro;
   const isEtf = "expense_ratio" in stock;
   const tagLabel = "sector" in stock ? stock.sector : (stock as EtfItem).category;
 
@@ -101,7 +99,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4 text-emerald-700 dark:text-[#00F5A0]" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
-                  Precio Objetivo Cuantitativo (Algoritmo 3 Capas)
+                  Precio Objetivo (Consenso Oficial Wall Street)
                 </span>
               </div>
               <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-[#00F5A0] font-mono font-bold text-xs border border-emerald-300 dark:border-emerald-500/40">
@@ -139,23 +137,34 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
               </div>
             </div>
 
-            {/* Micro Breakdown de las 3 Capas */}
+            {/* Radar Multifactor Institucional (5 Factores) */}
             {qb && (
-              <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700/60 grid grid-cols-3 gap-2 text-center font-mono">
-                <div className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Capa A (PER Base)</span>
-                  <span className="text-xs font-bold text-slate-900 dark:text-white">{qb.per_base}x</span>
+              <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700/60">
+                <div className="text-[11px] font-mono font-semibold uppercase text-slate-500 dark:text-slate-400 mb-2 flex items-center justify-between">
+                  <span>Radar Multifactor Institucional (0-100 pts)</span>
+                  <span className="text-[10px] text-emerald-600 dark:text-[#00F5A0] font-bold">5 Factores Objetivos</span>
                 </div>
-                <div
-                  className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none"
-                  title={`FED Actual: ${qb.tasa_actual_fed ?? macro?.tasa_actual_fed ?? 3.88}% | Proyectada 1A: ${qb.tasa_proyectada_fed_1a ?? macro?.tasa_proyectada_fed_1a ?? 3.16}%`}
-                >
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Capa B (Ajuste Macro)</span>
-                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">+{Math.round((qb.factor_macro - 1) * 1000) / 10}%</span>
-                </div>
-                <div className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Capa C (PER Ajustado)</span>
-                  <span className="text-xs font-bold text-emerald-700 dark:text-[#00F5A0]">{qb.per_ajustado}x</span>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center font-mono">
+                  <div className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate" title="Valuacion (Multiplos P/E vs Sector)">Valuacion</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">{(qb.score_valuacion ?? 16).toFixed(1)} <span className="text-[10px] text-slate-400">/20</span></span>
+                  </div>
+                  <div className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate" title="Rentabilidad & Calidad (Margen Operativo)">Rentabilidad</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">{(qb.score_rentabilidad ?? 18).toFixed(1)} <span className="text-[10px] text-slate-400">/20</span></span>
+                  </div>
+                  <div className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate" title="Crecimiento & Potencial 12M">Crecimiento</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">{(qb.score_crecimiento ?? 15).toFixed(1)} <span className="text-[10px] text-slate-400">/20</span></span>
+                  </div>
+                  <div className="bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate" title="Momentum Tecnico (Tendencia SMA 200)">Momentum</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">{(qb.score_momentum ?? 16).toFixed(1)} <span className="text-[10px] text-slate-400">/20</span></span>
+                  </div>
+                  <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#081220] p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate" title="Revisiones & Consenso Institucional">Revisiones</span>
+                    <span className="text-xs font-bold text-emerald-600 dark:text-[#00F5A0]">{(qb.score_revisiones ?? 14).toFixed(1)} <span className="text-[10px] text-slate-400">/20</span></span>
+                  </div>
                 </div>
               </div>
             )}
@@ -307,7 +316,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
           <span className="text-emerald-700 dark:text-[#00F5A0] font-bold mr-1">💡 Metodología Cuantitativa:</span>
           {!isEtf ? (
             <span>
-              El Precio Objetivo Teórico se calcula en 3 capas: fusiona el 65% de la mediana histórica del PER (5 años) con el 35% del PER implícito de bancos, aplica un factor macroeconómico de ajuste por ciclo de tasas de la Reserva Federal (FED actual: {macro?.tasa_actual_fed ?? 3.88}% → Proy: {macro?.tasa_proyectada_fed_1a ?? 3.16}%), y lo multiplica por el EPS Forward proyectado.
+              Precio Objetivo basado en la mediana de consenso oficial de analistas de Wall Street (Bloomberg / FactSet) acotado por los bancos tier 1 de cobertura. El Quant Score de 0 a 100 se audita con el modelo multifactor (Seeking Alpha / Piotroski) de 5 factores objetivos: Valuación, Rentabilidad, Crecimiento, Momentum SMA200 y Revisiones institucionales.
             </span>
           ) : (
             <span>
