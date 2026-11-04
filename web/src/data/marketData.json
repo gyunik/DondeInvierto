@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "last_updated": "2026-11-03 21:35 hs",
+  "last_updated": "2026-11-03 23:32 hs",
   "ccl_dollar": 1668.8,
   "market": {
     "^GSPC": {
@@ -36572,31 +36572,36 @@
             "name": "JP Morgan",
             "target": 98.7,
             "rating": "Mantener",
-            "date": "29 Oct 2026"
+            "date": "29 Oct 2026",
+            "is_pre_earnings": true
           },
           {
             "name": "Citigroup",
             "target": 98.7,
             "rating": "Mantener",
-            "date": "29 Oct 2026"
+            "date": "29 Oct 2026",
+            "is_pre_earnings": true
           },
           {
             "name": "BNP Paribas",
             "target": 98.7,
             "rating": "Mantener",
-            "date": "29 Oct 2026"
+            "date": "29 Oct 2026",
+            "is_pre_earnings": true
           },
           {
             "name": "UBS",
             "target": 98.7,
             "rating": "Mantener",
-            "date": "29 Oct 2026"
+            "date": "29 Oct 2026",
+            "is_pre_earnings": true
           },
           {
             "name": "Truist Securities",
             "target": 98.7,
             "rating": "Mantener",
-            "date": "29 Oct 2026"
+            "date": "29 Oct 2026",
+            "is_pre_earnings": true
           }
         ]
       },
@@ -46282,7 +46287,7 @@
     "is_fallback": false,
     "source": "Federal Reserve Bank of New York (EFFR: 3.88%, Proyección 1A: 3.15%)",
     "effective_date": "2026-11-02",
-    "last_fetched": "2026-11-04T00:35:02.491Z"
+    "last_fetched": "2026-11-04T02:31:50.976Z"
   },
   "us_bonds": [
     {
