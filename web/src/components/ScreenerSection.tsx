@@ -166,7 +166,7 @@ export default function ScreenerSection({
   };
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
-  const [selectedExplainStock, setSelectedExplainStock] = useState<StockItem | null>(null);
+  const [selectedExplainStock, setSelectedExplainStock] = useState<ModalItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
   // Modo de vista: tabla institucional compacta (por defecto) o tarjetas detalladas
@@ -3052,9 +3052,19 @@ export default function ScreenerSection({
                       </td>
 
                       <td className="py-3.5 px-4 text-right">
-                        <span className="text-[#00FF88] font-bold text-sm sm:text-base bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedStockForModal(e)}
+                          className="text-[#00FF88] font-bold text-sm sm:text-base tracking-tight bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30 hover:border-emerald-400 transition-all text-right block ml-auto"
+                          title="Ver consenso de Wall Street y estrategas"
+                        >
                           +{e.upside}%
-                        </span>
+                        </button>
+                        {e.target_price && (
+                          <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium block mt-0.5">
+                            Target: ${e.target_price} USD
+                          </span>
+                        )}
                       </td>
 
                       <td className="py-3.5 px-3 text-right text-slate-200 text-xs sm:text-sm">
@@ -3066,7 +3076,11 @@ export default function ScreenerSection({
                       </td>
 
                       <td className="py-3.5 px-4 text-center">
-                        <div className="inline-flex items-center space-x-2">
+                        <div
+                          className="inline-flex items-center space-x-2 cursor-pointer"
+                          onClick={() => setSelectedScoreItem(e as unknown as ScoreItem)}
+                          title="Ver desglose de Score del ETF"
+                        >
                           <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
                             <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${e.score}%` }} />
                           </div>
@@ -3077,8 +3091,9 @@ export default function ScreenerSection({
                       <td className="py-3.5 px-4 text-center">
                         <button
                           type="button"
-                          onClick={() => setSelectedScoreItem(e as unknown as ScoreItem)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
+                          onClick={() => setSelectedExplainStock(e)}
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all shadow-sm hover:shadow-md"
+                          title="Ver explicación didáctica de cómo se calculó el potencial"
                         >
                           Analizar
                         </button>

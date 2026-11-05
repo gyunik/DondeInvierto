@@ -10,12 +10,13 @@ import {
   ArrowRight,
   Layers
 } from "lucide-react";
-import { StockItem } from "@/types/market";
+import { StockItem, EtfItem } from "@/types/market";
+export type ModalItem = StockItem | EtfItem;
 
 interface ExplainPotentialModalProps {
-  stock: StockItem | null;
+  stock: ModalItem | null;
   onClose: () => void;
-  onOpenTechnicalDetail?: (stock: StockItem) => void;
+  onOpenTechnicalDetail?: (stock: ModalItem) => void;
 }
 
 export default function ExplainPotentialModal({
@@ -35,36 +36,50 @@ export default function ExplainPotentialModal({
 
   if (!stock) return null;
 
+  const isEtf = "expense_ratio" in stock;
   const currentPrice = stock.price || 100;
-  const targetPrice = stock.precio_objetivo_algoritmo ?? stock.target_price ?? currentPrice;
-  const potentialPct = stock.retorno_estimado_pct ?? stock.upside ?? (
-    currentPrice > 0 ? Math.round(((targetPrice - currentPrice) / currentPrice) * 1000) / 10 : 0
-  );
+  const targetPrice = ("precio_objetivo_algoritmo" in stock && stock.precio_objetivo_algoritmo)
+    ? stock.precio_objetivo_algoritmo
+    : (stock.target_price ?? currentPrice);
+
+  const potentialPct = ("retorno_estimado_pct" in stock && stock.retorno_estimado_pct !== undefined)
+    ? stock.retorno_estimado_pct
+    : (stock.upside ?? (currentPrice > 0 ? Math.round(((targetPrice - currentPrice) / currentPrice) * 1000) / 10 : 0));
 
   const dollarGain = Math.round((targetPrice - currentPrice) * 100) / 100;
   const score = stock.score ?? 50;
 
-  // Lista de bancos que cubren la acción
+  const categoryLabel = isEtf
+    ? (stock as EtfItem).category
+    : (stock as StockItem).sector;
+
+  // Lista de bancos que cubren la acción / ETF
   const banks = stock.analyst_consensus?.banks || [];
   const bankNames = banks.slice(0, 3).map((b) => b.name).join(", ");
 
   // Veredicto según Score y Potencial
   let veredictoBadge = "bg-emerald-500/15 text-emerald-700 dark:text-[#00FF88] border-emerald-500/30";
-  let veredictoTitulo = "Oportunidad con Alto Respaldo";
-  let veredictoTexto = "La proyección de crecimiento está respaldada por consenso formal de Wall Street y aprobada por los 5 filtros de solvencia de la IA.";
+  let veredictoTitulo = isEtf ? "Fondo Indexado con Alto Respaldo" : "Oportunidad con Alto Respaldo";
+  let veredictoTexto = isEtf
+    ? "La proyección de crecimiento está respaldada por el consenso macro de Wall Street sobre el índice subyacente y la eficiencia de costos del fondo."
+    : "La proyección de crecimiento está respaldada por consenso formal de Wall Street y aprobada por los 5 filtros de solvencia de la IA.";
 
-  if (score >= 85 && potentialPct >= 15) {
+  if (score >= 85 && potentialPct >= 7) {
     veredictoBadge = "bg-emerald-500/20 text-emerald-800 dark:text-[#00FF88] border-emerald-500/40 shadow-sm";
-    veredictoTitulo = "🟢 Fuerte Compra • Alta Convicción";
-    veredictoTexto = "Excelente alineación: la empresa tiene fundamentos sólidos (sin riesgo de deuda) y el consenso de analistas proyecta una ganancia atractiva a 12 meses.";
+    veredictoTitulo = isEtf
+      ? "🟢 Sobreponderar • Inversión Pasiva de Clase Mundial"
+      : "🟢 Fuerte Compra • Alta Convicción";
+    veredictoTexto = isEtf
+      ? `Excelente vehículo indexado con comisiones mínimas (${(stock as EtfItem).expense_ratio}% anual), administrado por ${(stock as EtfItem).manager} y respaldado por las perspectivas alcistas del mercado.`
+      : "Excelente alineación: la empresa tiene fundamentos sólidos (sin riesgo de deuda) y el consenso de analistas proyecta una ganancia atractiva a 12 meses.";
   } else if (score >= 65 && potentialPct > 0) {
     veredictoBadge = "bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border-cyan-500/30";
-    veredictoTitulo = "🔵 Compra Moderada • Fundamentos Sólidos";
-    veredictoTexto = "El activo presenta una relación riesgo/retorno favorable para sumar a cartera con horizonte de mediano plazo.";
+    veredictoTitulo = "🔵 Ponderación Positiva • Fundamentos Sólidos";
+    veredictoTexto = "El activo presenta una relación riesgo/retorno favorable para sumar a cartera con horizonte de mediano a largo plazo.";
   } else if (score < 50 || potentialPct <= 0) {
     veredictoBadge = "bg-rose-500/15 text-rose-800 dark:text-rose-300 border-rose-500/30";
     veredictoTitulo = "🔴 Precaución • Seguir de Cerca";
-    veredictoTexto = "El potencial de suba es limitado o la IA detectó debilidad en sus márgenes o volatilidad reciente. No es momento ideal de entrada.";
+    veredictoTexto = "El potencial de suba es limitado o la IA detectó debilidad en sus métricas o volatilidad reciente. No es momento ideal de entrada.";
   }
 
   return (
@@ -97,9 +112,9 @@ export default function ExplainPotentialModal({
               <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {stock.name}
               </h2>
-              {stock.sector && (
+              {categoryLabel && (
                 <span className="px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-mono bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                  {stock.sector}
+                  {categoryLabel}
                 </span>
               )}
             </div>
@@ -114,7 +129,7 @@ export default function ExplainPotentialModal({
         <div className="mt-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-slate-100 dark:from-emerald-950/40 dark:via-[#0c1c2e] dark:to-[#07111e] border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-800 dark:text-[#00FF88] block">
-              Potencial Estimado a 12 Meses
+              {isEtf ? "Upside Estimado de Cartera (12M)" : "Potencial Estimado a 12 Meses"}
             </span>
             <div className="flex items-baseline gap-2 mt-0.5">
               <span className="text-3xl sm:text-4xl font-black font-mono text-emerald-600 dark:text-[#00FF88]">
@@ -144,10 +159,10 @@ export default function ExplainPotentialModal({
             </div>
             <div className="text-xs sm:text-sm leading-relaxed">
               <strong className="text-slate-900 dark:text-white block font-semibold mb-0.5">
-                Paso 1: ¿Cuánto vale hoy en el mercado?
+                {isEtf ? "Paso 1: ¿Cuánto vale hoy la cuotaparte del ETF?" : "Paso 1: ¿Cuánto vale hoy en el mercado?"}
               </strong>
               <p className="text-slate-600 dark:text-slate-300">
-                Si hoy comprás una acción de <strong className="text-slate-900 dark:text-white">{stock.name}</strong>, pagás exactamente <strong className="text-slate-900 dark:text-white">${currentPrice.toFixed(2)} USD</strong>{stock.has_cedear && stock.cedear_price_ars ? ` (o aprox. $${stock.cedear_price_ars.toLocaleString("es-AR")} ARS vía CEDEAR)` : ""}. Ese es el punto de partida real.
+                Si hoy comprás {isEtf ? "una cuotaparte del fondo" : "una acción de"} <strong className="text-slate-900 dark:text-white">{stock.name}</strong>, pagás exactamente <strong className="text-slate-900 dark:text-white">${currentPrice.toFixed(2)} USD</strong>{stock.cedear_price_ars ? ` (o aprox. $${stock.cedear_price_ars.toLocaleString("es-AR")} ARS vía CEDEAR)` : ""}. Ese es el punto de partida real.
               </p>
             </div>
           </div>
@@ -159,10 +174,18 @@ export default function ExplainPotentialModal({
             </div>
             <div className="text-xs sm:text-sm leading-relaxed">
               <strong className="text-slate-900 dark:text-white block font-semibold mb-0.5">
-                Paso 2: ¿A cuánto estiman que llegará Wall Street?
+                {isEtf ? "Paso 2: ¿A cuánto proyecta Wall Street el índice subyacente?" : "Paso 2: ¿A cuánto estiman que llegará Wall Street?"}
               </strong>
               <p className="text-slate-600 dark:text-slate-300">
-                Los analistas de los principales bancos de inversión {bankNames ? `(${bankNames})` : "(JP Morgan, Morgan Stanley, etc.)"} auditaron las ventas, contratos y márgenes proyectados. La mediana de sus modelos a 12 meses fijó su valor en <strong className="text-emerald-700 dark:text-[#00F5A0]">${targetPrice.toFixed(2)} USD</strong>.
+                {isEtf ? (
+                  <>
+                    Los jefes de estrategia de los principales bancos globales {bankNames ? `(${bankNames})` : "(Morgan Stanley, Goldman Sachs, Citigroup)"} auditaron las expectativas del mercado para el índice/activo subyacente. La mediana de consenso a 12 meses fijó el valor de la cuotaparte en <strong className="text-emerald-700 dark:text-[#00F5A0]">${targetPrice.toFixed(2)} USD</strong>.
+                  </>
+                ) : (
+                  <>
+                    Los analistas de los principales bancos de inversión {bankNames ? `(${bankNames})` : "(JP Morgan, Morgan Stanley, etc.)"} auditaron las ventas, contratos y márgenes proyectados. La mediana de sus modelos a 12 meses fijó su valor en <strong className="text-emerald-700 dark:text-[#00F5A0]">${targetPrice.toFixed(2)} USD</strong>.
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -177,7 +200,7 @@ export default function ExplainPotentialModal({
                 Paso 3: La cuenta simple del porcentaje ({potentialPct >= 0 ? `+${potentialPct}%` : `${potentialPct}%`})
               </strong>
               <p className="text-slate-600 dark:text-slate-300 mb-2">
-                Es la ganancia porcentual si la acción sube desde el precio de hoy hasta el valor proyectado:
+                Es la ganancia porcentual si el activo sube desde el precio de hoy hasta el valor proyectado:
               </p>
               <div className="p-2.5 rounded-lg bg-white dark:bg-[#060c16] border border-slate-300 dark:border-slate-700/80 font-mono text-[11px] sm:text-xs text-center text-slate-800 dark:text-slate-200">
                 <span className="text-emerald-600 dark:text-[#00FF88] font-bold">
@@ -188,7 +211,7 @@ export default function ExplainPotentialModal({
                   {potentialPct >= 0 ? `+${potentialPct}%` : `${potentialPct}%`}
                 </span>
                 <span className="block text-[10px] text-slate-500 mt-0.5">
-                  (Ganancia estimada de +${dollarGain.toFixed(2)} USD por cada acción comprada)
+                  (Ganancia estimada de +${dollarGain.toFixed(2)} USD por cada {isEtf ? "cuotaparte" : "acción"} comprada)
                 </span>
               </div>
             </div>
@@ -201,10 +224,18 @@ export default function ExplainPotentialModal({
             </div>
             <div className="text-xs sm:text-sm leading-relaxed">
               <strong className="text-slate-900 dark:text-white block font-semibold mb-0.5">
-                Paso 4: El filtro de seguridad de la IA (¿Es creíble?)
+                {isEtf ? "Paso 4: El filtro de eficiencia del ETF (Quant Score)" : "Paso 4: El filtro de seguridad de la IA (¿Es creíble?)"}
               </strong>
               <p className="text-slate-600 dark:text-slate-300">
-                La IA auditó a la empresa con un <strong className="text-emerald-700 dark:text-[#00FF88] font-mono">Quant Score de {score}/100</strong>. Comprobó que el P/E ratio es razonable ({stock.pe_ratio ? `${stock.pe_ratio}x` : "adecuado"}), que el balance es solvente y que no es una acción en quiebra ni una promesa inflada.
+                {isEtf ? (
+                  <>
+                    El algoritmo auditó al ETF con un <strong className="text-emerald-700 dark:text-[#00FF88] font-mono">Quant Score de {score}/100</strong>. Destaca su comisión ultra baja (costo anual del {(stock as EtfItem).expense_ratio}%), el respaldo de su gestor internacional ({(stock as EtfItem).manager}) y su diversificación masiva sin riesgo de quiebra individual.
+                  </>
+                ) : (
+                  <>
+                    La IA auditó a la empresa con un <strong className="text-emerald-700 dark:text-[#00FF88] font-mono">Quant Score de {score}/100</strong>. Comprobó que el P/E ratio es razonable ({(stock as StockItem).pe_ratio ? `${(stock as StockItem).pe_ratio}x` : "adecuado"}), que el balance es solvente y que no es una acción en quiebra ni una promesa inflada.
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -224,7 +255,7 @@ export default function ExplainPotentialModal({
         {onOpenTechnicalDetail && (
           <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-mono">
             <span className="text-slate-500 dark:text-slate-400">
-              ¿Querés ver los balances y las notas banco por banco?
+              {isEtf ? "¿Querés ver los estrategas y el desglose de cartera?" : "¿Querés ver los balances y las notas banco por banco?"}
             </span>
             <button
               type="button"
