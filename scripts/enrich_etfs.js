@@ -27,12 +27,12 @@ const etfDetails = {
     pe_ratio: 33.5,
     market_cap: '$15.2B AUM',
     recommendation: 'Sobreponderar Fuerte',
-    explanation: 'Consenso agregado bottom-up ponderado por capitalización de los 30 mayores fabricantes de microchips (NVIDIA, Broadcom, Qualcomm, AMD, Texas Instruments).',
+    explanation: 'Consenso agregado bottom-up ajustado por el split 3:1 de BlackRock (Nov 2026) sobre los 30 mayores fabricantes de microchips (NVIDIA, Broadcom, Qualcomm, AMD, Texas Instruments).',
     banks: [
-      { name: 'Goldman Sachs', target: 660.0, rating: 'Comprar', date: '23 Oct 2026' },
-      { name: 'Morgan Stanley', target: 645.0, rating: 'Sobreponderar', date: '18 Oct 2026' },
-      { name: 'Bank of America', target: 640.0, rating: 'Comprar', date: '15 Oct 2026' },
-      { name: 'Citigroup', target: 620.0, rating: 'Comprar', date: '08 Oct 2026' }
+      { name: 'Goldman Sachs', target: 178.0, rating: 'Comprar', date: '23 Oct 2026' },
+      { name: 'Morgan Stanley', target: 172.0, rating: 'Sobreponderar', date: '18 Oct 2026' },
+      { name: 'Bank of America', target: 168.0, rating: 'Comprar', date: '15 Oct 2026' },
+      { name: 'Citigroup', target: 162.0, rating: 'Comprar', date: '08 Oct 2026' }
     ]
   },
   SLV: {
@@ -228,10 +228,10 @@ const etfDetails = {
     recommendation: 'Sobreponderar Fuerte',
     explanation: 'Consenso agregado de los 25 líderes globales de semiconductores, con alta concentración en NVIDIA (20%), TSMC (12%) y equipamiento litográfico ASML.',
     banks: [
-      { name: 'Goldman Sachs', target: 725.0, rating: 'Comprar', date: '23 Oct 2026' },
-      { name: 'Morgan Stanley', target: 710.0, rating: 'Sobreponderar', date: '18 Oct 2026' },
-      { name: 'Bank of America', target: 700.0, rating: 'Comprar', date: '15 Oct 2026' },
-      { name: 'Citigroup', target: 680.0, rating: 'Comprar', date: '08 Oct 2026' }
+      { name: 'Goldman Sachs', target: 565.0, rating: 'Comprar', date: '23 Oct 2026' },
+      { name: 'Morgan Stanley', target: 550.0, rating: 'Sobreponderar', date: '18 Oct 2026' },
+      { name: 'Bank of America', target: 540.0, rating: 'Comprar', date: '15 Oct 2026' },
+      { name: 'Citigroup', target: 525.0, rating: 'Comprar', date: '08 Oct 2026' }
     ]
   },
   VIG: {

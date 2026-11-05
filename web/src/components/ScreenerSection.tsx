@@ -23,6 +23,8 @@ import UsaFlag from "./UsaFlag";
 import marketData from "@/data/marketData.json";
 import StockDetailModal, { ModalItem } from "./StockDetailModal";
 import ExplainPotentialModal from "./ExplainPotentialModal";
+import BondYieldRatingModal from "./BondYieldRatingModal";
+import ExplainBondScoreModal from "./ExplainBondScoreModal";
 import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
 
 export type UsBondItem = (typeof marketData.us_bonds)[0];
@@ -167,6 +169,8 @@ export default function ScreenerSection({
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
   const [selectedExplainStock, setSelectedExplainStock] = useState<ModalItem | null>(null);
+  const [selectedYieldBond, setSelectedYieldBond] = useState<UsBondItem | null>(null);
+  const [selectedExplainBond, setSelectedExplainBond] = useState<UsBondItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
   // Modo de vista: tabla institucional compacta (por defecto) o tarjetas detalladas
@@ -946,10 +950,17 @@ export default function ScreenerSection({
               </span>
             </div>
 
-            <div className="flex flex-col">
+            <div
+              onClick={() => setSelectedYieldBond(b)}
+              className="flex flex-col cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-blue-500/40 transition-all"
+              title="Ver calificaciones de S&P, Moody's y Fitch"
+            >
               <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">YTM (RENDIMIENTO)</span>
               <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
                 {b.tir_usd}%
+              </span>
+              <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">
+                Rating {b.rating} ({b.moodys})
               </span>
             </div>
 
@@ -2565,9 +2576,14 @@ export default function ScreenerSection({
                       </td>
 
                       <td className="py-3.5 px-3 text-center">
-                        <span className="inline-block px-2.5 py-0.5 rounded text-xs font-bold bg-blue-950 text-blue-200 border border-blue-500/30">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedYieldBond(b)}
+                          className="inline-block px-2.5 py-0.5 rounded text-xs font-bold bg-blue-950 hover:bg-blue-900 text-blue-200 border border-blue-500/30 hover:border-blue-400 transition-all cursor-pointer"
+                          title="Ver calificaciones de S&P, Moody's y Fitch"
+                        >
                           {b.rating}
-                        </span>
+                        </button>
                       </td>
 
                       <td className="py-3.5 px-4 font-sans">
@@ -2576,9 +2592,14 @@ export default function ScreenerSection({
                       </td>
 
                       <td className="py-3.5 px-4 text-right">
-                        <span className="text-[#00FF88] font-bold text-sm sm:text-base tracking-tight bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedYieldBond(b)}
+                          className="text-[#00FF88] font-bold text-sm sm:text-base tracking-tight bg-emerald-950/50 px-2.5 py-1 rounded-md border border-emerald-500/30 hover:border-emerald-400 transition-all text-right block ml-auto cursor-pointer"
+                          title="Ver desglose de rendimiento y calificaciones de S&P, Moody's y Fitch"
+                        >
                           {b.tir_usd}%
-                        </span>
+                        </button>
                       </td>
 
                       <td className="py-3.5 px-3 text-right text-slate-300 text-xs sm:text-sm">
@@ -2590,7 +2611,11 @@ export default function ScreenerSection({
                       </td>
 
                       <td className="py-3.5 px-4 text-center">
-                        <div className="inline-flex items-center space-x-2">
+                        <div
+                          className="inline-flex items-center space-x-2 cursor-pointer"
+                          onClick={() => setSelectedScoreItem(b)}
+                          title="Ver desglose técnico de score"
+                        >
                           <div className="w-14 bg-slate-800 h-2 rounded-full overflow-hidden">
                             <div className="bg-[#00FF88] h-full rounded-full" style={{ width: `${b.score}%` }} />
                           </div>
@@ -2601,8 +2626,9 @@ export default function ScreenerSection({
                       <td className="py-3.5 px-4 text-center">
                         <button
                           type="button"
-                          onClick={() => setSelectedScoreItem(b)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
+                          onClick={() => setSelectedExplainBond(b)}
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all shadow-sm hover:shadow-md"
+                          title="Ver explicación didáctica de cómo se calculó el score"
                         >
                           Analizar
                         </button>
@@ -3761,6 +3787,18 @@ export default function ScreenerSection({
       <ScoreDetailModal
         item={selectedScoreItem}
         onClose={() => setSelectedScoreItem(null)}
+      />
+
+      <BondYieldRatingModal
+        bond={selectedYieldBond}
+        onClose={() => setSelectedYieldBond(null)}
+        onOpenScoreDetail={(b) => setSelectedExplainBond(b)}
+      />
+
+      <ExplainBondScoreModal
+        bond={selectedExplainBond}
+        onClose={() => setSelectedExplainBond(null)}
+        onOpenYieldRating={(b) => setSelectedYieldBond(b)}
       />
     </section>
   );

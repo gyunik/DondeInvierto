@@ -43947,8 +43947,8 @@
       "pe_ratio": null,
       "market_cap": "$26.4B AUM",
       "recommendation": "Compra Institucional",
-      "target_price": 51.87,
-      "upside": 20.8,
+      "target_price": 62.25,
+      "upside": 44.9,
       "analyst_consensus": {
         "target_mean": 62.25,
         "target_low": 54,
@@ -44003,35 +44003,35 @@
       "pe_ratio": 33.5,
       "market_cap": "$15.2B AUM",
       "recommendation": "Sobreponderar Fuerte",
-      "target_price": 555.71,
-      "upside": 317.3,
+      "target_price": 170,
+      "upside": 27.7,
       "analyst_consensus": {
-        "target_mean": 641.25,
-        "target_low": 620,
-        "target_high": 660,
-        "explanation": "Consenso agregado bottom-up ponderado por capitalización de los 30 mayores fabricantes de microchips (NVIDIA, Broadcom, Qualcomm, AMD, Texas Instruments).",
+        "target_mean": 170,
+        "target_low": 162,
+        "target_high": 178,
+        "explanation": "Consenso agregado bottom-up ajustado por el split 3:1 de BlackRock (Nov 2026) sobre los 30 mayores fabricantes de microchips (NVIDIA, Broadcom, Qualcomm, AMD, Texas Instruments).",
         "banks": [
           {
             "name": "Goldman Sachs",
-            "target": 660,
+            "target": 178,
             "rating": "Comprar",
             "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
-            "target": 645,
+            "target": 172,
             "rating": "Sobreponderar",
             "date": "18 Oct 2026"
           },
           {
             "name": "Bank of America",
-            "target": 640,
+            "target": 168,
             "rating": "Comprar",
             "date": "15 Oct 2026"
           },
           {
             "name": "Citigroup",
-            "target": 620,
+            "target": 162,
             "rating": "Comprar",
             "date": "08 Oct 2026"
           }
@@ -44941,35 +44941,35 @@
       "pe_ratio": 34.2,
       "market_cap": "$24.8B AUM",
       "recommendation": "Sobreponderar Fuerte",
-      "target_price": 703.75,
-      "upside": 55.8,
+      "target_price": 545,
+      "upside": 20.7,
       "analyst_consensus": {
-        "target_mean": 703.75,
-        "target_low": 680,
-        "target_high": 725,
+        "target_mean": 545,
+        "target_low": 525,
+        "target_high": 565,
         "explanation": "Consenso agregado de los 25 líderes globales de semiconductores, con alta concentración en NVIDIA (20%), TSMC (12%) y equipamiento litográfico ASML.",
         "banks": [
           {
             "name": "Goldman Sachs",
-            "target": 725,
+            "target": 565,
             "rating": "Comprar",
             "date": "23 Oct 2026"
           },
           {
             "name": "Morgan Stanley",
-            "target": 710,
+            "target": 550,
             "rating": "Sobreponderar",
             "date": "18 Oct 2026"
           },
           {
             "name": "Bank of America",
-            "target": 700,
+            "target": 540,
             "rating": "Comprar",
             "date": "15 Oct 2026"
           },
           {
             "name": "Citigroup",
-            "target": 680,
+            "target": 525,
             "rating": "Comprar",
             "date": "08 Oct 2026"
           }
