@@ -12,6 +12,15 @@ interface StockDetailModalProps {
 }
 
 export default function StockDetailModal({ stock, onClose }: StockDetailModalProps) {
+  React.useEffect(() => {
+    if (!stock) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [stock]);
+
   if (!stock) return null;
 
   const isEtf = "expense_ratio" in stock;
@@ -29,7 +38,7 @@ export default function StockDetailModal({ stock, onClose }: StockDetailModalPro
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div

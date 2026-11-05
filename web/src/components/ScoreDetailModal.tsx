@@ -19,6 +19,15 @@ interface ScoreDetailModalProps {
 }
 
 export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProps) {
+  React.useEffect(() => {
+    if (!item) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [item]);
+
   if (!item) return null;
 
   const score = item.score;
@@ -252,7 +261,7 @@ export default function ScoreDetailModal({ item, onClose }: ScoreDetailModalProp
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div

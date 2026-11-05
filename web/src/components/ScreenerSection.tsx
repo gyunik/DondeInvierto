@@ -22,6 +22,7 @@ import ArgentinaFlag from "./ArgentinaFlag";
 import UsaFlag from "./UsaFlag";
 import marketData from "@/data/marketData.json";
 import StockDetailModal, { ModalItem } from "./StockDetailModal";
+import ExplainPotentialModal from "./ExplainPotentialModal";
 import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
 
 export type UsBondItem = (typeof marketData.us_bonds)[0];
@@ -165,6 +166,7 @@ export default function ScreenerSection({
   };
   const [visibleBondCount, setVisibleBondCount] = useState<number>(30);
   const [selectedStockForModal, setSelectedStockForModal] = useState<ModalItem | null>(null);
+  const [selectedExplainStock, setSelectedExplainStock] = useState<StockItem | null>(null);
   const [selectedScoreItem, setSelectedScoreItem] = useState<ScoreItem | null>(null);
 
   // Modo de vista: tabla institucional compacta (por defecto) o tarjetas detalladas
@@ -2889,8 +2891,9 @@ export default function ScreenerSection({
                           <td className="py-3.5 px-4 text-center">
                             <button
                               type="button"
-                              onClick={() => setSelectedStockForModal(stock)}
-                              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all"
+                              onClick={() => setSelectedExplainStock(stock)}
+                              className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-[#111B30] dark:hover:bg-[#00FF88] dark:hover:text-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-sans font-semibold border border-slate-300 dark:border-[#1E2D4A] transition-all shadow-sm hover:shadow-md"
+                              title="Ver explicación didáctica de cómo se calculó el potencial"
                             >
                               Analizar
                             </button>
@@ -3732,6 +3735,12 @@ export default function ScreenerSection({
       <StockDetailModal
         stock={selectedStockForModal}
         onClose={() => setSelectedStockForModal(null)}
+      />
+
+      <ExplainPotentialModal
+        stock={selectedExplainStock}
+        onClose={() => setSelectedExplainStock(null)}
+        onOpenTechnicalDetail={(stk) => setSelectedStockForModal(stk)}
       />
 
       <ScoreDetailModal
