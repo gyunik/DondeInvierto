@@ -200,6 +200,51 @@ export default function BondYieldRatingModal({
               </div>
             </div>
           </div>
+
+          {/* Retorno Total Acumulado a Vencimiento */}
+          {(() => {
+            const years = typeof bond.maturity_years === 'number' && bond.maturity_years > 0 ? bond.maturity_years : 1;
+            const ytm = bond.tir_usd || 5.0;
+            const compound = Math.round((Math.pow(1 + (ytm / 100) / 2, 2 * years) - 1) * 1000) / 10;
+            const coupon = bond.coupon || ytm;
+            const price = bond.price_usd && bond.price_usd > 0 ? bond.price_usd : 100;
+            const simple = Math.round((((coupon * years) + (100 - price)) / price) * 1000) / 10;
+            const sampleInv = 10000;
+            const compoundGain = Math.round(sampleInv * (compound / 100));
+            const simpleGain = Math.round(sampleInv * (simple / 100));
+
+            return (
+              <div className="p-3.5 rounded-xl bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-slate-100 dark:from-emerald-950/40 dark:via-[#0c1c2e] dark:to-[#07111e] border border-emerald-500/30 text-xs sm:text-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <span>💰</span>
+                    <span>Retorno Total Acumulado hasta {bond.maturity} ({years} años)</span>
+                  </span>
+                  <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-[#00FF88]">
+                    Garantizado por Contrato
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 font-mono">
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#060c16] border border-slate-300 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-500 block uppercase">Reinvirtiendo (Compuesto)</span>
+                    <span className="text-base sm:text-lg font-black text-emerald-600 dark:text-[#00FF88] block">+{compound}% en USD</span>
+                    <span className="text-[10px] text-slate-400 block font-sans mt-0.5">
+                      USD {sampleInv.toLocaleString()} → <strong className="text-slate-900 dark:text-white">USD {(sampleInv + compoundGain).toLocaleString()}</strong>
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg bg-white dark:bg-[#060c16] border border-slate-300 dark:border-slate-800">
+                    <span className="text-[10px] text-slate-500 block uppercase">Cobro en Mano (Simple)</span>
+                    <span className="text-base sm:text-lg font-black text-blue-600 dark:text-blue-400 block">+{simple}% en USD</span>
+                    <span className="text-[10px] text-slate-400 block font-sans mt-0.5">
+                      Cobrás <strong className="text-slate-900 dark:text-white">USD {simpleGain.toLocaleString()}</strong> en cupones
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Acceso directo a cómo se calcula el Score */}

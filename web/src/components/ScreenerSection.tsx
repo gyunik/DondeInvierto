@@ -28,6 +28,16 @@ import ExplainBondScoreModal from "./ExplainBondScoreModal";
 import ScoreDetailModal, { ScoreItem } from "./ScoreDetailModal";
 
 export type UsBondItem = (typeof marketData.us_bonds)[0];
+
+export function getBondTotalReturn(b: UsBondItem) {
+  const years = typeof b.maturity_years === 'number' && b.maturity_years > 0 ? b.maturity_years : 1;
+  const ytm = typeof b.tir_usd === 'number' ? b.tir_usd : 5.0;
+  const compound = Math.round((Math.pow(1 + (ytm / 100) / 2, 2 * years) - 1) * 1000) / 10;
+  const coupon = typeof b.coupon === 'number' ? b.coupon : ytm;
+  const price = typeof b.price_usd === 'number' && b.price_usd > 0 ? b.price_usd : 100;
+  const simple = Math.round((((coupon * years) + (100 - price)) / price) * 1000) / 10;
+  return { compound, simple };
+}
 export type StockItem = (typeof marketData.stocks)[0];
 export type EtfItem = (typeof marketData.etfs)[0];
 
@@ -89,7 +99,7 @@ export default function ScreenerSection({
   const [usBondSafetyFilter, setUsBondSafetyFilter] = useState<"all" | "Seguridad Máxima" | "Riesgo Ultra Bajo">("all");
 
   // Tipos y estados de ordenamiento interactivo por columna
-  type UsBondSortKey = "ticker" | "name" | "sector" | "rating" | "maturity" | "tir" | "coupon" | "price" | "score";
+  type UsBondSortKey = "ticker" | "name" | "sector" | "rating" | "maturity" | "tir" | "total_return" | "coupon" | "price" | "score";
   const [usBondSortKey, setUsBondSortKey] = useState<UsBondSortKey>("score");
   const [usBondSortDir, setUsBondSortDir] = useState<"asc" | "desc">("desc");
 
@@ -955,12 +965,26 @@ export default function ScreenerSection({
               className="flex flex-col cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-blue-500/40 transition-all"
               title="Ver calificaciones de S&P, Moody's y Fitch"
             >
-              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">YTM (RENDIMIENTO)</span>
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">YTM (ANUAL)</span>
               <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
                 {b.tir_usd}%
               </span>
               <span className="text-xs text-blue-500 dark:text-blue-400 font-mono">
                 Rating {b.rating} ({b.moodys})
+              </span>
+            </div>
+
+            <div
+              onClick={() => setSelectedYieldBond(b)}
+              className="flex flex-col cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-[#111B30]/60 dark:hover:bg-[#111B30] p-2 rounded-xl border border-slate-200 dark:border-transparent hover:border-emerald-500/40 transition-all"
+              title="Ver desglose de retorno total e interés compuesto"
+            >
+              <span className="text-xs font-bold font-mono uppercase text-slate-500 dark:text-slate-400">RETORNO TOTAL</span>
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-[#00FF88] font-mono mt-0.5">
+                +{getBondTotalReturn(b).compound}%
+              </span>
+              <span className="text-xs text-slate-400 font-sans">
+                En mano: +{getBondTotalReturn(b).simple}%
               </span>
             </div>
 
@@ -2471,7 +2495,7 @@ export default function ScreenerSection({
                       </div>
                     </th>
 
-                    {/* 5. YTM (Rendimiento) */}
+                    {/* 5. YTM (Anual) */}
                     <th
                       onClick={() => handleUsBondSort("tir")}
                       className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
@@ -2480,8 +2504,26 @@ export default function ScreenerSection({
                       title="Ordenar por Rendimiento Anual (YTM)"
                     >
                       <div className="inline-flex items-center justify-end gap-1.5">
-                        <span>YTM (Rendimiento)</span>
+                        <span>YTM (Anual)</span>
                         {usBondSortKey === "tir" ? (
+                          usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
+                        ) : (
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
+                        )}
+                      </div>
+                    </th>
+
+                    {/* 5.b Retorno Total a Vencimiento */}
+                    <th
+                      onClick={() => handleUsBondSort("total_return")}
+                      className={`py-3.5 px-4 font-semibold text-right cursor-pointer select-none group transition-colors hover:text-emerald-600 dark:hover:text-[#00FF88] ${
+                        usBondSortKey === "total_return" ? "text-emerald-700 dark:text-[#00FF88]" : ""
+                      }`}
+                      title="Ordenar por Rendimiento Total Acumulado hasta el Vencimiento"
+                    >
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>Retorno Total</span>
+                        {usBondSortKey === "total_return" ? (
                           usBondSortDir === "asc" ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowDown className="w-3.5 h-3.5" />
                         ) : (
                           <ArrowUpDown className="w-3.5 h-3.5 text-slate-400/40 group-hover:text-slate-400" />
@@ -2600,6 +2642,27 @@ export default function ScreenerSection({
                         >
                           {b.tir_usd}%
                         </button>
+                      </td>
+
+                      {/* Retorno Total Acumulado */}
+                      <td className="py-3.5 px-4 text-right">
+                        {(() => {
+                          const { compound, simple } = getBondTotalReturn(b);
+                          return (
+                            <div
+                              onClick={() => setSelectedYieldBond(b)}
+                              className="cursor-pointer group/ret inline-block text-right"
+                              title={`Interés Compuesto: +${compound}% (reinvirtiendo) | Cobro en mano: +${simple}%`}
+                            >
+                              <span className="text-[#00FF88] font-bold text-sm sm:text-base tracking-tight block group-hover/ret:underline">
+                                +{compound}%
+                              </span>
+                              <span className="text-[10px] text-slate-400 block font-sans">
+                                En mano: +{simple}%
+                              </span>
+                            </div>
+                          );
+                        })()}
                       </td>
 
                       <td className="py-3.5 px-3 text-right text-slate-300 text-xs sm:text-sm">
