@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "last_updated": "2026-11-05 22:31 hs",
+  "last_updated": "2026-11-05 23:43 hs",
   "ccl_dollar": 1664.9,
   "market": {
     "^GSPC": {
@@ -19740,91 +19740,6 @@
       "earnings_quarter": "Q3 2026"
     },
     {
-      "ticker": "HLT",
-      "name": "Hilton Worldwide",
-      "sector": "Consumer Discretionary",
-      "price": 369.64,
-      "day_change": -2.7,
-      "target_price": 380.2,
-      "upside": 2.9,
-      "recommendation": "Compra",
-      "pe_ratio": 48.1,
-      "rsi": 50,
-      "score": 69.7,
-      "cedear_ratio": null,
-      "cedear_price_ars": 615414,
-      "has_cedear": false,
-      "pays_dividend": true,
-      "dividend_yield": 0.2,
-      "dividend_frequency": "Trimestral en USD",
-      "thesis": "Hilton Worldwide forma parte del índice S&P 500 en el sector Consumer Discretionary. Valuado con el algoritmo cuantitativo de 3 capas de DondeInvierto con candado de seguridad institucional.",
-      "market_cap": "$79.3B USD",
-      "sma_200": 320.86,
-      "eps_fwd": 10.45,
-      "analyst_consensus": {
-        "target_mean": 380.2,
-        "target_low": 333,
-        "target_high": 421,
-        "source": "Consenso Bancos (Argus Research, Macquarie, Mizuho)",
-        "explanation": "Consenso institucional de 27 analistas de Wall Street y bancos de inversión Tier-1.",
-        "banks": [
-          {
-            "name": "Argus Research",
-            "target": 410,
-            "rating": "Sobreponderar",
-            "date": "30 Oct 2026"
-          },
-          {
-            "name": "Macquarie",
-            "target": 333,
-            "rating": "Mantener",
-            "date": "29 Oct 2026"
-          },
-          {
-            "name": "Mizuho",
-            "target": 421,
-            "rating": "Sobreponderar",
-            "date": "29 Oct 2026"
-          },
-          {
-            "name": "Morgan Stanley",
-            "target": 362,
-            "rating": "Sobreponderar",
-            "date": "28 Oct 2026"
-          },
-          {
-            "name": "Barclays",
-            "target": 375,
-            "rating": "Sobreponderar",
-            "date": "28 Oct 2026"
-          }
-        ]
-      },
-      "precio_objetivo_algoritmo": 380.2,
-      "precioObjetivoAlgoritmo": 380.2,
-      "retorno_estimado_pct": 2.9,
-      "retornoEstimadoPct": 2.9,
-      "score_total": 69.7,
-      "scoreTotal": 69.7,
-      "quant_breakdown": {
-        "score_valuacion": 11,
-        "score_rentabilidad": 20,
-        "score_crecimiento": 6.7,
-        "score_momentum": 16,
-        "score_revisiones": 16,
-        "consenso_bancos_media": 380.2,
-        "consenso_bancos_min": 333,
-        "consenso_bancos_max": 421,
-        "cantidad_bancos": 5,
-        "is_under_review": false,
-        "sma_200": 320.86,
-        "desvio_tecnico_pct": 15.2
-      },
-      "last_earnings_date": "Oct 2026",
-      "next_earnings_date": "Ene 2027",
-      "earnings_quarter": "Q3 2026"
-    },
-    {
       "ticker": "NKE",
       "name": "Nike",
       "sector": "Inc.",
@@ -21170,6 +21085,91 @@
         "is_under_review": false,
         "sma_200": 169.27,
         "desvio_tecnico_pct": 17
+      },
+      "last_earnings_date": "Oct 2026",
+      "next_earnings_date": "Ene 2027",
+      "earnings_quarter": "Q3 2026"
+    },
+    {
+      "ticker": "HLT",
+      "name": "Hilton Worldwide",
+      "sector": "Consumer Discretionary",
+      "price": 376.53,
+      "day_change": 3.49,
+      "target_price": 380.2,
+      "upside": 1,
+      "recommendation": "Compra",
+      "pe_ratio": 48.1,
+      "rsi": 50,
+      "score": 68.6,
+      "cedear_ratio": null,
+      "cedear_price_ars": 626885,
+      "has_cedear": false,
+      "pays_dividend": true,
+      "dividend_yield": 0.2,
+      "dividend_frequency": "Trimestral en USD",
+      "thesis": "Hilton Worldwide forma parte del índice S&P 500 en el sector Consumer Discretionary. Valuado con el algoritmo cuantitativo de 3 capas de DondeInvierto con candado de seguridad institucional.",
+      "market_cap": "$79.3B USD",
+      "sma_200": 320.86,
+      "eps_fwd": 10.45,
+      "analyst_consensus": {
+        "target_mean": 380.2,
+        "target_low": 333,
+        "target_high": 421,
+        "source": "Consenso Bancos (Argus Research, Macquarie, Mizuho)",
+        "explanation": "Consenso institucional de 27 analistas de Wall Street y bancos de inversión Tier-1.",
+        "banks": [
+          {
+            "name": "Argus Research",
+            "target": 410,
+            "rating": "Sobreponderar",
+            "date": "30 Oct 2026"
+          },
+          {
+            "name": "Macquarie",
+            "target": 333,
+            "rating": "Mantener",
+            "date": "29 Oct 2026"
+          },
+          {
+            "name": "Mizuho",
+            "target": 421,
+            "rating": "Sobreponderar",
+            "date": "29 Oct 2026"
+          },
+          {
+            "name": "Morgan Stanley",
+            "target": 362,
+            "rating": "Sobreponderar",
+            "date": "28 Oct 2026"
+          },
+          {
+            "name": "Barclays",
+            "target": 375,
+            "rating": "Sobreponderar",
+            "date": "28 Oct 2026"
+          }
+        ]
+      },
+      "precio_objetivo_algoritmo": 380.2,
+      "precioObjetivoAlgoritmo": 380.2,
+      "retorno_estimado_pct": 1,
+      "retornoEstimadoPct": 1,
+      "score_total": 68.6,
+      "scoreTotal": 68.6,
+      "quant_breakdown": {
+        "score_valuacion": 11,
+        "score_rentabilidad": 20,
+        "score_crecimiento": 5.6,
+        "score_momentum": 16,
+        "score_revisiones": 16,
+        "consenso_bancos_media": 380.2,
+        "consenso_bancos_min": 333,
+        "consenso_bancos_max": 421,
+        "cantidad_bancos": 5,
+        "is_under_review": false,
+        "sma_200": 320.86,
+        "desvio_tecnico_pct": 17.4
       },
       "last_earnings_date": "Oct 2026",
       "next_earnings_date": "Ene 2027",
@@ -46293,7 +46293,7 @@
     "is_fallback": false,
     "source": "Federal Reserve Bank of New York (EFFR: 3.88%, Proyección 1A: 3.15%)",
     "effective_date": "2026-11-04",
-    "last_fetched": "2026-11-06T01:30:24.336Z"
+    "last_fetched": "2026-11-06T02:43:01.631Z"
   },
   "us_bonds": [
     {
